@@ -1,0 +1,30 @@
+language: android
+sudo: required
+jdk: oraclejdk8
+
+env:
+  global:
+    - TARGET_API=27
+    - BUILD_TOOLS=27.0.3
+    
+android:
+  components:
+    - tools # https://github.com/travis-ci/travis-ci/issues/5049
+    - tools # https://github.com/travis-ci/travis-ci/issues/6040
+    - android-$TARGET_API
+    - platform-tools
+    - build-tools-$BUILD_TOOLS
+    - extra-android-m2repository
+    - extra-google-m2repository
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+
+before_install:
+ - chmod +x gradlew
+ 
+script:
+  - ./gradlew jacocoTestReport test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
