@@ -1,4 +1,7 @@
-# The Days
+# Days
+
+[![Build Status](https://travis-ci.org/clloret/days.svg?branch=master)](https://travis-ci.org/clloret/days) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0373cb4e24b84e77bbb7a62e94e0509e)](https://www.codacy.com/app/clloret/days?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=clloret/days&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/clloret/days/branch/master/graph/badge.svg)](https://codecov.io/gh/clloret/days)
+
 Days is a simple Android app that helps to control event dates.
 This project showcases MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
 
@@ -25,6 +28,7 @@ This project showcases MVP pattern with Mosby, Repository pattern, RXJava 2, Dag
 - Dagger 2: Implementation of dependency injection using Dagger 2.
   
 ## Screenshots
+
 
 ## Libraries
 The following libraries are used in the project:
