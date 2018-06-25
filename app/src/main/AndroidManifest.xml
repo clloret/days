@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.clloret.days">
+
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+  <application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:name=".App"
+    android:supportsRtl="false"
+    android:theme="@style/AppTheme.NoActionBar">
+    <activity
+      android:label="@string/app_name"
+      android:launchMode="singleTop"
+      android:name=".activities.MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
+      android:label="@string/title_activity_event_create"
+      android:name=".events.create.EventCreateActivity"
+      android:parentActivityName=".activities.MainActivity"/>
+    <activity
+      android:label=""
+      android:name=".events.edit.EventEditActivity"
+      android:parentActivityName=".activities.MainActivity"/>
+    <activity
+      android:label="@string/title_activity_tag_create"
+      android:name=".tags.create.TagCreateActivity"
+      android:parentActivityName=".activities.MainActivity"/>
+    <activity
+      android:label="@string/title_activity_tag_edit"
+      android:name=".tags.edit.TagEditActivity"
+      android:parentActivityName=".activities.MainActivity"/>
+    <activity
+      android:label="@string/title_activity_settings"
+      android:name=".activities.SettingsActivity"
+      android:parentActivityName=".activities.MainActivity"/>
+    <activity
+      android:label="@string/title_activity_about"
+      android:name=".activities.AboutActivity"
+      android:parentActivityName=".activities.MainActivity"
+      android:theme="@style/AppTheme.MaterialAboutActivity"/>
+  </application>
+
+</manifest>

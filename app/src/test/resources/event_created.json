@@ -1,0 +1,18 @@
+{
+  "id": "recBEye8Ce7vn14Wt",
+  "fields": {
+    "Name": "New event",
+    "Description": "Description",
+    "Date": "2020-01-14",
+    "Tags": [
+      "recPukI2H3ro9UOz9",
+      "recRcyFcA2DmaJmNL"
+    ],
+    "Favorite": true,
+    "TagId": [
+      "recPukI2H3ro9UOz9",
+      "recRcyFcA2DmaJmNL"
+    ]
+  },
+  "createdTime": "2016-05-09T07:03:30.000Z"
+}

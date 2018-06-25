@@ -1,0 +1,33 @@
+<resources>
+  <dimen name="elevation_all_fab">9dp</dimen>
+  <dimen name="height_card_image">120dp</dimen>
+  <dimen name="height_navigationdrawer_item">48dp</dimen>
+  <dimen name="keyline_navigationdrawer_first">16dp</dimen>
+  <dimen name="keyline_navigationdrawer_second">32dp</dimen>
+  <dimen name="keyline_navigationdrawer_third">16dp</dimen>
+  <dimen name="margin_all_fab">16dp</dimen>
+  <dimen name="margin_card_button">8dp</dimen>
+  <dimen name="margin_card_subtitle">16dp</dimen>
+  <dimen name="margin_card_title">16dp</dimen>
+  <dimen name="margin_event_detail_text">2dp</dimen>
+  <dimen name="padding_card_actions">8dp</dimen>
+  <dimen name="padding_card_button">6dp</dimen>
+  <dimen name="padding_navigationdrawer_subheader">8dp</dimen>
+  <dimen name="size_card_button">36dp</dimen>
+  <dimen name="textsize_navigationdrawer_item">14sp</dimen>
+  <dimen name="width_navigationdrawer">320dp</dimen>
+  <dimen name="textsize_empty_view">16sp</dimen>
+  <dimen name="padding_empty_view_drawable">20dp</dimen>
+
+  <dimen name="spacing_xsmall">2dp</dimen>
+  <dimen name="spacing_medium">8dp</dimen>
+  <dimen name="spacing_large">16dp</dimen>
+  <dimen name="spacing_xlarge">32dp</dimen>
+
+  <dimen name="elevation_low">9dp</dimen>
+  <dimen name="elevation_high">12dp</dimen>
+
+  <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="activity_vertical_margin">16dp</dimen>
+
+</resources>

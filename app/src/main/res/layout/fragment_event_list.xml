@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/event_list_bg"
+  >
+
+  <android.support.v4.widget.ContentLoadingProgressBar
+    android:id="@+id/loadingView"
+    style="?android:attr/progressBarStyleLarge"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="gone"
+    />
+
+  <TextView
+    android:id="@+id/errorView"
+    style="@android:style/TextAppearance.Material.Title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawablePadding="@dimen/spacing_medium"
+    android:drawableStart="@drawable/ic_error_24dp"
+    android:text="@string/msg_error"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="gone"
+    />
+
+  <android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/contentView"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:padding="4dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    >
+
+    <android.support.v7.widget.RecyclerView
+      android:id="@+id/recyclerView"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:scrollbars="vertical"
+      app:layoutManager="android.support.v7.widget.GridLayoutManager"
+      app:spanCount="2"
+      tools:listitem="@layout/fragment_event"
+      tools:visibility="gone"
+      />
+
+  </android.support.v4.widget.SwipeRefreshLayout>
+
+  <TextView
+    android:id="@+id/emptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:drawablePadding="@dimen/padding_empty_view_drawable"
+    android:drawableTop="@drawable/ic_event_110dp"
+    android:text="@string/msg_empty_events"
+    android:textColor="@color/secondary_text"
+    android:textSize="@dimen/textsize_empty_view"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+</android.support.constraint.ConstraintLayout>

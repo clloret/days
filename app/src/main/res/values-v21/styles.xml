@@ -1,0 +1,10 @@
+<resources>
+
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+    <!-- This makes the windows appear below the status bar -->
+    <!--<item name="android:windowTranslucentStatus">true</item>-->
+    <item name="android:statusBarColor">@android:color/transparent</item>
+  </style>
+</resources>

@@ -1,0 +1,45 @@
+{
+  "records": [
+    {
+      "id": "recPukI2H3ro9UOz9",
+      "fields": {
+        "Name": "General",
+        "Events": [
+          "recBEye8Ce7vn14Wt",
+          "recpyOUkZLcSBltgB",
+          "recnDSBFmVbfciUdW",
+          "recgBY2zKTBROh3Qu"
+        ],
+        "Id": "recPukI2H3ro9UOz9"
+      },
+      "createdTime": "2017-10-02T12:39:34.000Z"
+    },
+    {
+      "id": "rec2UdUNjT34Xwx9B",
+      "fields": {
+        "Name": "Higiene",
+        "Events": [
+          "rec1LeDv09k7NLw8b",
+          "recllAOjIOMtBDnMd",
+          "recd9o1YdLSRrZnGP",
+          "recOycQDwG7iLL17e",
+          "recPnzYXPptWmxmdY",
+          "recgBY2zKTBROh3Qu"
+        ],
+        "Id": "rec2UdUNjT34Xwx9B"
+      },
+      "createdTime": "2017-11-12T18:29:04.000Z"
+    },
+    {
+      "id": "recRcyFcA2DmaJmNL",
+      "fields": {
+        "Name": "Prueba De Esfuerzo ",
+        "Events": [
+          "recBEye8Ce7vn14Wt"
+        ],
+        "Id": "recRcyFcA2DmaJmNL"
+      },
+      "createdTime": "2017-11-22T20:03:49.000Z"
+    }
+  ]
+}

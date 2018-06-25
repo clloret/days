@@ -1,0 +1,27 @@
+<com.clloret.days.utils.ScrimInsetsFrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/drawer_item_bg"
+  android:fitsSystemWindows="true"
+  app:insetForeground="#4000">
+
+  <ListView
+    android:id="@+id/listView"
+    android:scrollbarStyle="outsideOverlay"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="24dp"
+    android:cacheColorHint="@android:color/transparent"
+    android:choiceMode="singleChoice"
+    android:clipToPadding="false"
+    android:divider="@android:color/transparent"
+    android:drawSelectorOnTop="true"
+    android:scrollbars="vertical"
+    android:scrollingCache="false"
+    tools:context=".NavigationDrawerFragment"
+    tools:listitem="@layout/menu_adapter_texticon"/>
+
+</com.clloret.days.utils.ScrimInsetsFrameLayout>

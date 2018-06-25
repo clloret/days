@@ -1,0 +1,48 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <PreferenceCategory android:title="Apariencia">
+
+    <ListPreference
+      android:defaultValue="0"
+      android:entries="@array/default_list_entries"
+      android:entryValues="@array/default_list_entry_values"
+      android:key="@string/pref_default_list"
+      android:summary="%s"
+      android:title="@string/title_default_list"/>
+
+  </PreferenceCategory>
+
+  <PreferenceCategory
+    android:title="@string/title_datastore">
+
+    <CheckBoxPreference
+      android:defaultValue="false"
+      android:key="@string/pref_airtable_preference"
+      android:title="Airtable"/>
+
+    <EditTextPreference
+      android:dependency="@string/pref_airtable_preference"
+      android:dialogTitle="@string/title_dialog_airtable_api_key"
+      android:inputType="textVisiblePassword|textNoSuggestions"
+      android:key="@string/pref_airtable_api_key"
+      android:summary="@string/summary_airtable_api_key"
+      android:title="@string/title_airtable_api_key"/>
+
+    <EditTextPreference
+      android:dependency="@string/pref_airtable_preference"
+      android:dialogTitle="@string/title_dialog_airtable_base"
+      android:inputType="textVisiblePassword|textNoSuggestions"
+      android:key="@string/pref_airtable_base_id"
+      android:summary="@string/summary_airtable_base_id"
+      android:title="@string/title_airtable_base_id"/>
+
+    <SwitchPreference
+      android:dependency="airtable_preference"
+      android:key="@string/pref_remote_datastore"
+      android:summary="@string/summary_remote_datastore"
+      android:title="@string/title_remote_datastore"
+      />
+
+  </PreferenceCategory>
+
+</PreferenceScreen>

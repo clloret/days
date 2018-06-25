@@ -1,0 +1,95 @@
+package com.clloret.days.events.common;
+
+import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import com.clloret.days.R;
+import com.clloret.days.model.entities.Tag;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class SelectTagsDialog extends DialogFragment {
+
+  private static final String BUNDLE_TITLE = "title";
+  private static final String BUNDLE_NAME_TAGS = "nameTags";
+  private static final String BUNDLE_CHECKED_TAGS = "checkedTags";
+  private static final String BUNDLE_TAGS = "tags";
+
+  public interface SelectTagsDialogListener {
+
+    void onFinishDialog(Collection<Tag> selectedItems);
+  }
+
+  public SelectTagsDialog() {
+    // Empty constructor required for DialogFragment
+  }
+
+  public static SelectTagsDialog newInstance(String title,
+      String[] nameTags, boolean[] checkedTags, ArrayList<Tag> tags) {
+
+    Bundle args = new Bundle();
+
+    args.putString(BUNDLE_TITLE, title);
+    args.putStringArray(BUNDLE_NAME_TAGS, nameTags);
+    args.putBooleanArray(BUNDLE_CHECKED_TAGS, checkedTags);
+    args.putParcelableArrayList(BUNDLE_TAGS, tags);
+
+    SelectTagsDialog dialog = new SelectTagsDialog();
+    dialog.setArguments(args);
+
+    return dialog;
+  }
+
+
+  @NonNull
+  @Override
+  public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+    final Bundle args = getArguments();
+    final String title = args.getString(BUNDLE_TITLE);
+    final String[] nameTags = args.getStringArray(BUNDLE_NAME_TAGS);
+    final boolean[] checkedTags = args.getBooleanArray(BUNDLE_CHECKED_TAGS);
+    final List<Tag> tags = args.getParcelableArrayList(BUNDLE_TAGS);
+    final Collection<Tag> selectedItems = getSelectedTags(checkedTags, tags);
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    builder.setTitle(title)
+        .setMultiChoiceItems(nameTags, checkedTags,
+            (dialog, which, isChecked) -> {
+
+              Tag tag = tags.get(which);
+              if (isChecked) {
+                selectedItems.add(tag);
+              } else if (selectedItems.contains(tag)) {
+                selectedItems.remove(tag);
+              }
+            })
+        .setPositiveButton(getString(R.string.action_ok), (dialog, id) -> {
+
+          SelectTagsDialogListener listener = (SelectTagsDialogListener) getActivity();
+          listener.onFinishDialog(selectedItems);
+
+        })
+        .setNegativeButton(getString(R.string.action_cancel), (dialog, id) -> {
+
+        });
+
+    return builder.create();
+  }
+
+  private List<Tag> getSelectedTags(boolean[] checkedTags, List<Tag> tags) {
+
+    final List<Tag> selectedItems = new ArrayList<>();
+
+    for (int i = 0; i < checkedTags.length; i++) {
+      if (checkedTags[i]) {
+        selectedItems.add(tags.get(i));
+      }
+    }
+
+    return selectedItems;
+  }
+}

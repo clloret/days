@@ -1,0 +1,9 @@
+<fragment
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/navigation_drawer"
+  android:layout_width="@dimen/width_navigationdrawer"
+  android:layout_height="match_parent"
+  android:layout_gravity="start"
+  android:name="com.clloret.days.menu.MenuFragment"
+  tools:layout="@layout/fragment_navigation_drawer"/>
