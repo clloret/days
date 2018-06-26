@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/clloret/days.svg?branch=master)](https://travis-ci.org/clloret/days) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0373cb4e24b84e77bbb7a62e94e0509e)](https://www.codacy.com/app/clloret/days?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=clloret/days&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/clloret/days/branch/master/graph/badge.svg)](https://codecov.io/gh/clloret/days)
 
 Days is a simple Android app that helps to control event dates.
-This project showcases MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
+
+This project also showcases MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
 
 ## Features
 
@@ -28,7 +29,13 @@ This project showcases MVP pattern with Mosby, Repository pattern, RXJava 2, Dag
 - Dagger 2: Implementation of dependency injection using Dagger 2.
   
 ## Screenshots
-
+[![Navigation Drawer][screen1th]][screen1]
+[![Main screen][screen2th]][screen2]
+[![Order][screen3th]][screen3]
+[![View/Edit event][screen4th]][screen4]
+[![New event][screen5th]][screen5]
+[![New tag][screen6th]][screen6]
+[![Settings][screen7th]][screen7]
 
 ## Libraries
 The following libraries are used in the project:
@@ -74,3 +81,18 @@ This project is still in progress. Here are the some features that I will finish
 ## License
 
 This project is licensed under the GPLv3 License - see the [LICENSE](LICENSE) file for details
+
+[screen1]: screenshots/original/screenshot1.png
+[screen2]: screenshots/original/screenshot2.png
+[screen3]: screenshots/original/screenshot3.png
+[screen4]: screenshots/original/screenshot4.png
+[screen5]: screenshots/original/screenshot5.png
+[screen6]: screenshots/original/screenshot6.png
+[screen7]: screenshots/original/screenshot7.png
+[screen1th]: screenshots/thumb/screenshot1.png
+[screen2th]: screenshots/thumb/screenshot2.png
+[screen3th]: screenshots/thumb/screenshot3.png
+[screen4th]: screenshots/thumb/screenshot4.png
+[screen5th]: screenshots/thumb/screenshot5.png
+[screen6th]: screenshots/thumb/screenshot6.png
+[screen7th]: screenshots/thumb/screenshot7.png
