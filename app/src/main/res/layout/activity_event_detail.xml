@@ -171,6 +171,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:hint="@string/event_details_name"
+              android:inputType="textCapSentences"
               />
 
           </android.support.design.widget.TextInputLayout>
@@ -204,7 +205,8 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:hint="@string/event_details_description"
-              android:inputType="none"/>
+              android:inputType="textCapSentences"
+              />
 
           </android.support.design.widget.TextInputLayout>
 

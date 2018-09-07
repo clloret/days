@@ -42,7 +42,7 @@
       android:layout_height="wrap_content"
       android:ems="10"
       android:hint="@string/tag_details_name"
-      android:inputType="textPersonName"
+      android:inputType="textCapSentences"
       tools:text="@string/tag_details_name"/>
 
   </android.support.design.widget.TextInputLayout>
