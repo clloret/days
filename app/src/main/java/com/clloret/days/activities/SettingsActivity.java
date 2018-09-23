@@ -1,7 +1,9 @@
 package com.clloret.days.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v14.preference.SwitchPreference;
@@ -11,6 +13,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +40,35 @@ public class SettingsActivity extends BaseActivity {
 
     getSupportFragmentManager().beginTransaction()
         .replace(R.id.frame, new CustomPreferenceFragment()).commit();
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+
+    getMenuInflater().inflate(R.menu.menu_settings, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+
+    int id = item.getItemId();
+
+    switch (id) {
+
+      case R.id.menu_help:
+        showHelp();
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
+
+  private void showHelp() {
+
+    String url = "https://github.com/clloret/days/wiki";
+    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
   }
 
   public static class CustomPreferenceFragment extends PreferenceFragmentCompat implements
