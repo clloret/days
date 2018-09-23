@@ -14,7 +14,7 @@ This project also showcases MVP pattern with Mosby, Repository pattern, RXJava 2
 - Favorite events: Assign favorite events to keep them close at hand.
 - Event sorting: You can sort events in the most convenient way.
 - Simple and easy to use Material Design: Days has a simple design, so that it is agile and comfortable to use. Also use and follow the Material Design style guide.
-- Cloud storage - Integrates with the Airtable Service API to provide cloud storage.
+- Cloud storage - Integrates with the Airtable Service API to provide cloud storage ([Airtable configuration tutorial](https://github.com/clloret/days/wiki/Airtable-configuration-tutorial)).
 - Multi-platform data access: Thanks to the storage in Airtable it is possible to consult and modify the data from any compatible device.
 - Local storage - If cloud storage is not used, data is stored on the phone. If cloud storage is used, storage on the phone is used as a data cache.
 - Free and open source: It is free and the source code of the application is available.
@@ -25,7 +25,7 @@ This project also showcases MVP pattern with Mosby, Repository pattern, RXJava 2
 - Room: Use of the Room library for local data storage.
 - RxJava 2: Use of the RxJava2 library for reactive programming.
 - Material Design: Implementation of Google's Material Design style.
-- Unit testing: Init tests have been implemented to check the correct functioning of the application. Using the Robolectric, Mockito and Mockwebserver libraries to avoid dependencies.
+- Unit testing: Unit tests have been implemented to check the correct functioning of the application. Using the Robolectric, Mockito and Mockwebserver libraries to avoid dependencies.
 - Dagger 2: Implementation of dependency injection using Dagger 2.
   
 ## Screenshots
