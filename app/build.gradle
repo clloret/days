@@ -7,7 +7,7 @@ android {
     def apiLevel = 27
 
     compileSdkVersion apiLevel
-    buildToolsVersion '27.0.3'
+    buildToolsVersion '28.0.3'
     flavorDimensions "default"
     defaultConfig {
         applicationId "com.clloret.days"
