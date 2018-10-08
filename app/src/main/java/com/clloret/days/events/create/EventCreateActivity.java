@@ -44,10 +44,10 @@ public class EventCreateActivity extends
   Toolbar toolbar;
 
   @BindView(R.id.event_switcher)
-  ViewSwitcher eventSwicher;
+  ViewSwitcher eventSwitcher;
 
   @BindView(R.id.description_switch)
-  ViewSwitcher descriptionSwicher;
+  ViewSwitcher descriptionSwitcher;
 
   @BindView(R.id.layout_eventdetail_name)
   TextInputLayout nameLayout;
@@ -87,8 +87,8 @@ public class EventCreateActivity extends
 
     fab.setImageDrawable(getDrawable(R.drawable.ic_save_wht_24dp));
 
-    eventSwicher.showNext();
-    descriptionSwicher.showNext();
+    eventSwitcher.showNext();
+    descriptionSwitcher.showNext();
 
     presenter.loadTags();
   }
@@ -219,10 +219,10 @@ public class EventCreateActivity extends
 
   private void selectDate() {
 
-    SelectDateHelper.selectDate(this, (date, formatedDate) -> {
+    SelectDateHelper.selectDate(this, (date, formattedDate) -> {
 
       selectedDate = date;
-      dateText.setText(formatedDate);
+      dateText.setText(formattedDate);
     });
   }
 
