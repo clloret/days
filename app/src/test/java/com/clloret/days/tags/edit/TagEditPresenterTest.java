@@ -1,13 +1,15 @@
 package com.clloret.days.tags.edit;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.RxImmediateSchedulerRule;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.tags.SampleBuilder;
+import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import org.junit.Before;
@@ -41,7 +43,8 @@ public class TagEditPresenterTest {
   @Test
   public void saveEvent_Always_CallApiAndNotifyView() {
 
-    final Tag tag = new Tag("id", "Mock tag");
+    Tag tag = SampleBuilder.createTag();
+    TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
 
     when(appDataStore.editTag(any())).thenReturn(new Maybe<Tag>() {
       @Override
@@ -51,18 +54,19 @@ public class TagEditPresenterTest {
       }
     });
 
-    tagEditPresenter.saveTag(tag);
+    tagEditPresenter.saveTag(tagViewModel);
 
     verify(appDataStore).editTag(any());
-    verify(tagEditView).onSuccessfully(eq(tag));
+    verify(tagEditView).onSuccessfully(eq(tagViewModel));
   }
 
   @Test
   public void saveEvent_WhenEmptyEventName_NotifyViewError() {
 
-    Tag event = new Tag("id", "");
+    TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
+    tagViewModel.setName("");
 
-    tagEditPresenter.saveTag(event);
+    tagEditPresenter.saveTag(tagViewModel);
 
     verify(tagEditView).onEmptyTagNameError();
   }

@@ -1,12 +1,12 @@
 package com.clloret.days.model.events;
 
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 
 public class TagModifiedEvent {
 
-  public final Tag tag;
+  public final TagViewModel tag;
 
-  public TagModifiedEvent(Tag tag) {
+  public TagModifiedEvent(TagViewModel tag) {
 
     this.tag = tag;
   }

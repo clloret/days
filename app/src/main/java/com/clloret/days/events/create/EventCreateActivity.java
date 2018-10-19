@@ -21,8 +21,8 @@ import com.clloret.days.base.BaseMvpActivity;
 import com.clloret.days.events.common.SelectDateHelper;
 import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.events.common.SelectTagsHelper;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.ShowMessageEvent;
 import dagger.android.AndroidInjection;
@@ -156,7 +156,7 @@ public class EventCreateActivity extends
   }
 
   @Override
-  public void onSuccessfully(Event event) {
+  public void onSuccessfully(EventViewModel event) {
 
     EventBus.getDefault().post(new EventCreatedEvent(event));
     finish();
@@ -169,7 +169,7 @@ public class EventCreateActivity extends
   }
 
   @Override
-  public void setData(List<Tag> data) {
+  public void setData(List<TagViewModel> data) {
 
     selectTagsHelper.setMapTags(data);
   }
@@ -232,7 +232,7 @@ public class EventCreateActivity extends
   }
 
   @Override
-  public void onFinishDialog(Collection<Tag> selectedItems) {
+  public void onFinishDialog(Collection<TagViewModel> selectedItems) {
 
     selectTagsHelper.updateSelectedTags(selectedItems);
     showSelectedTags();

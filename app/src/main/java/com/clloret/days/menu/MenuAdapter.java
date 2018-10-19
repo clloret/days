@@ -19,7 +19,7 @@ import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerSeparator;
 import com.clloret.days.menu.items.DrawerSubheader;
 import com.clloret.days.menu.items.DrawerTag;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.tags.create.TagCreateActivity;
 import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -49,12 +49,12 @@ public class MenuAdapter extends BaseAdapter {
     disposable.dispose();
   }
 
-  public void setData(List<Tag> data) {
+  public void setData(List<TagViewModel> data) {
 
     showTags(data);
   }
 
-  private void showTags(List<Tag> data) {
+  private void showTags(List<TagViewModel> data) {
 
     tags.clear();
 
@@ -175,7 +175,7 @@ public class MenuAdapter extends BaseAdapter {
     return convertView;
   }
 
-  public void addTag(Tag tag) {
+  public void addTag(TagViewModel tag) {
 
     DrawerTag drawerTag = new DrawerTag(new EventFilterByTag(tag.getId()), tag);
     tags.put(tag.getId(), drawerTag);
@@ -183,7 +183,7 @@ public class MenuAdapter extends BaseAdapter {
     notifyDataSetChanged();
   }
 
-  public void updateTag(Tag tag) {
+  public void updateTag(TagViewModel tag) {
 
     if (tags.containsKey(tag.getId())) {
       DrawerTag drawerTag = tags.get(tag.getId());
@@ -193,7 +193,7 @@ public class MenuAdapter extends BaseAdapter {
     }
   }
 
-  public void deleteTag(Tag tag) {
+  public void deleteTag(TagViewModel tag) {
 
     tags.remove(tag.getId());
     notifyDataSetChanged();

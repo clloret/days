@@ -1,23 +1,24 @@
 package com.clloret.days.events.list;
 
+import static com.clloret.days.events.SampleBuilder.createEvent;
+import static com.clloret.days.events.SampleBuilder.createEventList;
+import static com.clloret.days.events.SampleBuilder.createEventViewModel;
 import static io.reactivex.Single.just;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import android.support.annotation.NonNull;
-import com.clloret.days.RxImmediateSchedulerRule;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.list.filter.EventFilterByTag;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.EventBuilder;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
@@ -26,6 +27,7 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -43,7 +45,6 @@ public class EventListPresenterTest {
   @Mock
   private EventListView eventListView;
 
-  private final List<Event> eventList = new ArrayList<>();
   private EventListPresenter eventListPresenter;
 
   @Before
@@ -53,14 +54,12 @@ public class EventListPresenterTest {
 
     eventListPresenter = new EventListPresenter(appDataStore, eventBus);
     eventListPresenter.attachView(eventListView);
-
-    for (int i = 0; i < 5; i++) {
-      eventList.add(new Event());
-    }
   }
 
   @Test
   public void loadEvents_Always_CallApiAndNotifyView() {
+
+    List<Event> eventList = createEventList();
 
     when(appDataStore.getEventsByTagId(any())).thenReturn(
         just(eventList)
@@ -72,7 +71,7 @@ public class EventListPresenterTest {
     eventListPresenter.loadEvents(false, eventFilterByTag);
 
     verify(appDataStore).getEventsByTagId(tagId);
-    verify(eventListView).setData(eventList);
+    verify(eventListView).setData(ArgumentMatchers.anyList());
     verify(eventListView).showContent();
   }
 
@@ -80,6 +79,7 @@ public class EventListPresenterTest {
   public void deleteEvent_Always_CallApiAndNotifyView() {
 
     final Event event = createEvent();
+    final EventViewModel eventViewModel = createEventViewModel();
 
     when(appDataStore.deleteEvent(event)).thenReturn(new Maybe<Boolean>() {
       @Override
@@ -89,27 +89,17 @@ public class EventListPresenterTest {
       }
     });
 
-    eventListPresenter.deleteEvent(event);
+    eventListPresenter.deleteEvent(eventViewModel);
 
     verify(appDataStore).deleteEvent(event);
-    verify(eventListView).deleteSuccessfully(event, true);
-  }
-
-  @NonNull
-  private Event createEvent() {
-
-    return new EventBuilder()
-        .setId("1")
-        .setName("Mock Event")
-        .setDate(new Date())
-        .setFavorite(false)
-        .build();
+    verify(eventListView).deleteSuccessfully(eventViewModel, true);
   }
 
   @Test
   public void makeEventFavorite_Always_CallApiAndNotifyView() {
 
     final Event event = createEvent();
+    final EventViewModel eventViewModel = createEventViewModel();
     final boolean favorite = event.isFavorite();
 
     when(appDataStore.editEvent(event)).thenReturn(new Maybe<Event>() {
@@ -120,7 +110,7 @@ public class EventListPresenterTest {
       }
     });
 
-    eventListPresenter.makeEventFavorite(event);
+    eventListPresenter.makeEventFavorite(eventViewModel);
 
     ArgumentCaptor<Event> argumentCaptor = ArgumentCaptor.forClass(Event.class);
 
@@ -130,14 +120,15 @@ public class EventListPresenterTest {
 
     assertThat(result.isFavorite(), is(not(favorite)));
 
-    //verify(appDataStore).editEvent(any(Event.class));
-    verify(eventListView).favoriteSuccessfully(any(Event.class));
+    verify(appDataStore).editEvent(any(Event.class));
+    verify(eventListView).favoriteSuccessfully(any(EventViewModel.class));
   }
 
   @Test
   public void resetDate_Always_CallApiAndNotifyView() {
 
     final Event event = createEvent();
+    final EventViewModel eventViewModel = createEventViewModel();
 
     when(appDataStore.editEvent(event)).thenReturn(new Maybe<Event>() {
       @Override
@@ -147,7 +138,7 @@ public class EventListPresenterTest {
       }
     });
 
-    eventListPresenter.resetDate(event);
+    eventListPresenter.resetDate(eventViewModel);
 
     ArgumentCaptor<Event> argumentCaptor = ArgumentCaptor.forClass(Event.class);
 
@@ -157,7 +148,7 @@ public class EventListPresenterTest {
     Date date = LocalDate.now().toDate();
     assertThat(result.getDate(), equalTo(date));
 
-    verify(eventListView).dateResetSuccessfully(any(Event.class));
+    verify(eventListView).dateResetSuccessfully(any(EventViewModel.class));
   }
 
 }

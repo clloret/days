@@ -1,10 +1,10 @@
 package com.clloret.days.events.list;
 
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
 import java.util.List;
 
-public interface EventListView extends MvpLceView<List<Event>> {
+public interface EventListView extends MvpLceView<List<EventViewModel>> {
 
   // MvpLceView already defines LCE methods:
   //
@@ -17,17 +17,17 @@ public interface EventListView extends MvpLceView<List<Event>> {
 
   void showMessage(String message);
 
-  void showEditEventUi(Event event);
+  void showEditEventUi(EventViewModel event);
 
-  void showCreatedEvent(Event event);
+  void showCreatedEvent(EventViewModel event);
 
-  void deleteSuccessfully(Event event, boolean deleted);
+  void deleteSuccessfully(EventViewModel event, boolean deleted);
 
-  void undoDeleteSuccessfully(Event event);
+  void undoDeleteSuccessfully(EventViewModel event);
 
-  void updateSuccessfully(Event event);
+  void updateSuccessfully(EventViewModel event);
 
-  void favoriteSuccessfully(Event event);
+  void favoriteSuccessfully(EventViewModel event);
 
-  void dateResetSuccessfully(Event event);
+  void dateResetSuccessfully(EventViewModel event);
 }

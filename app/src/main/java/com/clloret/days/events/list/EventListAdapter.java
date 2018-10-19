@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.clloret.days.R;
 import com.clloret.days.events.list.EventListAdapter.EventViewHolder;
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -18,10 +18,10 @@ import java.util.List;
 public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
   private final OnListAdapterListener listener;
-  private List<Event> events;
-  private Comparator<Event> currentComparator;
+  private List<EventViewModel> events;
+  private Comparator<EventViewModel> currentComparator;
 
-  public EventListAdapter(Comparator<Event> comparator, OnListAdapterListener listener) {
+  public EventListAdapter(Comparator<EventViewModel> comparator, OnListAdapterListener listener) {
 
     this.currentComparator = comparator;
     this.listener = listener;
@@ -32,12 +32,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     final int position = viewHolder.getAdapterPosition();
 
-    final Event deletedItem = events.get(position);
+    final EventViewModel deletedItem = events.get(position);
 
     listener.onDeleteItem(deletedItem);
   }
 
-  public int addItem(Event item) {
+  public int addItem(EventViewModel item) {
 
     if (events.add(item)) {
 
@@ -52,7 +52,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     return -1;
   }
 
-  public void removeItem(Event item) {
+  public void removeItem(EventViewModel item) {
 
     int index = events.indexOf(item);
     if (index != -1) {
@@ -61,7 +61,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     }
   }
 
-  public void restoreItem(Event item) {
+  public void restoreItem(EventViewModel item) {
 
     if (events.add(item)) {
       Collections.sort(events, currentComparator);
@@ -72,7 +72,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     }
   }
 
-  public void updateItem(Event item) {
+  public void updateItem(EventViewModel item) {
 
     int index = events.indexOf(item);
     if (index != -1) {
@@ -86,12 +86,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     }
   }
 
-  public List<Event> getEvents() {
+  public List<EventViewModel> getEvents() {
 
     return events;
   }
 
-  public void setEvents(List<Event> events) {
+  public void setEvents(List<EventViewModel> events) {
 
     Collections.sort(events, currentComparator);
 
@@ -132,7 +132,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     return events == null ? 0 : events.size();
   }
 
-  public void sortByComparator(Comparator<Event> comparator) {
+  public void sortByComparator(Comparator<EventViewModel> comparator) {
 
     currentComparator = comparator;
 
@@ -143,13 +143,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
   public interface OnListAdapterListener {
 
-    void onSelectItem(Event item);
+    void onSelectItem(EventViewModel item);
 
-    void onDeleteItem(Event item);
+    void onDeleteItem(EventViewModel item);
 
-    void onResetItem(Event item);
+    void onResetItem(EventViewModel item);
 
-    void onFavoriteItem(Event item);
+    void onFavoriteItem(EventViewModel item);
   }
 
   class EventViewHolder extends RecyclerView.ViewHolder {
@@ -174,7 +174,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       viewForeground = view.findViewById(R.id.view_foreground);
     }
 
-    public void bindData(final Event viewModel) {
+    public void bindData(final EventViewModel viewModel) {
 
       int days = viewModel.getDaysSince();
 

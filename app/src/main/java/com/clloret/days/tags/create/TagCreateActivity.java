@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.ShowMessageEvent;
 import com.clloret.days.model.events.TagCreatedEvent;
 import dagger.android.AndroidInjection;
@@ -103,7 +103,7 @@ public class TagCreateActivity extends
   }
 
   @Override
-  public void onSuccessfully(Tag tag) {
+  public void onSuccessfully(TagViewModel tag) {
 
     EventBus.getDefault().post(new TagCreatedEvent(tag));
     finish();

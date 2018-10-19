@@ -1,17 +1,19 @@
 package com.clloret.days.events.edit;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static com.clloret.days.events.SampleBuilder.createEvent;
+import static com.clloret.days.events.SampleBuilder.createEventViewModel;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.RxImmediateSchedulerRule;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.EventBuilder;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Event;
+import com.clloret.days.events.SampleBuilder;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
-import java.util.Date;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -36,7 +38,6 @@ public class EventEditPresenterTest {
 
     MockitoAnnotations.initMocks(this);
 
-    // Get a reference to the class under test
     eventEditPresenter = new EventEditPresenter(appDataStore);
     eventEditPresenter.attachView(eventEditView);
   }
@@ -44,11 +45,8 @@ public class EventEditPresenterTest {
   @Test
   public void saveEvent_Always_CallApiAndNotifyView() {
 
-    Event event = new EventBuilder()
-        .setId("id")
-        .setName("Mock Event")
-        .setDate(new Date())
-        .build();
+    final Event event = createEvent();
+    final EventViewModel eventViewModel = createEventViewModel();
 
     when(appDataStore.editEvent(any())).thenReturn(new Maybe<Event>() {
       @Override
@@ -61,17 +59,14 @@ public class EventEditPresenterTest {
     eventEditPresenter.saveEvent(event);
 
     verify(appDataStore).editEvent(any());
-    verify(eventEditView).onSuccessfully(eq(event));
+    verify(eventEditView).onSuccessfully(eq(eventViewModel));
   }
 
   @Test
   public void saveEvent_WhenEmptyEventName_NotifyViewError() {
 
-    Event event = new EventBuilder()
-        .setId("id")
-        .setName("")
-        .setDate(new Date())
-        .build();
+    final Event event = createEvent();
+    event.setName(SampleBuilder.emptyText);
 
     eventEditPresenter.saveEvent(event);
 

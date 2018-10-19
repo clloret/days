@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import com.clloret.days.R;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +20,7 @@ public class SelectTagsDialog extends DialogFragment {
 
   public interface SelectTagsDialogListener {
 
-    void onFinishDialog(Collection<Tag> selectedItems);
+    void onFinishDialog(Collection<TagViewModel> selectedItems);
   }
 
   public SelectTagsDialog() {
@@ -28,7 +28,7 @@ public class SelectTagsDialog extends DialogFragment {
   }
 
   public static SelectTagsDialog newInstance(String title,
-      String[] nameTags, boolean[] checkedTags, ArrayList<Tag> tags) {
+      String[] nameTags, boolean[] checkedTags, ArrayList<TagViewModel> tags) {
 
     Bundle args = new Bundle();
 
@@ -52,15 +52,15 @@ public class SelectTagsDialog extends DialogFragment {
     final String title = args.getString(BUNDLE_TITLE);
     final String[] nameTags = args.getStringArray(BUNDLE_NAME_TAGS);
     final boolean[] checkedTags = args.getBooleanArray(BUNDLE_CHECKED_TAGS);
-    final List<Tag> tags = args.getParcelableArrayList(BUNDLE_TAGS);
-    final Collection<Tag> selectedItems = getSelectedTags(checkedTags, tags);
+    final List<TagViewModel> tags = args.getParcelableArrayList(BUNDLE_TAGS);
+    final Collection<TagViewModel> selectedItems = getSelectedTags(checkedTags, tags);
 
     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
     builder.setTitle(title)
         .setMultiChoiceItems(nameTags, checkedTags,
             (dialog, which, isChecked) -> {
 
-              Tag tag = tags.get(which);
+              TagViewModel tag = tags.get(which);
               if (isChecked) {
                 selectedItems.add(tag);
               } else if (selectedItems.contains(tag)) {
@@ -80,9 +80,9 @@ public class SelectTagsDialog extends DialogFragment {
     return builder.create();
   }
 
-  private List<Tag> getSelectedTags(boolean[] checkedTags, List<Tag> tags) {
+  private List<TagViewModel> getSelectedTags(boolean[] checkedTags, List<TagViewModel> tags) {
 
-    final List<Tag> selectedItems = new ArrayList<>();
+    final List<TagViewModel> selectedItems = new ArrayList<>();
 
     for (int i = 0; i < checkedTags.length; i++) {
       if (checkedTags[i]) {

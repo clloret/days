@@ -1,8 +1,9 @@
 package com.clloret.days.tags.create;
 
 import android.support.annotation.NonNull;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -14,6 +15,7 @@ public class TagCreatePresenter extends MvpBasePresenter<TagCreateView> {
 
   private final AppDataStore api;
   private final CompositeDisposable disposable = new CompositeDisposable();
+  private TagViewModelMapper tagViewModelMapper = new TagViewModelMapper();
 
   @Inject
   public TagCreatePresenter(AppDataStore api) {
@@ -40,7 +42,7 @@ public class TagCreatePresenter extends MvpBasePresenter<TagCreateView> {
     Disposable subscribe = api.createTag(newTag)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().onSuccessfully(result),
+        .subscribe(result -> getView().onSuccessfully(tagViewModelMapper.fromTag(result)),
             error -> getView().onError(error.getMessage()));
     disposable.add(subscribe);
   }

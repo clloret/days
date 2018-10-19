@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.TagDeletedEvent;
 import com.clloret.days.model.events.TagModifiedEvent;
 import dagger.android.AndroidInjection;
@@ -38,9 +38,9 @@ public class TagEditActivity extends
   @BindView(R.id.edittext_tagdetail_name)
   EditText editName;
 
-  private Tag tag;
+  private TagViewModel tag;
 
-  public static Intent getCallingIntent(Context context, Tag tag) {
+  public static Intent getCallingIntent(Context context, TagViewModel tag) {
 
     Intent intent = new Intent(context, TagEditActivity.class);
     intent.putExtra(EXTRA_TAG, tag);
@@ -113,14 +113,14 @@ public class TagEditActivity extends
   }
 
   @Override
-  public void onSuccessfully(Tag tag) {
+  public void onSuccessfully(TagViewModel tag) {
 
     EventBus.getDefault().post(new TagModifiedEvent(tag));
     finish();
   }
 
   @Override
-  public void deleteSuccessfully(Tag tag, boolean deleted) {
+  public void deleteSuccessfully(TagViewModel tag, boolean deleted) {
 
     if (deleted) {
       EventBus.getDefault().post(new TagDeletedEvent(tag));

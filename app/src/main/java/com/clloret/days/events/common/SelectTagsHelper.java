@@ -3,9 +3,9 @@ package com.clloret.days.events.common;
 import android.text.TextUtils;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.Tag;
-import com.clloret.days.utils.SelectionMap;
+import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.utils.SelectionMap;
+import com.clloret.days.model.entities.TagViewModel;
 import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,19 +14,18 @@ import java.util.Map;
 
 public class SelectTagsHelper {
 
-  private SelectionMap<String, Tag> mapTags = new SelectionMap<>();
+  private SelectionMap<String, TagViewModel> mapTags = new SelectionMap<>();
 
-  public SelectionMap<String, Tag> getMapTags() {
+  public SelectionMap<String, TagViewModel> getMapTags() {
 
     return mapTags;
   }
 
-  public void setMapTags(
-      List<Tag> data) {
+  public void setMapTags(List<TagViewModel> data) {
 
-    Map<String, Tag> stringTagMap = Observable.just(data)
+    Map<String, TagViewModel> stringTagMap = Observable.just(data)
         .concatMap(Observable::fromIterable)
-        .toMap(Tag::getId)
+        .toMap(TagViewModel::getId)
         .blockingGet();
 
     this.mapTags = new SelectionMap<>(stringTagMap);
@@ -36,7 +35,7 @@ public class SelectTagsHelper {
 
     List<String> selectedTags = Observable.just(mapTags.getSelection())
         .concatMap(Observable::fromIterable)
-        .map(Tag::getName)
+        .map(TagViewModel::getName)
         .toList()
         .blockingGet();
 
@@ -46,7 +45,7 @@ public class SelectTagsHelper {
   public void selectTagsFromEvent(Event event) {
 
     for (String tagId : event.getTags()) {
-      Tag tag = mapTags.get(tagId);
+      TagViewModel tag = mapTags.get(tagId);
       if (tag != null) {
         mapTags.addToSelection(tag);
       }
@@ -63,7 +62,7 @@ public class SelectTagsHelper {
     boolean[] chekedTags = new boolean[mapTags.size()];
 
     int i = 0;
-    for (Tag tag : mapTags.values()) {
+    for (TagViewModel tag : mapTags.values()) {
       if (mapTags.isSelected(tag)) {
         chekedTags[i] = true;
       }
@@ -72,11 +71,11 @@ public class SelectTagsHelper {
 
     List<String> nameTags = Observable.just(mapTags.values())
         .concatMap(Observable::fromIterable)
-        .map(Tag::getName)
+        .map(TagViewModel::getName)
         .toList(mapTags.size())
         .blockingGet();
 
-    List<Tag> tags = Observable.just(mapTags.values())
+    List<TagViewModel> tags = Observable.just(mapTags.values())
         .concatMap(Observable::fromIterable)
         .toList(mapTags.size())
         .blockingGet();
@@ -88,11 +87,11 @@ public class SelectTagsHelper {
     dialog.show(activity.getSupportFragmentManager(), "tags");
   }
 
-  public void updateSelectedTags(Collection<Tag> selectedItems) {
+  public void updateSelectedTags(Collection<TagViewModel> selectedItems) {
 
     mapTags.clearSelection();
 
-    for (Tag tag : selectedItems) {
+    for (TagViewModel tag : selectedItems) {
       mapTags.addToSelection(tag);
     }
 

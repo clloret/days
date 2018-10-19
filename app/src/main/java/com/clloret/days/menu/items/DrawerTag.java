@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import com.clloret.days.R;
 import com.clloret.days.events.list.filter.EventFilterByTag;
 import com.clloret.days.menu.items.holders.TextViewHolder;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 
 public class DrawerTag extends DrawerFilter {
 
-  private Tag tag;
+  private TagViewModel tag;
 
   public DrawerTag(@NonNull EventFilterByTag eventFilterByTag,
-      @NonNull Tag tag) {
+      @NonNull TagViewModel tag) {
 
     super(tag.getName(), R.drawable.ic_label_24dp, eventFilterByTag);
 
@@ -43,12 +43,12 @@ public class DrawerTag extends DrawerFilter {
     return new TextViewHolder();
   }
 
-  public Tag getTag() {
+  public TagViewModel getTag() {
 
     return tag;
   }
 
-  public void setTag(Tag tag) {
+  public void setTag(TagViewModel tag) {
 
     this.tag = tag;
 

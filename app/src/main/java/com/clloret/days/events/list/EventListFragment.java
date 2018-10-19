@@ -23,7 +23,7 @@ import com.clloret.days.R;
 import com.clloret.days.base.BaseLceFragment;
 import com.clloret.days.events.list.filter.EventFilterStrategy;
 import com.clloret.days.events.list.order.EventSortFactory.SortType;
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.events.RefreshRequestEvent;
 import dagger.android.support.AndroidSupportInjection;
 import java.util.Collections;
@@ -36,7 +36,8 @@ import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 public class EventListFragment
-    extends BaseLceFragment<SwipeRefreshLayout, List<Event>, EventListView, EventListPresenter>
+    extends
+    BaseLceFragment<SwipeRefreshLayout, List<EventViewModel>, EventListView, EventListPresenter>
     implements EventListView, SwipeRefreshLayout.OnRefreshListener,
     EventListAdapter.OnListAdapterListener {
 
@@ -73,7 +74,7 @@ public class EventListFragment
   EventListPresenter injectPresenter;
 
   @Inject
-  Map<SortType, Comparator<Event>> eventSortComparators;
+  Map<SortType, Comparator<EventViewModel>> eventSortComparators;
 
   @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
@@ -140,7 +141,7 @@ public class EventListFragment
 
     int sortMode = preferences.getInt(PREF_SORT_MODE, SortType.NAME.getValue());
     savedSortType = SortType.fromValue(sortMode);
-    Comparator<Event> comparator = eventSortComparators.get(savedSortType);
+    Comparator<EventViewModel> comparator = eventSortComparators.get(savedSortType);
 
     adapter = new EventListAdapter(comparator, this);
 
@@ -216,7 +217,7 @@ public class EventListFragment
       case R.id.menu_sort_latest_date:
       case R.id.menu_sort_oldest_date:
         SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        Comparator<Event> comparator = eventSortComparators.get(sortType);
+        Comparator<EventViewModel> comparator = eventSortComparators.get(sortType);
         adapter.sortByComparator(comparator);
         preferences.edit().putInt(PREF_SORT_MODE, sortType.getValue()).apply();
         return true;
@@ -235,7 +236,7 @@ public class EventListFragment
   }
 
   @Override
-  public void setData(List<Event> data) {
+  public void setData(List<EventViewModel> data) {
 
     adapter.setEvents(data);
     adapter.notifyDataSetChanged();
@@ -280,25 +281,25 @@ public class EventListFragment
   }
 
   @Override
-  public void onSelectItem(Event item) {
+  public void onSelectItem(EventViewModel item) {
 
     presenter.editEvent(item);
   }
 
   @Override
-  public void onDeleteItem(Event item) {
+  public void onDeleteItem(EventViewModel item) {
 
     presenter.deleteEvent(item);
   }
 
   @Override
-  public void onResetItem(Event item) {
+  public void onResetItem(EventViewModel item) {
 
     presenter.resetDate(item);
   }
 
   @Override
-  public void onFavoriteItem(Event item) {
+  public void onFavoriteItem(EventViewModel item) {
 
     presenter.makeEventFavorite(item);
   }
@@ -318,13 +319,13 @@ public class EventListFragment
   }
 
   @Override
-  public void showEditEventUi(Event event) {
+  public void showEditEventUi(EventViewModel event) {
 
     navigator.navigateToEventEdit(getContext(), event);
   }
 
   @Override
-  public void showCreatedEvent(Event event) {
+  public void showCreatedEvent(EventViewModel event) {
 
     addCreatedEventToAdapter(event);
 
@@ -334,7 +335,7 @@ public class EventListFragment
   }
 
   @Override
-  public void deleteSuccessfully(Event event, boolean deleted) {
+  public void deleteSuccessfully(EventViewModel event, boolean deleted) {
 
     if (deleted) {
 
@@ -356,7 +357,7 @@ public class EventListFragment
   }
 
   @Override
-  public void undoDeleteSuccessfully(Event event) {
+  public void undoDeleteSuccessfully(EventViewModel event) {
 
     adapter.restoreItem(event);
 
@@ -364,9 +365,9 @@ public class EventListFragment
   }
 
   @Override
-  public void updateSuccessfully(Event event) {
+  public void updateSuccessfully(EventViewModel event) {
 
-    List<Event> events = adapter.getEvents();
+    List<EventViewModel> events = adapter.getEvents();
 
     int index = events.indexOf(event);
     if (index != -1) {
@@ -378,13 +379,13 @@ public class EventListFragment
   }
 
   @Override
-  public void favoriteSuccessfully(Event event) {
+  public void favoriteSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
   }
 
   @Override
-  public void dateResetSuccessfully(Event event) {
+  public void dateResetSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
   }
@@ -398,7 +399,7 @@ public class EventListFragment
     }
   }
 
-  private void addCreatedEventToAdapter(Event event) {
+  private void addCreatedEventToAdapter(EventViewModel event) {
 
     int index = adapter.addItem(event);
     recyclerView.scrollToPosition(index);

@@ -1,7 +1,8 @@
 package com.clloret.days.tags.edit;
 
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -13,6 +14,7 @@ public class TagEditPresenter extends MvpBasePresenter<TagEditView> {
 
   private final AppDataStore api;
   private final CompositeDisposable disposable = new CompositeDisposable();
+  private TagViewModelMapper tagViewModelMapper = new TagViewModelMapper();
 
   @Inject
   public TagEditPresenter(AppDataStore api) {
@@ -27,7 +29,7 @@ public class TagEditPresenter extends MvpBasePresenter<TagEditView> {
     disposable.dispose();
   }
 
-  public void saveTag(Tag tag) {
+  public void saveTag(TagViewModel tag) {
 
     if (tag.getName().isEmpty()) {
 
@@ -35,17 +37,17 @@ public class TagEditPresenter extends MvpBasePresenter<TagEditView> {
       return;
     }
 
-    Disposable subscribe = api.editTag(tag)
+    Disposable subscribe = api.editTag(tagViewModelMapper.toTag(tag))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().onSuccessfully(result),
+        .subscribe(result -> getView().onSuccessfully(tagViewModelMapper.fromTag(result)),
             error -> getView().onError(error.getMessage()));
     disposable.add(subscribe);
   }
 
-  public void deleteTag(Tag tag) {
+  public void deleteTag(TagViewModel tag) {
 
-    Disposable subscribe = api.deleteTag(tag)
+    Disposable subscribe = api.deleteTag(tagViewModelMapper.toTag(tag))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(deleted -> getView().deleteSuccessfully(tag, deleted), error -> {

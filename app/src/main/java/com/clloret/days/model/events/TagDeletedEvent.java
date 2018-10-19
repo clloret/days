@@ -1,12 +1,12 @@
 package com.clloret.days.model.events;
 
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 
 public class TagDeletedEvent {
 
-  public final Tag tag;
+  public final TagViewModel tag;
 
-  public TagDeletedEvent(Tag tag) {
+  public TagDeletedEvent(TagViewModel tag) {
 
     this.tag = tag;
   }

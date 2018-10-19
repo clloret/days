@@ -5,8 +5,8 @@ import android.content.Intent;
 import com.clloret.days.activities.SettingsActivity;
 import com.clloret.days.events.create.EventCreateActivity;
 import com.clloret.days.events.edit.EventEditActivity;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.tags.edit.TagEditActivity;
 
 public class Navigator {
@@ -19,7 +19,7 @@ public class Navigator {
     }
   }
 
-  public void navigateToEventEdit(Context context, Event event) {
+  public void navigateToEventEdit(Context context, EventViewModel event) {
 
     if (context != null) {
       Intent intentToLaunch = EventEditActivity.getCallingIntent(context, event);
@@ -27,7 +27,7 @@ public class Navigator {
     }
   }
 
-  public void navigateToTagsEdit(Context context, Tag tag) {
+  public void navigateToTagsEdit(Context context, TagViewModel tag) {
 
     if (context != null) {
       Intent intentToLaunch = TagEditActivity.getCallingIntent(context, tag);

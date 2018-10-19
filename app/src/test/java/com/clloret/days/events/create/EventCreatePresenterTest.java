@@ -1,19 +1,19 @@
 package com.clloret.days.events.create;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.RxImmediateSchedulerRule;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.EventBuilder;
-import com.clloret.days.utils.SelectionMap;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.utils.SelectionMap;
+import com.clloret.days.events.SampleBuilder;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
-import java.util.Date;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -45,15 +45,8 @@ public class EventCreatePresenterTest {
   @Test
   public void createEvent_Always_CallApiAndNotifyView() {
 
-    String name = "Mock event";
-    String description = "Description";
-    Date date = new Date();
-
-    Event event = new EventBuilder()
-        .setName(name)
-        .setDescription(description)
-        .setDate(date)
-        .build();
+    final Event event = SampleBuilder.createEvent();
+    final EventViewModel eventViewModel = SampleBuilder.createEventViewModel();
 
     when(appDataStore.createEvent(any())).thenReturn(new Maybe<Event>() {
       @Override
@@ -63,19 +56,20 @@ public class EventCreatePresenterTest {
       }
     });
 
-    eventCreatePresenter.createEvent(name, description, date, new SelectionMap<>());
+    eventCreatePresenter
+        .createEvent(SampleBuilder.name, SampleBuilder.description, SampleBuilder.date,
+            new SelectionMap<>());
 
     verify(appDataStore).createEvent(any());
-    verify(eventCreateView).onSuccessfully(eq(event));
+    verify(eventCreateView).onSuccessfully(eq(eventViewModel));
   }
 
   @Test
   public void createEvent_WhenEmptyName_NotifyViewError() {
 
-    String name = "";
-    String description = "Description";
-    Date date = new Date();
-    eventCreatePresenter.createEvent(name, description, date, new SelectionMap<>());
+    eventCreatePresenter
+        .createEvent(SampleBuilder.emptyText, SampleBuilder.description, SampleBuilder.date,
+            new SelectionMap<>());
 
     verify(eventCreateView).onEmptyEventNameError();
     verifyNoMoreInteractions(appDataStore);

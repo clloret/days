@@ -1,8 +1,9 @@
 package com.clloret.days.menu;
 
 import android.support.annotation.NonNull;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.model.events.RefreshRequestEvent;
 import com.clloret.days.model.events.TagCreatedEvent;
 import com.clloret.days.model.events.TagDeletedEvent;
@@ -22,6 +23,8 @@ public class MenuPresenter extends MvpBasePresenter<MenuView> {
   private final AppDataStore api;
   private final EventBus eventBus;
   private final CompositeDisposable disposable = new CompositeDisposable();
+  // TODO: 16/10/2018 DI
+  private TagViewModelMapper tagViewModelMapper = new TagViewModelMapper();
 
   @Inject
   public MenuPresenter(AppDataStore api, EventBus eventBus) {
@@ -52,7 +55,7 @@ public class MenuPresenter extends MvpBasePresenter<MenuView> {
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(tags -> {
           if (isViewAttached()) {
-            getView().setData(tags);
+            getView().setData(tagViewModelMapper.fromTag(tags));
             getView().showContent();
           }
         }, error -> {
@@ -61,6 +64,11 @@ public class MenuPresenter extends MvpBasePresenter<MenuView> {
           }
         });
     disposable.add(subscribe);
+  }
+
+  public void editTag(@NonNull TagViewModel tag) {
+
+    getView().showEditTagUi(tag);
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)
@@ -85,11 +93,6 @@ public class MenuPresenter extends MvpBasePresenter<MenuView> {
   public void onEvent(RefreshRequestEvent event) {
 
     loadTags(true);
-  }
-
-  public void editTag(@NonNull Tag tag) {
-
-    getView().showEditTagUi(tag);
   }
 
 }

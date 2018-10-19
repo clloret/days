@@ -1,9 +1,11 @@
 package com.clloret.days.events.list;
 
 import android.support.annotation.NonNull;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.list.filter.EventFilterStrategy;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
@@ -27,6 +29,8 @@ public class EventListPresenter extends MvpBasePresenter<EventListView> {
   private final AppDataStore api;
   private final CompositeDisposable disposable = new CompositeDisposable();
   private final EventBus eventBus;
+  // TODO: 16/10/2018 DI
+  private EventViewModelMapper eventViewModelMapper = new EventViewModelMapper();
 
   @Inject
   public EventListPresenter(AppDataStore api, EventBus eventBus) {
@@ -60,7 +64,7 @@ public class EventListPresenter extends MvpBasePresenter<EventListView> {
         .subscribe(result -> {
           Timber.d("getLocalEvents: %d", result.size());
           if (isViewAttached()) {
-            getView().setData(result);
+            getView().setData(eventViewModelMapper.fromEvent(result));
             getView().showContent();
           }
         }, error -> {
@@ -87,9 +91,9 @@ public class EventListPresenter extends MvpBasePresenter<EventListView> {
     }
   }
 
-  public void deleteEvent(Event event) {
+  public void deleteEvent(EventViewModel event) {
 
-    Disposable subscribe = api.deleteEvent(event)
+    Disposable subscribe = api.deleteEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(deleted -> getView().deleteSuccessfully(event, deleted), error -> {
@@ -100,42 +104,44 @@ public class EventListPresenter extends MvpBasePresenter<EventListView> {
     disposable.add(subscribe);
   }
 
-  public void editEvent(@NonNull Event event) {
+  public void editEvent(@NonNull EventViewModel event) {
 
     getView().showEditEventUi(event);
   }
 
-  public void makeEventFavorite(@NonNull Event event) {
+  public void makeEventFavorite(@NonNull EventViewModel event) {
 
     event.setFavorite(!event.isFavorite());
 
-    Disposable subscribe = api.editEvent(event)
+    Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().favoriteSuccessfully(result),
+        .subscribe(result -> getView().favoriteSuccessfully(eventViewModelMapper.fromEvent(result)),
             error -> getView().onError(error.getMessage()));
     disposable.add(subscribe);
   }
 
-  public void undoDelete(@NonNull Event event) {
+  public void undoDelete(@NonNull EventViewModel event) {
 
-    Disposable subscribe = api.createEvent(event)
+    Disposable subscribe = api.createEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().undoDeleteSuccessfully(result),
+        .subscribe(
+            result -> getView().undoDeleteSuccessfully(eventViewModelMapper.fromEvent(result)),
             error -> getView().onError(error.getMessage()));
     disposable.add(subscribe);
   }
 
-  public void resetDate(Event event) {
+  public void resetDate(EventViewModel event) {
 
     LocalDate date = LocalDate.now();
     event.setDate(date.toDate());
 
-    Disposable subscribe = api.editEvent(event)
+    Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().dateResetSuccessfully(result),
+        .subscribe(
+            result -> getView().dateResetSuccessfully(eventViewModelMapper.fromEvent(result)),
             error -> getView().onError(error.getMessage()));
     disposable.add(subscribe);
   }

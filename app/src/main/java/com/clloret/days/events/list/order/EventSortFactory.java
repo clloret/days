@@ -1,7 +1,7 @@
 package com.clloret.days.events.list.order;
 
 import com.clloret.days.events.list.order.EventSortStrategy.OrderType;
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 import java.util.Comparator;
 
 public class EventSortFactory {
@@ -35,7 +35,7 @@ public class EventSortFactory {
     }
   }
 
-  public static Comparator<Event> makeEventSort(SortType type) {
+  public static Comparator<EventViewModel> makeEventSort(SortType type) {
 
     switch (type) {
       case NAME:

@@ -1,12 +1,12 @@
 package com.clloret.days.model.events;
 
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 
 public class EventDeletedEvent {
 
-  public final Event event;
+  public final EventViewModel event;
 
-  public EventDeletedEvent(Event event) {
+  public EventDeletedEvent(EventViewModel event) {
 
     this.event = event;
   }

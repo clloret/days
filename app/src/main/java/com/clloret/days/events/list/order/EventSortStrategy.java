@@ -1,10 +1,10 @@
 package com.clloret.days.events.list.order;
 
-import com.clloret.days.model.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 import java.io.Serializable;
 import java.util.Comparator;
 
-abstract class EventSortStrategy implements Comparator<Event>, Serializable {
+abstract class EventSortStrategy implements Comparator<EventViewModel>, Serializable {
 
   private OrderType orderType;
 
@@ -13,12 +13,12 @@ abstract class EventSortStrategy implements Comparator<Event>, Serializable {
     this.orderType = orderType;
   }
 
-  Event getFirstEvent(Event event1, Event event2) {
+  EventViewModel getFirstEvent(EventViewModel event1, EventViewModel event2) {
 
     return orderType == OrderType.ASC ? event1 : event2;
   }
 
-  Event getSecondEvent(Event event1, Event event2) {
+  EventViewModel getSecondEvent(EventViewModel event1, EventViewModel event2) {
 
     return orderType == OrderType.ASC ? event2 : event1;
   }

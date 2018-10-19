@@ -16,7 +16,7 @@ import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpFragment;
 import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerTag;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
 import dagger.android.support.AndroidSupportInjection;
 import java.util.List;
 import javax.inject.Inject;
@@ -133,7 +133,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   }
 
   @Override
-  public void setData(List<Tag> data) {
+  public void setData(List<TagViewModel> data) {
 
     adapter.setData(data);
   }
@@ -150,7 +150,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   }
 
   @Override
-  public void showCreatedTag(Tag tag) {
+  public void showCreatedTag(TagViewModel tag) {
 
     adapter.addTag(tag);
 
@@ -158,13 +158,13 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   }
 
   @Override
-  public void showEditTagUi(Tag tag) {
+  public void showEditTagUi(TagViewModel tag) {
 
     navigator.navigateToTagsEdit(getContext(), tag);
   }
 
   @Override
-  public void updateSuccessfully(Tag tag) {
+  public void updateSuccessfully(TagViewModel tag) {
 
     adapter.updateTag(tag);
 
@@ -172,7 +172,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   }
 
   @Override
-  public void deleteSuccessfully(Tag tag) {
+  public void deleteSuccessfully(TagViewModel tag) {
 
     adapter.deleteTag(tag);
 

@@ -21,11 +21,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
+import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.common.SelectDateHelper;
 import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.events.common.SelectTagsHelper;
-import com.clloret.days.model.entities.Event;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
 import com.clloret.days.utils.DateUtils;
@@ -90,7 +91,7 @@ public class EventEditActivity
   private SelectTagsHelper selectTagsHelper = new SelectTagsHelper();
   private boolean editing;
 
-  public static Intent getCallingIntent(Context context, Event event) {
+  public static Intent getCallingIntent(Context context, EventViewModel event) {
 
     Intent intent = new Intent(context, EventEditActivity.class);
     intent.putExtra(EXTRA_EVENT, event);
@@ -212,7 +213,7 @@ public class EventEditActivity
   }
 
   @Override
-  public void onSuccessfully(Event event) {
+  public void onSuccessfully(EventViewModel event) {
 
     EventBus.getDefault().post(new EventModifiedEvent(event));
     finish();
@@ -225,7 +226,7 @@ public class EventEditActivity
   }
 
   @Override
-  public void setData(List<Tag> data) {
+  public void setData(List<TagViewModel> data) {
 
     selectTagsHelper.setMapTags(data);
 
@@ -253,7 +254,7 @@ public class EventEditActivity
   }
 
   @Override
-  public void deleteSuccessfully(Event event, boolean deleted) {
+  public void deleteSuccessfully(EventViewModel event, boolean deleted) {
 
     if (deleted) {
       EventBus.getDefault().post(new EventDeletedEvent(event));
@@ -269,7 +270,7 @@ public class EventEditActivity
   }
 
   @Override
-  public void onFinishDialog(Collection<Tag> selectedItems) {
+  public void onFinishDialog(Collection<TagViewModel> selectedItems) {
 
     selectTagsHelper.updateSelectedTags(selectedItems);
     showSelectedTags();
@@ -333,7 +334,7 @@ public class EventEditActivity
     String name = nameEdit.getText().toString();
     String description = descriptionEdit.getText().toString();
     Date date = selectedDate.toDate();
-    String[] tags = selectTagsHelper.getMapTags().getKeySelection(Tag::getId)
+    String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
         .toArray(new String[0]);
 
     event.setName(name);

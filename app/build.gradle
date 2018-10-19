@@ -4,16 +4,14 @@ apply plugin: 'jacoco-android'
 apply from: '../config/quality.gradle'
 
 android {
-    def apiLevel = 27
-
-    compileSdkVersion apiLevel
-    buildToolsVersion '28.0.3'
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     flavorDimensions "default"
     defaultConfig {
         applicationId "com.clloret.days"
         testApplicationId "com.clloret.days.test"
-        minSdkVersion 23
-        targetSdkVersion apiLevel
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0.0"
     }
@@ -47,60 +45,47 @@ android {
     }
 }
 dependencies {
-    def annotatedAdapter = '1.1.1'
-    def butterknifeVersion = '8.8.1'
-    def dagger = '2.13'
-    def junitVersion = '4.12'
-    def mockWebServerVersion = '3.9.1'
-    def mosby = '2.0.1'
-    def parcelablePlease = '1.0.2'
-    def roomVersion = '1.1.1'
-    def stethoVersion = '1.5.0'
-    def supportVersion = '27.1.1'
 
 //------ App Dependencies ------
 
-    implementation "com.android.support.constraint:constraint-layout:1.1.2"
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:cardview-v7:$supportVersion"
-    implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:preference-v7:$supportVersion"
-    implementation "com.android.support:preference-v14:$supportVersion"
-    implementation "com.android.support:recyclerview-v7:$supportVersion"
-    implementation "com.android.support:support-v4:$supportVersion"
+    implementation project(':domain')
+    implementation project(':data')
 
-    implementation "android.arch.persistence.room:runtime:$roomVersion"
-    implementation "android.arch.persistence.room:rxjava2:$roomVersion"
-    implementation "com.github.clloret:airtable.android:-SNAPSHOT"
+    implementation "com.android.support.constraint:constraint-layout:1.1.2"
+    implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.supportVersion"
+    implementation "com.android.support:design:$rootProject.supportVersion"
+    implementation "com.android.support:preference-v7:$rootProject.supportVersion"
+    implementation "com.android.support:preference-v14:$rootProject.supportVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportVersion"
+    implementation "com.android.support:support-v4:$rootProject.supportVersion"
+
     implementation "com.github.daniel-stoneuk:material-about-library:2.3.0"
-    implementation "com.google.code.gson:gson:2.8.2"
-    implementation "com.google.dagger:dagger-android-support:$dagger"
-    implementation "com.google.dagger:dagger-android:$dagger"
-    implementation "com.google.dagger:dagger:$dagger"
-    implementation "com.hannesdorfmann.mosby:mvp:$mosby"
-    implementation "com.hannesdorfmann.mosby:viewstate:$mosby"
-    implementation "com.hannesdorfmann.parcelableplease:annotation:$parcelablePlease"
-    implementation "com.jakewharton.timber:timber:4.7.0"
-    implementation "com.jakewharton:butterknife:$butterknifeVersion"
-    implementation "joda-time:joda-time:2.9.9"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    implementation "com.hannesdorfmann.mosby:mvp:$rootProject.mosbyVersion"
+    implementation "com.hannesdorfmann.mosby:viewstate:$rootProject.mosbyVersion"
+    implementation "com.hannesdorfmann.parcelableplease:annotation:$rootProject.parcelablePleaseVersion"
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation "org.greenrobot:eventbus:3.1.1"
 
-    debugImplementation "com.facebook.stetho:stetho-okhttp3:$stethoVersion"
-    debugImplementation "com.facebook.stetho:stetho:$stethoVersion"
+    debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
+    debugImplementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
 
-    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger"
-    annotationProcessor "com.hannesdorfmann.annotatedadapter:processor:$annotatedAdapter"
-    annotationProcessor "com.hannesdorfmann.parcelableplease:processor:$parcelablePlease"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    annotationProcessor "com.hannesdorfmann.annotatedadapter:processor:$rootProject.annotatedAdapterVersion"
+    annotationProcessor "com.hannesdorfmann.parcelableplease:processor:$rootProject.parcelablePleaseVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
 //------ Test Dependencies ------
 
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito:mockito-all:1.10.19"
-    testImplementation "org.robolectric:robolectric:3.8"
-    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion") {
-        exclude module: "okhttp"
-    }
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
 }

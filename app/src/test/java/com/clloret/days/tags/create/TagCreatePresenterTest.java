@@ -1,14 +1,16 @@
 package com.clloret.days.tags.create;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.RxImmediateSchedulerRule;
-import com.clloret.days.model.AppDataStore;
-import com.clloret.days.model.entities.Tag;
+import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.tags.SampleBuilder;
+import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import org.junit.Before;
@@ -42,9 +44,8 @@ public class TagCreatePresenterTest {
   @Test
   public void createTag_Always_CallApiAndNotifyView() {
 
-    String name = "Mock tag";
-
-    final Tag tag = new Tag("id", name);
+    Tag tag = SampleBuilder.createTag();
+    TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
 
     when(appDataStore.createTag(any())).thenReturn(new Maybe<Tag>() {
       @Override
@@ -54,17 +55,16 @@ public class TagCreatePresenterTest {
       }
     });
 
-    tagCreatePresenter.createTag(name);
+    tagCreatePresenter.createTag(SampleBuilder.name);
 
     verify(appDataStore).createTag(any());
-    verify(tagCreateView).onSuccessfully(eq(tag));
+    verify(tagCreateView).onSuccessfully(eq(tagViewModel));
   }
 
   @Test
   public void createTag_WhenEmptyName_NotifyViewError() {
 
-    String name = "";
-    tagCreatePresenter.createTag(name);
+    tagCreatePresenter.createTag(SampleBuilder.emptyText);
 
     verify(tagCreateView).onEmptyTagNameError();
     verifyNoMoreInteractions(appDataStore);

@@ -8,7 +8,7 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import com.clloret.days.dagger.AppComponent;
 import com.clloret.days.dagger.DaggerAppComponent;
-import com.clloret.days.model.AppDataStore;
+import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.utils.StethoUtils;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
