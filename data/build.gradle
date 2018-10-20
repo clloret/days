@@ -58,3 +58,7 @@ dependencies {
     }
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
