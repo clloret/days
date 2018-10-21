@@ -53,10 +53,10 @@ dependencies {
         exclude module: "okhttp"
     }
 
-    androidTestImplementation("com.android.support.test:runner:1.0.2") {
+    androidTestImplementation("com.android.support.test:runner:$rootProject.testRunnerVersion") {
         exclude group: 'com.android.support'
     }
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
 }
 
 tasks.withType(Test) {

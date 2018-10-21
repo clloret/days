@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
+    implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+
+    androidTestImplementation("com.android.support.test:runner:$rootProject.testRunnerVersion") {
+        exclude group: 'com.android.support'
+    }
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+}
