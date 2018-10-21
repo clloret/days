@@ -2,7 +2,6 @@ package com.clloret.days.domain.entities;
 
 import java.util.Date;
 
-// If replace Parcelable, maintain field "event" implementation for Date type
 public final class Event {
 
   private static final String[] EMPTY_ARRAY = new String[0];
