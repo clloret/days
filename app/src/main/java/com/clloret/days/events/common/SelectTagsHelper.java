@@ -3,8 +3,8 @@ package com.clloret.days.events.common;
 import android.text.TextUtils;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
-import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.utils.SelectionMap;
+import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import io.reactivex.Observable;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class SelectTagsHelper {
     return TextUtils.join(", ", selectedTags);
   }
 
-  public void selectTagsFromEvent(Event event) {
+  public void selectTagsFromEvent(EventViewModel event) {
 
     for (String tagId : event.getTags()) {
       TagViewModel tag = mapTags.get(tagId);

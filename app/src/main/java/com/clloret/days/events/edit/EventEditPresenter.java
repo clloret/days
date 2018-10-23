@@ -1,7 +1,7 @@
 package com.clloret.days.events.edit;
 
 import com.clloret.days.domain.AppDataStore;
-import com.clloret.days.domain.entities.Event;
+import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
@@ -32,14 +32,14 @@ public class EventEditPresenter extends MvpBasePresenter<EventEditView> {
     disposable.dispose();
   }
 
-  public void saveEvent(Event event) {
+  public void saveEvent(EventViewModel event) {
 
     if (event.getName().isEmpty()) {
       getView().onEmptyEventNameError();
       return;
     }
 
-    Disposable subscribe = api.editEvent(event)
+    Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(result -> getView().onSuccessfully(eventViewModelMapper.fromEvent(result)),
@@ -47,13 +47,13 @@ public class EventEditPresenter extends MvpBasePresenter<EventEditView> {
     disposable.add(subscribe);
   }
 
-  public void deleteEvent(Event event) {
+  public void deleteEvent(EventViewModel event) {
 
-    Disposable subscribe = api.deleteEvent(event)
+    Disposable subscribe = api.deleteEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
-            deleted -> getView().deleteSuccessfully(eventViewModelMapper.fromEvent(event), deleted),
+            deleted -> getView().deleteSuccessfully(event, deleted),
             error -> {
               if (isViewAttached()) {
                 getView().onError(error.getMessage());

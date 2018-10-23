@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
-import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.common.SelectDateHelper;
 import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.events.common.SelectTagsHelper;
@@ -86,7 +85,7 @@ public class EventEditActivity
   @BindView(R.id.fab)
   FloatingActionButton fab;
 
-  private Event event;
+  private EventViewModel event;
   private LocalDate selectedDate;
   private SelectTagsHelper selectTagsHelper = new SelectTagsHelper();
   private boolean editing;

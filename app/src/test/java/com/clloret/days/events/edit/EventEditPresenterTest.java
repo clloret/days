@@ -56,7 +56,7 @@ public class EventEditPresenterTest {
       }
     });
 
-    eventEditPresenter.saveEvent(event);
+    eventEditPresenter.saveEvent(eventViewModel);
 
     verify(appDataStore).editEvent(any());
     verify(eventEditView).onSuccessfully(eq(eventViewModel));
@@ -65,10 +65,10 @@ public class EventEditPresenterTest {
   @Test
   public void saveEvent_WhenEmptyEventName_NotifyViewError() {
 
-    final Event event = createEvent();
-    event.setName(SampleBuilder.emptyText);
+    final EventViewModel eventViewModel = createEventViewModel();
+    eventViewModel.setName(SampleBuilder.emptyText);
 
-    eventEditPresenter.saveEvent(event);
+    eventEditPresenter.saveEvent(eventViewModel);
 
     verify(eventEditView).onEmptyEventNameError();
   }
