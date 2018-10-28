@@ -11,7 +11,6 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 import timber.log.Timber;
 
 public class AppRepository implements AppDataStore {
@@ -19,9 +18,7 @@ public class AppRepository implements AppDataStore {
   private AppDataStore localDataStore;
   private AppDataStore remoteDataStore;
 
-  @Inject
-  public AppRepository(AppDataStore localDataStore,
-      AppDataStore remoteDataStore) {
+  public AppRepository(AppDataStore localDataStore, AppDataStore remoteDataStore) {
 
     this.localDataStore = localDataStore;
     this.remoteDataStore = remoteDataStore;
