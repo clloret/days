@@ -4,6 +4,25 @@ import java.util.Date;
 
 public final class Event {
 
+  public enum TimeUnit {
+    DAY("Day"),
+    MONTH("Month"),
+    YEAR("Year");
+
+    private String text;
+
+    TimeUnit(final String text) {
+
+      this.text = text;
+    }
+
+    @Override
+    public String toString() {
+
+      return text;
+    }
+  }
+
   private static final String[] EMPTY_ARRAY = new String[0];
 
   private String id;
@@ -18,12 +37,21 @@ public final class Event {
 
   private boolean favorite;
 
+  private Integer reminder;
+
+  private TimeUnit reminderUnit;
+
+  private int timeLapse;
+
+  private TimeUnit timeLapseUnit;
+
   public Event() {
 
   }
 
   public Event(String id, String name, String description, Date date, String[] tags,
-      boolean favorite) {
+      boolean favorite, Integer reminder, TimeUnit reminderUnit, int timeLapse,
+      TimeUnit timeLapseUnit) {
 
     this.id = id;
     this.name = name;
@@ -31,6 +59,10 @@ public final class Event {
     this.date = date;
     this.tags = tags;
     this.favorite = favorite;
+    this.reminder = reminder;
+    this.reminderUnit = reminderUnit;
+    this.timeLapse = timeLapse;
+    this.timeLapseUnit = timeLapseUnit;
   }
 
   public String getId() {
@@ -112,5 +144,45 @@ public final class Event {
   public void setDescription(String description) {
 
     this.description = description;
+  }
+
+  public Integer getReminder() {
+
+    return reminder;
+  }
+
+  public void setReminder(Integer reminder) {
+
+    this.reminder = reminder;
+  }
+
+  public TimeUnit getReminderUnit() {
+
+    return reminderUnit;
+  }
+
+  public void setReminderUnit(TimeUnit reminderUnit) {
+
+    this.reminderUnit = reminderUnit;
+  }
+
+  public int getTimeLapse() {
+
+    return timeLapse;
+  }
+
+  public void setTimeLapse(int timeLapse) {
+
+    this.timeLapse = timeLapse;
+  }
+
+  public TimeUnit getTimeLapseUnit() {
+
+    return timeLapseUnit;
+  }
+
+  public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
+
+    this.timeLapseUnit = timeLapseUnit;
   }
 }

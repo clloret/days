@@ -4,7 +4,11 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import com.clloret.days.data.local.entities.converters.TimeUnitConverter;
+import com.clloret.days.domain.entities.Event.TimeUnit;
 import java.util.Date;
 
 @Entity(tableName = "events")
@@ -32,13 +36,33 @@ public class DbEvent {
   @ColumnInfo(name = "favorite")
   private boolean favorite;
 
-  public DbEvent(@NonNull String id, String name, String description, Date date, boolean favorite) {
+  @ColumnInfo(name = "reminder")
+  @Nullable
+  private Integer reminder;
+
+  @ColumnInfo(name = "reminder_unit")
+  @TypeConverters(TimeUnitConverter.class)
+  private TimeUnit reminderUnit;
+
+  @ColumnInfo(name = "time_lapse")
+  private int timeLapse;
+
+  @ColumnInfo(name = "time_lapse_unit")
+  @TypeConverters(TimeUnitConverter.class)
+  private TimeUnit timeLapseUnit;
+
+  public DbEvent(@NonNull String id, String name, String description, Date date, boolean favorite,
+      @Nullable Integer reminder, TimeUnit reminderUnit, int timeLapse, TimeUnit timeLapseUnit) {
 
     this.id = id;
     this.name = name;
     this.description = description;
     this.date = date;
     this.favorite = favorite;
+    this.reminder = reminder;
+    this.reminderUnit = reminderUnit;
+    this.timeLapse = timeLapse;
+    this.timeLapseUnit = timeLapseUnit;
   }
 
   @Ignore
@@ -106,5 +130,45 @@ public class DbEvent {
   public void setDescription(String description) {
 
     this.description = description;
+  }
+
+  public Integer getReminder() {
+
+    return reminder;
+  }
+
+  public void setReminder(Integer reminder) {
+
+    this.reminder = reminder;
+  }
+
+  public TimeUnit getReminderUnit() {
+
+    return reminderUnit;
+  }
+
+  public void setReminderUnit(TimeUnit reminderUnit) {
+
+    this.reminderUnit = reminderUnit;
+  }
+
+  public int getTimeLapse() {
+
+    return timeLapse;
+  }
+
+  public void setTimeLapse(int timeLapse) {
+
+    this.timeLapse = timeLapse;
+  }
+
+  public TimeUnit getTimeLapseUnit() {
+
+    return timeLapseUnit;
+  }
+
+  public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
+
+    this.timeLapseUnit = timeLapseUnit;
   }
 }

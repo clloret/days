@@ -20,6 +20,10 @@ public class DbEventDataMapper {
           .setDate(dbEvent.getDate())
           .setFavorite(dbEvent.isFavorite())
           .setTags(dbEvent.getTags())
+          .setReminder(dbEvent.getReminder())
+          .setReminderUnit(dbEvent.getReminderUnit())
+          .setTimeLapse(dbEvent.getTimeLapse())
+          .setTimeLapseUnit(dbEvent.getTimeLapseUnit())
           .build();
     }
     return event;
@@ -47,6 +51,10 @@ public class DbEventDataMapper {
       dbEvent.setDate(event.getDate());
       dbEvent.setFavorite(event.isFavorite());
       dbEvent.setTags(event.getTags());
+      dbEvent.setReminder(event.getReminder());
+      dbEvent.setReminderUnit(event.getReminderUnit());
+      dbEvent.setTimeLapse(event.getTimeLapse());
+      dbEvent.setTimeLapseUnit(event.getTimeLapseUnit());
     }
     return dbEvent;
   }

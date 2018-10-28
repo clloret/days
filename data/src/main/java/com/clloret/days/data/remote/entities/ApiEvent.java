@@ -1,6 +1,7 @@
 package com.clloret.days.data.remote.entities;
 
 import android.support.annotation.Nullable;
+import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;
@@ -26,6 +27,18 @@ public class ApiEvent {
 
   @SerializedName("Favorite")
   private boolean favorite;
+
+  @SerializedName("Reminder")
+  private Integer reminder;
+
+  @SerializedName("ReminderUnit")
+  private String reminderUnit;
+
+  @SerializedName("TimeLapse")
+  private int timeLapse;
+
+  @SerializedName("TimeLapseUnit")
+  private String timeLapseUnit;
 
   private String createdTime;
 
@@ -109,4 +122,65 @@ public class ApiEvent {
 
     this.description = description;
   }
+
+  public Integer getReminder() {
+
+    return reminder;
+  }
+
+  public void setReminder(Integer reminder) {
+
+    this.reminder = reminder;
+  }
+
+  public String getReminderUnit() {
+
+    return reminderUnit;
+  }
+
+  public void setReminderUnit(String reminderUnit) {
+
+    this.reminderUnit = reminderUnit;
+  }
+
+  public int getTimeLapse() {
+
+    return timeLapse;
+  }
+
+  public void setTimeLapse(int timeLapse) {
+
+    this.timeLapse = timeLapse;
+  }
+
+  public String getTimeLapseUnit() {
+
+    return timeLapseUnit;
+  }
+
+  public void setTimeLapseUnit(String timeLapseUnit) {
+
+    this.timeLapseUnit = timeLapseUnit;
+  }
+
+  public TimeUnit getReminderTimeUnit() {
+
+    return reminderUnit == null ? null : TimeUnit.valueOf(reminderUnit.toUpperCase());
+  }
+
+  public void setReminderTimeUnit(TimeUnit reminderUnit) {
+
+    this.reminderUnit = reminderUnit == null ? null : reminderUnit.toString();
+  }
+
+  public TimeUnit getTimeLapseTimeUnit() {
+
+    return timeLapseUnit == null ? null : TimeUnit.valueOf(timeLapseUnit.toUpperCase());
+  }
+
+  public void setTimeLapseTimeUnit(TimeUnit timeLapseUnit) {
+
+    this.timeLapseUnit = timeLapseUnit == null ? null : timeLapseUnit.toString();
+  }
+
 }

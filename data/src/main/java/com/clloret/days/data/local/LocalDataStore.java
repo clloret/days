@@ -3,6 +3,8 @@ package com.clloret.days.data.local;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.clloret.days.data.local.entities.DbEvent;
+import com.clloret.days.data.local.entities.dao.EventDao;
+import com.clloret.days.data.local.entities.dao.TagDao;
 import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
 import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
 import com.clloret.days.domain.AppDataStore;

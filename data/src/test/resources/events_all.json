@@ -1,251 +1,360 @@
 {
   "records": [
     {
-      "id": "recOycQDwG7iLL17e",
+      "id": "rec2bl4VXr4erbeAo",
       "fields": {
-        "Name": "Afeitado ",
-        "Date": "2018-01-22",
+        "Name": "Passport",
+        "Date": "2028-10-20",
         "Tags": [
-          "rec2UdUNjT34Xwx9B"
+          "recq7bq2re83pOzN6"
+        ],
+        "TagId": [
+          "recq7bq2re83pOzN6"
+        ]
+      },
+      "createdTime": "2018-05-15T17:23:39.000Z"
+    },
+    {
+      "id": "recIx79diRoRwmwt0",
+      "fields": {
+        "Name": "Wedding",
+        "Date": "2018-10-13",
+        "Tags": [
+          "recr3UPoPUaZG495T"
         ],
         "Favorite": true,
         "TagId": [
-          "rec2UdUNjT34Xwx9B"
+          "recr3UPoPUaZG495T"
         ]
       },
-      "createdTime": "2017-05-11T09:14:33.000Z"
+      "createdTime": "2018-05-15T17:14:55.000Z"
     },
     {
-      "id": "recn0atKgqPpCAav8",
+      "id": "recJ7q6b66W8bknGP",
       "fields": {
-        "Name": "Correr",
-        "Date": "2018-02-11",
-        "Favorite": true
-      },
-      "createdTime": "2016-05-08T17:57:56.000Z"
-    },
-    {
-      "id": "recd9o1YdLSRrZnGP",
-      "fields": {
-        "Name": "Peluquería ",
-        "Date": "2017-12-15",
+        "Name": "Coffee maker decalcification",
+        "Date": "2018-05-15",
         "Tags": [
-          "rec2UdUNjT34Xwx9B"
+          "rec2GMWWvbFX7jo1K"
         ],
         "TagId": [
-          "rec2UdUNjT34Xwx9B"
-        ]
+          "rec2GMWWvbFX7jo1K"
+        ],
+        "Reminder": 6,
+        "ReminderUnit": "Month"
       },
-      "createdTime": "2016-05-08T17:35:16.000Z"
+      "createdTime": "2018-05-15T17:17:13.000Z"
     },
     {
-      "id": "recBEye8Ce7vn14Wt",
+      "id": "recNFGnEsBIIsWvip",
       "fields": {
-        "Name": "Windows 7",
-        "Date": "2020-01-14",
+        "Name": "Holidays",
+        "Date": "2018-08-01",
         "Tags": [
-          "recPukI2H3ro9UOz9",
-          "recRcyFcA2DmaJmNL"
+          "recr3UPoPUaZG495T"
         ],
         "Favorite": true,
         "TagId": [
-          "recPukI2H3ro9UOz9",
-          "recRcyFcA2DmaJmNL"
+          "recr3UPoPUaZG495T"
         ]
       },
-      "createdTime": "2016-05-09T07:03:30.000Z"
+      "createdTime": "2018-05-15T17:09:45.000Z"
     },
     {
-      "id": "recpyOUkZLcSBltgB",
+      "id": "recNiYrbBJ2asiOVk",
       "fields": {
-        "Name": "Google Drive 100GB",
-        "Date": "2018-12-17",
+        "Name": "Eggs",
+        "Date": "2018-06-30",
         "Tags": [
-          "recPukI2H3ro9UOz9"
+          "recR3zUo7bm8WjSdf"
         ],
         "TagId": [
-          "recPukI2H3ro9UOz9"
+          "recR3zUo7bm8WjSdf"
         ]
       },
-      "createdTime": "2016-12-19T13:53:01.000Z"
+      "createdTime": "2018-05-15T17:24:39.000Z"
     },
     {
-      "id": "recuu4vSak64227Fq",
+      "id": "recQnnZQMEOXzjfdN",
       "fields": {
-        "Name": "Gimnasio",
-        "Date": "2018-05-01"
-      },
-      "createdTime": "2016-05-08T17:35:16.000Z"
-    },
-    {
-      "id": "rec1LeDv09k7NLw8b",
-      "fields": {
-        "Name": "Uñas ",
-        "Date": "2018-01-26",
+        "Name": "Credit Card",
+        "Date": "2020-01-07",
         "Tags": [
-          "rec2UdUNjT34Xwx9B"
+          "recq7bq2re83pOzN6"
         ],
         "TagId": [
-          "rec2UdUNjT34Xwx9B"
+          "recq7bq2re83pOzN6"
         ]
       },
-      "createdTime": "2017-09-08T19:40:54.000Z"
+      "createdTime": "2018-05-15T17:23:57.000Z"
     },
     {
-      "id": "recllAOjIOMtBDnMd",
+      "id": "recWX4Jf6umNWHnBl",
       "fields": {
-        "Name": "Orejas",
-        "Date": "2017-12-18",
+        "Name": "Bacon",
+        "Date": "2018-06-16",
         "Tags": [
-          "rec2UdUNjT34Xwx9B"
+          "recR3zUo7bm8WjSdf"
         ],
         "TagId": [
-          "rec2UdUNjT34Xwx9B"
+          "recR3zUo7bm8WjSdf"
         ]
       },
-      "createdTime": "2017-08-20T00:15:43.000Z"
+      "createdTime": "2018-05-15T17:25:59.000Z"
     },
     {
-      "id": "recktSyNHuSYM9phs",
+      "id": "recXKP51eJmTUWJjy",
       "fields": {
-        "Name": "Albornoz",
-        "Date": "2017-12-22"
-      },
-      "createdTime": "2016-05-09T07:03:56.000Z"
-    },
-    {
-      "id": "recM5LzuLxRz1gbd2",
-      "fields": {
-        "Name": "Bombilla Cocina Pequeña ",
-        "Date": "2017-09-24"
-      },
-      "createdTime": "2017-09-24T11:18:58.000Z"
-    },
-    {
-      "id": "recLg85QD8waTdayq",
-      "fields": {
-        "Name": "Batería del coche ",
-        "Date": "2017-09-08"
-      },
-      "createdTime": "2017-09-08T21:47:49.000Z"
-    },
-    {
-      "id": "recocxkhtgs7q5Y39",
-      "fields": {
-        "Name": "Cepillo de dientes",
-        "Date": "2017-08-24"
-      },
-      "createdTime": "2016-07-10T11:31:25.000Z"
-    },
-    {
-      "id": "recvGJRvFE7aqvRku",
-      "fields": {
-        "Name": "Cortina",
-        "Date": "2017-07-29"
-      },
-      "createdTime": "2017-07-29T10:22:47.000Z"
-    },
-    {
-      "id": "recjckYNs2yZGKZNz",
-      "fields": {
-        "Name": "Cuchilla de afeitar ",
-        "Date": "2017-06-24"
-      },
-      "createdTime": "2017-06-24T11:30:09.000Z"
-    },
-    {
-      "id": "rec3UMHQlVht1B7DP",
-      "fields": {
-        "Name": "Calibrado batería iPad ",
-        "Date": "2017-12-15"
-      },
-      "createdTime": "2017-03-01T20:20:36.000Z"
-    },
-    {
-      "id": "rec6n3Hsw7WKkUTLg",
-      "fields": {
-        "Name": "Calefacción",
-        "Date": "2016-10-12"
-      },
-      "createdTime": "2016-05-08T17:56:06.000Z"
-    },
-    {
-      "id": "rec2sugI7UjyH5lJz",
-      "fields": {
-        "Name": "Cambio de aceite",
-        "Date": "2017-10-27"
-      },
-      "createdTime": "2017-03-24T15:37:45.000Z"
-    },
-    {
-      "id": "recnghn3xtTCKCd2U",
-      "fields": {
-        "Name": "Renta 4",
-        "Date": "2015-07-08"
-      },
-      "createdTime": "2017-02-04T17:11:06.000Z"
-    },
-    {
-      "id": "recPnzYXPptWmxmdY",
-      "fields": {
-        "Name": "Limpieza de boca",
-        "Date": "2014-03-18",
+        "Name": "Calibrate phone battery",
+        "Date": "2018-09-01",
         "Tags": [
-          "rec2UdUNjT34Xwx9B"
+          "rec2GMWWvbFX7jo1K"
         ],
         "TagId": [
-          "rec2UdUNjT34Xwx9B"
-        ]
-      },
-      "createdTime": "2016-05-09T07:04:11.000Z"
-    },
-    {
-      "id": "recoD9XKma6sUVen7",
-      "fields": {
-        "Name": "Kindle ",
-        "Date": "2018-02-04"
-      },
-      "createdTime": "2017-11-12T19:47:48.000Z"
-    },
-    {
-      "id": "recBsbp3zmpvrM0J9",
-      "fields": {
-        "Name": "Cafetera ",
-        "Date": "2017-11-29"
-      },
-      "createdTime": "2017-12-02T17:41:51.000Z"
-    },
-    {
-      "id": "recnDSBFmVbfciUdW",
-      "fields": {
-        "Name": "Event edited for ",
-        "Date": "2018-02-04",
-        "Tags": [
-          "recPukI2H3ro9UOz9"
+          "rec2GMWWvbFX7jo1K"
         ],
-        "Description": "Description of the colossus ",
-        "TagId": [
-          "recPukI2H3ro9UOz9"
-        ]
+        "Reminder": 0,
+        "ReminderUnit": "Day",
+        "TimeLapse": 6,
+        "TimeLapseUnit": "Month"
       },
-      "createdTime": "2018-01-22T11:12:53.000Z"
+      "createdTime": "2018-05-15T17:15:09.000Z"
     },
     {
-      "id": "recgBY2zKTBROh3Qu",
+      "id": "recXYdUv1iU7Cq6TU",
       "fields": {
-        "Name": "New York ",
-        "Date": "2018-02-10",
+        "Name": "New Year",
+        "Date": "2019-01-01",
         "Tags": [
-          "recPukI2H3ro9UOz9",
-          "rec2UdUNjT34Xwx9B"
+          "recr3UPoPUaZG495T"
         ],
-        "Description": "The moon is the same ",
+        "TimeLapseUnit": "Year",
         "TagId": [
-          "recPukI2H3ro9UOz9",
-          "rec2UdUNjT34Xwx9B"
+          "recr3UPoPUaZG495T"
+        ],
+        "TimeLapse": 1
+      },
+      "createdTime": "2018-05-15T17:10:06.000Z"
+    },
+    {
+      "id": "recYJlw2GE6spKy23",
+      "fields": {
+        "Name": "Kindle battery charge",
+        "Date": "2018-07-23",
+        "Tags": [
+          "rec2GMWWvbFX7jo1K"
+        ],
+        "TagId": [
+          "rec2GMWWvbFX7jo1K"
         ]
       },
-      "createdTime": "2018-02-10T20:13:21.000Z"
+      "createdTime": "2018-05-15T17:16:33.000Z"
+    },
+    {
+      "id": "recZKwZiwtH09LeMa",
+      "fields": {
+        "Name": "Change the tyres",
+        "Date": "2016-03-01",
+        "Tags": [
+          "rectnkQapfxXRJEYP"
+        ],
+        "TagId": [
+          "rectnkQapfxXRJEYP"
+        ]
+      },
+      "createdTime": "2018-05-15T17:19:09.000Z"
+    },
+    {
+      "id": "reccwQMUsyUdtI8yY",
+      "fields": {
+        "Name": "Tomato sauce",
+        "Date": "2018-08-30",
+        "Tags": [
+          "recR3zUo7bm8WjSdf"
+        ],
+        "TagId": [
+          "recR3zUo7bm8WjSdf"
+        ]
+      },
+      "createdTime": "2018-05-15T17:26:11.000Z"
+    },
+    {
+      "id": "recd3GHl6DRzNgZc6",
+      "fields": {
+        "Name": "Change the oil",
+        "Date": "2017-02-07",
+        "Tags": [
+          "rectnkQapfxXRJEYP"
+        ],
+        "TagId": [
+          "rectnkQapfxXRJEYP"
+        ],
+        "Reminder": 1,
+        "ReminderUnit": "Year"
+      },
+      "createdTime": "2018-05-15T17:17:41.000Z"
+    },
+    {
+      "id": "receeUe1BmUH1FcHX",
+      "fields": {
+        "Name": "Ludovico Einaudi",
+        "Date": "2018-12-08",
+        "Tags": [
+          "recr3UPoPUaZG495T"
+        ],
+        "Favorite": true,
+        "Description": "Awesome concert by Ludovico Einaudi in Milano",
+        "TagId": [
+          "recr3UPoPUaZG495T"
+        ],
+        "Reminder": 0,
+        "ReminderUnit": "Day"
+      },
+      "createdTime": "2018-05-15T17:13:22.000Z"
+    },
+    {
+      "id": "recgEJFBsM8oPeVrg",
+      "fields": {
+        "Name": "Smoked salmon",
+        "Date": "2018-06-22",
+        "Tags": [
+          "recR3zUo7bm8WjSdf"
+        ],
+        "TagId": [
+          "recR3zUo7bm8WjSdf"
+        ]
+      },
+      "createdTime": "2018-05-15T17:26:30.000Z"
+    },
+    {
+      "id": "recgQUiEKDPoFiJjj",
+      "fields": {
+        "Name": "Calibrate iPad battery",
+        "Date": "2018-08-15",
+        "Tags": [
+          "rec2GMWWvbFX7jo1K"
+        ],
+        "TagId": [
+          "rec2GMWWvbFX7jo1K"
+        ],
+        "Reminder": 0,
+        "ReminderUnit": "Day",
+        "TimeLapse": 6,
+        "TimeLapseUnit": "Month"
+      },
+      "createdTime": "2018-05-15T17:16:23.000Z"
+    },
+    {
+      "id": "rechoTZH386xOdYvV",
+      "fields": {
+        "Name": "My birthday",
+        "Date": "2019-04-09",
+        "Tags": [
+          "recr3UPoPUaZG495T"
+        ],
+        "Favorite": true,
+        "TagId": [
+          "recr3UPoPUaZG495T"
+        ],
+        "TimeLapse": 1,
+        "TimeLapseUnit": "Year"
+      },
+      "createdTime": "2018-05-15T17:09:17.000Z"
+    },
+    {
+      "id": "reci26BNB8wr6N45N",
+      "fields": {
+        "Name": "Anniversary",
+        "Date": "2018-09-18",
+        "Tags": [
+          "recr3UPoPUaZG495T"
+        ],
+        "Favorite": true,
+        "TagId": [
+          "recr3UPoPUaZG495T"
+        ],
+        "Reminder": 2,
+        "ReminderUnit": "Day",
+        "TimeLapse": 1,
+        "TimeLapseUnit": "Year"
+      },
+      "createdTime": "2018-05-15T17:09:55.000Z"
+    },
+    {
+      "id": "recneHl247vcCK8u2",
+      "fields": {
+        "Name": "Chicken",
+        "Date": "2018-06-15",
+        "Tags": [
+          "recR3zUo7bm8WjSdf"
+        ],
+        "TagId": [
+          "recR3zUo7bm8WjSdf"
+        ]
+      },
+      "createdTime": "2018-05-15T17:26:06.000Z"
+    },
+    {
+      "id": "recuRZL8bZkIysyuk",
+      "fields": {
+        "Name": "Brake fluid",
+        "Date": "2019-02-04",
+        "Tags": [
+          "rectnkQapfxXRJEYP"
+        ],
+        "Favorite": true,
+        "TagId": [
+          "rectnkQapfxXRJEYP"
+        ]
+      },
+      "createdTime": "2018-05-15T17:21:29.000Z"
+    },
+    {
+      "id": "recx6PrhR19WhwksE",
+      "fields": {
+        "Name": "Final exams",
+        "Date": "2018-06-20",
+        "Tags": [
+          "recr3UPoPUaZG495T"
+        ],
+        "Favorite": true,
+        "Reminder": 1,
+        "ReminderUnit": "Month",
+        "TagId": [
+          "recr3UPoPUaZG495T"
+        ]
+      },
+      "createdTime": "2018-05-15T17:13:39.000Z"
+    },
+    {
+      "id": "recxHzNdIRuo8S46K",
+      "fields": {
+        "Name": "Timing belt",
+        "Date": "2016-05-12",
+        "Tags": [
+          "rectnkQapfxXRJEYP"
+        ],
+        "TagId": [
+          "rectnkQapfxXRJEYP"
+        ]
+      },
+      "createdTime": "2018-05-15T17:19:38.000Z"
+    },
+    {
+      "id": "recyaQmbuivVpPx3y",
+      "fields": {
+        "Name": "Identity Card",
+        "Date": "2026-05-20",
+        "Tags": [
+          "recq7bq2re83pOzN6"
+        ],
+        "TagId": [
+          "recq7bq2re83pOzN6"
+        ],
+        "Reminder": 10,
+        "ReminderUnit": "Year"
+      },
+      "createdTime": "2018-05-15T17:21:58.000Z"
     }
   ]
 }

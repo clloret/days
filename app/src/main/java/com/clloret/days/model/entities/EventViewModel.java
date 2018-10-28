@@ -2,6 +2,7 @@ package com.clloret.days.model.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.clloret.days.domain.entities.Event.TimeUnit;
 import java.util.Date;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -37,6 +38,14 @@ public final class EventViewModel implements Parcelable {
 
   private boolean favorite;
 
+  private Integer reminder;
+
+  private TimeUnit reminderUnit;
+
+  private int timeLapse;
+
+  private TimeUnit timeLapseUnit;
+
   // empty constructor needed by the Parceler library
   public EventViewModel() {
 
@@ -51,6 +60,10 @@ public final class EventViewModel implements Parcelable {
     this.date = tmpDate == -1 ? null : new Date(tmpDate);
     tags = in.createStringArray();
     favorite = in.readByte() != 0;
+    reminder = (Integer) in.readValue(Integer.class.getClassLoader());
+    reminderUnit = (TimeUnit) in.readValue(TimeUnit.class.getClassLoader());
+    timeLapse = in.readInt();
+    timeLapseUnit = (TimeUnit) in.readValue(TimeUnit.class.getClassLoader());
   }
 
   public EventViewModel(String id, String name, String description, Date date, String[] tags,
@@ -88,6 +101,10 @@ public final class EventViewModel implements Parcelable {
     dest.writeLong(this.date != null ? this.date.getTime() : -1);
     dest.writeStringArray(tags);
     dest.writeByte((byte) (favorite ? 1 : 0));
+    dest.writeValue(reminder);
+    dest.writeValue(reminderUnit);
+    dest.writeInt(timeLapse);
+    dest.writeValue(timeLapseUnit);
   }
 
   public String getId() {
@@ -177,5 +194,45 @@ public final class EventViewModel implements Parcelable {
   public void setDescription(String description) {
 
     this.description = description;
+  }
+
+  public Integer getReminder() {
+
+    return reminder;
+  }
+
+  public void setReminder(Integer reminder) {
+
+    this.reminder = reminder;
+  }
+
+  public TimeUnit getReminderUnit() {
+
+    return reminderUnit;
+  }
+
+  public void setReminderUnit(TimeUnit reminderUnit) {
+
+    this.reminderUnit = reminderUnit;
+  }
+
+  public int getTimeLapse() {
+
+    return timeLapse;
+  }
+
+  public void setTimeLapse(int timeLapse) {
+
+    this.timeLapse = timeLapse;
+  }
+
+  public TimeUnit getTimeLapseUnit() {
+
+    return timeLapseUnit;
+  }
+
+  public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
+
+    this.timeLapseUnit = timeLapseUnit;
   }
 }

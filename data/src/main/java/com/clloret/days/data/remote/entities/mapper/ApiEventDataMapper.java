@@ -20,6 +20,10 @@ public class ApiEventDataMapper {
           .setDate(apiEvent.getDate())
           .setFavorite(apiEvent.isFavorite())
           .setTags(apiEvent.getTags())
+          .setReminder(apiEvent.getReminder())
+          .setReminderUnit(apiEvent.getReminderTimeUnit())
+          .setTimeLapse(apiEvent.getTimeLapse())
+          .setTimeLapseUnit(apiEvent.getTimeLapseTimeUnit())
           .build();
     }
     return event;
@@ -47,6 +51,10 @@ public class ApiEventDataMapper {
       apiEvent.setDate(event.getDate());
       apiEvent.setFavorite(event.isFavorite());
       apiEvent.setTags(event.getTags());
+      apiEvent.setReminder(event.getReminder());
+      apiEvent.setReminderTimeUnit(event.getReminderUnit());
+      apiEvent.setTimeLapse(event.getTimeLapse());
+      apiEvent.setTimeLapseTimeUnit(event.getTimeLapseUnit());
     }
     return apiEvent;
   }

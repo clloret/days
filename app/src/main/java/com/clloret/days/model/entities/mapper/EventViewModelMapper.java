@@ -20,6 +20,10 @@ public class EventViewModelMapper {
           .setDate(viewModel.getDate())
           .setFavorite(viewModel.isFavorite())
           .setTags(viewModel.getTags())
+          .setReminder(viewModel.getReminder())
+          .setReminderUnit(viewModel.getReminderUnit())
+          .setTimeLapse(viewModel.getTimeLapse())
+          .setTimeLapseUnit(viewModel.getTimeLapseUnit())
           .build();
     }
     return event;
@@ -36,6 +40,10 @@ public class EventViewModelMapper {
       viewModel.setDate(event.getDate());
       viewModel.setFavorite(event.isFavorite());
       viewModel.setTags(event.getTags());
+      viewModel.setReminder(event.getReminder());
+      viewModel.setReminderUnit(event.getReminderUnit());
+      viewModel.setTimeLapse(event.getTimeLapse());
+      viewModel.setTimeLapseUnit(event.getTimeLapseUnit());
     }
     return viewModel;
   }

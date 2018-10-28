@@ -12,7 +12,11 @@
     "TagId": [
       "recPukI2H3ro9UOz9",
       "recRcyFcA2DmaJmNL"
-    ]
+    ],
+    "Reminder": 2,
+    "ReminderUnit": "Day",
+    "TimeLapse": 1,
+    "TimeLapseUnit": "Year"
   },
   "createdTime": "2016-05-09T07:03:30.000Z"
 }

@@ -1,4 +1,4 @@
-package com.clloret.days.data.local;
+package com.clloret.days.data.local.entities.converters;
 
 import android.arch.persistence.room.TypeConverter;
 import android.text.TextUtils;

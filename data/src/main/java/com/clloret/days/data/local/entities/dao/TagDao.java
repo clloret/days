@@ -1,4 +1,4 @@
-package com.clloret.days.data.local;
+package com.clloret.days.data.local.entities.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
