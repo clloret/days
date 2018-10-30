@@ -13,6 +13,12 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -24,10 +30,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
 }
 
 dependencies {
-    implementation project(':domain')
+    implementation(project(':domain')) {
+        exclude group: "com.intellij", module: "annotations"
+    }
 
     api "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
@@ -35,7 +46,6 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
-    implementation 'com.intellij:annotations:12.0@jar'
 
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
@@ -53,6 +63,7 @@ dependencies {
         exclude group: 'com.android.support'
     }
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation 'android.arch.persistence.room:testing:1.1.1'
 }
 
 tasks.withType(Test) {

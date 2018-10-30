@@ -1,5 +1,7 @@
 package com.clloret.days.dagger;
 
+import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
+
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -34,7 +36,8 @@ public abstract class DataModule {
   @Named("local")
   static AppDataStore providesLocalDataStore(Context context, SharedPreferences preferences) {
 
-    DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE).build();
+    DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
+        .addMigrations(MIGRATION_1_2).build();
 
     RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
 
@@ -56,7 +59,8 @@ public abstract class DataModule {
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
-      DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE).build();
+      DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
+          .addMigrations(MIGRATION_1_2).build();
       return new LocalDataStore(db);
     } else {
 
