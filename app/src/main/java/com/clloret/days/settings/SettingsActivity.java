@@ -1,4 +1,4 @@
-package com.clloret.days.activities;
+package com.clloret.days.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v14.preference.SwitchPreference;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
@@ -73,6 +75,22 @@ public class SettingsActivity extends BaseActivity {
 
   public static class CustomPreferenceFragment extends PreferenceFragmentCompat implements
       OnSharedPreferenceChangeListener {
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+
+      DialogFragment dialogFragment = null;
+      if (preference instanceof TimePickerPreference) {
+        dialogFragment = TimePickerPreferenceDialog.newInstance(preference.getKey());
+      }
+
+      if (dialogFragment != null) {
+        dialogFragment.setTargetFragment(this, 0);
+        dialogFragment.show(getFragmentManager(), null);
+      } else {
+        super.onDisplayPreferenceDialog(preference);
+      }
+    }
 
     @Override
     public void onResume() {

@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <PreferenceCategory android:title="Apariencia">
+  <PreferenceCategory android:title="@string/title_general">
 
     <ListPreference
       android:defaultValue="0"
@@ -9,6 +9,15 @@
       android:key="@string/pref_default_list"
       android:summary="%s"
       android:title="@string/title_default_list"/>
+
+    <!--suppress AndroidElementNotAllowed -->
+    <com.clloret.days.settings.TimePickerPreference
+      style="@style/AppPreference.DialogPreference"
+      android:defaultValue="540"
+      android:dialogTitle="@string/title_dialog_reminder_time"
+      android:key="@string/pref_reminder_time"
+      android:summary="@string/summary_reminder_time"
+      android:title="@string/title_reminder_time"/>
 
   </PreferenceCategory>
 

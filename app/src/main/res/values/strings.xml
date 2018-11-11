@@ -49,9 +49,11 @@
   <string name="pref_airtable_base_id" translatable="false">airtable_base_id</string>
   <string name="pref_airtable_preference" translatable="false">airtable_preference</string>
   <string name="pref_default_list" translatable="false">default_list</string>
+  <string name="pref_reminder_time" translatable="false">reminder_time</string>
   <string name="pref_remote_datastore" translatable="false">remote_datastore</string>
   <string name="summary_airtable_api_key">Your Airtable API key. Obtained from Airtable account information.</string>
   <string name="summary_airtable_base_id">Base ID of the database with Days structure.</string>
+  <string name="summary_reminder_time">Select the time at which you want to receive the event reminder.</string>
   <string name="summary_remote_datastore">Use remote storage to save the data. If not enabled, only a local copy of the data will be saved.</string>
   <string name="tag_details_name">Tag name</string>
   <string name="title_activity_settings">Settings</string>
@@ -65,7 +67,10 @@
   <string name="title_default_list">Default list</string>
   <string name="title_dialog_airtable_api_key">Introduce your Airtable API key</string>
   <string name="title_dialog_airtable_base">Introduce your Airtable base ID</string>
+  <string name="title_dialog_reminder_time">Set the reminder time</string>
+  <string name="title_general">General</string>
   <string name="title_order">Order</string>
+  <string name="title_reminder_time">Reminder time</string>
   <string name="title_remote_datastore">Remote datastore</string>
   <string name="title_select_tags">Select tags</string>
   <string name="about_author">Author</string>
