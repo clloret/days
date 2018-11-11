@@ -62,7 +62,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
-    implementation "org.greenrobot:eventbus:3.1.1"
+    implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
 
     debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     debugImplementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
