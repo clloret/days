@@ -26,10 +26,16 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(project(':domain')) {
+        exclude group: "com.intellij", module: "annotations"
+    }
 
     implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"

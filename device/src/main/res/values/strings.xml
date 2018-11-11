@@ -1,3 +1,5 @@
 <resources>
-  <string name="app_name">device</string>
+  <string name="app_name" translatable="false">Days</string>
+  <string name="pref_reminder_time" translatable="false">reminder_time</string>
+  <string name="channel_reminders_name">Reminders</string>
 </resources>

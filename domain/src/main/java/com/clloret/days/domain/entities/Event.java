@@ -1,48 +1,20 @@
 package com.clloret.days.domain.entities;
 
 import java.util.Date;
+import org.jetbrains.annotations.NotNull;
 
 public final class Event {
 
-  public enum TimeUnit {
-    DAY("Day"),
-    MONTH("Month"),
-    YEAR("Year");
-
-    private String text;
-
-    TimeUnit(final String text) {
-
-      this.text = text;
-    }
-
-    @Override
-    public String toString() {
-
-      return text;
-    }
-  }
-
   private static final String[] EMPTY_ARRAY = new String[0];
-
   private String id;
-
   private String name;
-
   private String description;
-
   private Date date;
-
   private String[] tags = EMPTY_ARRAY;
-
   private boolean favorite;
-
   private Integer reminder;
-
   private TimeUnit reminderUnit;
-
   private int timeLapse;
-
   private TimeUnit timeLapseUnit;
 
   public Event() {
@@ -63,6 +35,11 @@ public final class Event {
     this.reminderUnit = reminderUnit;
     this.timeLapse = timeLapse;
     this.timeLapseUnit = timeLapseUnit;
+  }
+
+  public boolean hasReminder() {
+
+    return reminder != null;
   }
 
   public String getId() {
@@ -156,9 +133,10 @@ public final class Event {
     this.reminder = reminder;
   }
 
+  @NotNull
   public TimeUnit getReminderUnit() {
 
-    return reminderUnit;
+    return reminderUnit != null ? reminderUnit : TimeUnit.DAY;
   }
 
   public void setReminderUnit(TimeUnit reminderUnit) {
@@ -176,13 +154,33 @@ public final class Event {
     this.timeLapse = timeLapse;
   }
 
+  @NotNull
   public TimeUnit getTimeLapseUnit() {
 
-    return timeLapseUnit;
+    return timeLapseUnit != null ? timeLapseUnit : TimeUnit.DAY;
   }
 
   public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
 
     this.timeLapseUnit = timeLapseUnit;
+  }
+
+  public enum TimeUnit {
+    DAY("Day"),
+    MONTH("Month"),
+    YEAR("Year");
+
+    private String text;
+
+    TimeUnit(final String text) {
+
+      this.text = text;
+    }
+
+    @Override
+    public String toString() {
+
+      return text;
+    }
   }
 }
