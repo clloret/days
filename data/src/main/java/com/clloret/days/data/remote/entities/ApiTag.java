@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 public class ApiTag {
 
   @Expose(serialize = false)
-  private String id;
+  private transient String id;
 
   @SerializedName("Name")
   private String name;

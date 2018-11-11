@@ -11,7 +11,10 @@ public class ApiEvent {
   private static final String[] EMPTY_ARRAY = new String[0];
 
   @Expose(serialize = false)
-  private String id;
+  private transient String id;
+
+  @Expose(serialize = false)
+  private transient String createdTime;
 
   @SerializedName("Name")
   private String name;
@@ -39,8 +42,6 @@ public class ApiEvent {
 
   @SerializedName("TimeLapseUnit")
   private String timeLapseUnit;
-
-  private String createdTime;
 
   // empty constructor needed by the Airtable library
   @SuppressWarnings("unused")
