@@ -33,6 +33,10 @@ public class SelectTagsHelper {
 
   public String showSelectedTags() {
 
+    if (mapTags.getSelection().isEmpty()) {
+      return resources.getString(R.string.event_details_no_tags);
+    }
+
     List<String> selectedTags = Observable.just(mapTags.getSelection())
         .concatMap(Observable::fromIterable)
         .map(TagViewModel::getName)
