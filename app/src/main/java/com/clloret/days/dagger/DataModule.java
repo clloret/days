@@ -13,6 +13,8 @@ import com.clloret.days.data.local.LocalDataStore;
 import com.clloret.days.data.local.ReadOnlyDataStore;
 import com.clloret.days.data.remote.AirtableDataStore;
 import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
@@ -67,6 +69,20 @@ public abstract class DataModule {
       return new AirtableDataStore(context, remoteDataStoreResult.airtableKey,
           remoteDataStoreResult.airtableBase);
     }
+  }
+
+  @Provides
+  @Singleton
+  static EventViewModelMapper providesEventViewModelMapper() {
+
+    return new EventViewModelMapper();
+  }
+
+  @Provides
+  @Singleton
+  static TagViewModelMapper providesTagViewModelMapper() {
+
+    return new TagViewModelMapper();
   }
 
   private static RemoteDataStoreResult checkIsRemoteDataStore(Context context,
