@@ -1,5 +1,6 @@
 package com.clloret.days.events.common;
 
+import android.content.res.Resources;
 import android.text.TextUtils;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
@@ -11,10 +12,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 
 public class SelectTagsHelper {
 
   private SelectionMap<String, TagViewModel> mapTags = new SelectionMap<>();
+
+  private final Resources resources;
+
+  @Inject
+  public SelectTagsHelper(Resources resources) {
+
+    this.resources = resources;
+  }
 
   public SelectionMap<String, TagViewModel> getMapTags() {
 
@@ -59,16 +69,16 @@ public class SelectTagsHelper {
   public void showSelectTagsDialog(BaseMvpActivity activity, SelectTagsHelperListener listener) {
 
     if (mapTags.size() == 0) {
-      listener.onError(activity.getString(R.string.msg_error_no_tags_available));
+      listener.onError(resources.getString(R.string.msg_error_no_tags_available));
       return;
     }
 
-    boolean[] chekedTags = new boolean[mapTags.size()];
+    boolean[] checkedTags = new boolean[mapTags.size()];
 
     int i = 0;
     for (TagViewModel tag : mapTags.values()) {
       if (mapTags.isSelected(tag)) {
-        chekedTags[i] = true;
+        checkedTags[i] = true;
       }
       i++;
     }
@@ -85,8 +95,8 @@ public class SelectTagsHelper {
         .blockingGet();
 
     SelectTagsDialog dialog = SelectTagsDialog
-        .newInstance(activity.getString(R.string.title_select_tags),
-            nameTags.toArray(new String[nameTags.size()]), chekedTags,
+        .newInstance(resources.getString(R.string.title_select_tags),
+            nameTags.toArray(new String[nameTags.size()]), checkedTags,
             new ArrayList<>(tags));
     dialog.show(activity.getSupportFragmentManager(), "tags");
   }
