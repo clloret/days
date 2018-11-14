@@ -10,6 +10,7 @@ import com.clloret.days.model.entities.TagViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class SelectTagsDialog extends DialogFragment {
 
@@ -20,7 +21,7 @@ public class SelectTagsDialog extends DialogFragment {
 
   public interface SelectTagsDialogListener {
 
-    void onFinishDialog(Collection<TagViewModel> selectedItems);
+    void onFinishTagsDialog(Collection<TagViewModel> selectedItems);
   }
 
   public SelectTagsDialog() {
@@ -48,7 +49,7 @@ public class SelectTagsDialog extends DialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-    final Bundle args = getArguments();
+    final Bundle args = Objects.requireNonNull(getArguments());
     final String title = args.getString(BUNDLE_TITLE);
     final String[] nameTags = args.getStringArray(BUNDLE_NAME_TAGS);
     final boolean[] checkedTags = args.getBooleanArray(BUNDLE_CHECKED_TAGS);
@@ -70,7 +71,7 @@ public class SelectTagsDialog extends DialogFragment {
         .setPositiveButton(getString(R.string.action_ok), (dialog, id) -> {
 
           SelectTagsDialogListener listener = (SelectTagsDialogListener) getActivity();
-          listener.onFinishDialog(selectedItems);
+          listener.onFinishTagsDialog(selectedItems);
 
         })
         .setNegativeButton(getString(R.string.action_cancel), (dialog, id) -> {
