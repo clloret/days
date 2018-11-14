@@ -2,13 +2,15 @@ package com.clloret.days.model.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import java.util.Date;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import timber.log.Timber;
 
 // If replace Parcelable, maintain field "event" implementation for Date type
-public final class EventViewModel implements Parcelable {
+public final class EventViewModel implements Parcelable, Cloneable {
 
   public static final Creator<EventViewModel> CREATOR = new Creator<EventViewModel>() {
     @Override
@@ -206,9 +208,10 @@ public final class EventViewModel implements Parcelable {
     this.reminder = reminder;
   }
 
+  @NonNull
   public TimeUnit getReminderUnit() {
 
-    return reminderUnit;
+    return reminderUnit != null ? reminderUnit : TimeUnit.DAY;
   }
 
   public void setReminderUnit(TimeUnit reminderUnit) {
@@ -234,5 +237,22 @@ public final class EventViewModel implements Parcelable {
   public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
 
     this.timeLapseUnit = timeLapseUnit;
+  }
+
+  public boolean hasReminder() {
+
+    return reminder != null;
+  }
+
+  @Override
+  public EventViewModel clone() {
+
+    EventViewModel obj = null;
+    try {
+      obj = (EventViewModel) super.clone();
+    } catch (CloneNotSupportedException ex) {
+      Timber.w("Cannot be cloned");
+    }
+    return obj;
   }
 }
