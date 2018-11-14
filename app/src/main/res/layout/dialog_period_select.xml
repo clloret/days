@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <NumberPicker
+    android:id="@+id/picker_selectperiod_period"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    />
+
+  <RadioGroup
+    android:id="@+id/radiogroup_selectperiod_timeunit"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_large"
+    android:layout_gravity="center_horizontal"
+    android:checkedButton="@+id/radiobutton_selectperiod_day"
+    >
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/period_select_radiogroup_time_unit"
+      />
+
+    <RadioButton
+      android:id="@+id/radiobutton_selectperiod_day"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/period_select_radiobutton_days"/>
+
+    <RadioButton
+      android:id="@+id/radiobutton_selectperiod_month"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/period_select_radiobutton_months"/>
+
+    <RadioButton
+      android:id="@+id/radiobutton_selectperiod_year"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/period_select_radiobutton_years"/>
+
+  </RadioGroup>
+
+  <RadioGroup
+    android:id="@+id/radiogroup_selectperiod_time"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_large"
+    android:layout_gravity="center_horizontal"
+    android:checkedButton="@+id/radiobutton_selectperiod_before"
+    >
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/period_select_radiogroup_time"
+      />
+
+    <RadioButton
+      android:id="@+id/radiobutton_selectperiod_before"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/period_select_radiobutton_before"/>
+
+    <RadioButton
+      android:id="@+id/radiobutton_selectperiod_after"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:text="@string/period_select_radiobutton_after"/>
+
+  </RadioGroup>
+
+</LinearLayout>
