@@ -4,23 +4,24 @@ import android.support.annotation.NonNull;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 
-public class TagCreatePresenter extends MvpBasePresenter<TagCreateView> {
+public class TagCreatePresenter extends MvpNullObjectBasePresenter<TagCreateView> {
 
   private final AppDataStore api;
+  private final TagViewModelMapper tagViewModelMapper;
   private final CompositeDisposable disposable = new CompositeDisposable();
-  private TagViewModelMapper tagViewModelMapper = new TagViewModelMapper();
 
   @Inject
-  public TagCreatePresenter(AppDataStore api) {
+  public TagCreatePresenter(AppDataStore api, TagViewModelMapper tagViewModelMapper) {
 
     this.api = api;
+    this.tagViewModelMapper = tagViewModelMapper;
   }
 
   @Override
@@ -32,6 +33,8 @@ public class TagCreatePresenter extends MvpBasePresenter<TagCreateView> {
 
   public void createTag(@NonNull String name) {
 
+    TagCreateView view = getView();
+
     if (name.isEmpty()) {
       getView().onEmptyTagNameError();
       return;
@@ -42,8 +45,9 @@ public class TagCreatePresenter extends MvpBasePresenter<TagCreateView> {
     Disposable subscribe = api.createTag(newTag)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().onSuccessfully(tagViewModelMapper.fromTag(result)),
-            error -> getView().onError(error.getMessage()));
+        .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
+        .doOnError(error -> view.onError(error.getMessage()))
+        .subscribe();
     disposable.add(subscribe);
   }
 }

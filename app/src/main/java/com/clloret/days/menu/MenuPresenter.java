@@ -8,7 +8,7 @@ import com.clloret.days.model.events.RefreshRequestEvent;
 import com.clloret.days.model.events.TagCreatedEvent;
 import com.clloret.days.model.events.TagDeletedEvent;
 import com.clloret.days.model.events.TagModifiedEvent;
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -18,18 +18,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class MenuPresenter extends MvpBasePresenter<MenuView> {
+public class MenuPresenter extends MvpNullObjectBasePresenter<MenuView> {
 
   private final AppDataStore api;
   private final EventBus eventBus;
+  private final TagViewModelMapper tagViewModelMapper;
   private final CompositeDisposable disposable = new CompositeDisposable();
-  // TODO: 16/10/2018 DI
-  private TagViewModelMapper tagViewModelMapper = new TagViewModelMapper();
 
   @Inject
-  public MenuPresenter(AppDataStore api, EventBus eventBus) {
+  public MenuPresenter(AppDataStore api, TagViewModelMapper tagViewModelMapper, EventBus eventBus) {
 
     this.api = api;
+    this.tagViewModelMapper = tagViewModelMapper;
     this.eventBus = eventBus;
   }
 
@@ -50,19 +50,15 @@ public class MenuPresenter extends MvpBasePresenter<MenuView> {
 
   public void loadTags(final boolean pullToRefresh) {
 
+    MenuView view = getView();
+
     Disposable subscribe = api.getTags(pullToRefresh)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(tags -> {
-          if (isViewAttached()) {
-            getView().setData(tagViewModelMapper.fromTag(tags));
-            getView().showContent();
-          }
-        }, error -> {
-          if (isViewAttached()) {
-            getView().showError(error);
-          }
-        });
+          view.setData(tagViewModelMapper.fromTag(tags));
+          view.showContent();
+        }, view::showError);
     disposable.add(subscribe);
   }
 
