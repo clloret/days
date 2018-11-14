@@ -4,31 +4,29 @@ import static com.clloret.days.events.SampleBuilder.createEvent;
 import static com.clloret.days.events.SampleBuilder.createEventList;
 import static com.clloret.days.events.SampleBuilder.createEventViewModel;
 import static io.reactivex.Single.just;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsNot.not;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.clloret.days.device.TimeProvider;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.list.filter.EventFilterByTag;
 import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
-import java.util.Date;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class EventListPresenterTest {
@@ -40,11 +38,18 @@ public class EventListPresenterTest {
   private AppDataStore appDataStore;
 
   @Mock
+  private EventViewModelMapper eventViewModelMapper;
+
+  @Mock
   private EventBus eventBus;
+
+  @Mock
+  private TimeProvider timeProvider;
 
   @Mock
   private EventListView eventListView;
 
+  @InjectMocks
   private EventListPresenter eventListPresenter;
 
   @Before
@@ -52,7 +57,6 @@ public class EventListPresenterTest {
 
     MockitoAnnotations.initMocks(this);
 
-    eventListPresenter = new EventListPresenter(appDataStore, eventBus);
     eventListPresenter.attachView(eventListView);
   }
 
@@ -89,6 +93,8 @@ public class EventListPresenterTest {
       }
     });
 
+    addStubMethodsToMapper(event, eventViewModel);
+
     eventListPresenter.deleteEvent(eventViewModel);
 
     verify(appDataStore).deleteEvent(event);
@@ -100,7 +106,6 @@ public class EventListPresenterTest {
 
     final Event event = createEvent();
     final EventViewModel eventViewModel = createEventViewModel();
-    final boolean favorite = event.isFavorite();
 
     when(appDataStore.editEvent(event)).thenReturn(new Maybe<Event>() {
       @Override
@@ -110,15 +115,9 @@ public class EventListPresenterTest {
       }
     });
 
+    addStubMethodsToMapper(event, eventViewModel);
+
     eventListPresenter.makeEventFavorite(eventViewModel);
-
-    ArgumentCaptor<Event> argumentCaptor = ArgumentCaptor.forClass(Event.class);
-
-    verify(appDataStore).editEvent(argumentCaptor.capture());
-
-    Event result = argumentCaptor.getValue();
-
-    assertThat(result.isFavorite(), is(not(favorite)));
 
     verify(appDataStore).editEvent(any(Event.class));
     verify(eventListView).favoriteSuccessfully(any(EventViewModel.class));
@@ -138,17 +137,20 @@ public class EventListPresenterTest {
       }
     });
 
+    when(timeProvider.getCurrentDate()).thenReturn(new LocalDate(2000, 1, 1));
+
+    addStubMethodsToMapper(event, eventViewModel);
+
     eventListPresenter.resetDate(eventViewModel);
 
-    ArgumentCaptor<Event> argumentCaptor = ArgumentCaptor.forClass(Event.class);
-
-    verify(appDataStore).editEvent(argumentCaptor.capture());
-
-    Event result = argumentCaptor.getValue();
-    Date date = LocalDate.now().toDate();
-    assertThat(result.getDate(), equalTo(date));
-
+    verify(appDataStore).editEvent(any(Event.class));
     verify(eventListView).dateResetSuccessfully(any(EventViewModel.class));
+  }
+
+  private void addStubMethodsToMapper(Event event, EventViewModel eventViewModel) {
+
+    when(eventViewModelMapper.fromEvent(Mockito.any(Event.class))).thenReturn(eventViewModel);
+    when(eventViewModelMapper.toEvent(Mockito.any(EventViewModel.class))).thenReturn(event);
   }
 
 }

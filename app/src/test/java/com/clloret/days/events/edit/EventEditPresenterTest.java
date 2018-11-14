@@ -11,13 +11,18 @@ import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.SampleBuilder;
 import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
+import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class EventEditPresenterTest {
@@ -29,8 +34,18 @@ public class EventEditPresenterTest {
   private AppDataStore appDataStore;
 
   @Mock
+  private EventViewModelMapper eventViewModelMapper;
+
+  @Mock
+  private TagViewModelMapper tagViewModelMapper;
+
+  @Mock
+  private EventBus eventBus;
+
+  @Mock
   private EventEditView eventEditView;
 
+  @InjectMocks
   private EventEditPresenter eventEditPresenter;
 
   @Before
@@ -38,7 +53,6 @@ public class EventEditPresenterTest {
 
     MockitoAnnotations.initMocks(this);
 
-    eventEditPresenter = new EventEditPresenter(appDataStore);
     eventEditPresenter.attachView(eventEditView);
   }
 
@@ -56,10 +70,18 @@ public class EventEditPresenterTest {
       }
     });
 
-    eventEditPresenter.saveEvent(eventViewModel);
+    addStubMethodsToMapper(event, eventViewModel);
+
+    eventEditPresenter.saveEvent(eventViewModel, eventViewModel);
 
     verify(appDataStore).editEvent(any());
     verify(eventEditView).onSuccessfully(eq(eventViewModel));
+  }
+
+  private void addStubMethodsToMapper(Event event, EventViewModel eventViewModel) {
+
+    when(eventViewModelMapper.fromEvent(Mockito.any(Event.class))).thenReturn(eventViewModel);
+    when(eventViewModelMapper.toEvent(Mockito.any(EventViewModel.class))).thenReturn(event);
   }
 
   @Test
@@ -68,7 +90,7 @@ public class EventEditPresenterTest {
     final EventViewModel eventViewModel = createEventViewModel();
     eventViewModel.setName(SampleBuilder.emptyText);
 
-    eventEditPresenter.saveEvent(eventViewModel);
+    eventEditPresenter.saveEvent(eventViewModel, eventViewModel);
 
     verify(eventEditView).onEmptyEventNameError();
   }

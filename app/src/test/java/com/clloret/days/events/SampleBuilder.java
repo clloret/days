@@ -7,6 +7,7 @@ import com.clloret.days.model.entities.EventViewModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.joda.time.LocalDate;
 
 public class SampleBuilder {
 
@@ -14,7 +15,7 @@ public class SampleBuilder {
   public static String id = "1";
   public static String name = "Mock Event";
   public static String description = "Description";
-  public static Date date = new Date();
+  public static Date date = new LocalDate(2000, 1, 1).toDate();
   public static boolean favorite = false;
 
   @NonNull
