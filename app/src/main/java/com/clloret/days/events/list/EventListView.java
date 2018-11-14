@@ -30,4 +30,6 @@ public interface EventListView extends MvpLceView<List<EventViewModel>> {
   void favoriteSuccessfully(EventViewModel event);
 
   void dateResetSuccessfully(EventViewModel event);
+
+  void reminderSuccessfully(EventViewModel event);
 }

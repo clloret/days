@@ -150,6 +150,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     void onResetItem(EventViewModel item);
 
     void onFavoriteItem(EventViewModel item);
+
+    void onToggleNotificationsItem(EventViewModel item);
   }
 
   class EventViewHolder extends RecyclerView.ViewHolder {
@@ -160,6 +162,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     private View itemView;
     private TextView days;
     private ImageView favoriteButton;
+    private ImageView reminderButton;
     private ImageView resetButton;
 
     public EventViewHolder(final View view) {
@@ -169,6 +172,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       name = view.findViewById(R.id.textview_event_name);
       days = view.findViewById(R.id.textview_event_days);
       favoriteButton = view.findViewById(R.id.favorite_button);
+      reminderButton = view.findViewById(R.id.reminder_button);
       resetButton = view.findViewById(R.id.reset_button);
       viewBackground = view.findViewById(R.id.view_background);
       viewForeground = view.findViewById(R.id.view_foreground);
@@ -184,6 +188,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       favoriteButton.setImageResource(viewModel.isFavorite() ? R.drawable.ic_favorite_24dp
           : R.drawable.ic_favorite_border_24dp);
 
+      reminderButton
+          .setImageResource(viewModel.hasReminder() ? R.drawable.ic_notifications_24dp
+              : R.drawable.ic_notifications_none_24dp);
+
       itemView.setOnClickListener(v -> {
 
         if (null != listener) {
@@ -193,6 +201,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
       resetButton.setOnClickListener(view -> listener.onResetItem(viewModel));
       favoriteButton.setOnClickListener(view -> listener.onFavoriteItem(viewModel));
+      reminderButton.setOnClickListener(view -> listener.onToggleNotificationsItem(viewModel));
     }
   }
 }

@@ -56,14 +56,13 @@
             tools:text="17/05/2017"/>
         </LinearLayout>
 
-
       </LinearLayout>
 
       <LinearLayout
         android:id="@+id/layout_eventdetail_tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/margin_event_detail_layout"
         android:clickable="true"
         android:focusable="true"
         android:orientation="horizontal">
@@ -97,7 +96,89 @@
             android:layout_marginTop="@dimen/spacing_xsmall"
             android:ellipsize="end"
             android:lines="1"
-            tools:text="General, Higiene"/>
+            tools:text="General, Events"/>
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/layout_eventdetail_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_event_detail_layout"
+        android:orientation="horizontal">
+
+        <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/spacing_large"
+          android:layout_marginEnd="@dimen/spacing_large"
+          android:layout_gravity="center"
+          android:tint="@color/drawer_icon_unselected"
+          app:srcCompat="@drawable/ic_notifications_24dp"/>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event_details_reminder"
+            />
+
+          <TextView
+            android:id="@+id/textview_eventdetail_reminder"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_event_detail_text"
+            tools:text="Notify 5 days before the evnt"
+            />
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <LinearLayout
+        android:id="@+id/layout_eventdetail_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_event_detail_layout"
+        android:orientation="horizontal">
+
+        <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/spacing_large"
+          android:layout_marginEnd="@dimen/spacing_large"
+          android:layout_gravity="center"
+          android:tint="@color/drawer_icon_unselected"
+          app:srcCompat="@drawable/ic_restore_24dp"/>
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+          <TextView
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event_details_reset"
+            />
+
+          <TextView
+            android:id="@+id/textview_eventdetail_reset"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_event_detail_text"
+            tools:text="Every 5 days after the event"
+            />
+
         </LinearLayout>
 
       </LinearLayout>

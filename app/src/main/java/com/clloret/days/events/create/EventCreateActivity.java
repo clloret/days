@@ -18,7 +18,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
+import com.clloret.days.events.common.PeriodTextFormatter;
 import com.clloret.days.events.common.SelectDateHelper;
+import com.clloret.days.events.common.SelectPeriodHelper;
 import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.events.common.SelectTagsHelper;
 import com.clloret.days.model.entities.EventViewModel;
@@ -64,11 +66,26 @@ public class EventCreateActivity extends
   @BindView(R.id.textview_eventdetail_tags)
   TextView tagsText;
 
+  @BindView(R.id.textview_eventdetail_reminder)
+  TextView reminderText;
+
+  @BindView(R.id.textview_eventdetail_reset)
+  TextView timeLapseResetText;
+
   @BindView(R.id.fab)
   FloatingActionButton fab;
 
+  @Inject
+  SelectTagsHelper selectTagsHelper;
+
+  @Inject
+  SelectPeriodHelper selectPeriodHelper;
+
+  @Inject
+  PeriodTextFormatter periodTextFormatter;
+
   private LocalDate selectedDate;
-  private SelectTagsHelper selectTagsHelper = new SelectTagsHelper();
+  private EventViewModel event = new EventViewModel();
 
   public static Intent getCallingIntent(Context context) {
 
@@ -143,9 +160,16 @@ public class EventCreateActivity extends
 
     String name = nameEdit.getText().toString();
     String description = descriptionEdit.getText().toString();
-    Date date = selectedDate == null ? null : selectedDate.toDate();
+    Date date = selectedDate != null ? selectedDate.toDate() : null;
+    String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
+        .toArray(new String[0]);
 
-    presenter.createEvent(name, description, date, selectTagsHelper.getMapTags());
+    event.setName(name);
+    event.setDescription(description);
+    event.setDate(date);
+    event.setTags(tags);
+
+    presenter.createEvent(event);
   }
 
   @NonNull
@@ -159,6 +183,7 @@ public class EventCreateActivity extends
   public void onSuccessfully(EventViewModel event) {
 
     EventBus.getDefault().post(new EventCreatedEvent(event));
+
     finish();
   }
 
@@ -172,6 +197,10 @@ public class EventCreateActivity extends
   public void setData(List<TagViewModel> data) {
 
     selectTagsHelper.setMapTags(data);
+
+    showSelectedTags();
+    showSelectedReminder();
+    showSelectedTimeLapseReset();
   }
 
   @Override
@@ -199,6 +228,16 @@ public class EventCreateActivity extends
     tagsText.setText(selectTagsHelper.showSelectedTags());
   }
 
+  private void showSelectedReminder() {
+
+    reminderText.setText(periodTextFormatter.formatReminder(event));
+  }
+
+  private void showSelectedTimeLapseReset() {
+
+    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(event));
+  }
+
   @OnClick(R.id.layout_eventdetail_date)
   public void onClickDay() {
 
@@ -209,6 +248,18 @@ public class EventCreateActivity extends
   public void onClickTags() {
 
     selectTags();
+  }
+
+  @OnClick(R.id.layout_eventdetail_reminder)
+  public void onClickReminder() {
+
+    selectReminder();
+  }
+
+  @OnClick(R.id.layout_eventdetail_reset)
+  public void onClickReset() {
+
+    selectTimeLapseReset();
   }
 
   @OnClick(R.id.fab)
@@ -231,8 +282,29 @@ public class EventCreateActivity extends
     selectTagsHelper.showSelectTagsDialog(this, this::showSnackbarMessage);
   }
 
+  private void selectReminder() {
+
+    selectPeriodHelper.showSelectReminderDialog(this, event, (period, timeUnit) -> {
+      event.setReminder(period);
+      event.setReminderUnit(timeUnit);
+
+      showSelectedReminder();
+    });
+  }
+
+  private void selectTimeLapseReset() {
+
+    selectPeriodHelper.showSelectTimeLapseResetDialog(this, event,
+        (period, timeUnit) -> {
+          event.setTimeLapse(period);
+          event.setTimeLapseUnit(timeUnit);
+
+          showSelectedTimeLapseReset();
+        });
+  }
+
   @Override
-  public void onFinishDialog(Collection<TagViewModel> selectedItems) {
+  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
 
     selectTagsHelper.updateSelectedTags(selectedItems);
     showSelectedTags();

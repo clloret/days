@@ -305,6 +305,12 @@ public class EventListFragment
   }
 
   @Override
+  public void onToggleNotificationsItem(EventViewModel item) {
+
+    presenter.toggleEventReminder(item);
+  }
+
+  @Override
   public void onError(String message) {
 
     Timber.e(message);
@@ -367,13 +373,15 @@ public class EventListFragment
   @Override
   public void updateSuccessfully(EventViewModel event) {
 
-    List<EventViewModel> events = adapter.getEvents();
+//    List<EventViewModel> events = adapter.getEvents();
+//
+//    int index = events.indexOf(event);
+//    if (index != -1) {
+//      events.set(index, event);
+//      adapter.notifyItemChanged(index);
+//    }
 
-    int index = events.indexOf(event);
-    if (index != -1) {
-      events.set(index, event);
-      adapter.notifyItemChanged(index);
-    }
+    adapter.updateItem(event);
 
     showSnackbarMessage(recyclerView, R.string.msg_event_updated);
   }
@@ -386,6 +394,12 @@ public class EventListFragment
 
   @Override
   public void dateResetSuccessfully(EventViewModel event) {
+
+    adapter.updateItem(event);
+  }
+
+  @Override
+  public void reminderSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
   }

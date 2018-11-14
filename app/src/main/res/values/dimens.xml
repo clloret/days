@@ -10,6 +10,7 @@
   <dimen name="margin_card_subtitle">16dp</dimen>
   <dimen name="margin_card_title">16dp</dimen>
   <dimen name="margin_event_detail_text">2dp</dimen>
+  <dimen name="margin_event_detail_layout">8dp</dimen>
   <dimen name="padding_card_actions">8dp</dimen>
   <dimen name="padding_card_button">6dp</dimen>
   <dimen name="padding_navigationdrawer_subheader">8dp</dimen>

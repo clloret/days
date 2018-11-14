@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 
 public final class Event {
 
+  public static final int REMINDER_EVENT_DAY = 0;
+
   private static final String[] EMPTY_ARRAY = new String[0];
   private String id;
   private String name;

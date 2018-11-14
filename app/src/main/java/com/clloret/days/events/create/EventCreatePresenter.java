@@ -1,34 +1,34 @@
 package com.clloret.days.events.create;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import com.clloret.days.device.events.ReminderScheduleEvent;
 import com.clloret.days.domain.AppDataStore;
-import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.entities.EventBuilder;
-import com.clloret.days.domain.utils.SelectionMap;
-import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.hannesdorfmann.mosby.mvp.MvpBasePresenter;
+import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import java.util.Date;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 
-public class EventCreatePresenter extends MvpBasePresenter<EventCreateView> {
+public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreateView> {
 
   private final AppDataStore api;
+  private final EventBus eventBus;
+  private final EventViewModelMapper eventViewModelMapper;
+  private final TagViewModelMapper tagViewModelMapper;
   private final CompositeDisposable disposable = new CompositeDisposable();
-  // TODO: 16/10/2018 DI
-  private EventViewModelMapper eventViewModelMapper = new EventViewModelMapper();
-  private TagViewModelMapper tagViewModelMapper = new TagViewModelMapper();
 
   @Inject
-  public EventCreatePresenter(AppDataStore api) {
+  public EventCreatePresenter(AppDataStore api, EventViewModelMapper eventViewModelMapper,
+      TagViewModelMapper tagViewModelMapper, EventBus eventBus) {
 
     this.api = api;
+    this.eventViewModelMapper = eventViewModelMapper;
+    this.tagViewModelMapper = tagViewModelMapper;
+    this.eventBus = eventBus;
   }
 
   @Override
@@ -38,51 +38,48 @@ public class EventCreatePresenter extends MvpBasePresenter<EventCreateView> {
     disposable.dispose();
   }
 
-  public void createEvent(@NonNull String name, @NonNull String description, @Nullable Date date,
-      @NonNull SelectionMap<String, TagViewModel> mapTags) {
+  public void createEvent(EventViewModel event) {
 
-    if (name.isEmpty()) {
-      getView().onEmptyEventNameError();
+    EventCreateView view = getView();
+
+    if (event.getName().isEmpty()) {
+      view.onEmptyEventNameError();
       return;
     }
 
-    if (date == null) {
-      getView().onEmptyEventDateError();
+    if (event.getDate() == null) {
+      view.onEmptyEventDateError();
       return;
     }
 
-    String[] tags = mapTags.getKeySelection(TagViewModel::getId)
-        .toArray(new String[0]);
-
-    Event newEvent = new EventBuilder()
-        .setName(name)
-        .setDescription(description)
-        .setDate(date)
-        .setTags(tags)
-        .build();
-
-    Disposable subscribe = api.createEvent(newEvent)
+    Disposable subscribe = api.createEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(result -> getView().onSuccessfully(eventViewModelMapper.fromEvent(result)),
-            error -> getView().onError(error.getMessage()));
+        .doOnSuccess(result -> {
+          EventViewModel eventViewModel = eventViewModelMapper.fromEvent(result);
+          if (eventViewModel.hasReminder()) {
+            eventBus.post(new ReminderScheduleEvent(result, true, false));
+          }
+
+          view.onSuccessfully(eventViewModel);
+        })
+        .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
+        .subscribe();
+
     disposable.add(subscribe);
   }
 
   public void loadTags() {
 
+    EventCreateView view = getView();
+
     Disposable subscribe = api.getTags(false)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(tags -> {
-          if (isViewAttached()) {
-            getView().setData(tagViewModelMapper.fromTag(tags));
-          }
-        }, error -> {
-          if (isViewAttached()) {
-            getView().showError(error);
-          }
-        });
+        .doOnSuccess(tags -> view.setData(tagViewModelMapper.fromTag(tags)))
+        .doOnError(view::showError)
+        .subscribe();
     disposable.add(subscribe);
   }
 
