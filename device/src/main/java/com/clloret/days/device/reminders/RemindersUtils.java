@@ -9,7 +9,11 @@ import com.clloret.days.device.notifications.NotificationsFactory;
 import com.clloret.days.device.receivers.AlarmBroadcastReceiver;
 import java.util.Date;
 
-class RemindersUtils {
+public class RemindersUtils {
+
+  public static final String ACTION_REMINDER = "com.clloret.days.REMINDER";
+  public static final String NOTIFICATION_ID = "notification_id";
+  public static final String NOTIFICATION = "notification";
 
   private final Context context;
   private final NotificationsFactory notificationsFactory;
@@ -31,8 +35,8 @@ class RemindersUtils {
         message);
 
     Intent intent = getNotificationIntent(id);
-    intent.putExtra(AlarmBroadcastReceiver.NOTIFICATION_ID, id);
-    intent.putExtra(AlarmBroadcastReceiver.NOTIFICATION, notification);
+    intent.putExtra(NOTIFICATION_ID, id);
+    intent.putExtra(NOTIFICATION, notification);
 
     AlarmUtils.addAlarm(context, intent, date.getTime());
   }
@@ -48,7 +52,7 @@ class RemindersUtils {
 
     Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
     intent.setData(Uri.parse("custom://" + id));
-    intent.setAction(id);
+    intent.setAction(ACTION_REMINDER);
     return intent;
   }
 
