@@ -85,7 +85,7 @@ public class EventCreateActivity extends
   PeriodTextFormatter periodTextFormatter;
 
   private LocalDate selectedDate;
-  private EventViewModel event = new EventViewModel();
+  private EventViewModel newEvent = new EventViewModel();
 
   public static Intent getCallingIntent(Context context) {
 
@@ -164,12 +164,12 @@ public class EventCreateActivity extends
     String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
         .toArray(new String[0]);
 
-    event.setName(name);
-    event.setDescription(description);
-    event.setDate(date);
-    event.setTags(tags);
+    newEvent.setName(name);
+    newEvent.setDescription(description);
+    newEvent.setDate(date);
+    newEvent.setTags(tags);
 
-    presenter.createEvent(event);
+    presenter.createEvent(newEvent);
   }
 
   @NonNull
@@ -230,12 +230,12 @@ public class EventCreateActivity extends
 
   private void showSelectedReminder() {
 
-    reminderText.setText(periodTextFormatter.formatReminder(event));
+    reminderText.setText(periodTextFormatter.formatReminder(newEvent));
   }
 
   private void showSelectedTimeLapseReset() {
 
-    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(event));
+    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(newEvent));
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -290,9 +290,9 @@ public class EventCreateActivity extends
 
   private void selectReminder() {
 
-    selectPeriodHelper.showSelectReminderDialog(this, event, (period, timeUnit) -> {
-      event.setReminder(period);
-      event.setReminderUnit(timeUnit);
+    selectPeriodHelper.showSelectReminderDialog(this, newEvent, (period, timeUnit) -> {
+      newEvent.setReminder(period);
+      newEvent.setReminderUnit(timeUnit);
 
       showSelectedReminder();
     });
@@ -300,9 +300,9 @@ public class EventCreateActivity extends
 
   private void clearReminder() {
 
-    if (event.hasReminder()) {
-      event.setReminder(null);
-      event.setReminderUnit(null);
+    if (newEvent.hasReminder()) {
+      newEvent.setReminder(null);
+      newEvent.setReminderUnit(null);
 
       showSelectedReminder();
     }
@@ -310,10 +310,10 @@ public class EventCreateActivity extends
 
   private void selectTimeLapseReset() {
 
-    selectPeriodHelper.showSelectTimeLapseResetDialog(this, event,
+    selectPeriodHelper.showSelectTimeLapseResetDialog(this, newEvent,
         (period, timeUnit) -> {
-          event.setTimeLapse(period);
-          event.setTimeLapseUnit(timeUnit);
+          newEvent.setTimeLapse(period);
+          newEvent.setTimeLapseUnit(timeUnit);
 
           showSelectedTimeLapseReset();
         });

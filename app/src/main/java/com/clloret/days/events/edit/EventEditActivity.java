@@ -168,10 +168,10 @@ public class EventEditActivity
     setControlClickable(clickable, clearReminderButton);
   }
 
-  private void setControlClickable(boolean clickable, View dateLayout) {
+  private void setControlClickable(boolean clickable, View view) {
 
-    dateLayout.setClickable(clickable);
-    dateLayout.setFocusable(clickable);
+    view.setClickable(clickable);
+    view.setFocusable(clickable);
   }
 
   private void showData() {
