@@ -373,14 +373,6 @@ public class EventListFragment
   @Override
   public void updateSuccessfully(EventViewModel event) {
 
-//    List<EventViewModel> events = adapter.getEvents();
-//
-//    int index = events.indexOf(event);
-//    if (index != -1) {
-//      events.set(index, event);
-//      adapter.notifyItemChanged(index);
-//    }
-
     adapter.updateItem(event);
 
     showSnackbarMessage(recyclerView, R.string.msg_event_updated);
