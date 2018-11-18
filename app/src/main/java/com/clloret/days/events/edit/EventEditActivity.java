@@ -81,6 +81,9 @@ public class EventEditActivity
   @BindView(R.id.layout_eventdetail_reminder)
   View reminderLayout;
 
+  @BindView(R.id.button_eventdetail_clear_reminder)
+  View clearReminderButton;
+
   @BindView(R.id.layout_eventdetail_reset)
   View resetLayout;
 
@@ -162,6 +165,7 @@ public class EventEditActivity
     setControlClickable(clickable, tagsLayout);
     setControlClickable(clickable, reminderLayout);
     setControlClickable(clickable, resetLayout);
+    setControlClickable(clickable, clearReminderButton);
   }
 
   private void setControlClickable(boolean clickable, View dateLayout) {
@@ -347,6 +351,12 @@ public class EventEditActivity
     selectReminder();
   }
 
+  @OnClick(R.id.button_eventdetail_clear_reminder)
+  public void onClickClearReminder() {
+
+    clearReminder();
+  }
+
   @OnClick(R.id.layout_eventdetail_reset)
   public void onClickReset() {
 
@@ -390,6 +400,16 @@ public class EventEditActivity
 
       showSelectedReminder();
     });
+  }
+
+  private void clearReminder() {
+
+    if (modifiedEvent.hasReminder()) {
+      modifiedEvent.setReminder(null);
+      modifiedEvent.setReminderUnit(null);
+
+      showSelectedReminder();
+    }
   }
 
   private void selectTimeLapseReset() {
