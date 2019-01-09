@@ -26,6 +26,6 @@ public class SelectDateHelper {
 
   public interface SelectDateHelperListener {
 
-    void onFinishDialog(LocalDate date, String formatedDate);
+    void onFinishDialog(LocalDate date, String formattedDate);
   }
 }
