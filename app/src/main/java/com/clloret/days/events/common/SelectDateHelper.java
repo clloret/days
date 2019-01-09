@@ -7,19 +7,18 @@ import org.joda.time.LocalDate;
 
 public class SelectDateHelper {
 
-  public static void selectDate(Context context, SelectDateHelperListener listener) {
-
-    final LocalDate ld = new LocalDate();
+  public static void selectDate(Context context, LocalDate initialDate,
+      SelectDateHelperListener listener) {
 
     DatePickerDialog datePickerDialog = new DatePickerDialog(context,
         (datePicker, year, monthOfYear, dayOfMonth) -> {
 
-          LocalDate selectedDate = ld.withYear(year).withMonthOfYear(monthOfYear + 1)
+          LocalDate selectedDate = initialDate.withYear(year).withMonthOfYear(monthOfYear + 1)
               .withDayOfMonth(dayOfMonth);
 
           listener.onFinishDialog(selectedDate, DateUtils.formatDate(selectedDate));
 
-        }, ld.getYear(), ld.getMonthOfYear() - 1, ld.getDayOfMonth());
+        }, initialDate.getYear(), initialDate.getMonthOfYear() - 1, initialDate.getDayOfMonth());
 
     datePickerDialog.show();
   }

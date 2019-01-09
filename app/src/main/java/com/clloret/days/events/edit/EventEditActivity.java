@@ -325,7 +325,7 @@ public class EventEditActivity
 
   private void selectDate() {
 
-    SelectDateHelper.selectDate(this, (date, formattedDate) -> {
+    SelectDateHelper.selectDate(this, selectedDate, (date, formattedDate) -> {
 
       selectedDate = date;
       dateText.setText(formattedDate);

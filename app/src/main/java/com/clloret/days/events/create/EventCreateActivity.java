@@ -278,7 +278,8 @@ public class EventCreateActivity extends
 
   private void selectDate() {
 
-    SelectDateHelper.selectDate(this, (date, formattedDate) -> {
+    LocalDate today = new LocalDate();
+    SelectDateHelper.selectDate(this, today, (date, formattedDate) -> {
 
       selectedDate = date;
       dateText.setText(formattedDate);
