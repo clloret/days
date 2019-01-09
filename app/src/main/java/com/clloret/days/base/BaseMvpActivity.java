@@ -5,6 +5,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 import com.clloret.days.utils.ActivityUtility;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
@@ -62,6 +63,11 @@ public abstract class BaseMvpActivity<V extends MvpView, P extends MvpPresenter<
 
     String message = getString(resId);
     showSnackbarMessage(message);
+  }
+
+  protected void showSoftKeyboard() {
+
+    getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
   }
 
   protected abstract void injectDependencies();

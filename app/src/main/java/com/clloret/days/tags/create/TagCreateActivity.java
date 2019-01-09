@@ -43,6 +43,8 @@ public class TagCreateActivity extends
     ButterKnife.bind(this);
 
     configureActionBar(toolbar);
+
+    showSoftKeyboard();
   }
 
   @Override

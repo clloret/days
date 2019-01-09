@@ -107,6 +107,8 @@ public class EventCreateActivity extends
     eventSwitcher.showNext();
     descriptionSwitcher.showNext();
 
+    showSoftKeyboard();
+
     presenter.loadTags();
   }
 
