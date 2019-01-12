@@ -18,6 +18,7 @@ import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerSeparator;
 import com.clloret.days.menu.items.DrawerSubheader;
 import com.clloret.days.menu.items.DrawerTag;
+import com.clloret.days.menu.items.DrawerTagSelectedMgr;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.settings.SettingsActivity;
 import com.clloret.days.tags.create.TagCreateActivity;
@@ -38,10 +39,12 @@ public class MenuAdapter extends BaseAdapter {
   private final Map<String, DrawerTag> tags = new HashMap<>();
   private final CompositeDisposable disposable = new CompositeDisposable();
   private Context context;
+  private DrawerTagSelectedMgr drawerTagSelectedMgr;
 
-  public MenuAdapter(@NonNull Context context) {
+  public MenuAdapter(@NonNull Context context, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
 
     this.context = context;
+    this.drawerTagSelectedMgr = drawerTagSelectedMgr;
   }
 
   public void dispose() {
@@ -60,7 +63,7 @@ public class MenuAdapter extends BaseAdapter {
 
     Disposable subscribe = Observable.fromIterable(data)
         .map(
-            tag -> new DrawerTag(new EventFilterByTag(tag.getId()), tag))
+            tag -> new DrawerTag(new EventFilterByTag(tag.getId()), tag, drawerTagSelectedMgr))
         .subscribe(drawerTag -> tags.put(drawerTag.getTag().getId(), drawerTag));
     disposable.add(subscribe);
 
@@ -177,7 +180,8 @@ public class MenuAdapter extends BaseAdapter {
 
   public void addTag(TagViewModel tag) {
 
-    DrawerTag drawerTag = new DrawerTag(new EventFilterByTag(tag.getId()), tag);
+    DrawerTag drawerTag = new DrawerTag(new EventFilterByTag(tag.getId()), tag,
+        drawerTagSelectedMgr);
     tags.put(tag.getId(), drawerTag);
 
     notifyDataSetChanged();

@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.menu.MenuFragment;
+import com.clloret.days.model.entities.TagViewModel;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
@@ -49,8 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
     configureNavigationDrawer();
 
-    actionNewEvent.setOnClickListener(
-        v -> navigator.navigateToEventCreate(MainActivity.this));
+    actionNewEvent.setOnClickListener(v -> {
+
+      TagViewModel selectedTag = getNavigationDrawerFragment().getSelectedTag();
+      navigator.navigateToEventCreate(MainActivity.this, selectedTag);
+    });
 
     if (savedInstanceState == null) {
       showMainView();

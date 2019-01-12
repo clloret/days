@@ -16,6 +16,7 @@ import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpFragment;
 import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerTag;
+import com.clloret.days.menu.items.DrawerTagSelectedMgr;
 import com.clloret.days.model.entities.TagViewModel;
 import dagger.android.support.AndroidSupportInjection;
 import java.util.List;
@@ -37,6 +38,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   @BindView(R.id.listView)
   ListView listView;
 
+  private DrawerTagSelectedMgr drawerTagSelectedMgr = new DrawerTagSelectedMgr();
   private MenuAdapter adapter;
   private DrawerLayout drawerLayout;
 
@@ -68,7 +70,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
     Timber.d("onViewCreated");
 
-    adapter = new MenuAdapter(getActivity());
+    adapter = new MenuAdapter(getActivity(), drawerTagSelectedMgr);
     listView.setAdapter(adapter);
 
     listView.setOnItemLongClickListener((adapterView, v, i, l) -> {
@@ -110,17 +112,8 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
   private void onClickMenuItem(int position) {
 
-    DrawerMenuItem drawerMenuItem = adapter.getItem(position);
-
-    listView.setItemChecked(position, drawerMenuItem.isSelectable());
-
-    if (!drawerMenuItem.isSelectable()) {
-      listView.setItemChecked(previousCheckedPosition, true);
-    } else {
-      previousCheckedPosition = position;
-    }
-
-    drawerMenuItem.select(getActivity());
+    deselectPreviousMenuItem();
+    selectMenuItem(position);
 
     drawerLayout.closeDrawers();
   }
@@ -201,5 +194,36 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     previousCheckedPosition = position;
 
     drawerMenuItem.select(getActivity());
+  }
+
+  private void selectMenuItem(int position) {
+
+    DrawerMenuItem drawerMenuItem = adapter.getItem(position);
+
+    listView.setItemChecked(position, drawerMenuItem.isSelectable());
+
+    if (!drawerMenuItem.isSelectable()) {
+      listView.setItemChecked(previousCheckedPosition, true);
+    } else {
+      previousCheckedPosition = position;
+    }
+
+    drawerMenuItem.select(getActivity());
+  }
+
+  private void deselectPreviousMenuItem() {
+
+    DrawerMenuItem drawerMenuItemPrevious = adapter.getItem(previousCheckedPosition);
+    drawerMenuItemPrevious.deselect();
+  }
+
+  public @Nullable
+  TagViewModel getSelectedTag() {
+
+    DrawerTag drawerTag = drawerTagSelectedMgr.getSelected();
+    if (drawerTag != null) {
+      return drawerTag.getTag();
+    }
+    return null;
   }
 }

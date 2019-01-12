@@ -2,6 +2,7 @@ package com.clloret.days;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import com.clloret.days.events.create.EventCreateActivity;
 import com.clloret.days.events.edit.EventEditActivity;
 import com.clloret.days.model.entities.EventViewModel;
@@ -11,10 +12,10 @@ import com.clloret.days.tags.edit.TagEditActivity;
 
 public class Navigator {
 
-  public void navigateToEventCreate(Context context) {
+  public void navigateToEventCreate(Context context, @Nullable TagViewModel selectedTag) {
 
     if (context != null) {
-      Intent intentToLaunch = EventCreateActivity.getCallingIntent(context);
+      Intent intentToLaunch = EventCreateActivity.getCallingIntent(context, selectedTag);
       context.startActivity(intentToLaunch);
     }
   }

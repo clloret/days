@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
@@ -38,6 +39,8 @@ import org.joda.time.LocalDate;
 public class EventCreateActivity extends
     BaseMvpActivity<EventCreateView, EventCreatePresenter> implements EventCreateView,
     SelectTagsDialogListener {
+
+  private static final String EXTRA_TAG = "tag";
 
   @Inject
   EventCreatePresenter injectPresenter;
@@ -86,10 +89,14 @@ public class EventCreateActivity extends
 
   private LocalDate selectedDate;
   private EventViewModel newEvent = new EventViewModel();
+  private TagViewModel selectedTag;
 
-  public static Intent getCallingIntent(Context context) {
+  public static Intent getCallingIntent(Context context, @Nullable TagViewModel tag) {
 
-    return new Intent(context, EventCreateActivity.class);
+    Intent intent = new Intent(context, EventCreateActivity.class);
+    intent.putExtra(EXTRA_TAG, tag);
+
+    return intent;
   }
 
   @Override
@@ -108,6 +115,8 @@ public class EventCreateActivity extends
     descriptionSwitcher.showNext();
 
     showSoftKeyboard();
+
+    selectedTag = getIntent().getParcelableExtra(EXTRA_TAG);
 
     presenter.loadTags();
   }
@@ -199,6 +208,10 @@ public class EventCreateActivity extends
   public void setData(List<TagViewModel> data) {
 
     selectTagsHelper.setMapTags(data);
+
+    if (selectedTag != null) {
+      selectTagsHelper.addTagToSelection(selectedTag);
+    }
 
     showSelectedTags();
     showSelectedReminder();

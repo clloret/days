@@ -32,6 +32,10 @@ public abstract class DrawerMenuItem<T extends BaseViewHolder> {
 
   }
 
+  public void deselect() {
+
+  }
+
   public abstract int getType();
 
   abstract T createViewHolder();

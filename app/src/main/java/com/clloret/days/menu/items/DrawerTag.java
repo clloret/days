@@ -1,6 +1,7 @@
 package com.clloret.days.menu.items;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,15 @@ import com.clloret.days.model.entities.TagViewModel;
 public class DrawerTag extends DrawerFilter {
 
   private TagViewModel tag;
+  private DrawerTagSelectedMgr drawerTagSelectedMgr;
 
   public DrawerTag(@NonNull EventFilterByTag eventFilterByTag,
-      @NonNull TagViewModel tag) {
+      @NonNull TagViewModel tag, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
 
     super(tag.getName(), R.drawable.ic_label_24dp, eventFilterByTag);
 
     this.tag = tag;
+    this.drawerTagSelectedMgr = drawerTagSelectedMgr;
   }
 
   @Override
@@ -58,5 +61,19 @@ public class DrawerTag extends DrawerFilter {
   private void updateTitle() {
 
     title = tag.getName();
+  }
+
+  @Override
+  public void select(FragmentActivity activity) {
+
+    drawerTagSelectedMgr.select(this);
+
+    super.select(activity);
+  }
+
+  @Override
+  public void deselect() {
+
+    drawerTagSelectedMgr.deselect();
   }
 }

@@ -16,9 +16,8 @@ import javax.inject.Inject;
 
 public class SelectTagsHelper {
 
-  private SelectionMap<String, TagViewModel> mapTags = new SelectionMap<>();
-
   private final Resources resources;
+  private SelectionMap<String, TagViewModel> mapTags = new SelectionMap<>();
 
   @Inject
   public SelectTagsHelper(Resources resources) {
@@ -110,6 +109,11 @@ public class SelectTagsHelper {
     }
 
     showSelectedTags();
+  }
+
+  public void addTagToSelection(TagViewModel tag) {
+
+    mapTags.addToSelection(tag);
   }
 
   public interface SelectTagsHelperListener {
