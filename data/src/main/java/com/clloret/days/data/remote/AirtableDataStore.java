@@ -59,7 +59,7 @@ public class AirtableDataStore implements AppDataStore {
       Base base = airtable.base(database);
       eventTable = (Table<ApiEvent>) base.table(EVENTS_TABLE, ApiEvent.class);
     } catch (AirtableException e) {
-      Timber.e(e, "Error creating eventTable");
+      Timber.e(e, "Error creating event");
     }
   }
 
@@ -71,7 +71,7 @@ public class AirtableDataStore implements AppDataStore {
       Base base = airtable.base(database);
       tagTable = (Table<ApiTag>) base.table(TAGS_TABLE, ApiTag.class);
     } catch (AirtableException e) {
-      Timber.e(e, "Error creating tagTable");
+      Timber.e(e, "Error creating tag");
     }
   }
 
