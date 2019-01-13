@@ -315,6 +315,8 @@ public class EventListFragment
 
     Timber.e(message);
 
+    contentView.setRefreshing(false);
+
     showSnackbarMessage(message);
   }
 
