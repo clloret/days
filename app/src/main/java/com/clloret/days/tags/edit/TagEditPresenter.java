@@ -45,6 +45,7 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
@@ -58,6 +59,7 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(deleted -> view.deleteSuccessfully(tag, deleted))
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }

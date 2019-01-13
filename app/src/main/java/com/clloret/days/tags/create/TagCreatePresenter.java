@@ -47,6 +47,7 @@ public class TagCreatePresenter extends MvpNullObjectBasePresenter<TagCreateView
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }

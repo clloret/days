@@ -72,6 +72,7 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
           view.onSuccessfully(eventViewModelMapper.fromEvent(result));
         })
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
@@ -93,6 +94,7 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
           view.deleteSuccessfully(event, deleted);
         })
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }

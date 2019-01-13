@@ -84,7 +84,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
           view.setData(eventViewModelMapper.fromEvent(result));
           view.showContent();
         })
-        .doOnError(error -> view.showError(error, pullToRefresh))
+        .doOnError(error -> view.onError(error.getMessage()))
         .subscribe();
     disposable.add(subscribe);
   }
@@ -92,14 +92,17 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
   public void loadEvents(final boolean pullToRefresh, EventFilterStrategy filterStrategy) {
 
     if (pullToRefresh) {
-      api.getEvents(true)
-          .doOnSuccess(list -> {
-            Timber.d("getEvents: %d", list.size());
-            getLocalEvents(true, filterStrategy);
-          })
+      EventListView view = getView();
+
+      Disposable subscribe = api.getEvents(true)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
-          .subscribe();
+          .subscribe(list -> {
+            Timber.d("getEvents: %d", list.size());
+            getLocalEvents(true, filterStrategy);
+          }, error -> view.onError(error.getMessage()));
+
+      disposable.add(subscribe);
     } else {
       getLocalEvents(false, filterStrategy);
     }
@@ -121,6 +124,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
           view.deleteSuccessfully(event, deleted);
         })
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
@@ -141,6 +145,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(result -> view.favoriteSuccessfully(eventViewModelMapper.fromEvent(result)))
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
@@ -155,6 +160,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .doOnSuccess(
             result -> view.undoDeleteSuccessfully(eventViewModelMapper.fromEvent(result)))
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
@@ -177,6 +183,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
               view.dateResetSuccessfully(eventViewModelMapper.fromEvent(result));
             })
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
@@ -206,6 +213,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
               view.reminderSuccessfully(eventViewModel);
             })
         .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
   }
