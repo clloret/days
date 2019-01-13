@@ -213,8 +213,10 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
   private void deselectPreviousMenuItem() {
 
-    DrawerMenuItem drawerMenuItemPrevious = adapter.getItem(previousCheckedPosition);
-    drawerMenuItemPrevious.deselect();
+    if (previousCheckedPosition != -1) {
+      DrawerMenuItem drawerMenuItemPrevious = adapter.getItem(previousCheckedPosition);
+      drawerMenuItemPrevious.deselect();
+    }
   }
 
   public @Nullable
