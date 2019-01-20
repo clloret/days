@@ -5,5 +5,4 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:minHeight="?attr/actionBarSize"
-  app:popupTheme="@style/AppTheme.PopupOverlay">
-</android.support.v7.widget.Toolbar>
+  app:popupTheme="@style/AppTheme.PopupOverlay"/>

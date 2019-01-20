@@ -17,6 +17,10 @@ public interface EventListView extends MvpLceView<List<EventViewModel>> {
 
   void showMessage(String message);
 
+  void showIndeterminateProgress();
+
+  void hideIndeterminateProgress();
+
   void showEditEventUi(EventViewModel event);
 
   void showCreatedEvent(EventViewModel event);

@@ -85,6 +85,7 @@ public class EventListFragment
   private EventFilterStrategy filterStrategy;
   private EventListAdapter adapter;
   private SortType savedSortType;
+  private OnProgressListener progressListener;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -103,6 +104,45 @@ public class EventListFragment
     fragment.setArguments(bundle);
 
     return fragment;
+  }
+
+  private void selectMenuSortMode(Menu menu) {
+
+    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    menu.findItem(menuId).setChecked(true);
+  }
+
+  private boolean sortByComparator(int itemId) {
+
+    switch (itemId) {
+      case R.id.menu_sort_name:
+      case R.id.menu_sort_favorite:
+      case R.id.menu_sort_latest_date:
+      case R.id.menu_sort_oldest_date:
+        SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
+        Comparator<EventViewModel> comparator = eventSortComparators.get(sortType);
+        adapter.sortByComparator(comparator);
+        preferences.edit().putInt(PREF_SORT_MODE, sortType.getValue()).apply();
+        return true;
+
+      default:
+        return false;
+    }
+  }
+
+  private void checkIfEmptyViewToBeDisplayed() {
+
+    if (adapter.getItemCount() == 0) {
+      emptyView.setVisibility(View.VISIBLE);
+    } else {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
+
+  private void addCreatedEventToAdapter(EventViewModel event) {
+
+    int index = adapter.addItem(event);
+    recyclerView.scrollToPosition(index);
   }
 
   private void readBundle(Bundle bundle) {
@@ -200,30 +240,6 @@ public class EventListFragment
     } else {
 
       return super.onOptionsItemSelected(item);
-    }
-  }
-
-  private void selectMenuSortMode(Menu menu) {
-
-    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
-    menu.findItem(menuId).setChecked(true);
-  }
-
-  private boolean sortByComparator(int itemId) {
-
-    switch (itemId) {
-      case R.id.menu_sort_name:
-      case R.id.menu_sort_favorite:
-      case R.id.menu_sort_latest_date:
-      case R.id.menu_sort_oldest_date:
-        SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        Comparator<EventViewModel> comparator = eventSortComparators.get(sortType);
-        adapter.sortByComparator(comparator);
-        preferences.edit().putInt(PREF_SORT_MODE, sortType.getValue()).apply();
-        return true;
-
-      default:
-        return false;
     }
   }
 
@@ -327,6 +343,22 @@ public class EventListFragment
   }
 
   @Override
+  public void showIndeterminateProgress() {
+
+    if (progressListener != null) {
+      progressListener.showIndeterminateProgress();
+    }
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    if (progressListener != null) {
+      progressListener.hideIndeterminateProgress();
+    }
+  }
+
+  @Override
   public void showEditEventUi(EventViewModel event) {
 
     navigator.navigateToEventEdit(getContext(), event);
@@ -398,18 +430,16 @@ public class EventListFragment
     adapter.updateItem(event);
   }
 
-  private void checkIfEmptyViewToBeDisplayed() {
+  public void setOnProgressListener(OnProgressListener listener) {
 
-    if (adapter.getItemCount() == 0) {
-      emptyView.setVisibility(View.VISIBLE);
-    } else {
-      emptyView.setVisibility(View.GONE);
-    }
+    progressListener = listener;
   }
 
-  private void addCreatedEventToAdapter(EventViewModel event) {
+  public interface OnProgressListener {
 
-    int index = adapter.addItem(event);
-    recyclerView.scrollToPosition(index);
+    void showIndeterminateProgress();
+
+    void hideIndeterminateProgress();
   }
+
 }

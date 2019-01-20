@@ -6,26 +6,33 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fitsSystemWindows="true"
-  tools:context="com.clloret.days.activities.MainActivity"
-  >
+  tools:context="com.clloret.days.activities.MainActivity">
 
   <android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
       android:id="@+id/appbar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:theme="@style/AppTheme.AppBarOverlay"
-      >
+      android:theme="@style/AppTheme.AppBarOverlay">
 
       <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+      <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="-10dp"
+        android:indeterminate="true"
+        android:visibility="invisible"/>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -34,8 +41,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      tools:layout="@layout/fragment_event_list"
-      />
+      tools:layout="@layout/fragment_event_list"/>
 
     <android.support.design.widget.FloatingActionButton
       android:id="@+id/fab_main_newevent"
@@ -45,8 +51,7 @@
       android:layout_gravity="bottom|end"
       android:src="@drawable/ic_add_wht_24dp"
       app:layout_anchorGravity="bottom|end"
-      app:layout_behavior="com.clloret.days.utils.ScrollAwareFabBehavior"
-      />
+      app:layout_behavior="com.clloret.days.utils.ScrollAwareFabBehavior"/>
 
   </android.support.design.widget.CoordinatorLayout>
 

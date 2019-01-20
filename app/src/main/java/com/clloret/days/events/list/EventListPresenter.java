@@ -8,7 +8,6 @@ import com.clloret.days.device.events.ReminderListScheduleEvent;
 import com.clloret.days.device.events.ReminderScheduleEvent;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.events.list.filter.EventFilterStrategy;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
@@ -116,6 +115,8 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = api.deleteEvent(eventToDelete)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(deleted -> {
           if (event.hasReminder()) {
             eventBus.post(new ReminderScheduleEvent(eventToDelete, false, false));
@@ -143,6 +144,8 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> view.favoriteSuccessfully(eventViewModelMapper.fromEvent(result)))
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
@@ -157,6 +160,8 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = api.createEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(
             result -> view.undoDeleteSuccessfully(eventViewModelMapper.fromEvent(result)))
         .doOnError(error -> view.onError(error.getMessage()))
@@ -175,6 +180,8 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(
             result -> {
               if (result.hasReminder()) {
@@ -198,12 +205,14 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
       event.setReminderUnit(null);
     } else {
       event.setReminder(REMINDER_EVENT_DAY);
-      event.setReminderUnit(TimeUnit.DAY);
+      event.setReminderUnit(Event.TimeUnit.DAY);
     }
 
     Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(
             result -> {
               EventViewModel eventViewModel = eventViewModelMapper.fromEvent(result);

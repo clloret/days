@@ -2,22 +2,26 @@ package com.clloret.days.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.Navigator;
 import com.clloret.days.R;
+import com.clloret.days.events.list.EventListFragment;
+import com.clloret.days.events.list.EventListFragment.OnProgressListener;
 import com.clloret.days.menu.MenuFragment;
 import com.clloret.days.model.entities.TagViewModel;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnProgressListener {
 
   private static final String STATE_TITLE = "title";
 
@@ -26,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
 
   @BindView(R.id.toolbar)
   Toolbar toolbar;
+
+  @BindView(R.id.progressBar)
+  ProgressBar progressBar;
 
   @BindView(R.id.drawer_layout)
   DrawerLayout drawerLayout;
@@ -86,6 +93,15 @@ public class MainActivity extends AppCompatActivity {
   }
 
   @Override
+  public void onAttachFragment(Fragment fragment) {
+
+    if (fragment instanceof EventListFragment) {
+      EventListFragment headlinesFragment = (EventListFragment) fragment;
+      headlinesFragment.setOnProgressListener(this);
+    }
+  }
+
+  @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
     super.onRestoreInstanceState(savedInstanceState);
@@ -133,4 +149,15 @@ public class MainActivity extends AppCompatActivity {
     AndroidInjection.inject(this);
   }
 
+  @Override
+  public void showIndeterminateProgress() {
+
+    progressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    progressBar.setVisibility(View.INVISIBLE);
+  }
 }
