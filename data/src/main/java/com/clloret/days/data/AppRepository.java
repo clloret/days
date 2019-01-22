@@ -6,7 +6,6 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Tag;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import java.util.ArrayList;
@@ -24,16 +23,14 @@ public class AppRepository implements AppDataStore {
     this.remoteDataStore = remoteDataStore;
   }
 
-  private void storeEventsInDb(List<Event> events) {
+  private Single<List<Event>> storeEventsInDb(List<Event> events) {
 
-    Observable.fromCallable(() -> {
+    return Single.fromCallable(() -> {
       localDataStore.deleteAllEvents();
       localDataStore.insertAllEvents(events);
-      return true;
-    })
-        .subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.io())
-        .subscribe(t -> Timber.d("Inserted events from API in DB..."));
+
+      return events;
+    }).doFinally(() -> Timber.d("Inserted events from API in DB..."));
   }
 
   private Single<List<Event>> getEventsFromLocal() {
@@ -45,22 +42,18 @@ public class AppRepository implements AppDataStore {
   private Single<List<Event>> getEventsFromRemote() {
 
     return remoteDataStore.getEvents(false)
-        .doOnSuccess(events -> {
-          Timber.d("Remote Events");
-          storeEventsInDb(events);
-        });
+        .doFinally(() -> Timber.d("Remote Events"))
+        .flatMap(this::storeEventsInDb);
   }
 
-  private void storeTagsInDb(List<Tag> tags) {
+  private Single<List<Tag>> storeTagsInDb(List<Tag> tags) {
 
-    Observable.fromCallable(() -> {
+    return Single.fromCallable(() -> {
       localDataStore.deleteAllTags();
       localDataStore.insertAllTags(tags);
-      return true;
-    })
-        .subscribeOn(Schedulers.io())
-        .observeOn(Schedulers.io())
-        .subscribe(t -> Timber.d("Inserted tags from API in DB..."));
+
+      return tags;
+    }).doFinally(() -> Timber.d("Inserted tags from API in DB..."));
   }
 
   private Single<List<Tag>> getTagsFromLocal() {
@@ -72,10 +65,8 @@ public class AppRepository implements AppDataStore {
   private Single<List<Tag>> getTagsFromRemote() {
 
     return remoteDataStore.getTags(false)
-        .doOnSuccess(tags -> {
-          Timber.d("Remote Tags");
-          storeTagsInDb(tags);
-        });
+        .doFinally(() -> Timber.d("Remote Tags"))
+        .flatMap(this::storeTagsInDb);
   }
 
   @Override
