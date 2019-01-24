@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 import com.clloret.days.device.TimeProvider;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.events.list.filter.EventFilterByTag;
+import com.clloret.days.domain.events.filter.EventFilterByTag;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;

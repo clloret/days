@@ -1,4 +1,4 @@
-package com.clloret.days.events.list.filter;
+package com.clloret.days.domain.events.filter;
 
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;

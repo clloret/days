@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.clloret.days.R;
+import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.events.list.EventListFragment;
-import com.clloret.days.events.list.filter.EventFilterStrategy;
 
 public class DrawerFilter extends DrawerTextIcon {
 

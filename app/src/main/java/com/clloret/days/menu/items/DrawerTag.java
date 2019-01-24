@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.clloret.days.R;
-import com.clloret.days.events.list.filter.EventFilterByTag;
+import com.clloret.days.domain.events.filter.EventFilterByTag;
 import com.clloret.days.menu.items.holders.TextViewHolder;
 import com.clloret.days.model.entities.TagViewModel;
 
