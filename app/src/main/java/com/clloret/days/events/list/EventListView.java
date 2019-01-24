@@ -25,6 +25,8 @@ public interface EventListView extends MvpLceView<List<EventViewModel>> {
 
   void showCreatedEvent(EventViewModel event);
 
+  void createSuccessfully(EventViewModel event);
+
   void deleteSuccessfully(EventViewModel event, boolean deleted);
 
   void undoDeleteSuccessfully(EventViewModel event);

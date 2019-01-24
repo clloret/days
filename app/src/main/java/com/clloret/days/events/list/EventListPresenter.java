@@ -8,6 +8,7 @@ import com.clloret.days.device.events.ReminderListScheduleEvent;
 import com.clloret.days.device.events.ReminderScheduleEvent;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
@@ -36,6 +37,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
   private final EventViewModelMapper eventViewModelMapper;
   private final TimeProvider timeProvider;
   private final CompositeDisposable disposable = new CompositeDisposable();
+  private EventFilterStrategy filterStrategy = new EventFilterAll();
 
   @Inject
   public EventListPresenter(AppDataStore api, EventViewModelMapper eventViewModelMapper,
@@ -62,7 +64,12 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     disposable.dispose();
   }
 
-  private void getLocalEvents(final boolean pullToRefresh, EventFilterStrategy filterStrategy) {
+  public void setFilterStrategy(EventFilterStrategy filterStrategy) {
+
+    this.filterStrategy = filterStrategy;
+  }
+
+  private void getLocalEvents(final boolean pullToRefresh) {
 
     EventListView view = getView();
 
@@ -88,7 +95,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     disposable.add(subscribe);
   }
 
-  public void loadEvents(final boolean pullToRefresh, EventFilterStrategy filterStrategy) {
+  public void loadEvents(final boolean pullToRefresh) {
 
     if (pullToRefresh) {
       EventListView view = getView();
@@ -98,12 +105,12 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(list -> {
             Timber.d("getEvents: %d", list.size());
-            getLocalEvents(true, filterStrategy);
+            getLocalEvents(true);
           }, error -> view.onError(error.getMessage()));
 
       disposable.add(subscribe);
     } else {
-      getLocalEvents(false, filterStrategy);
+      getLocalEvents(false);
     }
   }
 
@@ -124,7 +131,11 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
 
           view.deleteSuccessfully(event, deleted);
         })
-        .doOnError(error -> view.onError(error.getMessage()))
+        .doOnError(error -> {
+          Timber.e(error);
+          //AirtableException airtableException = error;
+          view.onError(error.getMessage());
+        })
         .onErrorComplete()
         .subscribe();
     disposable.add(subscribe);
@@ -228,9 +239,17 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEvent(EventCreatedEvent event) {
+  public void onEvent(EventCreatedEvent createdEvent) {
 
-    getView().showCreatedEvent(event.event);
+    EventListView view = getView();
+    EventViewModel eventViewModel = createdEvent.event;
+    Event event = eventViewModelMapper.toEvent(eventViewModel);
+
+    if (filterStrategy.eventMatchFilter(event)) {
+      view.showCreatedEvent(eventViewModel);
+    }
+
+    view.createSuccessfully(eventViewModel);
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)
@@ -250,5 +269,4 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
 
     getView().showMessage(event.message);
   }
-
 }

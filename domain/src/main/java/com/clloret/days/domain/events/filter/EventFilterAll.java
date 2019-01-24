@@ -12,4 +12,10 @@ public class EventFilterAll extends EventFilterStrategy {
 
     return appDataStore.getEvents(false);
   }
+
+  @Override
+  public boolean eventMatchFilter(Event event) {
+
+    return true;
+  }
 }

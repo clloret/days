@@ -21,7 +21,6 @@ import butterknife.BindView;
 import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseLceFragment;
-import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.events.list.order.EventSortFactory.SortType;
 import com.clloret.days.model.entities.EventViewModel;
@@ -83,7 +82,6 @@ public class EventListFragment
   @BindView(R.id.emptyView)
   View emptyView;
 
-  private EventFilterStrategy filterStrategy;
   private EventListAdapter adapter;
   private SortType savedSortType;
   private OnProgressListener progressListener;
@@ -149,7 +147,9 @@ public class EventListFragment
   private void readBundle(Bundle bundle) {
 
     if (bundle != null) {
-      filterStrategy = (EventFilterStrategy) bundle.getSerializable(BUNDLE_FILTER_STRATEGY);
+      EventFilterStrategy filterStrategy = (EventFilterStrategy) bundle
+          .getSerializable(BUNDLE_FILTER_STRATEGY);
+      presenter.setFilterStrategy(filterStrategy);
     }
   }
 
@@ -262,7 +262,7 @@ public class EventListFragment
   @Override
   public void loadData(boolean pullToRefresh) {
 
-    presenter.loadEvents(pullToRefresh, filterStrategy);
+    presenter.loadEvents(pullToRefresh);
   }
 
   @Override
@@ -366,13 +366,16 @@ public class EventListFragment
   }
 
   @Override
-  public void showCreatedEvent(EventViewModel event) {
+  public void showCreatedEvent(EventViewModel eventViewModel) {
 
-    addCreatedEventToAdapter(event);
+    addCreatedEventToAdapter(eventViewModel);
+    checkIfEmptyViewToBeDisplayed();
+  }
+
+  @Override
+  public void createSuccessfully(EventViewModel event) {
 
     showSnackbarMessage(recyclerView, R.string.msg_event_created);
-
-    checkIfEmptyViewToBeDisplayed();
   }
 
   @Override

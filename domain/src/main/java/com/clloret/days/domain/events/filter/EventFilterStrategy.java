@@ -9,4 +9,9 @@ import java.util.List;
 public abstract class EventFilterStrategy implements Serializable {
 
   public abstract Single<List<Event>> getEvents(AppDataStore appDataStore);
+
+  public boolean eventMatchFilter(Event event) {
+
+    return false;
+  }
 }

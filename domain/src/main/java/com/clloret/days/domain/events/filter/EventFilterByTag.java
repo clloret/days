@@ -21,4 +21,16 @@ public class EventFilterByTag extends EventFilterStrategy {
 
     return appDataStore.getEventsByTagId(tagId);
   }
+
+  @Override
+  public boolean eventMatchFilter(Event event) {
+
+    List<String> tags = Arrays.asList(event.getTags());
+
+    if (tagId.isEmpty() && tags.isEmpty()) {
+      return true;
+    }
+
+    return tags.contains(tagId);
+  }
 }

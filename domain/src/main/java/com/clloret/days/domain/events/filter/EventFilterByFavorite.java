@@ -12,4 +12,10 @@ public class EventFilterByFavorite extends EventFilterStrategy {
 
     return appDataStore.getEventsByFavorite();
   }
+
+  @Override
+  public boolean eventMatchFilter(Event event) {
+
+    return event.isFavorite();
+  }
 }
