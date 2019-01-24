@@ -72,7 +72,8 @@ public class EventListPresenterTest {
     String tagId = "recsOSmIyyMoUQiwn";
     EventFilterByTag eventFilterByTag = new EventFilterByTag(tagId);
 
-    eventListPresenter.loadEvents(false, eventFilterByTag);
+    eventListPresenter.setFilterStrategy(eventFilterByTag);
+    eventListPresenter.loadEvents(false);
 
     verify(appDataStore).getEventsByTagId(tagId);
     verify(eventListView).setData(ArgumentMatchers.anyList());
