@@ -1,9 +1,10 @@
 package com.clloret.days.domain.entities;
 
+import com.clloret.days.domain.events.order.EventSortable;
 import java.util.Date;
 import org.jetbrains.annotations.NotNull;
 
-public final class Event {
+public final class Event implements EventSortable {
 
   public static final int REMINDER_EVENT_DAY = 0;
 

@@ -4,13 +4,14 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.clloret.days.domain.entities.Event.TimeUnit;
+import com.clloret.days.domain.events.order.EventSortable;
 import java.util.Date;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import timber.log.Timber;
 
 // If replace Parcelable, maintain field "event" implementation for Date type
-public final class EventViewModel implements Parcelable, Cloneable {
+public final class EventViewModel implements Parcelable, Cloneable, EventSortable {
 
   public static final Creator<EventViewModel> CREATOR = new Creator<EventViewModel>() {
     @Override

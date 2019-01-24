@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.clloret.days.R;
+import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.events.list.EventListAdapter.EventViewHolder;
 import com.clloret.days.model.entities.EventViewModel;
 import java.util.Collections;
@@ -19,9 +20,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
   private final OnListAdapterListener listener;
   private List<EventViewModel> events;
-  private Comparator<EventViewModel> currentComparator;
+  private Comparator<EventSortable> currentComparator;
 
-  public EventListAdapter(Comparator<EventViewModel> comparator, OnListAdapterListener listener) {
+  public EventListAdapter(Comparator<EventSortable> comparator, OnListAdapterListener listener) {
 
     this.currentComparator = comparator;
     this.listener = listener;
@@ -132,7 +133,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     return events == null ? 0 : events.size();
   }
 
-  public void sortByComparator(Comparator<EventViewModel> comparator) {
+  public void sortByComparator(Comparator<EventSortable> comparator) {
 
     currentComparator = comparator;
 

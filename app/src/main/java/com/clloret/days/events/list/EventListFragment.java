@@ -22,7 +22,8 @@ import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseLceFragment;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
-import com.clloret.days.events.list.order.EventSortFactory.SortType;
+import com.clloret.days.domain.events.order.EventSortFactory.SortType;
+import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.events.RefreshRequestEvent;
 import dagger.android.support.AndroidSupportInjection;
@@ -74,7 +75,7 @@ public class EventListFragment
   EventListPresenter injectPresenter;
 
   @Inject
-  Map<SortType, Comparator<EventViewModel>> eventSortComparators;
+  Map<SortType, Comparator<EventSortable>> eventSortComparators;
 
   @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
@@ -119,7 +120,7 @@ public class EventListFragment
       case R.id.menu_sort_latest_date:
       case R.id.menu_sort_oldest_date:
         SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        Comparator<EventViewModel> comparator = eventSortComparators.get(sortType);
+        Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
         adapter.sortByComparator(comparator);
         preferences.edit().putInt(PREF_SORT_MODE, sortType.getValue()).apply();
         return true;
@@ -182,7 +183,7 @@ public class EventListFragment
 
     int sortMode = preferences.getInt(PREF_SORT_MODE, SortType.NAME.getValue());
     savedSortType = SortType.fromValue(sortMode);
-    Comparator<EventViewModel> comparator = eventSortComparators.get(savedSortType);
+    Comparator<EventSortable> comparator = eventSortComparators.get(savedSortType);
 
     adapter = new EventListAdapter(comparator, this);
 
