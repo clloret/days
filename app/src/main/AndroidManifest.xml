@@ -26,19 +26,23 @@
     <activity
       android:label="@string/title_activity_event_create"
       android:name=".events.create.EventCreateActivity"
-      android:parentActivityName=".activities.MainActivity"/>
+      android:parentActivityName=".activities.MainActivity"
+      android:screenOrientation="portrait"/>
     <activity
       android:label=""
       android:name=".events.edit.EventEditActivity"
-      android:parentActivityName=".activities.MainActivity"/>
+      android:parentActivityName=".activities.MainActivity"
+      android:screenOrientation="portrait"/>
     <activity
       android:label="@string/title_activity_tag_create"
       android:name=".tags.create.TagCreateActivity"
-      android:parentActivityName=".activities.MainActivity"/>
+      android:parentActivityName=".activities.MainActivity"
+      android:screenOrientation="portrait"/>
     <activity
       android:label="@string/title_activity_tag_edit"
       android:name=".tags.edit.TagEditActivity"
-      android:parentActivityName=".activities.MainActivity"/>
+      android:parentActivityName=".activities.MainActivity"
+      android:screenOrientation="portrait"/>
     <activity
       android:label="@string/title_activity_settings"
       android:name=".settings.SettingsActivity"

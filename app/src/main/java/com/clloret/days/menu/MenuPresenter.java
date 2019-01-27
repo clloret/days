@@ -55,10 +55,7 @@ public class MenuPresenter extends MvpNullObjectBasePresenter<MenuView> {
     Disposable subscribe = api.getTags(pullToRefresh)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(tags -> {
-          view.setData(tagViewModelMapper.fromTag(tags));
-          view.showContent();
-        }, view::showError);
+        .subscribe(tags -> view.showTags(tagViewModelMapper.fromTag(tags)), view::showError);
     disposable.add(subscribe);
   }
 

@@ -18,6 +18,7 @@ import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerTag;
 import com.clloret.days.menu.items.DrawerTagSelectedMgr;
 import com.clloret.days.model.entities.TagViewModel;
+import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import dagger.android.support.AndroidSupportInjection;
 import java.util.List;
 import javax.inject.Inject;
@@ -46,6 +47,19 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
   public MenuFragment() {
     // Required empty public constructor
+  }
+
+  @NonNull
+  @Override
+  public ViewState createViewState() {
+
+    return new MenuViewState();
+  }
+
+  @Override
+  public void onNewViewStateInstance() {
+
+    loadData();
   }
 
   @NonNull
@@ -83,8 +97,6 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     listView.setOnItemClickListener((adapterView, v, i, l) -> onClickMenuItem(i));
 
     adapter.populateList();
-
-    loadData();
   }
 
   @Override
@@ -132,11 +144,6 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   }
 
   @Override
-  public void showContent() {
-
-  }
-
-  @Override
   public void showError(Throwable t) {
 
     showSnackbarMessage(t.getLocalizedMessage());
@@ -170,6 +177,15 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     adapter.deleteTag(tag);
 
     showSnackbarMessage(listView, R.string.msg_tag_removed);
+  }
+
+  @Override
+  public void showTags(List<TagViewModel> data) {
+
+    MenuViewState vs = ((MenuViewState) viewState);
+    vs.setTags(data);
+
+    setData(data);
   }
 
   public void loadData() {
@@ -228,4 +244,5 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     }
     return null;
   }
+
 }

@@ -9,12 +9,12 @@ import android.view.View;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;
+import com.hannesdorfmann.mosby.mvp.viewstate.MvpViewStateFragment;
 
 public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<V>> extends
-    MvpFragment<V, P> {
+    MvpViewStateFragment<V, P> {
 
   private Unbinder unbinder;
 

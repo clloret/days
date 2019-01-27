@@ -26,6 +26,8 @@ import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.events.RefreshRequestEvent;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
 import dagger.android.support.AndroidSupportInjection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -93,6 +95,13 @@ public class EventListFragment
    */
   public EventListFragment() {
 
+  }
+
+  @NonNull
+  @Override
+  public LceViewState<List<EventViewModel>, EventListView> createViewState() {
+
+    return new RetainingLceViewState<>();
   }
 
   public static EventListFragment newInstance(@NonNull EventFilterStrategy eventFilterStrategy) {
@@ -196,6 +205,10 @@ public class EventListFragment
         new EventListTouchHelperCallback(adapter);
     ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
     touchHelper.attachToRecyclerView(recyclerView);
+  }
+
+  @Override
+  public void onNewViewStateInstance() {
 
     showLoading(false);
     loadData(false);
@@ -272,6 +285,14 @@ public class EventListFragment
     super.showLoading(pullToRefresh);
 
     emptyView.setVisibility(View.GONE);
+  }
+
+  @Override
+  public List<EventViewModel> getData() {
+
+    Timber.d("getData");
+
+    return adapter == null ? null : adapter.getEvents();
   }
 
   @Override

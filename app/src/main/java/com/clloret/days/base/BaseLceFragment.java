@@ -10,11 +10,11 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
-import com.hannesdorfmann.mosby.mvp.lce.MvpLceFragment;
 import com.hannesdorfmann.mosby.mvp.lce.MvpLceView;
+import com.hannesdorfmann.mosby.mvp.viewstate.lce.MvpLceViewStateFragment;
 
 public abstract class BaseLceFragment<C extends View, M, V extends MvpLceView<M>, P extends
-    MvpPresenter<V>> extends MvpLceFragment<C, M, V, P> {
+    MvpPresenter<V>> extends MvpLceViewStateFragment<C, M, V, P> {
 
   private Unbinder unbinder;
 

@@ -8,8 +8,6 @@ public interface MenuView extends MvpView {
 
   void setData(List<TagViewModel> data);
 
-  void showContent();
-
   void showError(Throwable t);
 
   void showCreatedTag(TagViewModel tag);
@@ -19,4 +17,6 @@ public interface MenuView extends MvpView {
   void updateSuccessfully(TagViewModel tag);
 
   void deleteSuccessfully(TagViewModel tag);
+
+  void showTags(List<TagViewModel> data);
 }
