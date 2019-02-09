@@ -31,6 +31,7 @@ dependencies {
     }
 
     implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
+    implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
