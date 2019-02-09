@@ -5,24 +5,20 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import com.clloret.days.device.R;
-import com.clloret.days.device.events.ReminderAllScheduleEvent;
-import com.clloret.days.device.events.ReminderListScheduleEvent;
-import com.clloret.days.device.events.ReminderScheduleEvent;
 import com.clloret.days.device.notifications.NotificationsFactory;
 import com.clloret.days.device.notifications.NotificationsUtils;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.reminders.EventRemindersManager;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import java.util.List;
 import java.util.Objects;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import timber.log.Timber;
 
-public class EventRemindersManager {
+public class EventRemindersManagerImpl implements EventRemindersManager {
 
   private static final int DEFAULT_REMINDER_TIME = 0;
   private final RemindersUtils remindersUtils;
@@ -30,8 +26,8 @@ public class EventRemindersManager {
   private final Resources resources;
   private final AppDataStore appDataStore;
 
-  public EventRemindersManager(Context context, Class<?> cls, SharedPreferences preferences,
-      AppDataStore appDataStore, EventBus eventBus) {
+  public EventRemindersManagerImpl(Context context, Class<?> cls, SharedPreferences preferences,
+      AppDataStore appDataStore) {
 
     NotificationManager notificationManager = (NotificationManager) context
         .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -45,8 +41,6 @@ public class EventRemindersManager {
     this.preferences = preferences;
     this.resources = context.getResources();
     this.appDataStore = appDataStore;
-
-    eventBus.register(this);
   }
 
   private void addReminderForEvent(Event event) {
@@ -110,33 +104,38 @@ public class EventRemindersManager {
         .subscribe();
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEvent(ReminderScheduleEvent event) {
+  @Override
+  public void scheduleReminder(Event event, boolean add, boolean removePreviously) {
 
-    if (event.add) {
-      if (event.removePreviously) {
-        removeReminderForEvent(event.event);
+    Timber.d("scheduleReminder");
+
+    if (add) {
+      if (removePreviously) {
+        removeReminderForEvent(event);
       }
-      addReminderForEvent(event.event);
+      addReminderForEvent(event);
     } else {
-      removeReminderForEvent(event.event);
+      removeReminderForEvent(event);
     }
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEvent(ReminderListScheduleEvent event) {
+  @Override
+  public void scheduleReminderList(List<Event> events, boolean add) {
 
-    if (event.add) {
-      addRemindersForEvents(event.events, true);
+    Timber.d("scheduleReminderList");
+
+    if (add) {
+      addRemindersForEvents(events, true);
     } else {
-      removeRemindersForEvents(event.events);
+      removeRemindersForEvents(events);
     }
   }
 
-  @Subscribe(threadMode = ThreadMode.MAIN)
-  public void onEvent(ReminderAllScheduleEvent event) {
+  @Override
+  public void scheduleReminderAll() {
+
+    Timber.d("scheduleReminderAll");
 
     scheduleAllEvents();
   }
-
 }
