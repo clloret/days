@@ -1,4 +1,4 @@
-package com.clloret.days.dagger;
+package com.clloret.days.dagger.modules;
 
 import com.clloret.days.activities.MainActivity;
 import com.clloret.days.events.create.EventCreateActivity;
@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
 
 @Module
-public abstract class ActivityBuilder {
+public abstract class ActivityModule {
 
   @ContributesAndroidInjector()
   abstract MainActivity bindMainActivity();

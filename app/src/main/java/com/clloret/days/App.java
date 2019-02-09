@@ -2,6 +2,7 @@ package com.clloret.days;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,6 +14,7 @@ import com.clloret.days.utils.StethoUtils;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasBroadcastReceiverInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -20,12 +22,16 @@ import javax.inject.Inject;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
-public class App extends DaggerApplication implements HasSupportFragmentInjector {
+public class App extends DaggerApplication
+    implements HasSupportFragmentInjector, HasBroadcastReceiverInjector {
 
   private static final String ROBOLECTRIC_FINGERPRINT = "robolectric";
 
   @Inject
   DispatchingAndroidInjector<Fragment> androidInjector;
+
+  @Inject
+  DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector;
 
   @Inject
   AppDataStore appDataStore;
@@ -85,5 +91,11 @@ public class App extends DaggerApplication implements HasSupportFragmentInjector
   public AndroidInjector<Fragment> supportFragmentInjector() {
 
     return androidInjector;
+  }
+
+  @Override
+  public DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
+
+    return broadcastReceiverInjector;
   }
 }

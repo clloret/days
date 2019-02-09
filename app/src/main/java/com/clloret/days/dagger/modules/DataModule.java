@@ -1,4 +1,4 @@
-package com.clloret.days.dagger;
+package com.clloret.days.dagger.modules;
 
 import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
 

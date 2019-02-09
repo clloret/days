@@ -1,4 +1,4 @@
-package com.clloret.days.dagger;
+package com.clloret.days.dagger.modules;
 
 import com.clloret.days.domain.events.order.EventSortFactory;
 import com.clloret.days.domain.events.order.EventSortFactory.SortType;

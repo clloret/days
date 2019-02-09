@@ -2,6 +2,12 @@ package com.clloret.days.dagger;
 
 import android.app.Application;
 import com.clloret.days.App;
+import com.clloret.days.dagger.modules.ActivityModule;
+import com.clloret.days.dagger.modules.AppModule;
+import com.clloret.days.dagger.modules.BroadcastReceiverModule;
+import com.clloret.days.dagger.modules.DataModule;
+import com.clloret.days.dagger.modules.EventSortModule;
+import com.clloret.days.dagger.modules.UtilsModule;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;
@@ -12,12 +18,13 @@ import javax.inject.Singleton;
 @Singleton
 @Component(
     modules = {
+        ActivityModule.class,
         AndroidSupportInjectionModule.class,
         AppModule.class,
-        ActivityBuilder.class,
+        BroadcastReceiverModule.class,
         DataModule.class,
-        UtilsModule.class,
-        EventSortModule.class
+        EventSortModule.class,
+        UtilsModule.class
     }
 )
 public interface AppComponent extends AndroidInjector<DaggerApplication> {
