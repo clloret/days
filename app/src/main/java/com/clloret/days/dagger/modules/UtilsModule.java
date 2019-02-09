@@ -1,7 +1,8 @@
-package com.clloret.days.dagger;
+package com.clloret.days.dagger.modules;
 
 import com.clloret.days.Navigator;
-import com.clloret.days.device.TimeProvider;
+import com.clloret.days.device.TimeProviderImpl;
+import com.clloret.days.domain.utils.TimeProvider;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
@@ -28,7 +29,7 @@ public abstract class UtilsModule {
   @Singleton
   public static TimeProvider providesTimeProvider() {
 
-    return new TimeProvider();
+    return new TimeProviderImpl();
   }
 
 }

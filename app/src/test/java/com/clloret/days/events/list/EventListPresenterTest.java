@@ -8,7 +8,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.device.TimeProvider;
+import com.clloret.days.device.TimeProviderImpl;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
@@ -44,7 +44,7 @@ public class EventListPresenterTest {
   private EventBus eventBus;
 
   @Mock
-  private TimeProvider timeProvider;
+  private TimeProviderImpl timeProvider;
 
   @Mock
   private EventListView eventListView;
