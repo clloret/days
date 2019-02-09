@@ -1,6 +1,7 @@
 package com.clloret.days.domain.entities;
 
 import com.clloret.days.domain.events.order.EventSortable;
+import io.reactivex.annotations.NonNull;
 import java.util.Date;
 import org.jetbrains.annotations.NotNull;
 
@@ -142,7 +143,7 @@ public final class Event implements EventSortable {
     return reminderUnit != null ? reminderUnit : TimeUnit.DAY;
   }
 
-  public void setReminderUnit(TimeUnit reminderUnit) {
+  public void setReminderUnit(@NonNull TimeUnit reminderUnit) {
 
     this.reminderUnit = reminderUnit;
   }

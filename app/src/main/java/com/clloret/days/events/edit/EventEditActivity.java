@@ -406,7 +406,6 @@ public class EventEditActivity
 
     if (modifiedEvent.hasReminder()) {
       modifiedEvent.setReminder(null);
-      modifiedEvent.setReminderUnit(null);
 
       showSelectedReminder();
     }

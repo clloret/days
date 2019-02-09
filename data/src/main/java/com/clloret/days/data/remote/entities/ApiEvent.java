@@ -1,5 +1,6 @@
 package com.clloret.days.data.remote.entities;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.google.gson.annotations.Expose;
@@ -139,7 +140,7 @@ public class ApiEvent {
     return reminderUnit;
   }
 
-  public void setReminderUnit(String reminderUnit) {
+  public void setReminderUnit(@NonNull String reminderUnit) {
 
     this.reminderUnit = reminderUnit;
   }

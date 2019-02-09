@@ -147,7 +147,7 @@ public class DbEvent {
     return reminderUnit;
   }
 
-  public void setReminderUnit(TimeUnit reminderUnit) {
+  public void setReminderUnit(@NonNull TimeUnit reminderUnit) {
 
     this.reminderUnit = reminderUnit;
   }

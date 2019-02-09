@@ -215,7 +215,7 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     return reminderUnit != null ? reminderUnit : TimeUnit.DAY;
   }
 
-  public void setReminderUnit(TimeUnit reminderUnit) {
+  public void setReminderUnit(@NonNull TimeUnit reminderUnit) {
 
     this.reminderUnit = reminderUnit;
   }

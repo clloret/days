@@ -1,6 +1,7 @@
 package com.clloret.days.domain.entities;
 
 import com.clloret.days.domain.entities.Event.TimeUnit;
+import io.reactivex.annotations.NonNull;
 import java.util.Date;
 
 public class EventBuilder {
@@ -60,7 +61,7 @@ public class EventBuilder {
     return this;
   }
 
-  public EventBuilder setReminderUnit(TimeUnit reminderUnit) {
+  public EventBuilder setReminderUnit(@NonNull TimeUnit reminderUnit) {
 
     this.reminderUnit = reminderUnit;
     return this;

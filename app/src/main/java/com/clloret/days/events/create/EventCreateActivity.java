@@ -318,7 +318,6 @@ public class EventCreateActivity extends
 
     if (newEvent.hasReminder()) {
       newEvent.setReminder(null);
-      newEvent.setReminderUnit(null);
 
       showSelectedReminder();
     }
