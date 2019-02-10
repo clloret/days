@@ -23,7 +23,7 @@ public class RxImmediateSchedulerRule implements TestRule {
     @Override
     public Worker createWorker() {
 
-      return new ExecutorScheduler.ExecutorWorker(Runnable::run);
+      return new ExecutorScheduler.ExecutorWorker(Runnable::run, false);
     }
   };
 

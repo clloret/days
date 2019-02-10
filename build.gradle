@@ -42,7 +42,7 @@ allprojects {
         parcelablePleaseVersion = '1.0.2'
         roomVersion = '1.1.1'
         rxAndroidVersion = "2.1.0"
-        rxJavaVersion = '2.2.2'
+        rxJavaVersion = '2.2.6'
         stethoVersion = '1.5.0'
         supportVersion = '27.1.1'
         testRunnerVersion = '1.0.2'
