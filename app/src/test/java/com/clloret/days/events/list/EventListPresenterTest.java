@@ -9,9 +9,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.clloret.days.device.TimeProviderImpl;
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
+import com.clloret.days.domain.interactors.events.CreateEventUseCase;
+import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
+import com.clloret.days.domain.interactors.events.FavoriteEventUseCase;
+import com.clloret.days.domain.interactors.events.GetEventsUseCase;
+import com.clloret.days.domain.interactors.events.GetFilteredEventsUseCase;
+import com.clloret.days.domain.interactors.events.GetFilteredEventsUseCase.RequestValues;
+import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
+import com.clloret.days.domain.interactors.events.ToggleEventReminderUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;
@@ -35,7 +42,25 @@ public class EventListPresenterTest {
   public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Mock
-  private AppDataStore appDataStore;
+  private GetEventsUseCase getEventsUseCase;
+
+  @Mock
+  private GetFilteredEventsUseCase getFilteredEventsUseCase;
+
+  @Mock
+  private FavoriteEventUseCase favoriteEventUseCase;
+
+  @Mock
+  private ResetEventDateUseCase resetEventDateUseCase;
+
+  @Mock
+  private ToggleEventReminderUseCase toggleEventReminderUseCase;
+
+  @Mock
+  private DeleteEventUseCase deleteEventUseCase;
+
+  @Mock
+  private CreateEventUseCase createEventUseCase;
 
   @Mock
   private EventViewModelMapper eventViewModelMapper;
@@ -52,6 +77,12 @@ public class EventListPresenterTest {
   @InjectMocks
   private EventListPresenter eventListPresenter;
 
+  private void addStubMethodsToMapper(Event event, EventViewModel eventViewModel) {
+
+    when(eventViewModelMapper.fromEvent(Mockito.any(Event.class))).thenReturn(eventViewModel);
+    when(eventViewModelMapper.toEvent(Mockito.any(EventViewModel.class))).thenReturn(event);
+  }
+
   @Before
   public void setUp() {
 
@@ -65,7 +96,7 @@ public class EventListPresenterTest {
 
     List<Event> eventList = createEventList();
 
-    when(appDataStore.getEventsByTagId(any())).thenReturn(
+    when(getFilteredEventsUseCase.execute(any())).thenReturn(
         just(eventList)
     );
 
@@ -75,7 +106,7 @@ public class EventListPresenterTest {
     eventListPresenter.setFilterStrategy(eventFilterByTag);
     eventListPresenter.loadEvents(false);
 
-    verify(appDataStore).getEventsByTagId(tagId);
+    verify(getFilteredEventsUseCase).execute(any(RequestValues.class));
     verify(eventListView).setData(ArgumentMatchers.anyList());
     verify(eventListView).showContent();
   }
@@ -86,19 +117,20 @@ public class EventListPresenterTest {
     final Event event = createEvent();
     final EventViewModel eventViewModel = createEventViewModel();
 
-    when(appDataStore.deleteEvent(event)).thenReturn(new Maybe<Boolean>() {
-      @Override
-      protected void subscribeActual(MaybeObserver<? super Boolean> observer) {
+    when(deleteEventUseCase.execute(event))
+        .thenReturn(new Maybe<Boolean>() {
+          @Override
+          protected void subscribeActual(MaybeObserver<? super Boolean> observer) {
 
-        observer.onSuccess(true);
-      }
-    });
+            observer.onSuccess(true);
+          }
+        });
 
     addStubMethodsToMapper(event, eventViewModel);
 
     eventListPresenter.deleteEvent(eventViewModel);
 
-    verify(appDataStore).deleteEvent(event);
+    verify(deleteEventUseCase).execute(event);
     verify(eventListView).deleteSuccessfully(eventViewModel, true);
   }
 
@@ -108,19 +140,20 @@ public class EventListPresenterTest {
     final Event event = createEvent();
     final EventViewModel eventViewModel = createEventViewModel();
 
-    when(appDataStore.editEvent(event)).thenReturn(new Maybe<Event>() {
-      @Override
-      protected void subscribeActual(MaybeObserver<? super Event> observer) {
+    when(favoriteEventUseCase.execute(event))
+        .thenReturn(new Maybe<Event>() {
+          @Override
+          protected void subscribeActual(MaybeObserver<? super Event> observer) {
 
-        observer.onSuccess(event);
-      }
-    });
+            observer.onSuccess(event);
+          }
+        });
 
     addStubMethodsToMapper(event, eventViewModel);
 
     eventListPresenter.makeEventFavorite(eventViewModel);
 
-    verify(appDataStore).editEvent(any(Event.class));
+    verify(favoriteEventUseCase).execute(any(Event.class));
     verify(eventListView).favoriteSuccessfully(any(EventViewModel.class));
   }
 
@@ -130,28 +163,68 @@ public class EventListPresenterTest {
     final Event event = createEvent();
     final EventViewModel eventViewModel = createEventViewModel();
 
-    when(appDataStore.editEvent(event)).thenReturn(new Maybe<Event>() {
-      @Override
-      protected void subscribeActual(MaybeObserver<? super Event> observer) {
+    when(resetEventDateUseCase.execute(event))
+        .thenReturn(new Maybe<Event>() {
+          @Override
+          protected void subscribeActual(MaybeObserver<? super Event> observer) {
 
-        observer.onSuccess(event);
-      }
-    });
+            observer.onSuccess(event);
+          }
+        });
 
-    when(timeProvider.getCurrentDate()).thenReturn(new LocalDate(2000, 1, 1));
+    when(timeProvider.getCurrentDate())
+        .thenReturn(new LocalDate(2000, 1, 1));
 
     addStubMethodsToMapper(event, eventViewModel);
 
     eventListPresenter.resetDate(eventViewModel);
 
-    verify(appDataStore).editEvent(any(Event.class));
+    verify(resetEventDateUseCase).execute(any(Event.class));
     verify(eventListView).dateResetSuccessfully(any(EventViewModel.class));
   }
 
-  private void addStubMethodsToMapper(Event event, EventViewModel eventViewModel) {
+  @Test
+  public void undoDelete_Always_CallApiAndNotifyView() {
 
-    when(eventViewModelMapper.fromEvent(Mockito.any(Event.class))).thenReturn(eventViewModel);
-    when(eventViewModelMapper.toEvent(Mockito.any(EventViewModel.class))).thenReturn(event);
+    final Event event = createEvent();
+    final EventViewModel eventViewModel = createEventViewModel();
+
+    when(createEventUseCase.execute(event))
+        .thenReturn(new Maybe<Event>() {
+          @Override
+          protected void subscribeActual(MaybeObserver<? super Event> observer) {
+
+            observer.onSuccess(event);
+          }
+        });
+
+    addStubMethodsToMapper(event, eventViewModel);
+
+    eventListPresenter.undoDelete(eventViewModel);
+
+    verify(createEventUseCase).execute(any(Event.class));
+    verify(eventListView).undoDeleteSuccessfully(any(EventViewModel.class));
   }
 
+  @Test
+  public void toggleEventReminder_Always_CallApiAndNotifyView() {
+
+    final Event event = createEvent();
+    final EventViewModel eventViewModel = createEventViewModel();
+
+    when(toggleEventReminderUseCase.execute(event))
+        .thenReturn(new Maybe<Event>() {
+          @Override
+          protected void subscribeActual(MaybeObserver<? super Event> observer) {
+
+            observer.onSuccess(event);
+          }
+        });
+
+    addStubMethodsToMapper(event, eventViewModel);
+
+    eventListPresenter.toggleEventReminder(eventViewModel);
+
+    verify(toggleEventReminderUseCase).execute(any(Event.class));
+  }
 }

@@ -6,8 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.interactors.tags.CreateTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.tags.SampleBuilder;
@@ -28,7 +28,7 @@ public class TagCreatePresenterTest {
   public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Mock
-  private AppDataStore appDataStore;
+  private CreateTagUseCase createTagUseCase;
 
   @Mock
   private TagViewModelMapper tagViewModelMapper;
@@ -53,19 +53,20 @@ public class TagCreatePresenterTest {
     Tag tag = SampleBuilder.createTag();
     TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
 
-    when(appDataStore.createTag(any())).thenReturn(new Maybe<Tag>() {
-      @Override
-      protected void subscribeActual(MaybeObserver<? super Tag> observer) {
+    when(createTagUseCase.execute(any()))
+        .thenReturn(new Maybe<Tag>() {
+          @Override
+          protected void subscribeActual(MaybeObserver<? super Tag> observer) {
 
-        observer.onSuccess(tag);
-      }
-    });
+            observer.onSuccess(tag);
+          }
+        });
 
     addStubMethodsToMapper(tag, tagViewModel);
 
     tagCreatePresenter.createTag(SampleBuilder.name);
 
-    verify(appDataStore).createTag(any());
+    verify(createTagUseCase).execute(any());
     verify(tagCreateView).onSuccessfully(eq(tagViewModel));
   }
 
@@ -81,7 +82,7 @@ public class TagCreatePresenterTest {
     tagCreatePresenter.createTag(SampleBuilder.emptyText);
 
     verify(tagCreateView).onEmptyTagNameError();
-    verifyNoMoreInteractions(appDataStore);
+    verifyNoMoreInteractions(createTagUseCase);
   }
 
 }

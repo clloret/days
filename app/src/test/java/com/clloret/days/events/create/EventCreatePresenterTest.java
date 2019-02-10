@@ -7,8 +7,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.interactors.events.CreateEventUseCase;
+import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.events.SampleBuilder;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
@@ -16,7 +17,6 @@ import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
-import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -31,16 +31,16 @@ public class EventCreatePresenterTest {
   public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Mock
-  private AppDataStore appDataStore;
+  private GetTagsUseCase getTagsUseCase;
+
+  @Mock
+  private CreateEventUseCase createEventUseCase;
 
   @Mock
   private EventViewModelMapper eventViewModelMapper;
 
   @Mock
   private TagViewModelMapper tagViewModelMapper;
-
-  @Mock
-  private EventBus eventBus;
 
   @Mock
   private EventCreateView eventCreateView;
@@ -62,19 +62,18 @@ public class EventCreatePresenterTest {
     final Event event = SampleBuilder.createEvent();
     final EventViewModel eventViewModel = SampleBuilder.createEventViewModel();
 
-    when(appDataStore.createEvent(any())).thenReturn(new Maybe<Event>() {
+    when(createEventUseCase.execute(any())).thenReturn(new Maybe<Event>() {
       @Override
       protected void subscribeActual(MaybeObserver<? super Event> observer) {
 
         observer.onSuccess(event);
       }
     });
-
     addStubMethodsToMapper(event, eventViewModel);
 
     eventCreatePresenter.createEvent(eventViewModel);
 
-    verify(appDataStore).createEvent(any());
+    verify(createEventUseCase).execute(any());
     verify(eventCreateView).onSuccessfully(eq(eventViewModel));
   }
 
@@ -93,6 +92,6 @@ public class EventCreatePresenterTest {
     eventCreatePresenter.createEvent(eventViewModel);
 
     verify(eventCreateView).onEmptyEventNameError();
-    verifyNoMoreInteractions(appDataStore);
+    verifyNoMoreInteractions(createEventUseCase);
   }
 }

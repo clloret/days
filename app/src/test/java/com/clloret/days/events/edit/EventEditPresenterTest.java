@@ -7,8 +7,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
+import com.clloret.days.domain.interactors.events.EditEventUseCase;
+import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.events.SampleBuilder;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
@@ -16,7 +18,6 @@ import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
-import org.greenrobot.eventbus.EventBus;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -31,16 +32,19 @@ public class EventEditPresenterTest {
   public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Mock
-  private AppDataStore appDataStore;
+  private GetTagsUseCase getTagsUseCase;
+
+  @Mock
+  private EditEventUseCase editEventUseCase;
+
+  @Mock
+  private DeleteEventUseCase deleteEventUseCase;
 
   @Mock
   private EventViewModelMapper eventViewModelMapper;
 
   @Mock
   private TagViewModelMapper tagViewModelMapper;
-
-  @Mock
-  private EventBus eventBus;
 
   @Mock
   private EventEditView eventEditView;
@@ -62,7 +66,7 @@ public class EventEditPresenterTest {
     final Event event = createEvent();
     final EventViewModel eventViewModel = createEventViewModel();
 
-    when(appDataStore.editEvent(any())).thenReturn(new Maybe<Event>() {
+    when(editEventUseCase.execute(any())).thenReturn(new Maybe<Event>() {
       @Override
       protected void subscribeActual(MaybeObserver<? super Event> observer) {
 
@@ -74,7 +78,7 @@ public class EventEditPresenterTest {
 
     eventEditPresenter.saveEvent(eventViewModel, eventViewModel);
 
-    verify(appDataStore).editEvent(any());
+    verify(editEventUseCase).execute(any());
     verify(eventEditView).onSuccessfully(eq(eventViewModel));
   }
 

@@ -5,8 +5,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
+import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.tags.SampleBuilder;
@@ -27,7 +28,10 @@ public class TagEditPresenterTest {
   public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Mock
-  private AppDataStore appDataStore;
+  private EditTagUseCase editTagUseCase;
+
+  @Mock
+  private DeleteTagUseCase deleteTagUseCase;
 
   @Mock
   private TagViewModelMapper tagViewModelMapper;
@@ -38,6 +42,12 @@ public class TagEditPresenterTest {
   @InjectMocks
   private TagEditPresenter tagEditPresenter;
 
+  private void addStubMethodsToMapper(Tag tag, TagViewModel tagViewModel) {
+
+    when(tagViewModelMapper.fromTag(Mockito.any(Tag.class))).thenReturn(tagViewModel);
+    when(tagViewModelMapper.toTag(Mockito.any(TagViewModel.class))).thenReturn(tag);
+  }
+
   @Before
   public void setUp() {
 
@@ -47,12 +57,12 @@ public class TagEditPresenterTest {
   }
 
   @Test
-  public void saveEvent_Always_CallApiAndNotifyView() {
+  public void saveTag_Always_CallApiAndNotifyView() {
 
     Tag tag = SampleBuilder.createTag();
     TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
 
-    when(appDataStore.editTag(any())).thenReturn(new Maybe<Tag>() {
+    when(editTagUseCase.execute(any())).thenReturn(new Maybe<Tag>() {
       @Override
       protected void subscribeActual(MaybeObserver<? super Tag> observer) {
 
@@ -64,18 +74,12 @@ public class TagEditPresenterTest {
 
     tagEditPresenter.saveTag(tagViewModel);
 
-    verify(appDataStore).editTag(any());
+    verify(editTagUseCase).execute(any());
     verify(tagEditView).onSuccessfully(eq(tagViewModel));
   }
 
-  private void addStubMethodsToMapper(Tag tag, TagViewModel tagViewModel) {
-
-    when(tagViewModelMapper.fromTag(Mockito.any(Tag.class))).thenReturn(tagViewModel);
-    when(tagViewModelMapper.toTag(Mockito.any(TagViewModel.class))).thenReturn(tag);
-  }
-
   @Test
-  public void saveEvent_WhenEmptyEventName_NotifyViewError() {
+  public void saveTag_WhenEmptyEventName_NotifyViewError() {
 
     TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
     tagViewModel.setName("");
@@ -84,4 +88,24 @@ public class TagEditPresenterTest {
 
     verify(tagEditView).onEmptyTagNameError();
   }
+
+  @Test
+  public void deleteTag_Always_CallApiAndNotifyView() {
+
+    TagViewModel tagViewModel = SampleBuilder.createTagViewModel();
+
+    when(deleteTagUseCase.execute(any())).thenReturn(new Maybe<Boolean>() {
+      @Override
+      protected void subscribeActual(MaybeObserver<? super Boolean> observer) {
+
+        observer.onSuccess(true);
+      }
+    });
+
+    tagEditPresenter.deleteTag(tagViewModel);
+
+    verify(deleteTagUseCase).execute(any());
+    verify(tagEditView).deleteSuccessfully(eq(tagViewModel), eq(true));
+  }
+
 }
