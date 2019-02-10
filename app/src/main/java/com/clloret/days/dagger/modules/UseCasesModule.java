@@ -61,8 +61,8 @@ public final class UseCasesModule {
 
   @Provides
   @Singleton
-  ToggleEventReminderUseCase providesToggleEventReminderUseCase(final AppDataStore dataStore
-      , EventRemindersManager eventRemindersManager) {
+  ToggleEventReminderUseCase providesToggleEventReminderUseCase(final AppDataStore dataStore,
+      EventRemindersManager eventRemindersManager) {
 
     return new ToggleEventReminderUseCase(dataStore, eventRemindersManager);
   }

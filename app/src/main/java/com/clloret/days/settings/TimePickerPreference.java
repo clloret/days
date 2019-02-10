@@ -15,18 +15,18 @@ public class TimePickerPreference extends DialogPreference {
     this(context, null);
   }
 
-  public TimePickerPreference(Context context, AttributeSet attrs) {
+  private TimePickerPreference(Context context, AttributeSet attrs) {
 
     this(context, attrs, 0);
   }
 
-  public TimePickerPreference(Context context, AttributeSet attrs,
+  private TimePickerPreference(Context context, AttributeSet attrs,
       int defStyleAttr) {
 
     this(context, attrs, defStyleAttr, defStyleAttr);
   }
 
-  public TimePickerPreference(Context context, AttributeSet attrs,
+  private TimePickerPreference(Context context, AttributeSet attrs,
       int defStyleAttr, int defStyleRes) {
 
     super(context, attrs, defStyleAttr, defStyleRes);
@@ -52,8 +52,7 @@ public class TimePickerPreference extends DialogPreference {
   @Override
   protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
 
-    setTime(restorePersistedValue ?
-        getPersistedInt(time) : (int) defaultValue);
+    setTime(restorePersistedValue ? getPersistedInt(time) : (int) defaultValue);
   }
 
   @Override
