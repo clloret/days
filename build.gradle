@@ -30,7 +30,7 @@ allprojects {
 
         annotatedAdapterVersion = '1.1.1'
         butterknifeVersion = '8.8.1'
-        daggerVersion = '2.15'
+        daggerVersion = '2.21'
         espressoVersion = '3.0.2'
         eventBusVersion = '3.1.1'
         hamcrestVersion = '1.3'
