@@ -13,7 +13,6 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
-import org.greenrobot.eventbus.EventBus;
 
 @Module
 public abstract class AppModule {
@@ -38,10 +37,10 @@ public abstract class AppModule {
   @Provides
   @Singleton
   static EventRemindersManager providesEventReminders(Application application,
-      SharedPreferences preferences, EventBus eventBus, AppDataStore appDataStore) {
+      SharedPreferences preferences, AppDataStore appDataStore) {
 
-    return new EventRemindersManagerImpl(application, MainActivity.class, preferences, appDataStore
-    );
+    return new EventRemindersManagerImpl(application, MainActivity.class, preferences,
+        appDataStore);
   }
 
 }
