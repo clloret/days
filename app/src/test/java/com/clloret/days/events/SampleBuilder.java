@@ -11,12 +11,12 @@ import org.joda.time.LocalDate;
 
 public class SampleBuilder {
 
-  public static String emptyText = "";
-  public static String id = "1";
-  public static String name = "Mock Event";
-  public static String description = "Description";
-  public static Date date = new LocalDate(2000, 1, 1).toDate();
-  public static boolean favorite = false;
+  public static final String emptyText = "";
+  private static final String id = "1";
+  private static final String name = "Mock Event";
+  private static final String description = "Description";
+  private static final Date date = new LocalDate(2000, 1, 1).toDate();
+  private static final boolean favorite = false;
 
   @NonNull
   public static Event createEvent() {

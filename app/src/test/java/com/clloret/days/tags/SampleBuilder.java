@@ -6,9 +6,9 @@ import com.clloret.days.model.entities.TagViewModel;
 
 public class SampleBuilder {
 
-  public static String emptyText = "";
-  public static String id = "1";
-  public static String name = "Mock Event";
+  public static final String emptyText = "";
+  public static final String name = "Mock Event";
+  private static final String id = "1";
 
   @NonNull
   public static Tag createTag() {
