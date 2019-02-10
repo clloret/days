@@ -7,6 +7,7 @@ import com.clloret.days.dagger.modules.AppModule;
 import com.clloret.days.dagger.modules.BroadcastReceiverModule;
 import com.clloret.days.dagger.modules.DataModule;
 import com.clloret.days.dagger.modules.EventSortModule;
+import com.clloret.days.dagger.modules.UseCasesModule;
 import com.clloret.days.dagger.modules.UtilsModule;
 import dagger.BindsInstance;
 import dagger.Component;
@@ -24,6 +25,7 @@ import javax.inject.Singleton;
         BroadcastReceiverModule.class,
         DataModule.class,
         EventSortModule.class,
+        UseCasesModule.class,
         UtilsModule.class
     }
 )

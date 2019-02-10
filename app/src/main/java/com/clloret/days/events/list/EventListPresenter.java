@@ -1,15 +1,17 @@
 package com.clloret.days.events.list;
 
-import static com.clloret.days.domain.entities.Event.REMINDER_EVENT_DAY;
-
 import android.support.annotation.NonNull;
-import com.clloret.days.device.TimeProvider;
-import com.clloret.days.device.events.ReminderListScheduleEvent;
-import com.clloret.days.device.events.ReminderScheduleEvent;
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
+import com.clloret.days.domain.interactors.events.CreateEventUseCase;
+import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
+import com.clloret.days.domain.interactors.events.FavoriteEventUseCase;
+import com.clloret.days.domain.interactors.events.GetEventsUseCase;
+import com.clloret.days.domain.interactors.events.GetFilteredEventsUseCase;
+import com.clloret.days.domain.interactors.events.GetFilteredEventsUseCase.RequestValues;
+import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
+import com.clloret.days.domain.interactors.events.ToggleEventReminderUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.events.EventCreatedEvent;
@@ -17,36 +19,51 @@ import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
 import com.clloret.days.model.events.ShowMessageEvent;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.joda.time.LocalDate;
 import timber.log.Timber;
 
 public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView> {
 
-  private final AppDataStore api;
   private final EventBus eventBus;
   private final EventViewModelMapper eventViewModelMapper;
-  private final TimeProvider timeProvider;
+  private final GetEventsUseCase getEventsUseCase;
+  private final GetFilteredEventsUseCase getFilteredEventsUseCase;
+  private final FavoriteEventUseCase favoriteEventUseCase;
+  private final ResetEventDateUseCase resetEventDateUseCase;
+  private final ToggleEventReminderUseCase toggleEventReminderUseCase;
+  private final DeleteEventUseCase deleteEventUseCase;
+  private final CreateEventUseCase createEventUseCase;
   private final CompositeDisposable disposable = new CompositeDisposable();
   private EventFilterStrategy filterStrategy = new EventFilterAll();
 
   @Inject
-  public EventListPresenter(AppDataStore api, EventViewModelMapper eventViewModelMapper,
-      EventBus eventBus, TimeProvider timeProvider) {
+  public EventListPresenter(
+      EventViewModelMapper eventViewModelMapper,
+      EventBus eventBus,
+      GetEventsUseCase getEventsUseCase,
+      GetFilteredEventsUseCase getFilteredEventsUseCase,
+      FavoriteEventUseCase favoriteEventUseCase,
+      ResetEventDateUseCase resetEventDateUseCase,
+      ToggleEventReminderUseCase toggleEventReminderUseCase,
+      DeleteEventUseCase deleteEventUseCase,
+      CreateEventUseCase createEventUseCase) {
 
-    this.api = api;
     this.eventViewModelMapper = eventViewModelMapper;
     this.eventBus = eventBus;
-    this.timeProvider = timeProvider;
+    this.getEventsUseCase = getEventsUseCase;
+    this.getFilteredEventsUseCase = getFilteredEventsUseCase;
+    this.favoriteEventUseCase = favoriteEventUseCase;
+    this.resetEventDateUseCase = resetEventDateUseCase;
+    this.toggleEventReminderUseCase = toggleEventReminderUseCase;
+    this.deleteEventUseCase = deleteEventUseCase;
+    this.createEventUseCase = createEventUseCase;
   }
 
   @Override
@@ -71,27 +88,22 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
 
   private void getLocalEvents(final boolean pullToRefresh) {
 
-    EventListView view = getView();
+    final EventListView view = getView();
+    final RequestValues requestValues = new RequestValues(filterStrategy, pullToRefresh);
 
-    Single<List<Event>> events = filterStrategy.getEvents(api);
-
-    Disposable subscribe = events
+    Disposable subscribe = getFilteredEventsUseCase.execute(requestValues)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(result -> {
 
           Timber.d("getLocalEvents: %d", result.size());
 
-          if (pullToRefresh) {
-            eventBus
-                .post(new ReminderListScheduleEvent(result, true));
-          }
-
           view.setData(eventViewModelMapper.fromEvent(result));
           view.showContent();
         })
         .doOnError(error -> view.onError(error.getMessage()))
         .subscribe();
+
     disposable.add(subscribe);
   }
 
@@ -100,7 +112,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     if (pullToRefresh) {
       EventListView view = getView();
 
-      Disposable subscribe = api.getEvents(true)
+      Disposable subscribe = getEventsUseCase.execute(true)
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .subscribe(list -> {
@@ -114,23 +126,17 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     }
   }
 
-  public void deleteEvent(EventViewModel event) {
+  public void deleteEvent(EventViewModel eventViewModel) {
 
-    EventListView view = getView();
+    final EventListView view = getView();
+    final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
-    Event eventToDelete = eventViewModelMapper.toEvent(event);
-    Disposable subscribe = api.deleteEvent(eventToDelete)
+    Disposable subscribe = deleteEventUseCase.execute(event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(deleted -> {
-          if (event.hasReminder()) {
-            eventBus.post(new ReminderScheduleEvent(eventToDelete, false, false));
-          }
-
-          view.deleteSuccessfully(event, deleted);
-        })
+        .doOnSuccess(deleted -> view.deleteSuccessfully(eventViewModel, deleted))
         .doOnError(error -> {
           Timber.e(error);
           //AirtableException airtableException = error;
@@ -138,6 +144,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         })
         .onErrorComplete()
         .subscribe();
+
     disposable.add(subscribe);
   }
 
@@ -146,13 +153,13 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     getView().showEditEventUi(event);
   }
 
-  public void makeEventFavorite(@NonNull EventViewModel event) {
+  public void makeEventFavorite(@NonNull EventViewModel eventViewModel) {
 
-    EventListView view = getView();
+    final EventListView view = getView();
+    final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
-    event.setFavorite(!event.isFavorite());
-
-    Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
+    Disposable subscribe = favoriteEventUseCase.execute(
+        event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
@@ -161,14 +168,16 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
+
     disposable.add(subscribe);
   }
 
-  public void undoDelete(@NonNull EventViewModel event) {
+  public void undoDelete(@NonNull EventViewModel eventViewModel) {
 
-    EventListView view = getView();
+    final EventListView view = getView();
+    final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
-    Disposable subscribe = api.createEvent(eventViewModelMapper.toEvent(event))
+    Disposable subscribe = createEventUseCase.execute(event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
@@ -178,63 +187,50 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
+
     disposable.add(subscribe);
   }
 
-  public void resetDate(EventViewModel event) {
+  public void resetDate(EventViewModel eventViewModel) {
 
-    EventListView view = getView();
+    final EventListView view = getView();
+    final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
-    LocalDate date = timeProvider.getCurrentDate();
-    event.setDate(date.toDate());
+    Disposable subscribe = resetEventDateUseCase.execute(event)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
+        .doOnSuccess(
+            result -> view.dateResetSuccessfully(eventViewModelMapper.fromEvent(result)))
+        .doOnError(error -> view.onError(error.getMessage()))
+        .onErrorComplete()
+        .subscribe();
 
-    Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
+    disposable.add(subscribe);
+  }
+
+  public void toggleEventReminder(EventViewModel eventViewModel) {
+
+    final EventListView view = getView();
+
+    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    Disposable subscribe = toggleEventReminderUseCase.execute(
+        event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(
             result -> {
-              if (result.hasReminder()) {
-                eventBus.post(new ReminderScheduleEvent(result, true, true));
-              }
-              view.dateResetSuccessfully(eventViewModelMapper.fromEvent(result));
+              EventViewModel resultViewModel = eventViewModelMapper.fromEvent(result);
+
+              view.reminderSuccessfully(resultViewModel);
             })
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
-    disposable.add(subscribe);
-  }
 
-  public void toggleEventReminder(EventViewModel event) {
-
-    EventListView view = getView();
-    final boolean removePreviously = event.hasReminder();
-
-    if (event.hasReminder()) {
-      event.setReminder(null);
-      event.setReminderUnit(null);
-    } else {
-      event.setReminder(REMINDER_EVENT_DAY);
-      event.setReminderUnit(Event.TimeUnit.DAY);
-    }
-
-    Disposable subscribe = api.editEvent(eventViewModelMapper.toEvent(event))
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
-        .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(
-            result -> {
-              EventViewModel eventViewModel = eventViewModelMapper.fromEvent(result);
-              eventBus.post(new ReminderScheduleEvent(result, eventViewModel.hasReminder(),
-                  removePreviously));
-
-              view.reminderSuccessfully(eventViewModel);
-            })
-        .doOnError(error -> view.onError(error.getMessage()))
-        .onErrorComplete()
-        .subscribe();
     disposable.add(subscribe);
   }
 

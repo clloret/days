@@ -1,7 +1,7 @@
 package com.clloret.days.menu;
 
 import android.support.annotation.NonNull;
-import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.model.events.RefreshRequestEvent;
@@ -20,15 +20,16 @@ import org.greenrobot.eventbus.ThreadMode;
 
 public class MenuPresenter extends MvpNullObjectBasePresenter<MenuView> {
 
-  private final AppDataStore api;
   private final EventBus eventBus;
   private final TagViewModelMapper tagViewModelMapper;
   private final CompositeDisposable disposable = new CompositeDisposable();
 
   @Inject
-  public MenuPresenter(AppDataStore api, TagViewModelMapper tagViewModelMapper, EventBus eventBus) {
+  GetTagsUseCase getTagsUseCase;
 
-    this.api = api;
+  @Inject
+  public MenuPresenter(TagViewModelMapper tagViewModelMapper, EventBus eventBus) {
+
     this.tagViewModelMapper = tagViewModelMapper;
     this.eventBus = eventBus;
   }
@@ -50,12 +51,13 @@ public class MenuPresenter extends MvpNullObjectBasePresenter<MenuView> {
 
   public void loadTags(final boolean pullToRefresh) {
 
-    MenuView view = getView();
+    final MenuView view = getView();
 
-    Disposable subscribe = api.getTags(pullToRefresh)
+    Disposable subscribe = getTagsUseCase.execute(pullToRefresh)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(tags -> view.showTags(tagViewModelMapper.fromTag(tags)), view::showError);
+
     disposable.add(subscribe);
   }
 

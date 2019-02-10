@@ -1,6 +1,8 @@
 package com.clloret.days.tags.edit;
 
-import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
+import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
@@ -12,14 +14,18 @@ import javax.inject.Inject;
 
 public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
 
-  private final AppDataStore api;
+  private final EditTagUseCase editTagUseCase;
+  private final DeleteTagUseCase deleteTagUseCase;
   private final TagViewModelMapper tagViewModelMapper;
   private final CompositeDisposable disposable = new CompositeDisposable();
 
   @Inject
-  public TagEditPresenter(AppDataStore api, TagViewModelMapper tagViewModelMapper) {
+  public TagEditPresenter(EditTagUseCase editTagUseCase,
+      DeleteTagUseCase deleteTagUseCase,
+      TagViewModelMapper tagViewModelMapper) {
 
-    this.api = api;
+    this.editTagUseCase = editTagUseCase;
+    this.deleteTagUseCase = deleteTagUseCase;
     this.tagViewModelMapper = tagViewModelMapper;
   }
 
@@ -30,37 +36,42 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
     disposable.dispose();
   }
 
-  public void saveTag(TagViewModel tag) {
+  public void saveTag(TagViewModel tagViewModel) {
 
-    TagEditView view = getView();
+    final TagEditView view = getView();
 
-    if (tag.getName().isEmpty()) {
+    if (tagViewModel.getName().isEmpty()) {
 
       getView().onEmptyTagNameError();
       return;
     }
 
-    Disposable subscribe = api.editTag(tagViewModelMapper.toTag(tag))
+    final Tag tag = tagViewModelMapper.toTag(tagViewModel);
+
+    Disposable subscribe = editTagUseCase.execute(tag)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
+
     disposable.add(subscribe);
   }
 
-  public void deleteTag(TagViewModel tag) {
+  public void deleteTag(TagViewModel tagViewModel) {
 
-    TagEditView view = getView();
+    final TagEditView view = getView();
+    final Tag tag = tagViewModelMapper.toTag(tagViewModel);
 
-    Disposable subscribe = api.deleteTag(tagViewModelMapper.toTag(tag))
+    Disposable subscribe = deleteTagUseCase.execute(tag)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(deleted -> view.deleteSuccessfully(tag, deleted))
+        .doOnSuccess(deleted -> view.deleteSuccessfully(tagViewModel, deleted))
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
+
     disposable.add(subscribe);
   }
 }
