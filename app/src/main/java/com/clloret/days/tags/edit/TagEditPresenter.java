@@ -51,7 +51,8 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
     Disposable subscribe = editTagUseCase.execute(tag)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
+        .map(tagViewModelMapper::fromTag)
+        .doOnSuccess(view::onSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();

@@ -94,11 +94,12 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = getFilteredEventsUseCase.execute(requestValues)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .map(eventViewModelMapper::fromEvent)
         .doOnSuccess(result -> {
 
           Timber.d("getLocalEvents: %d", result.size());
 
-          view.setData(eventViewModelMapper.fromEvent(result));
+          view.setData(result);
           view.showContent();
         })
         .doOnError(error -> view.onError(error.getMessage()))
@@ -162,9 +163,10 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(result -> view.favoriteSuccessfully(eventViewModelMapper.fromEvent(result)))
+        .doOnSuccess(view::favoriteSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
@@ -180,10 +182,10 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = createEventUseCase.execute(event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(
-            result -> view.undoDeleteSuccessfully(eventViewModelMapper.fromEvent(result)))
+        .doOnSuccess(view::undoDeleteSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
@@ -199,10 +201,10 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
     Disposable subscribe = resetEventDateUseCase.execute(event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(
-            result -> view.dateResetSuccessfully(eventViewModelMapper.fromEvent(result)))
+        .doOnSuccess(view::dateResetSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
@@ -213,20 +215,16 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
   public void toggleEventReminder(EventViewModel eventViewModel) {
 
     final EventListView view = getView();
-
     final Event event = eventViewModelMapper.toEvent(eventViewModel);
+
     Disposable subscribe = toggleEventReminderUseCase.execute(
         event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(
-            result -> {
-              EventViewModel resultViewModel = eventViewModelMapper.fromEvent(result);
-
-              view.reminderSuccessfully(resultViewModel);
-            })
+        .doOnSuccess(view::reminderSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();

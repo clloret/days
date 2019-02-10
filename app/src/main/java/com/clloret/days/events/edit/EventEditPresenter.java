@@ -64,7 +64,8 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
         requestValues)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(result -> view.onSuccessfully(eventViewModelMapper.fromEvent(result)))
+        .map(eventViewModelMapper::fromEvent)
+        .doOnSuccess(view::onSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
@@ -95,7 +96,8 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
     Disposable subscribe = getTagsUseCase.execute(false)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(tags -> view.setData(tagViewModelMapper.fromTag(tags)))
+        .map(tagViewModelMapper::fromTag)
+        .doOnSuccess(view::setData)
         .doOnError(view::showError)
         .subscribe();
 

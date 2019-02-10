@@ -60,10 +60,8 @@ public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreate
     Disposable subscribe = createEventUseCase.execute(event)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(result -> {
-          EventViewModel resultViewModel = eventViewModelMapper.fromEvent(result);
-          view.onSuccessfully(resultViewModel);
-        })
+        .map(eventViewModelMapper::fromEvent)
+        .doOnSuccess(view::onSuccessfully)
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();
@@ -78,7 +76,8 @@ public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreate
     Disposable subscribe = getTagsUseCase.execute(false)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSuccess(tags -> view.setData(tagViewModelMapper.fromTag(tags)))
+        .map(tagViewModelMapper::fromTag)
+        .doOnSuccess(view::setData)
         .doOnError(view::showError)
         .subscribe();
 
