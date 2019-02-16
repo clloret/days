@@ -13,7 +13,7 @@ import com.clloret.days.domain.interactors.tags.CreateTagUseCase;
 import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
 import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.utils.TimeProvider;
 import dagger.Module;
 import dagger.Provides;
@@ -32,9 +32,9 @@ public final class UseCasesModule {
   @Provides
   @Singleton
   GetFilteredEventsUseCase providesGetFilteredEventsUseCase(final AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
-    return new GetFilteredEventsUseCase(dataStore, eventRemindersManager);
+    return new GetFilteredEventsUseCase(dataStore, eventReminderManager);
   }
 
   @Provides
@@ -54,41 +54,41 @@ public final class UseCasesModule {
   @Provides
   @Singleton
   ResetEventDateUseCase providesResetEventDateUseCase(final AppDataStore dataStore, final
-  TimeProvider timeProvider, EventRemindersManager eventRemindersManager) {
+  TimeProvider timeProvider, EventReminderManager eventReminderManager) {
 
-    return new ResetEventDateUseCase(dataStore, timeProvider, eventRemindersManager);
+    return new ResetEventDateUseCase(dataStore, timeProvider, eventReminderManager);
   }
 
   @Provides
   @Singleton
   ToggleEventReminderUseCase providesToggleEventReminderUseCase(final AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
-    return new ToggleEventReminderUseCase(dataStore, eventRemindersManager);
+    return new ToggleEventReminderUseCase(dataStore, eventReminderManager);
   }
 
   @Provides
   @Singleton
   DeleteEventUseCase providesDeleteEventUseCase(final AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
-    return new DeleteEventUseCase(dataStore, eventRemindersManager);
+    return new DeleteEventUseCase(dataStore, eventReminderManager);
   }
 
   @Provides
   @Singleton
   CreateEventUseCase providesCreateEventUseCase(final AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
-    return new CreateEventUseCase(dataStore, eventRemindersManager);
+    return new CreateEventUseCase(dataStore, eventReminderManager);
   }
 
   @Provides
   @Singleton
   EditEventUseCase providesEditEventUseCase(final AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
-    return new EditEventUseCase(dataStore, eventRemindersManager);
+    return new EditEventUseCase(dataStore, eventReminderManager);
   }
 
   @Provides

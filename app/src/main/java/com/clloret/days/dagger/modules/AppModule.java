@@ -6,9 +6,10 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.support.v7.preference.PreferenceManager;
 import com.clloret.days.activities.MainActivity;
-import com.clloret.days.device.reminders.EventRemindersManagerImpl;
-import com.clloret.days.domain.AppDataStore;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.device.reminders.ReminderManagerImpl;
+import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.reminders.ReminderManager;
+import com.clloret.days.domain.utils.TimeProvider;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -36,11 +37,19 @@ public abstract class AppModule {
 
   @Provides
   @Singleton
-  static EventRemindersManager providesEventReminders(Application application,
-      SharedPreferences preferences, AppDataStore appDataStore) {
+  static ReminderManager providesReminderManager(Application application,
+      SharedPreferences preferences) {
 
-    return new EventRemindersManagerImpl(application, MainActivity.class, preferences,
-        appDataStore);
+    return new ReminderManagerImpl(application, MainActivity.class, preferences
+    );
+  }
+
+  @Provides
+  @Singleton
+  static EventReminderManager providesEventReminders(ReminderManager reminderManager,
+      TimeProvider timeProvider) {
+
+    return new EventReminderManager(reminderManager, timeProvider);
   }
 
 }

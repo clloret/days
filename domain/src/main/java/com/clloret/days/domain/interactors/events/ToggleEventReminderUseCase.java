@@ -5,25 +5,23 @@ import static com.clloret.days.domain.entities.Event.REMINDER_EVENT_DAY;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Maybe;
 
 public class ToggleEventReminderUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
   private final AppDataStore dataStore;
-  private final EventRemindersManager eventRemindersManager;
+  private final EventReminderManager eventReminderManager;
 
   public ToggleEventReminderUseCase(AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
-    this.eventRemindersManager = eventRemindersManager;
+    this.eventReminderManager = eventReminderManager;
   }
 
   @Override
   public Maybe<Event> execute(Event event) {
-
-    final boolean removePreviously = event.hasReminder();
 
     if (event.hasReminder()) {
       event.setReminder(null);
@@ -33,12 +31,16 @@ public class ToggleEventReminderUseCase implements MaybeUseCaseWithParameter<Eve
     }
 
     return dataStore.editEvent(event)
-        .doOnSuccess(result -> reminderSchedule(result, removePreviously));
+        .doOnSuccess(this::reminderSchedule);
   }
 
-  private void reminderSchedule(Event event, boolean removePreviously) {
+  private void reminderSchedule(Event event) {
 
-    eventRemindersManager.scheduleReminder(event, event.hasReminder(), removePreviously);
+    if (event.hasReminder()) {
+      eventReminderManager.scheduleReminder(event, false);
+    } else {
+      eventReminderManager.removeReminder(event);
+    }
   }
 
 }

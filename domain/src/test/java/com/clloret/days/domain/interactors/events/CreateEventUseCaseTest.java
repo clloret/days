@@ -1,10 +1,13 @@
 package com.clloret.days.domain.interactors.events;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.observers.TestObserver;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +22,7 @@ public class CreateEventUseCaseTest {
   private AppDataStore dataStore;
 
   @Mock
-  private EventRemindersManager eventRemindersManager;
+  private EventReminderManager eventReminderManager;
 
   @InjectMocks
   private CreateEventUseCase sut;
@@ -27,14 +30,14 @@ public class CreateEventUseCaseTest {
   private void addMethodStubs(Event event) {
 
     CommonMocksInteractions.addDataStoreStubs(dataStore, event);
-    CommonMocksInteractions.addScheduleReminderStubToEventRemindersManager(eventRemindersManager);
+    CommonMocksInteractions.addScheduleReminderStubToEventRemindersManager(eventReminderManager);
   }
 
   private void verifyDataStoreMockInteractions(Event newEvent) {
 
-    Mockito.verify(dataStore, Mockito.times(1))
+    verify(dataStore, Mockito.times(1))
         .createEvent(newEvent);
-    Mockito.verifyNoMoreInteractions(dataStore);
+    verifyNoMoreInteractions(dataStore);
   }
 
   @Before
@@ -58,9 +61,9 @@ public class CreateEventUseCaseTest {
         .test();
 
     verifyDataStoreMockInteractions(newEvent);
-    CommonMocksInteractions
-        .verifyEventRemindersManagerMockInteractions(newEvent, eventRemindersManager, true,
-            false);
+    verify(eventReminderManager, Mockito.times(1))
+        .scheduleReminder(newEvent, false);
+    verifyNoMoreInteractions(eventReminderManager);
 
     testObserver
         .assertComplete()

@@ -6,7 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.Maybe;
 import org.joda.time.LocalDate;
@@ -27,10 +27,10 @@ class CommonMocksInteractions {
   }
 
   static void addScheduleReminderStubToEventRemindersManager(
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
-    doNothing().when(eventRemindersManager)
-        .scheduleReminder(isA(Event.class), isA(Boolean.class), isA(Boolean.class));
+    doNothing().when(eventReminderManager)
+        .scheduleReminder(isA(Event.class), isA(Boolean.class));
   }
 
   static void addGetCurrentDateStubToTimeProvider(TimeProvider timeProvider,
@@ -38,15 +38,5 @@ class CommonMocksInteractions {
 
     when(timeProvider.getCurrentDate())
         .thenReturn(today);
-  }
-
-  static void verifyEventRemindersManagerMockInteractions(Event event,
-      EventRemindersManager eventRemindersManager,
-      boolean add,
-      boolean removePreviously) {
-
-    Mockito.verify(eventRemindersManager, Mockito.times(1))
-        .scheduleReminder(event, add, removePreviously);
-    Mockito.verifyNoMoreInteractions(eventRemindersManager);
   }
 }

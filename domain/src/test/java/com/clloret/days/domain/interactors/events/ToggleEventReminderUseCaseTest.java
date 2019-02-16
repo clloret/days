@@ -1,10 +1,13 @@
 package com.clloret.days.domain.interactors.events;
 
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.observers.TestObserver;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +22,7 @@ public class ToggleEventReminderUseCaseTest {
   private AppDataStore dataStore;
 
   @Mock
-  private EventRemindersManager eventRemindersManager;
+  private EventReminderManager eventReminderManager;
 
   @InjectMocks
   private ToggleEventReminderUseCase sut;
@@ -27,7 +30,7 @@ public class ToggleEventReminderUseCaseTest {
   private void addMethodStubs(Event event) {
 
     CommonMocksInteractions.addDataStoreStubs(dataStore, event);
-    CommonMocksInteractions.addScheduleReminderStubToEventRemindersManager(eventRemindersManager);
+    CommonMocksInteractions.addScheduleReminderStubToEventRemindersManager(eventReminderManager);
   }
 
   private void verifyDataStoreMockInteractions(Event event) {
@@ -57,9 +60,9 @@ public class ToggleEventReminderUseCaseTest {
         .test();
 
     verifyDataStoreMockInteractions(toggleEvent);
-    CommonMocksInteractions
-        .verifyEventRemindersManagerMockInteractions(toggleEvent, eventRemindersManager, true,
-            false);
+    verify(eventReminderManager, Mockito.times(1))
+        .scheduleReminder(toggleEvent, false);
+    verifyNoMoreInteractions(eventReminderManager);
 
     testObserver
         .assertComplete()
@@ -82,9 +85,9 @@ public class ToggleEventReminderUseCaseTest {
         .test();
 
     verifyDataStoreMockInteractions(toggleEvent);
-    CommonMocksInteractions
-        .verifyEventRemindersManagerMockInteractions(toggleEvent, eventRemindersManager, false,
-            true);
+    verify(eventReminderManager, Mockito.times(1))
+        .removeReminder(toggleEvent);
+    verifyNoMoreInteractions(eventReminderManager);
 
     testObserver
         .assertComplete()

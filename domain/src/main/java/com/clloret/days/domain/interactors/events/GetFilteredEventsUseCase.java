@@ -5,7 +5,7 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.domain.interactors.events.GetFilteredEventsUseCase.RequestValues;
 import com.clloret.days.domain.interactors.types.SingleUseCaseWithParameter;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Single;
 import java.util.List;
 
@@ -13,13 +13,13 @@ public class GetFilteredEventsUseCase implements
     SingleUseCaseWithParameter<RequestValues, List<Event>> {
 
   private final AppDataStore dataStore;
-  private final EventRemindersManager eventRemindersManager;
+  private final EventReminderManager eventReminderManager;
 
   public GetFilteredEventsUseCase(AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
-    this.eventRemindersManager = eventRemindersManager;
+    this.eventReminderManager = eventReminderManager;
   }
 
   @Override
@@ -31,7 +31,9 @@ public class GetFilteredEventsUseCase implements
 
   private void reminderScheduleList(List<Event> events, boolean scheduleReminders) {
 
-    eventRemindersManager.scheduleReminderList(events, scheduleReminders);
+    if (scheduleReminders) {
+      eventReminderManager.scheduleReminders(events, true);
+    }
   }
 
   public static final class RequestValues {

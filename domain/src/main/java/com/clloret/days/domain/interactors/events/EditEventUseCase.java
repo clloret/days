@@ -4,20 +4,20 @@ import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.EditEventUseCase.RequestValues;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Maybe;
 import java.util.Objects;
 
 public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues, Event> {
 
   private final AppDataStore dataStore;
-  private final EventRemindersManager eventRemindersManager;
+  private final EventReminderManager eventReminderManager;
 
   public EditEventUseCase(AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
-    this.eventRemindersManager = eventRemindersManager;
+    this.eventReminderManager = eventReminderManager;
   }
 
   @Override
@@ -27,11 +27,11 @@ public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues
     final Event originalEvent = requestValues.originalEvent;
     boolean scheduleReminder = false;
 
-    if (!Objects.equals(modifiedEvent.getReminder(), originalEvent.getReminder())) {
+    if (modifiedEvent.hasReminder() && isRemindersNotEquals(modifiedEvent, originalEvent)) {
       scheduleReminder = true;
     }
 
-    if (modifiedEvent.hasReminder() && (modifiedEvent.getDate() != originalEvent.getDate())) {
+    if (modifiedEvent.hasReminder() && isDatesNotEquals(modifiedEvent, originalEvent)) {
       scheduleReminder = true;
     }
 
@@ -39,15 +39,25 @@ public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues
 
     return dataStore.editEvent(modifiedEvent)
         .doOnSuccess(
-            event -> reminderSchedule(event, finalScheduleReminder, modifiedEvent.hasReminder(),
-                originalEvent.hasReminder()));
+            event -> reminderSchedule(event, finalScheduleReminder, originalEvent.hasReminder()));
   }
 
-  private void reminderSchedule(Event event, boolean schedule, boolean add,
-      boolean removePreviously) {
+  private boolean isDatesNotEquals(Event modifiedEvent, Event originalEvent) {
+
+    return !Objects.equals(modifiedEvent.getDate(), originalEvent.getDate());
+  }
+
+  private boolean isRemindersNotEquals(Event modifiedEvent, Event originalEvent) {
+
+    return !Objects.equals(modifiedEvent.getReminder(), originalEvent.getReminder());
+  }
+
+  private void reminderSchedule(Event event, boolean schedule, boolean removePreviously) {
 
     if (schedule) {
-      eventRemindersManager.scheduleReminder(event, add, removePreviously);
+      eventReminderManager.scheduleReminder(event, removePreviously);
+    } else if (removePreviously) {
+      eventReminderManager.removeReminder(event);
     }
   }
 

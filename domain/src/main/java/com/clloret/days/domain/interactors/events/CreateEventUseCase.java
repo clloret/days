@@ -3,19 +3,19 @@ package com.clloret.days.domain.interactors.events;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
-import com.clloret.days.domain.reminders.EventRemindersManager;
+import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Maybe;
 
 public class CreateEventUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
   private final AppDataStore dataStore;
-  private final EventRemindersManager eventRemindersManager;
+  private final EventReminderManager eventReminderManager;
 
   public CreateEventUseCase(AppDataStore dataStore,
-      EventRemindersManager eventRemindersManager) {
+      EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
-    this.eventRemindersManager = eventRemindersManager;
+    this.eventReminderManager = eventReminderManager;
   }
 
   @Override
@@ -28,7 +28,7 @@ public class CreateEventUseCase implements MaybeUseCaseWithParameter<Event, Even
   private void reminderSchedule(Event event) {
 
     if (event.hasReminder()) {
-      eventRemindersManager.scheduleReminder(event, true, false);
+      eventReminderManager.scheduleReminder(event, false);
     }
   }
 

@@ -1,8 +1,8 @@
 package com.clloret.days.device.receivers;
 
-import static com.clloret.days.device.reminders.RemindersUtils.ACTION_REMINDER;
-import static com.clloret.days.device.reminders.RemindersUtils.NOTIFICATION;
-import static com.clloret.days.device.reminders.RemindersUtils.NOTIFICATION_ID;
+import static com.clloret.days.device.reminders.ReminderUtilsImpl.ACTION_REMINDER;
+import static com.clloret.days.device.reminders.ReminderUtilsImpl.NOTIFICATION;
+import static com.clloret.days.device.reminders.ReminderUtilsImpl.NOTIFICATION_ID;
 
 import android.app.Notification;
 import android.app.NotificationManager;

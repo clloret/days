@@ -7,9 +7,11 @@ import android.content.Intent;
 import android.net.Uri;
 import com.clloret.days.device.notifications.NotificationsFactory;
 import com.clloret.days.device.receivers.AlarmBroadcastReceiver;
+import com.clloret.days.domain.reminders.ReminderUtils;
 import java.util.Date;
+import timber.log.Timber;
 
-public class RemindersUtils {
+public class ReminderUtilsImpl implements ReminderUtils {
 
   public static final String ACTION_REMINDER = "com.clloret.days.REMINDER";
   public static final String NOTIFICATION_ID = "notification_id";
@@ -19,7 +21,7 @@ public class RemindersUtils {
   private final NotificationsFactory notificationsFactory;
   private final PendingIntent notificationPendingIntent;
 
-  RemindersUtils(NotificationsFactory notificationsFactory, Context context, Class<?> cls) {
+  ReminderUtilsImpl(NotificationsFactory notificationsFactory, Context context, Class<?> cls) {
 
     this.context = context;
     this.notificationsFactory = notificationsFactory;
@@ -29,7 +31,10 @@ public class RemindersUtils {
     this.notificationPendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
   }
 
-  void addReminder(String id, String message, Date date) {
+  @Override
+  public void addReminder(String id, String message, Date date) {
+
+    Timber.d("addReminder - id: %s, message: %s, date: %s", id, message, date.toString());
 
     Notification notification = notificationsFactory.createNotification(notificationPendingIntent,
         message);
@@ -41,7 +46,10 @@ public class RemindersUtils {
     AlarmUtils.addAlarm(context, intent, date.getTime());
   }
 
-  void removeReminder(String id) {
+  @Override
+  public void removeReminder(String id) {
+
+    Timber.d("removeReminder - id: %s", id);
 
     Intent intent = getNotificationIntent(id);
 
@@ -56,6 +64,7 @@ public class RemindersUtils {
     return intent;
   }
 
+  @Override
   public boolean isActive(String id) {
 
     Intent notificationIntent = getNotificationIntent(id);
