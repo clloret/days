@@ -11,6 +11,7 @@ dependencies {
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "pl.pragmatists:JUnitParams:$rootProject.junitParamsVersion"
 }
 
 sourceCompatibility = "8"
