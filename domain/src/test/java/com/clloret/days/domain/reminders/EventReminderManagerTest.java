@@ -45,7 +45,7 @@ public class EventReminderManagerTest {
   @InjectMocks
   private EventReminderManager sut;
 
-  private Event getTestEvent(Date eventDate, int reminder, TimeUnit reminderUnit) {
+  private Event getTestEvent(Date eventDate, Integer reminder, TimeUnit reminderUnit) {
 
     return new EventBuilder()
         .setId("Id")
@@ -83,7 +83,6 @@ public class EventReminderManagerTest {
     MockitoAnnotations.initMocks(this);
   }
 
-
   @Test
   @Parameters({
       "01.01.2000, 1, DAY, 2.01.2000",
@@ -106,7 +105,7 @@ public class EventReminderManagerTest {
   }
 
   @Test
-  public void scheduleReminder_WhenNotRemovePreviously_NotRemoveScheduleReminder() {
+  public void scheduleReminder_WhenNoRemovePreviously_ScheduledReminderIsNotRemoved() {
 
     addReminderManagerStubs();
 
@@ -125,13 +124,32 @@ public class EventReminderManagerTest {
       "01.12.1999, -2, MONTH",
       "01.01.1999, -2, YEAR"
   })
-  public void scheduleReminder_WhenReminderTimeIsPast_NotScheduleReminder(
+  public void scheduleReminder_WhenReminderTimeIsPast_ReminderIsNotScheduled(
       @Param(converter = SimpleDateConverter.class) Date eventDate, int reminder,
       TimeUnit reminderUnit) {
 
     addReminderManagerStubs();
 
     Event event = getTestEvent(eventDate, reminder, reminderUnit);
+
+    sut.scheduleReminder(event, true);
+
+    verify(reminderManager).removeReminderForEvent(any());
+    verify(reminderManager, never()).addReminder(anyString(), anyString(), any());
+  }
+
+  @Test
+  @Parameters({
+      "01.01.2000, DAY",
+      "01.12.1999, MONTH",
+      "01.01.1999, YEAR"
+  })
+  public void scheduleReminder_WhenNoReminder_ReminderIsNotScheduled(
+      @Param(converter = SimpleDateConverter.class) Date eventDate, TimeUnit reminderUnit) {
+
+    addReminderManagerStubs();
+
+    Event event = getTestEvent(eventDate, null, reminderUnit);
 
     sut.scheduleReminder(event, true);
 
@@ -158,4 +176,41 @@ public class EventReminderManagerTest {
         .addReminder(anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
   }
 
+  @Test
+  public void scheduleReminders_WhenNoRemovePreviously_ScheduledReminderIsNotRemoved() {
+
+    addReminderManagerStubs();
+
+    Event event = getTestEvent(today.toDate(), 1, TimeUnit.DAY);
+
+    List<Event> events = new ArrayList<>();
+    events.add(event);
+    events.add(event);
+
+    sut.scheduleReminders(events, false);
+
+    int wantedNumberOfInvocations = events.size();
+    verify(reminderManager, never()).removeReminderForEvent(any());
+    verify(reminderManager, times(wantedNumberOfInvocations))
+        .addReminder(anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+  }
+
+  @Test
+  @Parameters({
+      "01.01.2000, 1, DAY",
+      "01.12.1999, 2, MONTH",
+      "01.01.1999, 2, YEAR"
+  })
+  public void removeReminder_Always_RemoveScheduledReminder(
+      @Param(converter = SimpleDateConverter.class) Date eventDate, int reminder,
+      TimeUnit reminderUnit) {
+
+    addReminderManagerStubs();
+
+    Event event = getTestEvent(eventDate, reminder, reminderUnit);
+
+    sut.removeReminder(event);
+
+    verify(reminderManager).removeReminderForEvent(any());
+  }
 }
