@@ -36,6 +36,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
