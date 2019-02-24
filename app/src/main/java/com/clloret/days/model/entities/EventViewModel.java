@@ -230,9 +230,10 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     this.timeLapse = timeLapse;
   }
 
+  @NonNull
   public TimeUnit getTimeLapseUnit() {
 
-    return timeLapseUnit;
+    return timeLapseUnit != null ? timeLapseUnit : TimeUnit.DAY;
   }
 
   public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
