@@ -1,4 +1,4 @@
-package com.clloret.days.dagger;
+package com.clloret.days.dagger.scopes;
 
 import javax.inject.Scope;
 

@@ -2,6 +2,7 @@ package com.clloret.days;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,14 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import com.clloret.days.dagger.AppComponent;
 import com.clloret.days.dagger.DaggerAppComponent;
+import com.clloret.days.device.services.TimeLapseJob;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.utils.StethoUtils;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasBroadcastReceiverInjector;
+import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -23,7 +26,8 @@ import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
 public class App extends DaggerApplication
-    implements HasSupportFragmentInjector, HasBroadcastReceiverInjector {
+    implements HasSupportFragmentInjector, HasBroadcastReceiverInjector,
+    HasServiceInjector {
 
   private static final String ROBOLECTRIC_FINGERPRINT = "robolectric";
 
@@ -32,6 +36,9 @@ public class App extends DaggerApplication
 
   @Inject
   DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector;
+
+  @Inject
+  DispatchingAndroidInjector<Service> serviceInjector;
 
   @Inject
   AppDataStore appDataStore;
@@ -45,6 +52,8 @@ public class App extends DaggerApplication
     if (!isRoboUnitTest()) {
       StethoUtils.install(this);
     }
+
+    TimeLapseJob.scheduleJob(this);
   }
 
   @Override
@@ -98,4 +107,11 @@ public class App extends DaggerApplication
 
     return broadcastReceiverInjector;
   }
+
+  @Override
+  public DispatchingAndroidInjector<Service> serviceInjector() {
+
+    return serviceInjector;
+  }
+
 }
