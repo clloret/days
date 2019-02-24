@@ -6,7 +6,6 @@ import android.content.Intent;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import dagger.android.AndroidInjection;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -44,7 +43,6 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     appDataStore.getEvents(true)
         .doOnSuccess(events -> eventReminderManager.scheduleReminders(events, false))
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .subscribe();
   }
 }
