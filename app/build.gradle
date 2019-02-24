@@ -50,6 +50,7 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$rootProject.supportVersion"
     implementation "com.android.support:support-v4:$rootProject.supportVersion"
 
+    implementation "at.favre.lib:slf4j-timber:1.0.0"
     implementation "com.github.daniel-stoneuk:material-about-library:2.3.0"
     implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
     implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
