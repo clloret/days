@@ -66,6 +66,10 @@
       android:process=":remote">
     </receiver>
 
+    <service
+      android:name=".device.services.TimeLapseService"
+      android:permission="android.permission.BIND_JOB_SERVICE"/>
+
   </application>
 
 </manifest>

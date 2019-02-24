@@ -1,6 +1,7 @@
 package com.clloret.days.events.list;
 
 import android.support.annotation.NonNull;
+import com.clloret.days.device.eventbus.EventsUpdatedEvent;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
@@ -263,4 +264,13 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
 
     getView().showMessage(event.message);
   }
+
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  public void onEvent(EventsUpdatedEvent event) {
+
+    Timber.d("EventsUpdatedEvent received");
+
+    getView().loadData(false);
+  }
+
 }
