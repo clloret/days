@@ -4,11 +4,14 @@ import com.clloret.days.domain.events.order.EventSortable;
 import io.reactivex.annotations.NonNull;
 import java.util.Date;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public final class Event implements EventSortable {
+public final class Event implements EventSortable, Cloneable {
 
   public static final int REMINDER_EVENT_DAY = 0;
 
+  private static final Logger logger = LoggerFactory.getLogger(Event.class.getSimpleName());
   private static final String[] EMPTY_ARRAY = new String[0];
   private String id;
   private String name;
@@ -56,6 +59,11 @@ public final class Event implements EventSortable {
     this.id = id;
   }
 
+  public boolean isFavorite() {
+
+    return favorite;
+  }
+
   public String getName() {
 
     return name;
@@ -74,11 +82,6 @@ public final class Event implements EventSortable {
   public void setDate(Date date) {
 
     this.date = date == null ? null : (Date) date.clone();
-  }
-
-  public boolean isFavorite() {
-
-    return favorite;
   }
 
   public void setFavorite(boolean favorite) {
@@ -105,6 +108,18 @@ public final class Event implements EventSortable {
     Event event = (Event) o;
 
     return id != null ? id.equals(event.id) : event.id == null;
+  }
+
+  @Override
+  public Event clone() {
+
+    Event obj = null;
+    try {
+      obj = (Event) super.clone();
+    } catch (CloneNotSupportedException ex) {
+      logger.warn("Cannot be cloned");
+    }
+    return obj;
   }
 
   public String[] getTags() {
