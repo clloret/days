@@ -43,7 +43,7 @@ dependencies {
     api "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
     implementation "com.android.support:support-annotations:$rootProject.supportVersion"
-    implementation "com.github.clloret:airtable.android:master"
+    implementation 'com.github.clloret:airtable.android:081d573aa2'
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
