@@ -47,6 +47,12 @@ allprojects {
         stethoVersion = '1.5.0'
         supportVersion = '27.1.1'
         testRunnerVersion = '1.0.2'
-        timberVersion = '4.7.0'
+        timberVersion = '4.7.1'
+    }
+
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains', module: 'annotations'
     }
 }
+
