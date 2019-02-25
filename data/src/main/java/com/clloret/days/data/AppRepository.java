@@ -4,10 +4,12 @@ import android.support.annotation.NonNull;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Tag;
+import com.sybit.airtableandroid.exception.AirtableException;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import timber.log.Timber;
@@ -151,10 +153,15 @@ public class AppRepository implements AppDataStore {
   public Maybe<Boolean> deleteEvent(@NonNull Event event) {
 
     return remoteDataStore.deleteEvent(event)
-        .doOnSuccess(result -> localDataStore.deleteEvent(event)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe());
+        .onErrorReturn(this::checkAirtableNotFoundError)
+        .doOnSuccess(result -> {
+          if (result) {
+            localDataStore.deleteEvent(event)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe();
+          }
+        });
   }
 
   @Override
@@ -199,5 +206,24 @@ public class AppRepository implements AppDataStore {
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.io())
             .subscribe());
+  }
+
+  private boolean checkAirtableNotFoundError(Throwable error) {
+
+    if (error instanceof AirtableException) {
+      AirtableException airtableException = (AirtableException) error;
+
+      int statusCode = airtableException.getStatusCode();
+      Timber.d("StatusCode: %d, Message: %s", statusCode,
+          airtableException.getMessage());
+
+      if (statusCode == HttpURLConnection.HTTP_NOT_FOUND) {
+        Timber.w("Orphaned event record, delete local event");
+
+        return true;
+      }
+    }
+
+    return false;
   }
 }
