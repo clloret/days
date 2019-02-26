@@ -32,13 +32,13 @@ public class App extends DaggerApplication
   private static final String ROBOLECTRIC_FINGERPRINT = "robolectric";
 
   @Inject
-  DispatchingAndroidInjector<Fragment> androidInjector;
+  DispatchingAndroidInjector<Fragment> supportFragmentDispatchingInjector;
 
   @Inject
-  DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector;
+  DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverDispatchingInjector;
 
   @Inject
-  DispatchingAndroidInjector<Service> serviceInjector;
+  DispatchingAndroidInjector<Service> serviceDispatchingInjector;
 
   @Inject
   AppDataStore appDataStore;
