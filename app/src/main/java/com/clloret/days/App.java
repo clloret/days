@@ -43,6 +43,16 @@ public class App extends DaggerApplication
   @Inject
   AppDataStore appDataStore;
 
+  public static App get(Context context) {
+
+    return (App) context.getApplicationContext();
+  }
+
+  private static boolean isRoboUnitTest() {
+
+    return ROBOLECTRIC_FINGERPRINT.equals(Build.FINGERPRINT);
+  }
+
   @Override
   public void onCreate() {
 
@@ -65,9 +75,22 @@ public class App extends DaggerApplication
     return appComponent;
   }
 
-  public static App get(Context context) {
+  @Override
+  public DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
 
-    return (App) context.getApplicationContext();
+    return broadcastReceiverDispatchingInjector;
+  }
+
+  @Override
+  public DispatchingAndroidInjector<Service> serviceInjector() {
+
+    return serviceDispatchingInjector;
+  }
+
+  @Override
+  public AndroidInjector<Fragment> supportFragmentInjector() {
+
+    return supportFragmentDispatchingInjector;
   }
 
   public void restart() {
@@ -89,29 +112,6 @@ public class App extends DaggerApplication
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe();
-  }
-
-  private static boolean isRoboUnitTest() {
-
-    return ROBOLECTRIC_FINGERPRINT.equals(Build.FINGERPRINT);
-  }
-
-  @Override
-  public AndroidInjector<Fragment> supportFragmentInjector() {
-
-    return androidInjector;
-  }
-
-  @Override
-  public DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
-
-    return broadcastReceiverInjector;
-  }
-
-  @Override
-  public DispatchingAndroidInjector<Service> serviceInjector() {
-
-    return serviceInjector;
   }
 
 }
