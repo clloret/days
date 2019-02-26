@@ -15,18 +15,21 @@ public class TimePickerPreference extends DialogPreference {
     this(context, null);
   }
 
-  private TimePickerPreference(Context context, AttributeSet attrs) {
+  @SuppressWarnings("WeakerAccess")
+  public TimePickerPreference(Context context, AttributeSet attrs) {
 
     this(context, attrs, 0);
   }
 
-  private TimePickerPreference(Context context, AttributeSet attrs,
+  @SuppressWarnings("WeakerAccess")
+  public TimePickerPreference(Context context, AttributeSet attrs,
       int defStyleAttr) {
 
     this(context, attrs, defStyleAttr, defStyleAttr);
   }
 
-  private TimePickerPreference(Context context, AttributeSet attrs,
+  @SuppressWarnings("WeakerAccess")
+  public TimePickerPreference(Context context, AttributeSet attrs,
       int defStyleAttr, int defStyleRes) {
 
     super(context, attrs, defStyleAttr, defStyleRes);
