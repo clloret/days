@@ -2,6 +2,7 @@ package com.clloret.days.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,13 +16,16 @@ import butterknife.ButterKnife;
 import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.events.list.EventListFragment;
+import com.clloret.days.events.list.EventListFragment.OnFragmentLifecycleListener;
 import com.clloret.days.events.list.EventListFragment.OnProgressListener;
 import com.clloret.days.menu.MenuFragment;
 import com.clloret.days.model.entities.TagViewModel;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
+import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements OnProgressListener {
+public class MainActivity extends AppCompatActivity
+    implements OnProgressListener, OnFragmentLifecycleListener {
 
   private static final String STATE_TITLE = "title";
 
@@ -38,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements OnProgressListene
   DrawerLayout drawerLayout;
 
   @BindView(R.id.fab_main_newevent)
-  View actionNewEvent;
+  FloatingActionButton actionNewEvent;
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -96,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements OnProgressListene
   public void onAttachFragment(Fragment fragment) {
 
     if (fragment instanceof EventListFragment) {
-      EventListFragment headlinesFragment = (EventListFragment) fragment;
-      headlinesFragment.setOnProgressListener(this);
+      EventListFragment eventListFragment = (EventListFragment) fragment;
+      eventListFragment.setOnProgressListener(this);
+      eventListFragment.setOnFragmentLifecycleListener(this);
     }
   }
 
@@ -159,5 +164,15 @@ public class MainActivity extends AppCompatActivity implements OnProgressListene
   public void hideIndeterminateProgress() {
 
     progressBar.setVisibility(View.INVISIBLE);
+  }
+
+  @Override
+  public void onStartFragment() {
+
+    Timber.d("onStartFragment");
+
+    if (!actionNewEvent.isShown()) {
+      actionNewEvent.show();
+    }
   }
 }

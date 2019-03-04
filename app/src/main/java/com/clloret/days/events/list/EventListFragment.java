@@ -88,6 +88,7 @@ public class EventListFragment
   private EventListAdapter adapter;
   private SortType savedSortType;
   private OnProgressListener progressListener;
+  private OnFragmentLifecycleListener tagSelectedListener;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -208,6 +209,18 @@ public class EventListFragment
   }
 
   @Override
+  public void onStart() {
+
+    super.onStart();
+
+    Timber.d("onStart");
+
+    if (tagSelectedListener != null) {
+      tagSelectedListener.onStartFragment();
+    }
+  }
+
+  @Override
   public void onNewViewStateInstance() {
 
     showLoading(false);
@@ -260,6 +273,8 @@ public class EventListFragment
 
   @Override
   public void onRefresh() {
+
+    Timber.d("onRefresh");
 
     EventBus.getDefault().post(new RefreshRequestEvent());
 
@@ -461,11 +476,21 @@ public class EventListFragment
     progressListener = listener;
   }
 
+  public void setOnFragmentLifecycleListener(OnFragmentLifecycleListener listener) {
+
+    tagSelectedListener = listener;
+  }
+
   public interface OnProgressListener {
 
     void showIndeterminateProgress();
 
     void hideIndeterminateProgress();
+  }
+
+  public interface OnFragmentLifecycleListener {
+
+    void onStartFragment();
   }
 
 }
