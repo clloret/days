@@ -48,8 +48,8 @@ public abstract class AppModule {
 
   @Provides
   @Singleton
-  static EventReminderManager providesEventReminders(ReminderManager reminderManager,
-      TimeProvider timeProvider) {
+  protected EventReminderManager providesEventReminders(ReminderManager reminderManager,
+      TimeProvider timeProvider, PreferenceUtils preferenceUtils) {
 
     return new EventReminderManager(reminderManager, timeProvider);
   }
