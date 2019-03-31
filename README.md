@@ -70,7 +70,7 @@ The following libraries are used in the project:
 This project is still in progress. Here are the some features that I will finish in the future.
 
 ### For users:
-- [ ] Notifications
+- [x] Notifications
 - [ ] Widgets
 - [ ] Tasker integration
 
