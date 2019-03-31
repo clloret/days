@@ -12,6 +12,7 @@ import com.clloret.days.domain.common.SimpleDateConverter;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
+import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +43,9 @@ public class EventReminderManagerTest {
   @Mock
   private TimeProvider timeProvider;
 
+  @Mock
+  private PreferenceUtils preferenceUtils;
+
   @InjectMocks
   private EventReminderManager sut;
 
@@ -60,8 +64,8 @@ public class EventReminderManagerTest {
 
     doNothing()
         .when(reminderManager)
-        .addReminder(ArgumentMatchers.isA(String.class), ArgumentMatchers.isA(String.class),
-            ArgumentMatchers.isA(Date.class));
+        .addReminder(ArgumentMatchers.isA(Event.class), ArgumentMatchers.isA(String.class),
+            ArgumentMatchers.isA(String.class), ArgumentMatchers.isA(Date.class));
 
     doNothing()
         .when(reminderManager)
@@ -69,6 +73,9 @@ public class EventReminderManagerTest {
 
     when(timeProvider.getCurrentTime())
         .thenReturn(now);
+
+    when(preferenceUtils.getReminderTime())
+        .thenReturn(0);
   }
 
   @Before
@@ -101,7 +108,7 @@ public class EventReminderManagerTest {
 
     verify(reminderManager).removeReminderForEvent(any());
     verify(reminderManager)
-        .addReminder(anyString(), anyString(), ArgumentMatchers.eq(reminderDate));
+        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(reminderDate));
   }
 
   @Test
@@ -115,7 +122,7 @@ public class EventReminderManagerTest {
 
     verify(reminderManager, never()).removeReminderForEvent(any());
     verify(reminderManager)
-        .addReminder(anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
   }
 
   @Test
@@ -135,7 +142,7 @@ public class EventReminderManagerTest {
     sut.scheduleReminder(event, true);
 
     verify(reminderManager).removeReminderForEvent(any());
-    verify(reminderManager, never()).addReminder(anyString(), anyString(), any());
+    verify(reminderManager, never()).addReminder(any(), anyString(), anyString(), any());
   }
 
   @Test
@@ -154,7 +161,7 @@ public class EventReminderManagerTest {
     sut.scheduleReminder(event, true);
 
     verify(reminderManager).removeReminderForEvent(any());
-    verify(reminderManager, never()).addReminder(anyString(), anyString(), any());
+    verify(reminderManager, never()).addReminder(any(), anyString(), anyString(), any());
   }
 
   @Test
@@ -173,7 +180,7 @@ public class EventReminderManagerTest {
     int wantedNumberOfInvocations = events.size();
     verify(reminderManager, times(wantedNumberOfInvocations)).removeReminderForEvent(any());
     verify(reminderManager, times(wantedNumberOfInvocations))
-        .addReminder(anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
   }
 
   @Test
@@ -192,7 +199,7 @@ public class EventReminderManagerTest {
     int wantedNumberOfInvocations = events.size();
     verify(reminderManager, never()).removeReminderForEvent(any());
     verify(reminderManager, times(wantedNumberOfInvocations))
-        .addReminder(anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
   }
 
   @Test
