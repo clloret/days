@@ -26,8 +26,7 @@ import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
 public class App extends DaggerApplication
-    implements HasSupportFragmentInjector, HasBroadcastReceiverInjector,
-    HasServiceInjector {
+    implements HasSupportFragmentInjector, HasBroadcastReceiverInjector, HasServiceInjector {
 
   private static final String ROBOLECTRIC_FINGERPRINT = "robolectric";
 
@@ -113,5 +112,4 @@ public class App extends DaggerApplication
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe();
   }
-
 }

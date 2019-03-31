@@ -20,7 +20,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module
-public final class UseCasesModule {
+public class UseCasesModule {
 
   @Provides
   @Singleton

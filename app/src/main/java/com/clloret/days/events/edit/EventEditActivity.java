@@ -35,6 +35,7 @@ import dagger.android.AndroidInjection;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
@@ -147,7 +148,7 @@ public class EventEditActivity
       }
     });
 
-    originalEvent = getIntent().getParcelableExtra(EXTRA_EVENT);
+    originalEvent = Objects.requireNonNull(getIntent().getParcelableExtra(EXTRA_EVENT));
     modifiedEvent = originalEvent.clone();
 
     showData();

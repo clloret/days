@@ -21,13 +21,13 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Module
-public abstract class DataModule {
+public class DataModule {
 
   private static final String DATABASE = "days";
 
   @Provides
   @Singleton
-  static AppDataStore providesAppDataStore(@Named("local") AppDataStore localDataStore,
+  AppDataStore providesAppDataStore(@Named("local") AppDataStore localDataStore,
       @Named("remote") AppDataStore remoteDataStore) {
 
     return new AppRepository(localDataStore, remoteDataStore);
@@ -36,7 +36,7 @@ public abstract class DataModule {
   @Provides
   @Singleton
   @Named("local")
-  static AppDataStore providesLocalDataStore(Context context, SharedPreferences preferences) {
+  AppDataStore providesLocalDataStore(Context context, SharedPreferences preferences) {
 
     DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
         .addMigrations(MIGRATION_1_2).build();
@@ -55,7 +55,7 @@ public abstract class DataModule {
   @Provides
   @Singleton
   @Named("remote")
-  static AppDataStore providesAirtableDataStore(Context context, SharedPreferences preferences) {
+  AppDataStore providesAirtableDataStore(Context context, SharedPreferences preferences) {
 
     RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
 
@@ -73,14 +73,14 @@ public abstract class DataModule {
 
   @Provides
   @Singleton
-  static EventViewModelMapper providesEventViewModelMapper() {
+  EventViewModelMapper providesEventViewModelMapper() {
 
     return new EventViewModelMapper();
   }
 
   @Provides
   @Singleton
-  static TagViewModelMapper providesTagViewModelMapper() {
+  TagViewModelMapper providesTagViewModelMapper() {
 
     return new TagViewModelMapper();
   }
@@ -101,7 +101,7 @@ public abstract class DataModule {
     return new RemoteDataStoreResult(isRemoteDataStore, airtableKey, airtableBase);
   }
 
-  static class RemoteDataStoreResult {
+  private static class RemoteDataStoreResult {
 
     boolean isRemoteDataStore;
     String airtableKey;
