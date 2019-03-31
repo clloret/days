@@ -105,4 +105,6 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
+  <string name="notification_action_event_delete">Borrar</string>
+  <string name="notification_action_event_reset">Reiniciar</string>
 </resources>
