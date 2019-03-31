@@ -2,7 +2,7 @@ package com.clloret.days.dagger;
 
 import android.app.Application;
 import com.clloret.days.App;
-import com.clloret.days.NotificationTests;
+import com.clloret.days.NotificationsTest;
 import com.clloret.days.activities.MainActivityTest;
 import com.clloret.days.dagger.modules.ActivityModule;
 import com.clloret.days.dagger.modules.AppModule;
@@ -37,7 +37,7 @@ public interface AppTestComponent extends AndroidInjector<DaggerApplication> {
 
   void inject(App app);
 
-  void inject(NotificationTests test);
+  void inject(NotificationsTest test);
 
   void inject(MainActivityTest test);
 

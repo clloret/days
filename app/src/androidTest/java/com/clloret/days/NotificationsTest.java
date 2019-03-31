@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class NotificationTests {
+public class NotificationsTest {
 
   private static final long TIMEOUT = 3_000L;
   private static final String CLEAR_ALL_NOTIFICATION_RES = "com.android.systemui:id/dismiss_text";
