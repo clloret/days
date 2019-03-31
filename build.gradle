@@ -37,7 +37,7 @@ allprojects {
         jodaTimeVersion = '2.9.9'
         junitVersion = '4.12'
         junitParamsVersion = '1.1.1'
-        mockitoVersion = '2.23.0'
+        mockitoVersion = '2.24.0'
         mockWebServerVersion = '3.9.1'
         mosbyVersion = '2.0.1'
         parcelablePleaseVersion = '1.0.2'
