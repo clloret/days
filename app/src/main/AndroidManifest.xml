@@ -66,6 +66,8 @@
       android:process=":remote">
     </receiver>
 
+    <receiver android:name=".device.receivers.ReminderReceiver"/>
+
     <service
       android:name=".device.services.TimeLapseService"
       android:permission="android.permission.BIND_JOB_SERVICE"/>
