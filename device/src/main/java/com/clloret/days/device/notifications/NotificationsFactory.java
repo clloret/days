@@ -1,6 +1,7 @@
 package com.clloret.days.device.notifications;
 
 import static android.os.Build.VERSION.SDK_INT;
+import static android.support.v4.app.NotificationCompat.CATEGORY_REMINDER;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,6 +9,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Action;
 import android.support.v4.app.NotificationCompat.Builder;
 import com.clloret.days.device.R;
 
@@ -28,7 +32,31 @@ public class NotificationsFactory {
     this.notificationsUtils = notificationsUtils;
   }
 
-  public Notification createNotification(PendingIntent contentIntent, String message) {
+  public Notification createEventReminderNotification(PendingIntent contentIntent, String message,
+      Iterable<Action> actions) {
+
+    Builder builder = getBuilderFromChannel();
+
+    for (Action action : actions) {
+      builder.addAction(action);
+    }
+
+    builder.setContentTitle(message)
+        .setSmallIcon(R.drawable.ic_notification)
+        .setContentText(resources.getString(R.string.app_name))
+        .setAutoCancel(true)
+        .setContentIntent(contentIntent)
+        .setTicker(message)
+        .setDefaults(NotificationCompat.DEFAULT_ALL)
+        .setChannelId(CHANNEL_REMINDERS_ID)
+        .setCategory(CATEGORY_REMINDER)
+        .setVibrate(VIBRATION_PATTERN);
+
+    return builder.build();
+  }
+
+  @NonNull
+  private Builder getBuilderFromChannel() {
 
     Builder builder;
 
@@ -46,17 +74,7 @@ public class NotificationsFactory {
       builder.setPriority(Notification.PRIORITY_HIGH);
     }
 
-    builder.setContentTitle(message)
-        .setSmallIcon(android.R.drawable.ic_popup_reminder)
-        .setContentText(resources.getString(R.string.app_name))
-        .setAutoCancel(true)
-        .setContentIntent(contentIntent)
-        .setTicker(message)
-        .setChannelId(CHANNEL_REMINDERS_ID)
-        .setDefaults(Notification.DEFAULT_ALL)
-        .setVibrate(VIBRATION_PATTERN);
-
-    return builder.build();
+    return builder;
   }
 
 }

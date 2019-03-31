@@ -1,57 +1,72 @@
 package com.clloret.days.device.reminders;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import com.clloret.days.device.R;
+import android.support.v4.app.NotificationCompat.Action;
 import com.clloret.days.device.notifications.NotificationsFactory;
+import com.clloret.days.device.notifications.NotificationsIntents;
 import com.clloret.days.device.notifications.NotificationsUtils;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.reminders.ReminderManager;
-import com.clloret.days.domain.reminders.ReminderUtils;
+import com.clloret.days.domain.utils.StringResourceProvider;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class ReminderManagerImpl implements ReminderManager {
 
-  private static final int DEFAULT_REMINDER_TIME = 0;
   private final ReminderUtils reminderUtils;
-  private final SharedPreferences preferences;
-  private final Resources resources;
+  private final NotificationsIntents notificationsIntents;
+  private final NotificationsFactory notificationsFactory;
+  private final StringResourceProvider stringResourceProvider;
 
-  public ReminderManagerImpl(Context context, Class<?> cls, SharedPreferences preferences) {
+  public ReminderManagerImpl(Context context, NotificationsIntents notificationsIntents,
+      StringResourceProvider stringResourceProvider) {
 
     NotificationManager notificationManager = (NotificationManager) context
         .getSystemService(Context.NOTIFICATION_SERVICE);
     NotificationsUtils notificationsUtils = new NotificationsUtils(
         Objects.requireNonNull(notificationManager));
-    NotificationsFactory notificationsFactory = new NotificationsFactory(context,
+
+    notificationsFactory = new NotificationsFactory(context,
         context.getResources(),
         notificationsUtils);
 
-    this.reminderUtils = new ReminderUtilsImpl(notificationsFactory, context, cls);
-    this.preferences = preferences;
-    this.resources = context.getResources();
+    this.notificationsIntents = notificationsIntents;
+    this.reminderUtils = new ReminderUtilsImpl(context);
+    this.stringResourceProvider = stringResourceProvider;
   }
 
   @Override
-  public void addReminder(String id, String message, Date date) {
+  public void addReminder(Event event, String id, String message, Date date) {
 
-    reminderUtils.addReminder(id, message, date);
+    PendingIntent viewEventIntent = notificationsIntents.getViewEventIntent(event);
+    PendingIntent deleteEventIntent = notificationsIntents.getDeleteEventIntent(event);
+    PendingIntent resetEventIntent = notificationsIntents.getResetEventIntent(event);
+
+    List<Action> actions = new ArrayList<>();
+    actions.add(
+        new Action.Builder(0,
+            stringResourceProvider.getEventDeleteNotificationAction(),
+            deleteEventIntent).build());
+    actions.add(
+        new Action.Builder(0,
+            stringResourceProvider.getEventResetNotificationAction(),
+            resetEventIntent).build());
+
+    Notification notification = notificationsFactory
+        .createEventReminderNotification(viewEventIntent, message, actions);
+
+    reminderUtils.addReminder(notification, id, message, date);
   }
 
   @Override
   public void removeReminderForEvent(Event event) {
 
     reminderUtils.removeReminder(event.getId());
-  }
-
-  @Override
-  public int getReminderTime() {
-
-    return preferences
-        .getInt(resources.getString(R.string.pref_reminder_time), DEFAULT_REMINDER_TIME);
   }
 
 }

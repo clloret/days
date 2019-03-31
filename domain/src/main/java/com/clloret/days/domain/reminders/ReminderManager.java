@@ -5,9 +5,7 @@ import java.util.Date;
 
 public interface ReminderManager {
 
-  int getReminderTime();
-
-  void addReminder(String id, String message, Date date);
+  void addReminder(Event event, String id, String message, Date date);
 
   void removeReminderForEvent(Event event);
 

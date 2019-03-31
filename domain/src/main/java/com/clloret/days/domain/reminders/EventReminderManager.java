@@ -1,6 +1,7 @@
 package com.clloret.days.domain.reminders;
 
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import java.util.Collection;
 import org.joda.time.DateTime;
@@ -10,11 +11,14 @@ public class EventReminderManager {
 
   private final ReminderManager reminderManager;
   private final TimeProvider timeProvider;
+  private final PreferenceUtils preferenceUtils;
 
-  public EventReminderManager(ReminderManager reminderManager, TimeProvider timeProvider) {
+  public EventReminderManager(ReminderManager reminderManager, TimeProvider timeProvider,
+      PreferenceUtils preferenceUtils) {
 
     this.reminderManager = reminderManager;
     this.timeProvider = timeProvider;
+    this.preferenceUtils = preferenceUtils;
   }
 
   private void addReminderForEvent(Event event) {
@@ -30,7 +34,7 @@ public class EventReminderManager {
       return;
     }
 
-    reminderManager.addReminder(event.getId(), event.getName(), timeReminder.toDate());
+    reminderManager.addReminder(event, event.getId(), event.getName(), timeReminder.toDate());
   }
 
   private boolean isReminderInThePast(DateTime eventDateWithTime) {
@@ -42,7 +46,7 @@ public class EventReminderManager {
 
   private DateTime getEventDateWithTime(Event event) {
 
-    int reminderTime = reminderManager.getReminderTime();
+    int reminderTime = preferenceUtils.getReminderTime();
     int hourOfDay = reminderTime / DateTimeConstants.MINUTES_PER_HOUR;
     int minuteOfHour = reminderTime % DateTimeConstants.MINUTES_PER_HOUR;
 
