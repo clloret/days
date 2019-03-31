@@ -106,6 +106,12 @@ public class AirtableDataStore implements AppDataStore {
   }
 
   @Override
+  public Single<Event> getEventById(String eventId) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public Single<List<Event>> getEvents(boolean refresh) {
 
     return eventTable.select(EVENTS_VIEW)

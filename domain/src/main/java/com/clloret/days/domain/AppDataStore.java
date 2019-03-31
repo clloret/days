@@ -20,6 +20,8 @@ public interface AppDataStore {
 
   Completable invalidateAll();
 
+  Single<Event> getEventById(@NonNull String eventId);
+
   Single<List<Event>> getEvents(boolean refresh);
 
   Single<List<Event>> getEventsByTagId(@NonNull String tagId);

@@ -19,6 +19,9 @@ public interface EventDao {
   @Query("SELECT * FROM events LIMIT 1")
   DbEvent getEvent();
 
+  @Query("SELECT * FROM events WHERE id = :eventId")
+  DbEvent getEventById(String eventId);
+
   @Query("SELECT * FROM events WHERE tag_id LIKE (:tagId)")
   Single<List<DbEvent>> loadByTagsIds(String tagId);
 

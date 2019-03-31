@@ -103,6 +103,12 @@ public class AppRepository implements AppDataStore {
   }
 
   @Override
+  public Single<Event> getEventById(String eventId) {
+
+    return localDataStore.getEventById(eventId);
+  }
+
+  @Override
   public Single<List<Event>> getEvents(boolean refresh) {
 
     if (refresh) {

@@ -57,6 +57,15 @@ public class ReadOnlyDataStore implements AppDataStore {
   }
 
   @Override
+  public Single<Event> getEventById(String eventId) {
+
+    return Single.fromCallable(() -> {
+      DbEvent eventById = eventDao.getEventById(eventId);
+      return eventDataMapper.toEvent(eventById);
+    });
+  }
+
+  @Override
   public Single<List<Event>> getEvents(boolean refresh) {
 
     return eventDao.getAll()

@@ -159,4 +159,13 @@ public class LocalDataStore implements AppDataStore {
     return deleteAllEvents()
         .andThen(deleteAllTags());
   }
+
+  @Override
+  public Single<Event> getEventById(String eventId) {
+
+    return Single.fromCallable(() -> {
+      DbEvent eventById = eventDao.getEventById(eventId);
+      return eventDataMapper.toEvent(eventById);
+    });
+  }
 }

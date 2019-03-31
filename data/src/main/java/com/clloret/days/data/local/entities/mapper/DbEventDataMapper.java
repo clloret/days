@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DbEventDataMapper {
 
-  private Event toEvent(DbEvent dbEvent) {
+  public Event toEvent(DbEvent dbEvent) {
 
     Event event = null;
     if (dbEvent != null) {
