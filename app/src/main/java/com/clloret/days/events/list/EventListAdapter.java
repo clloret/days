@@ -81,9 +81,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
       Collections.sort(events, currentComparator);
 
-      int position = events.indexOf(item);
-
-      notifyItemChanged(position);
+      notifyItemChanged(index);
     }
   }
 
