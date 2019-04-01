@@ -23,7 +23,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
       Notification notification = intent.getParcelableExtra(NOTIFICATION);
       String notificationId = intent.getStringExtra(NOTIFICATION_ID);
-      notificationManager.notify(notificationId, 0, notification);
+      notificationManager.notify(notificationId, notificationId.hashCode(), notification);
 
       PendingIntent.getBroadcast(context, 0, intent,
           PendingIntent.FLAG_UPDATE_CURRENT).cancel();

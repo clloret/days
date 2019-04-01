@@ -20,6 +20,8 @@ public class TestDataModule {
   public static final String TEST_EVENT_1_NAME = "Test event 1";
   public static final String TEST_EVENT_2_ID = "50b8a4e9-3349-419d-9e8b-5a1f3e365734";
   public static final String TEST_EVENT_2_NAME = "Test event 2";
+  public static final String TEST_EVENT_3_ID = "fdfbc340-5781-4b71-9aa7-b5815a362b41";
+  public static final String TEST_EVENT_3_NAME = "Test event 3";
 
   private static void createTestDbEvents(DaysDatabase db) {
 
@@ -28,6 +30,8 @@ public class TestDataModule {
         .insert(createDbEvent(TEST_EVENT_1_ID, TEST_EVENT_1_NAME, now));
     db.eventDao()
         .insert(createDbEvent(TEST_EVENT_2_ID, TEST_EVENT_2_NAME, now));
+    db.eventDao()
+        .insert(createDbEvent(TEST_EVENT_3_ID, TEST_EVENT_3_NAME, now));
   }
 
   private static DbEvent createDbEvent(String id, String name, Date date) {

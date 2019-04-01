@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class NotificationsTest {
 
-  private static final long TIMEOUT = 3_000L;
+  private static final long TIMEOUT = 5_000L;
   private static final String CLEAR_ALL_NOTIFICATION_RES = "com.android.systemui:id/dismiss_text";
   private static final String EXPECTED_ACTION_RES = "android:id/action0";
 
@@ -104,7 +104,7 @@ public class NotificationsTest {
     ReminderManagerImpl reminderManager = new ReminderManagerImpl(context, notificationsIntents,
         stringResourceProvider);
 
-    reminderManager.addReminder(event, "0", event.getName(), event.getDate());
+    reminderManager.addReminder(event, event.getId(), event.getName(), event.getDate());
   }
 
   @SuppressWarnings("unused")
@@ -184,14 +184,14 @@ public class NotificationsTest {
     verify(deleteEventUseCase, timeout(TIMEOUT).atLeastOnce()).execute(any());
   }
 
-  //  @Suppress
+  //@Suppress
   @Test
   public void showNotification_WhenActionReset_ResetEventDate() throws UiObjectNotFoundException {
 
     uiDevice.pressHome();
 
     showNotification(
-        createTestEvent(TestDataModule.TEST_EVENT_1_ID, TestDataModule.TEST_EVENT_1_NAME));
+        createTestEvent(TestDataModule.TEST_EVENT_3_ID, TestDataModule.TEST_EVENT_3_NAME));
 
     uiDevice.openNotification();
 

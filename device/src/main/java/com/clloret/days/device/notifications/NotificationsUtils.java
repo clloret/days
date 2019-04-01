@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import timber.log.Timber;
 
 public class NotificationsUtils {
 
@@ -21,6 +22,13 @@ public class NotificationsUtils {
   public void showNotification(int notificationId, Notification notification) {
 
     notificationManager.notify(notificationId, notification);
+  }
+
+  public void cancelNotification(String notificationId) {
+
+    Timber.d("cancelNotification: %s", notificationId);
+
+    notificationManager.cancel(notificationId, notificationId.hashCode());
   }
 
   void createNotificationChannel(String channelId, String channelName, long[] vibrationPattern) {
