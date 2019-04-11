@@ -1,5 +1,7 @@
 package com.clloret.days.events.edit;
 
+import static com.clloret.days.utils.FabProgressUtils.fixFinalIconPosition;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +33,8 @@ import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
 import com.clloret.days.utils.DateUtils;
+import com.github.jorgecastilloprz.FABProgressCircle;
+import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import dagger.android.AndroidInjection;
 import java.util.Collection;
 import java.util.Date;
@@ -42,7 +46,7 @@ import org.joda.time.LocalDate;
 
 public class EventEditActivity
     extends BaseMvpActivity<EventEditView, EventEditPresenter>
-    implements EventEditView, SelectTagsDialogListener {
+    implements EventEditView, SelectTagsDialogListener, FABProgressListener {
 
   private static final String EXTRA_EVENT = "modifiedEvent";
 
@@ -101,7 +105,10 @@ public class EventEditActivity
   TextView timeLapseResetText;
 
   @BindView(R.id.fab)
-  FloatingActionButton fab;
+  FloatingActionButton fabEditSave;
+
+  @BindView(R.id.fabProgress)
+  FABProgressCircle fabProgress;
 
   @Inject
   SelectTagsHelper selectTagsHelper;
@@ -137,6 +144,9 @@ public class EventEditActivity
 
     setControlsClickable(false);
 
+    fixFinalIconPosition(fabProgress);
+    fabProgress.attachListener(this);
+
     presenter.loadTags();
 
     dateText.setInputType(InputType.TYPE_NULL);
@@ -158,38 +168,6 @@ public class EventEditActivity
   protected void injectDependencies() {
 
     AndroidInjection.inject(this);
-  }
-
-  private void setControlsClickable(boolean clickable) {
-
-    setControlClickable(clickable, dateLayout);
-    setControlClickable(clickable, tagsLayout);
-    setControlClickable(clickable, reminderLayout);
-    setControlClickable(clickable, resetLayout);
-    setControlClickable(clickable, clearReminderButton);
-  }
-
-  private void setControlClickable(boolean clickable, View view) {
-
-    view.setClickable(clickable);
-    view.setFocusable(clickable);
-  }
-
-  private void showData() {
-
-    String name = modifiedEvent.getName();
-    this.nameText.setText(name);
-    nameEdit.setText(name);
-    nameEdit.selectAll();
-
-    String description = modifiedEvent.getDescription();
-    this.descriptionText.setText(description);
-    descriptionEdit.setText(description);
-    descriptionEdit.selectAll();
-
-    selectedDate = new LocalDate(modifiedEvent.getDate());
-
-    dateText.setText(DateUtils.formatDate(modifiedEvent.getDate()));
   }
 
   @Override
@@ -219,30 +197,6 @@ public class EventEditActivity
     }
   }
 
-  private void addEventToCalendar() {
-
-    Date eventDate = modifiedEvent.getDate();
-
-    if (eventDate == null) {
-      return;
-    }
-
-    Intent calIntent = new Intent(Intent.ACTION_INSERT);
-    calIntent.setType("vnd.android.cursor.item/event");
-    calIntent.putExtra(Events.TITLE, modifiedEvent.getName());
-    calIntent.putExtra(Events.DESCRIPTION, modifiedEvent.getDescription());
-    calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
-    calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventDate.getTime());
-    calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, eventDate.getTime());
-
-    startActivity(calIntent);
-  }
-
-  private void deleteEvent() {
-
-    presenter.deleteEvent(modifiedEvent);
-  }
-
   @NonNull
   @Override
   public EventEditPresenter createPresenter() {
@@ -254,7 +208,6 @@ public class EventEditActivity
   public void onSuccessfully(EventViewModel event) {
 
     EventBus.getDefault().post(new EventModifiedEvent(event));
-    finish();
   }
 
   @Override
@@ -284,6 +237,25 @@ public class EventEditActivity
   }
 
   @Override
+  public void showIndeterminateProgress() {
+
+    fabProgress.show();
+  }
+
+  @Override
+  public void showIndeterminateProgressFinalAnimation() {
+
+    fabProgress.beginFinalAnimation();
+
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    fabProgress.hide();
+  }
+
+  @Override
   public void onEmptyEventNameError() {
 
     nameLayout.setError(getString(R.string.msg_error_event_name_required));
@@ -302,21 +274,6 @@ public class EventEditActivity
     }
   }
 
-  private void showSelectedTags() {
-
-    tagsText.setText(selectTagsHelper.showSelectedTags());
-  }
-
-  private void showSelectedReminder() {
-
-    reminderText.setText(periodTextFormatter.formatReminder(modifiedEvent));
-  }
-
-  private void showSelectedTimeLapseReset() {
-
-    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(modifiedEvent));
-  }
-
   @Override
   public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
 
@@ -324,14 +281,10 @@ public class EventEditActivity
     showSelectedTags();
   }
 
-  private void selectDate() {
+  @Override
+  public void onFABProgressAnimationEnd() {
 
-    SelectDateHelper.selectDate(this, selectedDate, (date, formattedDate) -> {
-
-      selectedDate = date;
-      dateText.setText(formattedDate);
-    });
-
+    finish();
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -376,11 +329,92 @@ public class EventEditActivity
     }
   }
 
+  private void setControlsClickable(boolean clickable) {
+
+    setControlClickable(clickable, dateLayout);
+    setControlClickable(clickable, tagsLayout);
+    setControlClickable(clickable, reminderLayout);
+    setControlClickable(clickable, resetLayout);
+    setControlClickable(clickable, clearReminderButton);
+  }
+
+  private void setControlClickable(boolean clickable, View view) {
+
+    view.setClickable(clickable);
+    view.setFocusable(clickable);
+  }
+
+  private void addEventToCalendar() {
+
+    Date eventDate = modifiedEvent.getDate();
+
+    if (eventDate == null) {
+      return;
+    }
+
+    Intent calIntent = new Intent(Intent.ACTION_INSERT);
+    calIntent.setType("vnd.android.cursor.item/event");
+    calIntent.putExtra(Events.TITLE, modifiedEvent.getName());
+    calIntent.putExtra(Events.DESCRIPTION, modifiedEvent.getDescription());
+    calIntent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, true);
+    calIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventDate.getTime());
+    calIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, eventDate.getTime());
+
+    startActivity(calIntent);
+  }
+
+  private void deleteEvent() {
+
+    presenter.deleteEvent(modifiedEvent);
+  }
+
+  private void showData() {
+
+    String name = modifiedEvent.getName();
+    this.nameText.setText(name);
+    nameEdit.setText(name);
+    nameEdit.selectAll();
+
+    String description = modifiedEvent.getDescription();
+    this.descriptionText.setText(description);
+    descriptionEdit.setText(description);
+    descriptionEdit.selectAll();
+
+    selectedDate = new LocalDate(modifiedEvent.getDate());
+
+    dateText.setText(DateUtils.formatDate(modifiedEvent.getDate()));
+  }
+
+  private void showSelectedTags() {
+
+    tagsText.setText(selectTagsHelper.showSelectedTags());
+  }
+
+  private void showSelectedReminder() {
+
+    reminderText.setText(periodTextFormatter.formatReminder(modifiedEvent));
+  }
+
+  private void showSelectedTimeLapseReset() {
+
+    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(modifiedEvent));
+  }
+
+  private void selectDate() {
+
+    SelectDateHelper.selectDate(this, selectedDate, (date, formattedDate) -> {
+
+      selectedDate = date;
+      dateText.setText(formattedDate);
+    });
+
+  }
+
   private void editMode() {
 
     editing = true;
 
-    fab.setImageDrawable(getDrawable(R.drawable.ic_save_wht_24dp));
+    fabEditSave.setImageDrawable(getDrawable(R.drawable.ic_save_wht_24dp));
 
     eventSwitcher.showNext();
     descriptionSwitcher.showNext();
@@ -440,4 +474,5 @@ public class EventEditActivity
 
     presenter.saveEvent(modifiedEvent, originalEvent);
   }
+
 }

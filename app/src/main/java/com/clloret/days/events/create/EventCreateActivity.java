@@ -1,5 +1,7 @@
 package com.clloret.days.events.create;
 
+import static com.clloret.days.utils.FabProgressUtils.fixFinalIconPosition;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.ShowMessageEvent;
+import com.github.jorgecastilloprz.FABProgressCircle;
+import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import dagger.android.AndroidInjection;
 import java.util.Collection;
 import java.util.Date;
@@ -38,7 +42,7 @@ import org.joda.time.LocalDate;
 
 public class EventCreateActivity extends
     BaseMvpActivity<EventCreateView, EventCreatePresenter> implements EventCreateView,
-    SelectTagsDialogListener {
+    SelectTagsDialogListener, FABProgressListener {
 
   private static final String EXTRA_TAG = "tag";
 
@@ -78,6 +82,9 @@ public class EventCreateActivity extends
   @BindView(R.id.fab)
   FloatingActionButton fab;
 
+  @BindView(R.id.fabProgress)
+  FABProgressCircle fabProgress;
+
   @Inject
   SelectTagsHelper selectTagsHelper;
 
@@ -110,6 +117,9 @@ public class EventCreateActivity extends
     configureActionBar(toolbar);
 
     fab.setImageDrawable(getDrawable(R.drawable.ic_save_wht_24dp));
+
+    fixFinalIconPosition(fabProgress);
+    fabProgress.attachListener(this);
 
     eventSwitcher.showNext();
     descriptionSwitcher.showNext();
@@ -158,31 +168,6 @@ public class EventCreateActivity extends
     }
   }
 
-  private void discardEvent() {
-
-    EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_event_discarded)));
-
-    NavUtils.navigateUpFromSameTask(this);
-  }
-
-  private void saveEvent() {
-
-    nameLayout.setErrorEnabled(false);
-
-    String name = nameEdit.getText().toString();
-    String description = descriptionEdit.getText().toString();
-    Date date = selectedDate != null ? selectedDate.toDate() : null;
-    String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
-        .toArray(new String[0]);
-
-    newEvent.setName(name);
-    newEvent.setDescription(description);
-    newEvent.setDate(date);
-    newEvent.setTags(tags);
-
-    presenter.createEvent(newEvent);
-  }
-
   @NonNull
   @Override
   public EventCreatePresenter createPresenter() {
@@ -194,8 +179,6 @@ public class EventCreateActivity extends
   public void onSuccessfully(EventViewModel event) {
 
     EventBus.getDefault().post(new EventCreatedEvent(event));
-
-    finish();
   }
 
   @Override
@@ -225,6 +208,30 @@ public class EventCreateActivity extends
   }
 
   @Override
+  public void showIndeterminateProgress() {
+
+    fabProgress.show();
+  }
+
+  @Override
+  public void showIndeterminateProgressFinalAnimation() {
+
+    fabProgress.beginFinalAnimation();
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    fabProgress.hide();
+  }
+
+  @Override
+  public void onFABProgressAnimationEnd() {
+
+    finish();
+  }
+
+  @Override
   public void onEmptyEventNameError() {
 
     nameLayout.setError(getString(R.string.msg_error_event_name_required));
@@ -238,19 +245,11 @@ public class EventCreateActivity extends
     showToastMessage(R.string.msg_error_event_date_required);
   }
 
-  private void showSelectedTags() {
+  @Override
+  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
 
-    tagsText.setText(selectTagsHelper.showSelectedTags());
-  }
-
-  private void showSelectedReminder() {
-
-    reminderText.setText(periodTextFormatter.formatReminder(newEvent));
-  }
-
-  private void showSelectedTimeLapseReset() {
-
-    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(newEvent));
+    selectTagsHelper.updateSelectedTags(selectedItems);
+    showSelectedTags();
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -287,6 +286,21 @@ public class EventCreateActivity extends
   public void onClickFab() {
 
     saveEvent();
+  }
+
+  private void showSelectedTags() {
+
+    tagsText.setText(selectTagsHelper.showSelectedTags());
+  }
+
+  private void showSelectedReminder() {
+
+    reminderText.setText(periodTextFormatter.formatReminder(newEvent));
+  }
+
+  private void showSelectedTimeLapseReset() {
+
+    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(newEvent));
   }
 
   private void selectDate() {
@@ -335,10 +349,29 @@ public class EventCreateActivity extends
         });
   }
 
-  @Override
-  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
+  private void discardEvent() {
 
-    selectTagsHelper.updateSelectedTags(selectedItems);
-    showSelectedTags();
+    EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_event_discarded)));
+
+    NavUtils.navigateUpFromSameTask(this);
   }
+
+  private void saveEvent() {
+
+    nameLayout.setErrorEnabled(false);
+
+    String name = nameEdit.getText().toString();
+    String description = descriptionEdit.getText().toString();
+    Date date = selectedDate != null ? selectedDate.toDate() : null;
+    String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
+        .toArray(new String[0]);
+
+    newEvent.setName(name);
+    newEvent.setDescription(description);
+    newEvent.setDate(date);
+    newEvent.setTags(tags);
+
+    presenter.createEvent(newEvent);
+  }
+
 }

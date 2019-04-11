@@ -15,6 +15,12 @@ public interface EventEditView extends MvpView {
 
   void showError(Throwable t);
 
+  void showIndeterminateProgress();
+
+  void showIndeterminateProgressFinalAnimation();
+
+  void hideIndeterminateProgress();
+
   void onEmptyEventNameError();
 
   void deleteSuccessfully(EventViewModel event, boolean deleted);

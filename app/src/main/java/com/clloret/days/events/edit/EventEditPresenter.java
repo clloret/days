@@ -1,5 +1,7 @@
 package com.clloret.days.events.edit;
 
+import static com.clloret.days.utils.FabProgressUtils.PROGRESS_DELAY;
+
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.EditEventUseCase;
@@ -13,6 +15,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView> {
@@ -63,10 +66,17 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
     Disposable subscribe = editEventUseCase.execute(
         requestValues)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .map(eventViewModelMapper::fromEvent)
-        .doOnSuccess(view::onSuccessfully)
-        .doOnError(error -> view.onError(error.getMessage()))
+        .doOnSuccess(result -> {
+          view.showIndeterminateProgressFinalAnimation();
+          view.onSuccessfully(result);
+        })
+        .doOnError(error -> {
+          view.hideIndeterminateProgress();
+          view.onError(error.getMessage());
+        })
         .onErrorComplete()
         .subscribe();
 
