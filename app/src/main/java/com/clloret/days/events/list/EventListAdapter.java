@@ -12,6 +12,7 @@ import com.clloret.days.R;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.events.list.EventListAdapter.EventViewHolder;
 import com.clloret.days.model.entities.EventViewModel;
+import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -179,10 +180,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     public void bindData(final EventViewModel viewModel) {
 
-      int days = viewModel.getDaysSince();
+      final int daysSince = viewModel.getDaysSince();
+      String formattedDaysSince = NumberFormat.getInstance().format(daysSince);
 
       name.setText(viewModel.getName());
-      this.days.setText(String.valueOf(days));
+      this.days.setText(formattedDaysSince);
 
       favoriteButton.setImageResource(viewModel.isFavorite() ? R.drawable.ic_favorite_24dp
           : R.drawable.ic_favorite_border_24dp);
