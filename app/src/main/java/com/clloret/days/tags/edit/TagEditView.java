@@ -12,4 +12,9 @@ public interface TagEditView extends MvpView {
   void onError(String message);
 
   void onEmptyTagNameError();
+
+  void showIndeterminateProgress();
+
+  void hideIndeterminateProgress();
+
 }

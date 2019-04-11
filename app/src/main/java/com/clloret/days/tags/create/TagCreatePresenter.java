@@ -46,6 +46,8 @@ public class TagCreatePresenter extends MvpNullObjectBasePresenter<TagCreateView
     Disposable subscribe = createTagUseCase.execute(newTag)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnSubscribe(disposable -> view.showIndeterminateProgress())
+        .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()

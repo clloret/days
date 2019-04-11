@@ -9,7 +9,9 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.R;
@@ -31,6 +33,9 @@ public class TagEditActivity extends
 
   @BindView(R.id.toolbar)
   Toolbar toolbar;
+
+  @BindView(R.id.progressBar)
+  ProgressBar progressBar;
 
   @BindView(R.id.layout_tagdetail_name)
   TextInputLayout nameLayout;
@@ -100,11 +105,6 @@ public class TagEditActivity extends
     }
   }
 
-  private void deleteTag() {
-
-    presenter.deleteTag(tag);
-  }
-
   @NonNull
   @Override
   public TagEditPresenter createPresenter() {
@@ -142,6 +142,23 @@ public class TagEditActivity extends
     nameLayout.setError(getString(R.string.msg_error_tag_name_required));
     nameLayout.setErrorEnabled(true);
     nameLayout.getEditText().requestFocus();
+  }
+
+  @Override
+  public void showIndeterminateProgress() {
+
+    progressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    progressBar.setVisibility(View.INVISIBLE);
+  }
+
+  private void deleteTag() {
+
+    presenter.deleteTag(tag);
   }
 
   private void saveTag() {

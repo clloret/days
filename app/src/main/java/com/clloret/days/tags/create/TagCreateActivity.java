@@ -7,7 +7,9 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.R;
@@ -27,6 +29,9 @@ public class TagCreateActivity extends
 
   @BindView(R.id.toolbar)
   Toolbar toolbar;
+
+  @BindView(R.id.progressBar)
+  ProgressBar progressBar;
 
   @BindView(R.id.layout_tagdetail_name)
   TextInputLayout nameLayout;
@@ -83,20 +88,6 @@ public class TagCreateActivity extends
     }
   }
 
-  private void discardTag() {
-
-    EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_tag_discarded)));
-
-    NavUtils.navigateUpFromSameTask(this);
-  }
-
-  private void saveTag() {
-
-    String name = nameEdit.getText().toString();
-
-    presenter.createTag(name);
-  }
-
   @NonNull
   @Override
   public TagCreatePresenter createPresenter() {
@@ -124,4 +115,31 @@ public class TagCreateActivity extends
     nameLayout.setErrorEnabled(true);
     nameLayout.getEditText().requestFocus();
   }
+
+  @Override
+  public void showIndeterminateProgress() {
+
+    progressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    progressBar.setVisibility(View.INVISIBLE);
+  }
+
+  private void discardTag() {
+
+    EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_tag_discarded)));
+
+    NavUtils.navigateUpFromSameTask(this);
+  }
+
+  private void saveTag() {
+
+    String name = nameEdit.getText().toString();
+
+    presenter.createTag(name);
+  }
+
 }
