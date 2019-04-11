@@ -19,6 +19,7 @@
   <dimen name="width_navigationdrawer">320dp</dimen>
   <dimen name="textsize_empty_view">16sp</dimen>
   <dimen name="padding_empty_view_drawable">20dp</dimen>
+  <dimen name="bottom_padding_recyclerview_event">72dp</dimen>
 
   <dimen name="spacing_xsmall">2dp</dimen>
   <dimen name="spacing_medium">8dp</dimen>
