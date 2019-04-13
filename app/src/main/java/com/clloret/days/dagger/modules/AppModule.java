@@ -24,27 +24,27 @@ import javax.inject.Singleton;
 public class AppModule {
 
   @Provides
-  protected Context providesContext(Application application) {
+  Context providesContext(Application application) {
 
     return application;
   }
 
   @Provides
-  @Singleton
-  protected SharedPreferences providesPreferences(Application application) {
-
-    return PreferenceManager.getDefaultSharedPreferences(application);
-  }
-
-  @Provides
-  protected Resources providesResources(Application application) {
+  Resources providesResources(Application application) {
 
     return application.getResources();
   }
 
   @Provides
   @Singleton
-  protected ReminderManager providesReminderManager(Application application,
+  SharedPreferences providesPreferences(Application application) {
+
+    return PreferenceManager.getDefaultSharedPreferences(application);
+  }
+
+  @Provides
+  @Singleton
+  ReminderManager providesReminderManager(Application application,
       NotificationsIntents notificationsIntents, StringResourceProvider stringResourceProvider) {
 
     return new ReminderManagerImpl(application, notificationsIntents, stringResourceProvider);
@@ -52,7 +52,7 @@ public class AppModule {
 
   @Provides
   @Singleton
-  protected EventReminderManager providesEventReminders(ReminderManager reminderManager,
+  EventReminderManager providesEventReminders(ReminderManager reminderManager,
       TimeProvider timeProvider, PreferenceUtils preferenceUtils) {
 
     return new EventReminderManager(reminderManager, timeProvider, preferenceUtils);
@@ -60,7 +60,7 @@ public class AppModule {
 
   @Provides
   @Singleton
-  protected TimeLapseManager providesTimeLapseManager(TimeProvider timeProvider,
+  TimeLapseManager providesTimeLapseManager(TimeProvider timeProvider,
       EventReminderManager eventReminderManager, AppDataStore appDataStore) {
 
     return new TimeLapseManager(timeProvider, eventReminderManager, appDataStore);
@@ -68,7 +68,7 @@ public class AppModule {
 
   @Provides
   @Singleton
-  protected NotificationsIntents providesNotificationsIntents(Context context,
+  NotificationsIntents providesNotificationsIntents(Context context,
       EventViewModelMapper eventViewModelMapper) {
 
     return new NotificationsIntentsImpl(context, eventViewModelMapper);

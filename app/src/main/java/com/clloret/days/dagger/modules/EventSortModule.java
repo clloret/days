@@ -23,7 +23,7 @@ public class EventSortModule {
   @Singleton
   @IntoMap
   @SortTypeEnumKey(SortType.NAME)
-  public static Comparator<EventSortable> providesEventSortByName() {
+  Comparator<EventSortable> providesEventSortByName() {
 
     return EventSortFactory.makeEventSort(SortType.NAME);
   }
@@ -32,7 +32,7 @@ public class EventSortModule {
   @Singleton
   @IntoMap
   @SortTypeEnumKey(SortType.FAVORITE)
-  public static Comparator<EventSortable> providesEventSortByFavorite() {
+  Comparator<EventSortable> providesEventSortByFavorite() {
 
     return EventSortFactory.makeEventSort(SortType.FAVORITE);
   }
@@ -41,7 +41,7 @@ public class EventSortModule {
   @Singleton
   @IntoMap
   @SortTypeEnumKey(SortType.LATEST_DATE)
-  public static Comparator<EventSortable> providesEventSortByLatestDate() {
+  Comparator<EventSortable> providesEventSortByLatestDate() {
 
     return EventSortFactory.makeEventSort(SortType.LATEST_DATE);
   }
@@ -50,7 +50,7 @@ public class EventSortModule {
   @Singleton
   @IntoMap
   @SortTypeEnumKey(SortType.OLDEST_DATE)
-  public static Comparator<EventSortable> providesEventSortByOldestDate() {
+  Comparator<EventSortable> providesEventSortByOldestDate() {
 
     return EventSortFactory.makeEventSort(SortType.OLDEST_DATE);
   }

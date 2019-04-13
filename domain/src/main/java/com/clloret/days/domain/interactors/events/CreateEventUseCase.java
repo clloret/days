@@ -5,14 +5,18 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Maybe;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-public class CreateEventUseCase implements MaybeUseCaseWithParameter<Event, Event> {
+@Singleton
+public class CreateEventUseCase implements
+    MaybeUseCaseWithParameter<Event, Event> {
 
   private final AppDataStore dataStore;
   private final EventReminderManager eventReminderManager;
 
-  public CreateEventUseCase(AppDataStore dataStore,
-      EventReminderManager eventReminderManager) {
+  @Inject
+  public CreateEventUseCase(AppDataStore dataStore, EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
     this.eventReminderManager = eventReminderManager;

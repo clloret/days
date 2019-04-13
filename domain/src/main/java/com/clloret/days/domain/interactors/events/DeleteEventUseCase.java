@@ -5,12 +5,14 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Maybe;
+import javax.inject.Inject;
 
 public class DeleteEventUseCase implements MaybeUseCaseWithParameter<Event, Boolean> {
 
   private final AppDataStore dataStore;
   private final EventReminderManager eventReminderManager;
 
+  @Inject
   public DeleteEventUseCase(AppDataStore dataStore, EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;

@@ -8,6 +8,7 @@ import com.clloret.days.domain.interactors.types.SingleUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Single;
 import java.util.List;
+import javax.inject.Inject;
 
 public class GetFilteredEventsUseCase implements
     SingleUseCaseWithParameter<RequestValues, List<Event>> {
@@ -15,6 +16,7 @@ public class GetFilteredEventsUseCase implements
   private final AppDataStore dataStore;
   private final EventReminderManager eventReminderManager;
 
+  @Inject
   public GetFilteredEventsUseCase(AppDataStore dataStore,
       EventReminderManager eventReminderManager) {
 

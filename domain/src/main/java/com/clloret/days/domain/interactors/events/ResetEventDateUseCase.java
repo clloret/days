@@ -6,16 +6,19 @@ import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.Maybe;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.joda.time.LocalDate;
 
+@Singleton
 public class ResetEventDateUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
   private final AppDataStore dataStore;
   private final TimeProvider timeProvider;
   private final EventReminderManager eventReminderManager;
 
-  public ResetEventDateUseCase(AppDataStore dataStore,
-      TimeProvider timeProvider,
+  @Inject
+  public ResetEventDateUseCase(AppDataStore dataStore, TimeProvider timeProvider,
       EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;

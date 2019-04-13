@@ -5,11 +5,13 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.SingleUseCaseWithParameter;
 import io.reactivex.Single;
 import java.util.List;
+import javax.inject.Inject;
 
 public class GetEventsUseCase implements SingleUseCaseWithParameter<Boolean, List<Event>> {
 
   private final AppDataStore dataStore;
 
+  @Inject
   public GetEventsUseCase(AppDataStore dataStore) {
 
     this.dataStore = dataStore;

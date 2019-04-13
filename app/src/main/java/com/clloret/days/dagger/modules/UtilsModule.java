@@ -19,28 +19,28 @@ public class UtilsModule {
 
   @Provides
   @Singleton
-  public EventBus providesEventBus() {
+  EventBus providesEventBus() {
 
     return EventBus.getDefault();
   }
 
   @Provides
   @Singleton
-  public Navigator providesNavigator() {
+  Navigator providesNavigator() {
 
     return new Navigator();
   }
 
   @Provides
   @Singleton
-  public TimeProvider providesTimeProvider() {
+  TimeProvider providesTimeProvider() {
 
     return new TimeProviderImpl();
   }
 
   @Provides
   @Singleton
-  public PreferenceUtils providesPreferenceUtils(Context context,
+  PreferenceUtils providesPreferenceUtils(Context context,
       StringResourceProvider stringResourceProvider) {
 
     return new PreferenceUtilsImpl(context, stringResourceProvider);
@@ -48,7 +48,7 @@ public class UtilsModule {
 
   @Provides
   @Singleton
-  public StringResourceProvider providesStringResourceProvider(Resources resources) {
+  StringResourceProvider providesStringResourceProvider(Resources resources) {
 
     return new StringResourceProviderImpl(resources);
   }

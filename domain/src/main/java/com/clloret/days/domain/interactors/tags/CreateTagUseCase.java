@@ -4,11 +4,13 @@ import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import io.reactivex.Maybe;
+import javax.inject.Inject;
 
 public class CreateTagUseCase implements MaybeUseCaseWithParameter<Tag, Tag> {
 
   private final AppDataStore dataStore;
 
+  @Inject
   public CreateTagUseCase(AppDataStore dataStore) {
 
     this.dataStore = dataStore;

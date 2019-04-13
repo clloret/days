@@ -4,11 +4,13 @@ import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import io.reactivex.Maybe;
+import javax.inject.Inject;
 
 public class FavoriteEventUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
   private final AppDataStore dataStore;
 
+  @Inject
   public FavoriteEventUseCase(AppDataStore dataStore) {
 
     this.dataStore = dataStore;

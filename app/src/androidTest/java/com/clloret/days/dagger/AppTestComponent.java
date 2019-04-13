@@ -26,9 +26,9 @@ import javax.inject.Singleton;
         AndroidSupportInjectionModule.class,
         AppModule.class,
         BroadcastReceiverModule.class,
-        TestDataModule.class,
         EventSortModule.class,
         ServiceModule.class,
+        TestDataModule.class,
         TestUseCasesModule.class,
         TestUtilsModule.class
     }

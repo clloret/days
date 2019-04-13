@@ -7,12 +7,14 @@ import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import io.reactivex.Maybe;
 import java.util.Objects;
+import javax.inject.Inject;
 
 public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues, Event> {
 
   private final AppDataStore dataStore;
   private final EventReminderManager eventReminderManager;
 
+  @Inject
   public EditEventUseCase(AppDataStore dataStore,
       EventReminderManager eventReminderManager) {
 
@@ -36,6 +38,10 @@ public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues
     }
 
     final boolean finalScheduleReminder = scheduleReminder;
+
+//    Completable completable = dataStore.editEvent(modifiedEvent)
+//        .flatMapCompletable(event -> Completable.fromAction(
+//            () -> reminderSchedule(event, finalScheduleReminder, originalEvent.hasReminder())));
 
     return dataStore.editEvent(modifiedEvent)
         .doOnSuccess(
