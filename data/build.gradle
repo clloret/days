@@ -43,10 +43,13 @@ dependencies {
     api "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     implementation "android.arch.persistence.room:rxjava2:$rootProject.roomVersion"
     implementation "com.android.support:support-annotations:$rootProject.supportVersion"
-    implementation 'com.github.clloret:airtable.android:081d573aa2'
+    implementation "com.fasterxml.jackson.core:jackson-core:$rootProject.jacksonVersion"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    implementation 'com.github.clloret:airtable.android:081d573aa2'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 
@@ -56,9 +59,7 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.robolectric:robolectric:3.8"
-    testImplementation("com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion") {
-        exclude module: "okhttp"
-    }
+    testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion"
 
     androidTestImplementation("com.android.support.test:runner:$rootProject.testRunnerVersion") {
         exclude group: 'com.android.support'
