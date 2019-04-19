@@ -17,12 +17,12 @@ import timber.log.Timber;
 public class ReminderReceiver extends BroadcastReceiver {
 
   public static final String ACTION_DELETE_REMINDER =
-      "com.clloret.days.ACTION_DELETE_REMINDER";
+      "com.clloret.days.action.ACTION_DELETE_REMINDER";
 
   public static final String ACTION_RESET_EVENT_DATE =
-      "com.clloret.days.ACTION_RESET_EVENT_DATE";
+      "com.clloret.days.action.ACTION_RESET_EVENT_DATE";
 
-  public static final String EXTRA_EVENT_ID = "eventId";
+  public static final String EXTRA_EVENT_ID = "com.clloret.days.extras.EXTRA_EVENT_ID";
 
   @Inject
   AppDataStore appDataStore;

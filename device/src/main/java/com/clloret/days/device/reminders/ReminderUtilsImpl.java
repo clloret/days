@@ -10,9 +10,9 @@ import timber.log.Timber;
 
 public class ReminderUtilsImpl implements ReminderUtils {
 
-  public static final String ACTION_REMINDER = "com.clloret.days.REMINDER";
-  public static final String NOTIFICATION_ID = "notification_id";
-  public static final String NOTIFICATION = "notification";
+  public static final String ACTION_REMINDER = "com.clloret.days.action.REMINDER";
+  public static final String EXTRA_NOTIFICATION_ID = "com.clloret.days.extras.EXTRA_NOTIFICATION_ID";
+  public static final String EXTRA_NOTIFICATION = "com.clloret.days.extras.EXTRA_NOTIFICATION";
 
   private final Context context;
 
@@ -27,8 +27,8 @@ public class ReminderUtilsImpl implements ReminderUtils {
     Timber.d("addReminder - id: %s, message: %s, date: %s", id, message, date.toString());
 
     Intent intent = getNotificationIntent(id);
-    intent.putExtra(NOTIFICATION_ID, id);
-    intent.putExtra(NOTIFICATION, notification);
+    intent.putExtra(EXTRA_NOTIFICATION_ID, id);
+    intent.putExtra(EXTRA_NOTIFICATION, notification);
 
     AlarmUtils.addAlarm(context, intent, date.getTime());
   }

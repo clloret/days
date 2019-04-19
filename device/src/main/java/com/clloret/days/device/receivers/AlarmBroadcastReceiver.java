@@ -1,8 +1,8 @@
 package com.clloret.days.device.receivers;
 
 import static com.clloret.days.device.reminders.ReminderUtilsImpl.ACTION_REMINDER;
-import static com.clloret.days.device.reminders.ReminderUtilsImpl.NOTIFICATION;
-import static com.clloret.days.device.reminders.ReminderUtilsImpl.NOTIFICATION_ID;
+import static com.clloret.days.device.reminders.ReminderUtilsImpl.EXTRA_NOTIFICATION;
+import static com.clloret.days.device.reminders.ReminderUtilsImpl.EXTRA_NOTIFICATION_ID;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -21,8 +21,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
       NotificationManager notificationManager = Objects.requireNonNull((NotificationManager) context
           .getSystemService(Context.NOTIFICATION_SERVICE));
 
-      Notification notification = intent.getParcelableExtra(NOTIFICATION);
-      String notificationId = intent.getStringExtra(NOTIFICATION_ID);
+      Notification notification = intent.getParcelableExtra(EXTRA_NOTIFICATION);
+      String notificationId = intent.getStringExtra(EXTRA_NOTIFICATION_ID);
       notificationManager.notify(notificationId, notificationId.hashCode(), notification);
 
       PendingIntent.getBroadcast(context, 0, intent,

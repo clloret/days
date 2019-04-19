@@ -26,7 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 public class TagEditActivity extends
     BaseMvpActivity<TagEditView, TagEditPresenter> implements TagEditView {
 
-  private static final String EXTRA_TAG = "tag";
+  private static final String EXTRA_TAG = "com.clloret.days.extras.EXTRA_TAG";
 
   @Inject
   TagEditPresenter injectPresenter;

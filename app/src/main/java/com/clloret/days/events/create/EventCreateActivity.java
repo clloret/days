@@ -44,7 +44,7 @@ public class EventCreateActivity extends
     BaseMvpActivity<EventCreateView, EventCreatePresenter> implements EventCreateView,
     SelectTagsDialogListener, FABProgressListener {
 
-  private static final String EXTRA_TAG = "tag";
+  private static final String EXTRA_TAG = "com.clloret.days.extras.EXTRA_TAG";
 
   @Inject
   EventCreatePresenter injectPresenter;

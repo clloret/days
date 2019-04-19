@@ -48,7 +48,7 @@ public class EventEditActivity
     extends BaseMvpActivity<EventEditView, EventEditPresenter>
     implements EventEditView, SelectTagsDialogListener, FABProgressListener {
 
-  private static final String EXTRA_EVENT = "modifiedEvent";
+  private static final String EXTRA_EVENT = "com.clloret.days.extras.EXTRA_EVENT";
 
   @Inject
   EventEditPresenter injectPresenter;
