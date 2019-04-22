@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import java.util.Objects;
+import timber.log.Timber;
 
 class AlarmUtils {
 
@@ -13,12 +14,14 @@ class AlarmUtils {
 
   }
 
-  static void addAlarm(Context context, Intent intent, long timeInMillis) {
+  static void addAlarm(Context context, int requestCode, Intent intent, long timeInMillis) {
+
+    Timber.d("addAlarm - requestCode: %d", requestCode);
 
     AlarmManager alarmManager = Objects
         .requireNonNull((AlarmManager) context.getSystemService(Context.ALARM_SERVICE));
     PendingIntent pendingIntent = PendingIntent
-        .getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        .getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, timeInMillis,
@@ -28,19 +31,26 @@ class AlarmUtils {
     }
   }
 
-  static void cancelAlarm(Context context, Intent intent) {
+  static void cancelAlarm(Context context, int requestCode, Intent intent) {
+
+    Timber.d("cancelAlarm - requestCode: %d", requestCode);
 
     AlarmManager alarmManager = Objects
         .requireNonNull((AlarmManager) context.getSystemService(Context.ALARM_SERVICE));
     PendingIntent pendingIntent = PendingIntent
-        .getBroadcast(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        .getBroadcast(context, requestCode, intent, PendingIntent.FLAG_NO_CREATE);
+
+    if (pendingIntent == null) {
+      return;
+    }
+
     alarmManager.cancel(pendingIntent);
     pendingIntent.cancel();
   }
 
-  static boolean hasAlarm(Context context, Intent intent) {
+  static boolean hasAlarm(Context context, int requestCode, Intent intent) {
 
-    return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_NO_CREATE)
+    return PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_NO_CREATE)
         != null;
   }
 }

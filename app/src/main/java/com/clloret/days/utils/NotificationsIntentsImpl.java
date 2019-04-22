@@ -36,7 +36,7 @@ public class NotificationsIntentsImpl implements NotificationsIntents {
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
     stackBuilder.addNextIntentWithParentStack(intent);
     return stackBuilder
-        .getPendingIntent(0, FLAG_UPDATE_CURRENT);
+        .getPendingIntent(event.getId().hashCode(), FLAG_UPDATE_CURRENT);
   }
 
   @Override
@@ -46,7 +46,8 @@ public class NotificationsIntentsImpl implements NotificationsIntents {
     intent.setAction(ACTION_DELETE_REMINDER);
     intent.putExtra(EXTRA_EVENT_ID, event.getId());
 
-    return PendingIntent.getBroadcast(context, 0, intent, FLAG_UPDATE_CURRENT);
+    return PendingIntent
+        .getBroadcast(context, event.getId().hashCode(), intent, FLAG_UPDATE_CURRENT);
   }
 
   @Override
@@ -56,7 +57,8 @@ public class NotificationsIntentsImpl implements NotificationsIntents {
     intent.setAction(ACTION_RESET_EVENT_DATE);
     intent.putExtra(EXTRA_EVENT_ID, event.getId());
 
-    return PendingIntent.getBroadcast(context, 0, intent, FLAG_UPDATE_CURRENT);
+    return PendingIntent
+        .getBroadcast(context, event.getId().hashCode(), intent, FLAG_UPDATE_CURRENT);
   }
 
 }

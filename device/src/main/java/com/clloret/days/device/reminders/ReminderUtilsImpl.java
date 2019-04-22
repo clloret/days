@@ -30,7 +30,7 @@ public class ReminderUtilsImpl implements ReminderUtils {
     intent.putExtra(EXTRA_NOTIFICATION_ID, id);
     intent.putExtra(EXTRA_NOTIFICATION, notification);
 
-    AlarmUtils.addAlarm(context, intent, date.getTime());
+    AlarmUtils.addAlarm(context, id.hashCode(), intent, date.getTime());
   }
 
   @Override
@@ -40,7 +40,7 @@ public class ReminderUtilsImpl implements ReminderUtils {
 
     Intent intent = getNotificationIntent(id);
 
-    AlarmUtils.cancelAlarm(context, intent);
+    AlarmUtils.cancelAlarm(context, id.hashCode(), intent);
   }
 
   private Intent getNotificationIntent(String id) {
@@ -56,7 +56,7 @@ public class ReminderUtilsImpl implements ReminderUtils {
 
     Intent notificationIntent = getNotificationIntent(id);
 
-    return AlarmUtils.hasAlarm(context, notificationIntent);
+    return AlarmUtils.hasAlarm(context, id.hashCode(), notificationIntent);
   }
 
 }
