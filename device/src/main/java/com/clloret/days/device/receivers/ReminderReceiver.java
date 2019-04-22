@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import com.clloret.days.device.eventbus.EventsUpdatedEvent;
 import com.clloret.days.device.notifications.NotificationsUtils;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
@@ -12,6 +13,7 @@ import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import dagger.android.AndroidInjection;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
 public class ReminderReceiver extends BroadcastReceiver {
@@ -26,6 +28,9 @@ public class ReminderReceiver extends BroadcastReceiver {
 
   @Inject
   AppDataStore appDataStore;
+
+  @Inject
+  EventBus eventBus;
 
   @Inject
   DeleteEventUseCase deleteEventUseCase;
@@ -84,6 +89,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
     resetEventDateUseCase.execute(event)
         .subscribeOn(Schedulers.io())
+        .doFinally(() -> eventBus.post(new EventsUpdatedEvent()))
         .doOnError(Timber::e)
         .subscribe();
   }
@@ -94,6 +100,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
     deleteEventUseCase.execute(event)
         .subscribeOn(Schedulers.io())
+        .doFinally(() -> eventBus.post(new EventsUpdatedEvent()))
         .doOnError(Timber::e)
         .onErrorComplete()
         .subscribe();
