@@ -7,10 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.clloret.days.R;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
+import com.clloret.days.domain.tags.order.TagSortable;
 import com.clloret.days.menu.items.holders.TextViewHolder;
 import com.clloret.days.model.entities.TagViewModel;
 
-public class DrawerTag extends DrawerFilter {
+public class DrawerTag extends DrawerFilter implements TagSortable {
 
   private TagViewModel tag;
   private DrawerTagSelectedMgr drawerTagSelectedMgr;
@@ -75,5 +76,11 @@ public class DrawerTag extends DrawerFilter {
   public void deselect() {
 
     drawerTagSelectedMgr.deselect();
+  }
+
+  @Override
+  public String getName() {
+
+    return tag.getName();
   }
 }

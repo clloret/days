@@ -12,6 +12,10 @@ import com.clloret.days.activities.AboutActivity;
 import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.events.filter.EventFilterByFavorite;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
+import com.clloret.days.domain.tags.order.TagSortFactory;
+import com.clloret.days.domain.tags.order.TagSortFactory.SortType;
+import com.clloret.days.domain.tags.order.TagSortable;
+import com.clloret.days.domain.utils.SortedValueMap;
 import com.clloret.days.menu.items.DrawerAction;
 import com.clloret.days.menu.items.DrawerFilter;
 import com.clloret.days.menu.items.DrawerMenuItem;
@@ -27,19 +31,21 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MenuAdapter extends BaseAdapter {
 
   private static final int TYPE_COUNT = 4;
+  private static final int TAGS_SECTION_INDEX = 1;
+  private static final int SECTION1_INITIAL_CAPACITY = 4;
+  private static final int SECTION2_INITIAL_CAPACITY = 5;
 
   private final List<Collection<DrawerMenuItem>> sections = new ArrayList<>();
-  private final Map<String, DrawerTag> tags = new HashMap<>();
+  private final SortedValueMap<String, DrawerTag, TagSortable> tags = new SortedValueMap<>(
+      TagSortFactory.makeTagSort(SortType.NAME));
   private final CompositeDisposable disposable = new CompositeDisposable();
-  private Context context;
-  private DrawerTagSelectedMgr drawerTagSelectedMgr;
+  private final Context context;
+  private final DrawerTagSelectedMgr drawerTagSelectedMgr;
 
   public MenuAdapter(@NonNull Context context, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
 
@@ -67,10 +73,10 @@ public class MenuAdapter extends BaseAdapter {
         .subscribe(drawerTag -> tags.put(drawerTag.getTag().getId(), drawerTag));
     disposable.add(subscribe);
 
-    Collection menuItems = tags.values();
-    if (!sections.contains(menuItems)) {
+    Collection tagCollection = tags.sortedValues();
+    if (!sections.contains(tagCollection)) {
       //noinspection unchecked
-      sections.add(1, menuItems);
+      sections.add(TAGS_SECTION_INDEX, tagCollection);
     }
 
     notifyDataSetChanged();
@@ -78,7 +84,7 @@ public class MenuAdapter extends BaseAdapter {
 
   private List<DrawerMenuItem> createSection1() {
 
-    List<DrawerMenuItem> list = new ArrayList<>(4);
+    List<DrawerMenuItem> list = new ArrayList<>(SECTION1_INITIAL_CAPACITY);
 
     list.add(new DrawerFilter(context.getString(R.string.action_all), R.drawable.ic_inbox_24dp,
         new EventFilterAll()));
@@ -93,7 +99,7 @@ public class MenuAdapter extends BaseAdapter {
 
   private List<DrawerMenuItem> createSection2() {
 
-    List<DrawerMenuItem> list = new ArrayList<>(5);
+    List<DrawerMenuItem> list = new ArrayList<>(SECTION2_INITIAL_CAPACITY);
 
     list
         .add(new DrawerFilter(context.getString(R.string.action_no_tag),
@@ -137,14 +143,6 @@ public class MenuAdapter extends BaseAdapter {
     return items.size();
   }
 
-  private List<DrawerMenuItem> getConcatList() {
-
-    return Observable.fromIterable(sections)
-        .concatMapIterable(lists -> lists)
-        .toList()
-        .blockingGet();
-  }
-
   @Override
   public DrawerMenuItem getItem(int i) {
 
@@ -178,29 +176,18 @@ public class MenuAdapter extends BaseAdapter {
     return convertView;
   }
 
-  public void addTag(TagViewModel tag) {
+  @Override
+  public void notifyDataSetInvalidated() {
 
-    DrawerTag drawerTag = new DrawerTag(new EventFilterByTag(tag.getId()), tag,
-        drawerTagSelectedMgr);
-    tags.put(tag.getId(), drawerTag);
-
-    notifyDataSetChanged();
+    super.notifyDataSetInvalidated();
   }
 
-  public void updateTag(TagViewModel tag) {
+  private List<DrawerMenuItem> getConcatList() {
 
-    if (tags.containsKey(tag.getId())) {
-      DrawerTag drawerTag = tags.get(tag.getId());
-      drawerTag.setTag(tag);
-
-      notifyDataSetChanged();
-    }
-  }
-
-  public void deleteTag(TagViewModel tag) {
-
-    tags.remove(tag.getId());
-    notifyDataSetChanged();
+    return Observable.fromIterable(sections)
+        .concatMapIterable(lists -> lists)
+        .toList()
+        .blockingGet();
   }
 
   @Override
@@ -224,4 +211,32 @@ public class MenuAdapter extends BaseAdapter {
 
     return TYPE_COUNT;
   }
+
+  public void addTag(TagViewModel tag) {
+
+    DrawerTag drawerTag = new DrawerTag(new EventFilterByTag(tag.getId()), tag,
+        drawerTagSelectedMgr);
+    tags.put(tag.getId(), drawerTag);
+
+    notifyDataSetChanged();
+  }
+
+  public void updateTag(TagViewModel tag) {
+
+    if (tags.containsKey(tag.getId())) {
+      DrawerTag drawerTag = tags.get(tag.getId());
+      drawerTag.setTag(tag);
+
+      tags.refreshValues();
+
+      notifyDataSetChanged();
+    }
+  }
+
+  public void deleteTag(TagViewModel tag) {
+
+    tags.remove(tag.getId());
+    notifyDataSetChanged();
+  }
+
 }
