@@ -30,16 +30,24 @@ public class AirtableDataStore implements AppDataStore {
 
   private Table<ApiEvent> eventTable;
   private Table<ApiTag> tagTable;
-  private ApiEventDataMapper eventDataMapper = new ApiEventDataMapper();
-  private ApiTagDataMapper tagDataMapper = new ApiTagDataMapper();
+  private final ApiEventDataMapper eventDataMapper;
+  private final ApiTagDataMapper tagDataMapper;
 
-  public AirtableDataStore(Context context, String key, String database) {
+  public AirtableDataStore(Context context, String key, String database,
+      ApiEventDataMapper eventDataMapper, ApiTagDataMapper tagDataMapper) {
+
+    this.eventDataMapper = eventDataMapper;
+    this.tagDataMapper = tagDataMapper;
 
     Configuration configuration = new Configuration(key);
     createTables(context, database, configuration);
   }
 
-  public AirtableDataStore(Context context, String endpointUrl, String key, String database) {
+  public AirtableDataStore(Context context, String endpointUrl, String key, String database,
+      ApiEventDataMapper eventDataMapper, ApiTagDataMapper tagDataMapper) {
+
+    this.eventDataMapper = eventDataMapper;
+    this.tagDataMapper = tagDataMapper;
 
     Configuration configuration = new Configuration(key, endpointUrl);
     createTables(context, database, configuration);

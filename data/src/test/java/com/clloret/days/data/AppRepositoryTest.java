@@ -9,7 +9,11 @@ import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.LocalDataStore;
+import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
+import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
 import com.clloret.days.data.remote.AirtableDataStore;
+import com.clloret.days.data.remote.entities.mapper.ApiEventDataMapper;
+import com.clloret.days.data.remote.entities.mapper.ApiTagDataMapper;
 import com.clloret.days.data.utils.ImmediateSchedulersRule;
 import com.clloret.days.data.utils.MediumTest;
 import com.clloret.days.data.utils.RestServiceTestHelper;
@@ -47,6 +51,10 @@ public class AppRepositoryTest {
   public final ImmediateSchedulersRule schedulers = new ImmediateSchedulersRule();
 
   private final MockWebServer server = new MockWebServer();
+  private final DbEventDataMapper dbEventDataMapper = new DbEventDataMapper();
+  private final DbTagDataMapper dbTagDataMapper = new DbTagDataMapper();
+  private final ApiEventDataMapper apiEventDataMapper = new ApiEventDataMapper();
+  private final ApiTagDataMapper apiTagDataMapper = new ApiTagDataMapper();
   private AppRepository appRepository;
   private LocalDataStore localDataStore;
   private DaysDatabase db;
@@ -62,9 +70,9 @@ public class AppRepositoryTest {
     db = Room.inMemoryDatabaseBuilder(appContext, DaysDatabase.class)
         .allowMainThreadQueries().build();
 
-    localDataStore = new LocalDataStore(db);
+    localDataStore = new LocalDataStore(db, dbEventDataMapper, dbTagDataMapper);
     AirtableDataStore airtableDataStore = new AirtableDataStore(appContext, serviceEndpoint,
-        API_KEY, BASE);
+        API_KEY, BASE, apiEventDataMapper, apiTagDataMapper);
     appRepository = new AppRepository(localDataStore, airtableDataStore);
   }
 

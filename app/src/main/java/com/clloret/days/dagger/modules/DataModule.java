@@ -11,7 +11,11 @@ import com.clloret.days.data.AppRepository;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.LocalDataStore;
 import com.clloret.days.data.local.ReadOnlyDataStore;
+import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
+import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
 import com.clloret.days.data.remote.AirtableDataStore;
+import com.clloret.days.data.remote.entities.mapper.ApiEventDataMapper;
+import com.clloret.days.data.remote.entities.mapper.ApiTagDataMapper;
 import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
@@ -25,6 +29,22 @@ public class DataModule {
 
   private static final String DATABASE = "days";
 
+  private static RemoteDataStoreResult checkIsRemoteDataStore(Context context,
+      SharedPreferences preferences) {
+
+    boolean remoteDataStore = preferences
+        .getBoolean(context.getString(R.string.pref_remote_datastore), false);
+    String airtableKey = preferences
+        .getString(context.getString(R.string.pref_airtable_api_key), "");
+    String airtableBase = preferences
+        .getString(context.getString(R.string.pref_airtable_base_id), "");
+
+    boolean isRemoteDataStore =
+        !remoteDataStore || TextUtils.isEmpty(airtableKey) || TextUtils.isEmpty(airtableBase);
+
+    return new RemoteDataStoreResult(isRemoteDataStore, airtableKey, airtableBase);
+  }
+
   @Provides
   @Singleton
   AppDataStore providesAppDataStore(@Named("local") AppDataStore localDataStore,
@@ -36,7 +56,8 @@ public class DataModule {
   @Provides
   @Singleton
   @Named("local")
-  AppDataStore providesLocalDataStore(Context context, SharedPreferences preferences) {
+  AppDataStore providesLocalDataStore(Context context, SharedPreferences preferences,
+      DbEventDataMapper eventDataMapper, DbTagDataMapper tagDataMapper) {
 
     DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
         .addMigrations(MIGRATION_1_2).build();
@@ -45,17 +66,19 @@ public class DataModule {
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
-      return new ReadOnlyDataStore(db);
+      return new ReadOnlyDataStore(db, eventDataMapper, tagDataMapper);
     } else {
 
-      return new LocalDataStore(db);
+      return new LocalDataStore(db, eventDataMapper, tagDataMapper);
     }
   }
 
   @Provides
   @Singleton
   @Named("remote")
-  AppDataStore providesAirtableDataStore(Context context, SharedPreferences preferences) {
+  AppDataStore providesAirtableDataStore(Context context, SharedPreferences preferences,
+      DbEventDataMapper dbEventDataMapper, DbTagDataMapper dbTagDataMapper,
+      ApiEventDataMapper apiEventDataMapper, ApiTagDataMapper apiTagDataMapper) {
 
     RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
 
@@ -63,11 +86,11 @@ public class DataModule {
 
       DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
           .addMigrations(MIGRATION_1_2).build();
-      return new LocalDataStore(db);
+      return new LocalDataStore(db, dbEventDataMapper, dbTagDataMapper);
     } else {
 
       return new AirtableDataStore(context, remoteDataStoreResult.airtableKey,
-          remoteDataStoreResult.airtableBase);
+          remoteDataStoreResult.airtableBase, apiEventDataMapper, apiTagDataMapper);
     }
   }
 
@@ -85,20 +108,32 @@ public class DataModule {
     return new TagViewModelMapper();
   }
 
-  private static RemoteDataStoreResult checkIsRemoteDataStore(Context context,
-      SharedPreferences preferences) {
+  @Provides
+  @Singleton
+  DbEventDataMapper providesDbEventDataMapper() {
 
-    boolean remoteDataStore = preferences
-        .getBoolean(context.getString(R.string.pref_remote_datastore), false);
-    String airtableKey = preferences
-        .getString(context.getString(R.string.pref_airtable_api_key), "");
-    String airtableBase = preferences
-        .getString(context.getString(R.string.pref_airtable_base_id), "");
+    return new DbEventDataMapper();
+  }
 
-    boolean isRemoteDataStore =
-        !remoteDataStore || TextUtils.isEmpty(airtableKey) || TextUtils.isEmpty(airtableBase);
+  @Provides
+  @Singleton
+  DbTagDataMapper providesDbTagDataMapper() {
 
-    return new RemoteDataStoreResult(isRemoteDataStore, airtableKey, airtableBase);
+    return new DbTagDataMapper();
+  }
+
+  @Provides
+  @Singleton
+  ApiEventDataMapper providesApiEventDataMapper() {
+
+    return new ApiEventDataMapper();
+  }
+
+  @Provides
+  @Singleton
+  ApiTagDataMapper providesApiTagDataMapper() {
+
+    return new ApiTagDataMapper();
   }
 
   private static class RemoteDataStoreResult {

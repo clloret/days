@@ -19,15 +19,18 @@ import timber.log.Timber;
 
 public class LocalDataStore implements AppDataStore {
 
-  private EventDao eventDao;
-  private TagDao tagDao;
-  private DbEventDataMapper eventDataMapper = new DbEventDataMapper();
-  private DbTagDataMapper tagDataMapper = new DbTagDataMapper();
+  private final EventDao eventDao;
+  private final TagDao tagDao;
+  private final DbEventDataMapper eventDataMapper;
+  private final DbTagDataMapper tagDataMapper;
 
-  public LocalDataStore(DaysDatabase db) {
+  public LocalDataStore(DaysDatabase db, DbEventDataMapper eventDataMapper,
+      DbTagDataMapper tagDataMapper) {
 
     eventDao = db.eventDao();
     tagDao = db.tagDao();
+    this.eventDataMapper = eventDataMapper;
+    this.tagDataMapper = tagDataMapper;
   }
 
   @Override
