@@ -2,19 +2,25 @@ package com.clloret.days.dagger.modules;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.DaysDatabase;
-import com.clloret.days.data.local.LocalDataStore;
 import com.clloret.days.data.local.entities.DbEvent;
-import com.clloret.days.domain.AppDataStore;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
+import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
+import com.clloret.days.data.local.repository.RoomEventRepository;
+import com.clloret.days.data.local.repository.RoomTagRepository;
+import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.repository.EventRepository;
+import com.clloret.days.domain.repository.TagRepository;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import java.util.Date;
 import javax.inject.Singleton;
 
 @Module
-public class TestDataModule {
+public abstract class TestDataModule {
 
   public static final String TEST_EVENT_1_ID = "fba54d4f-82d9-459c-ae67-ca3253a7ed3e";
   public static final String TEST_EVENT_1_NAME = "Test event 1";
@@ -45,28 +51,42 @@ public class TestDataModule {
 
   @Provides
   @Singleton
-  AppDataStore providesAppDataStore(Context context) {
+  static DaysDatabase providesDatabase(Context context) {
 
     DaysDatabase db = Room.inMemoryDatabaseBuilder(context, DaysDatabase.class)
         .allowMainThreadQueries().build();
 
     createTestDbEvents(db);
 
-    return new LocalDataStore(db);
+    return db;
   }
 
   @Provides
   @Singleton
-  EventViewModelMapper providesEventViewModelMapper() {
+  static RoomEventRepository providesLocalEventRepository(DaysDatabase db,
+      DbEventDataMapper eventDataMapper) {
 
-    return new EventViewModelMapper();
+    return new RoomEventRepository(db.eventDao(), eventDataMapper);
   }
 
   @Provides
   @Singleton
-  TagViewModelMapper providesTagViewModelMapper() {
+  static RoomTagRepository providesLocalTagRepository(DaysDatabase db,
+      DbTagDataMapper tagDataMapper) {
 
-    return new TagViewModelMapper();
+    return new RoomTagRepository(db.tagDao(), tagDataMapper);
   }
+
+  @Binds
+  abstract EventRepository bindEventRepository(RoomEventRepository impl);
+
+  @Binds
+  abstract TagRepository bindTagRepository(RoomTagRepository impl);
+
+  @Binds
+  abstract CacheSource<Event> bindEventCacheSource(RoomEventRepository impl);
+
+  @Binds
+  abstract CacheSource<Tag> bindTagCacheSource(RoomTagRepository impl);
 
 }

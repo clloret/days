@@ -1,9 +1,9 @@
 package com.clloret.days.dagger.modules;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.TimeProvider;
 import dagger.Module;
 import dagger.Provides;
@@ -16,7 +16,7 @@ public class TestUseCasesModule {
 
   @Provides
   @Singleton
-  ResetEventDateUseCase providesResetEventDateUseCase(AppDataStore dataStore,
+  ResetEventDateUseCase providesResetEventDateUseCase(EventRepository dataStore,
       TimeProvider timeProvider, EventReminderManager eventReminderManager) {
 
     Timber.d("providesResetEventDateUseCase");
@@ -26,7 +26,7 @@ public class TestUseCasesModule {
 
   @Provides
   @Singleton
-  DeleteEventUseCase providesDeleteEventUseCase(AppDataStore dataStore,
+  DeleteEventUseCase providesDeleteEventUseCase(EventRepository dataStore,
       EventReminderManager eventReminderManager) {
 
     Timber.d("providesDeleteEventUseCase");
