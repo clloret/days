@@ -8,12 +8,12 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.common.SimpleDateConverter;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.RxImmediateSchedulerRule;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.Maybe;
@@ -52,7 +52,7 @@ public class TimeLapseManagerTest {
   private EventReminderManager eventReminderManager;
 
   @Mock
-  private AppDataStore appDataStore;
+  private EventRepository appDataStore;
 
   @InjectMocks
   private TimeLapseManager sut;
@@ -80,10 +80,10 @@ public class TimeLapseManagerTest {
         .when(eventReminderManager)
         .scheduleReminder(ArgumentMatchers.isA(Event.class), anyBoolean());
 
-    when(appDataStore.getEvents(true))
+    when(appDataStore.getAll(true))
         .thenReturn(Single.just(createEventList()));
 
-    when(appDataStore.editEvent(ArgumentMatchers.isA(Event.class)))
+    when(appDataStore.edit(ArgumentMatchers.isA(Event.class)))
         .thenReturn(Maybe.just(new Event()));
   }
 
@@ -131,12 +131,12 @@ public class TimeLapseManagerTest {
         .assertNoErrors();
 
     verify(appDataStore)
-        .getEvents(true);
+        .getAll(true);
 
     int wantedNumberOfInvocations = 2;
 
     verify(appDataStore, times(wantedNumberOfInvocations))
-        .editEvent(ArgumentMatchers.isA(Event.class));
+        .edit(ArgumentMatchers.isA(Event.class));
     verify(eventReminderManager, times(wantedNumberOfInvocations))
         .scheduleReminder(ArgumentMatchers.isA(Event.class), anyBoolean());
   }
