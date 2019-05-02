@@ -6,34 +6,44 @@ import com.clloret.days.domain.entities.EventBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-public class ApiEventDataMapper {
+@Singleton
+public class ApiEventDataMapper implements DataMapper<Event, ApiEvent> {
 
-  public Event toEvent(ApiEvent apiEvent) {
+  @Inject
+  public ApiEventDataMapper() {
+
+  }
+
+  @Override
+  public Event toEntity(ApiEvent model) {
 
     Event event = null;
-    if (apiEvent != null) {
+    if (model != null) {
       event = new EventBuilder()
-          .setId(apiEvent.getId())
-          .setName(apiEvent.getName())
-          .setDescription(apiEvent.getDescription())
-          .setDate(apiEvent.getDate())
-          .setFavorite(apiEvent.isFavorite())
-          .setTags(apiEvent.getTags())
-          .setReminder(apiEvent.getReminder())
-          .setReminderUnit(apiEvent.getReminderTimeUnit())
-          .setTimeLapse(apiEvent.getTimeLapse())
-          .setTimeLapseUnit(apiEvent.getTimeLapseTimeUnit())
+          .setId(model.getId())
+          .setName(model.getName())
+          .setDescription(model.getDescription())
+          .setDate(model.getDate())
+          .setFavorite(model.isFavorite())
+          .setTags(model.getTags())
+          .setReminder(model.getReminder())
+          .setReminderUnit(model.getReminderTimeUnit())
+          .setTimeLapse(model.getTimeLapse())
+          .setTimeLapseUnit(model.getTimeLapseTimeUnit())
           .build();
     }
     return event;
   }
 
-  public List<Event> toEvent(Collection<ApiEvent> apiEventCollection) {
+  @Override
+  public List<Event> toEntity(Collection<ApiEvent> modelCollection) {
 
     final List<Event> eventList = new ArrayList<>(20);
-    for (ApiEvent dbEvent : apiEventCollection) {
-      final Event event = toEvent(dbEvent);
+    for (ApiEvent dbEvent : modelCollection) {
+      final Event event = toEntity(dbEvent);
       if (event != null) {
         eventList.add(event);
       }
@@ -41,29 +51,31 @@ public class ApiEventDataMapper {
     return eventList;
   }
 
-  public ApiEvent fromEvent(Event event, boolean copyId) {
+  @Override
+  public ApiEvent fromEntity(Event model, boolean copyId) {
 
     ApiEvent apiEvent = null;
-    if (event != null) {
-      apiEvent = new ApiEvent(copyId ? event.getId() : null);
-      apiEvent.setName(event.getName());
-      apiEvent.setDescription(event.getDescription());
-      apiEvent.setDate(event.getDate());
-      apiEvent.setFavorite(event.isFavorite());
-      apiEvent.setTags(event.getTags());
-      apiEvent.setReminder(event.getReminder());
-      apiEvent.setReminderTimeUnit(event.getReminderUnit());
-      apiEvent.setTimeLapse(event.getTimeLapse());
-      apiEvent.setTimeLapseTimeUnit(event.getTimeLapseUnit());
+    if (model != null) {
+      apiEvent = new ApiEvent(copyId ? model.getId() : null);
+      apiEvent.setName(model.getName());
+      apiEvent.setDescription(model.getDescription());
+      apiEvent.setDate(model.getDate());
+      apiEvent.setFavorite(model.isFavorite());
+      apiEvent.setTags(model.getTags());
+      apiEvent.setReminder(model.getReminder());
+      apiEvent.setReminderTimeUnit(model.getReminderUnit());
+      apiEvent.setTimeLapse(model.getTimeLapse());
+      apiEvent.setTimeLapseTimeUnit(model.getTimeLapseUnit());
     }
     return apiEvent;
   }
 
-  public List<ApiEvent> fromEvent(Collection<Event> eventCollection) {
+  @Override
+  public List<ApiEvent> fromEntity(Collection<Event> modelCollection) {
 
     final List<ApiEvent> eventList = new ArrayList<>(20);
-    for (Event event : eventCollection) {
-      final ApiEvent apiEvent = fromEvent(event, true);
+    for (Event event : modelCollection) {
+      final ApiEvent apiEvent = fromEntity(event, true);
       if (apiEvent != null) {
         eventList.add(apiEvent);
       }

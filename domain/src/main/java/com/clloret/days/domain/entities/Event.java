@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class Event implements EventSortable, Cloneable {
+public final class Event implements Identifiable, EventSortable, Cloneable {
 
   public static final int REMINDER_EVENT_DAY = 0;
 
@@ -49,6 +49,7 @@ public final class Event implements EventSortable, Cloneable {
     return reminder != null;
   }
 
+  @Override
   public String getId() {
 
     return id;

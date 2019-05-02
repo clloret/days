@@ -1,18 +1,18 @@
 package com.clloret.days.domain.interactors.events;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.SingleUseCaseWithParameter;
+import com.clloret.days.domain.repository.EventRepository;
 import io.reactivex.Single;
 import java.util.List;
 import javax.inject.Inject;
 
 public class GetEventsUseCase implements SingleUseCaseWithParameter<Boolean, List<Event>> {
 
-  private final AppDataStore dataStore;
+  private final EventRepository dataStore;
 
   @Inject
-  public GetEventsUseCase(AppDataStore dataStore) {
+  public GetEventsUseCase(EventRepository dataStore) {
 
     this.dataStore = dataStore;
   }
@@ -20,6 +20,6 @@ public class GetEventsUseCase implements SingleUseCaseWithParameter<Boolean, Lis
   @Override
   public Single<List<Event>> execute(Boolean parameter) {
 
-    return dataStore.getEvents(parameter);
+    return dataStore.getAll(parameter);
   }
 }

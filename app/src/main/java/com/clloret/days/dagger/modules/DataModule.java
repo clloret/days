@@ -7,25 +7,32 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import com.clloret.days.R;
-import com.clloret.days.data.AppRepository;
+import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.DaysDatabase;
-import com.clloret.days.data.local.LocalDataStore;
-import com.clloret.days.data.local.ReadOnlyDataStore;
 import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
 import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
-import com.clloret.days.data.remote.AirtableDataStore;
+import com.clloret.days.data.local.repository.ReadOnlyEventRepository;
+import com.clloret.days.data.local.repository.ReadOnlyTagRepository;
+import com.clloret.days.data.local.repository.RoomEventRepository;
+import com.clloret.days.data.local.repository.RoomTagRepository;
 import com.clloret.days.data.remote.entities.mapper.ApiEventDataMapper;
 import com.clloret.days.data.remote.entities.mapper.ApiTagDataMapper;
-import com.clloret.days.domain.AppDataStore;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.data.remote.repository.AirtableEventRepository;
+import com.clloret.days.data.remote.repository.AirtableTagRepository;
+import com.clloret.days.data.repository.AppEventRepository;
+import com.clloret.days.data.repository.AppTagRepository;
+import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.repository.EventRepository;
+import com.clloret.days.domain.repository.TagRepository;
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
 @Module
-public class DataModule {
+public abstract class DataModule {
 
   private static final String DATABASE = "days";
 
@@ -47,94 +54,112 @@ public class DataModule {
 
   @Provides
   @Singleton
-  AppDataStore providesAppDataStore(@Named("local") AppDataStore localDataStore,
-      @Named("remote") AppDataStore remoteDataStore) {
+  static DaysDatabase providesDatabase(Context context) {
 
-    return new AppRepository(localDataStore, remoteDataStore);
+    return Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
+        .addMigrations(MIGRATION_1_2).build();
+  }
+
+  @Provides
+  @Singleton
+  static AppEventRepository providesAppEventRepository(
+      @Named("local") EventRepository localDataStore,
+      @Named("remote") EventRepository remoteDataStore) {
+
+    return new AppEventRepository(localDataStore, remoteDataStore);
   }
 
   @Provides
   @Singleton
   @Named("local")
-  AppDataStore providesLocalDataStore(Context context, SharedPreferences preferences,
-      DbEventDataMapper eventDataMapper, DbTagDataMapper tagDataMapper) {
-
-    DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
-        .addMigrations(MIGRATION_1_2).build();
+  static EventRepository providesLocalEventRepository(Context context,
+      SharedPreferences preferences,
+      DaysDatabase db, DbEventDataMapper eventDataMapper) {
 
     RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
-      return new ReadOnlyDataStore(db, eventDataMapper, tagDataMapper);
+      return new ReadOnlyEventRepository(db.eventDao(), eventDataMapper);
     } else {
 
-      return new LocalDataStore(db, eventDataMapper, tagDataMapper);
+      return new RoomEventRepository(db.eventDao(), eventDataMapper);
     }
   }
 
   @Provides
   @Singleton
   @Named("remote")
-  AppDataStore providesAirtableDataStore(Context context, SharedPreferences preferences,
-      DbEventDataMapper dbEventDataMapper, DbTagDataMapper dbTagDataMapper,
-      ApiEventDataMapper apiEventDataMapper, ApiTagDataMapper apiTagDataMapper) {
+  static EventRepository providesRemoteEventRepository(Context context,
+      SharedPreferences preferences,
+      DaysDatabase db, DbEventDataMapper dbEventDataMapper, ApiEventDataMapper apiEventDataMapper) {
 
     RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
-      DaysDatabase db = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
-          .addMigrations(MIGRATION_1_2).build();
-      return new LocalDataStore(db, dbEventDataMapper, dbTagDataMapper);
+      return new RoomEventRepository(db.eventDao(), dbEventDataMapper);
     } else {
 
-      return new AirtableDataStore(context, remoteDataStoreResult.airtableKey,
-          remoteDataStoreResult.airtableBase, apiEventDataMapper, apiTagDataMapper);
+      return new AirtableEventRepository(context, remoteDataStoreResult.airtableKey,
+          remoteDataStoreResult.airtableBase, apiEventDataMapper);
     }
   }
 
   @Provides
   @Singleton
-  EventViewModelMapper providesEventViewModelMapper() {
+  static AppTagRepository providesAppTagRepository(@Named("local") TagRepository localDataStore,
+      @Named("remote") TagRepository remoteDataStore) {
 
-    return new EventViewModelMapper();
+    return new AppTagRepository(localDataStore, remoteDataStore);
   }
 
   @Provides
   @Singleton
-  TagViewModelMapper providesTagViewModelMapper() {
+  @Named("local")
+  static TagRepository providesLocalTagRepository(Context context, SharedPreferences preferences,
+      DaysDatabase db, DbTagDataMapper tagDataMapper) {
 
-    return new TagViewModelMapper();
+    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
+
+    if (remoteDataStoreResult.isRemoteDataStore) {
+
+      return new ReadOnlyTagRepository(db.tagDao(), tagDataMapper);
+    } else {
+
+      return new RoomTagRepository(db.tagDao(), tagDataMapper);
+    }
   }
 
   @Provides
   @Singleton
-  DbEventDataMapper providesDbEventDataMapper() {
+  @Named("remote")
+  static TagRepository providesRemoteTagRepository(Context context, SharedPreferences preferences,
+      DaysDatabase db, DbTagDataMapper dbEventDataMapper, ApiTagDataMapper apiEventDataMapper) {
 
-    return new DbEventDataMapper();
+    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
+
+    if (remoteDataStoreResult.isRemoteDataStore) {
+
+      return new RoomTagRepository(db.tagDao(), dbEventDataMapper);
+    } else {
+
+      return new AirtableTagRepository(context, remoteDataStoreResult.airtableKey,
+          remoteDataStoreResult.airtableBase, apiEventDataMapper);
+    }
   }
 
-  @Provides
-  @Singleton
-  DbTagDataMapper providesDbTagDataMapper() {
+  @Binds
+  abstract EventRepository bindEventRepository(AppEventRepository impl);
 
-    return new DbTagDataMapper();
-  }
+  @Binds
+  abstract TagRepository bindTagRepository(AppTagRepository impl);
 
-  @Provides
-  @Singleton
-  ApiEventDataMapper providesApiEventDataMapper() {
+  @Binds
+  abstract CacheSource<Event> bindEventCacheSource(AppEventRepository impl);
 
-    return new ApiEventDataMapper();
-  }
-
-  @Provides
-  @Singleton
-  ApiTagDataMapper providesApiTagDataMapper() {
-
-    return new ApiTagDataMapper();
-  }
+  @Binds
+  abstract CacheSource<Tag> bindTagCacheSource(AppTagRepository impl);
 
   private static class RemoteDataStoreResult {
 

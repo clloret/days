@@ -3,8 +3,8 @@ package com.clloret.days.device.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.repository.EventRepository;
 import dagger.android.AndroidInjection;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
   EventReminderManager eventReminderManager;
 
   @Inject
-  AppDataStore appDataStore;
+  EventRepository appDataStore;
 
   @Override
   public void onReceive(Context context, Intent intent) {
@@ -40,7 +40,7 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
 
   private void scheduleAllReminders() {
 
-    appDataStore.getEvents(true)
+    appDataStore.getAll(true)
         .doOnSuccess(events -> eventReminderManager.scheduleReminders(events, false))
         .subscribeOn(Schedulers.io())
         .subscribe();

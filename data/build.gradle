@@ -50,6 +50,7 @@ dependencies {
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation 'com.github.clloret:airtable.android:081d573aa2'
     implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'javax.inject:javax.inject:1'
 
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
 

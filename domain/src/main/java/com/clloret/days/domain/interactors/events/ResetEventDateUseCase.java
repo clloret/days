@@ -1,9 +1,9 @@
 package com.clloret.days.domain.interactors.events;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.Maybe;
 import javax.inject.Inject;
@@ -13,12 +13,12 @@ import org.joda.time.LocalDate;
 @Singleton
 public class ResetEventDateUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
-  private final AppDataStore dataStore;
+  private final EventRepository dataStore;
   private final TimeProvider timeProvider;
   private final EventReminderManager eventReminderManager;
 
   @Inject
-  public ResetEventDateUseCase(AppDataStore dataStore, TimeProvider timeProvider,
+  public ResetEventDateUseCase(EventRepository dataStore, TimeProvider timeProvider,
       EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
@@ -32,7 +32,7 @@ public class ResetEventDateUseCase implements MaybeUseCaseWithParameter<Event, E
     LocalDate date = timeProvider.getCurrentDate();
     event.setDate(date.toDate());
 
-    return dataStore.editEvent(event)
+    return dataStore.edit(event)
         .doOnSuccess(this::reminderSchedule);
   }
 

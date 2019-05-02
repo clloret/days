@@ -2,20 +2,20 @@ package com.clloret.days.domain.interactors.events;
 
 import static com.clloret.days.domain.entities.Event.REMINDER_EVENT_DAY;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.repository.EventRepository;
 import io.reactivex.Maybe;
 import javax.inject.Inject;
 
 public class ToggleEventReminderUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
-  private final AppDataStore dataStore;
+  private final EventRepository dataStore;
   private final EventReminderManager eventReminderManager;
 
   @Inject
-  public ToggleEventReminderUseCase(AppDataStore dataStore,
+  public ToggleEventReminderUseCase(EventRepository dataStore,
       EventReminderManager eventReminderManager) {
 
     this.dataStore = dataStore;
@@ -32,7 +32,7 @@ public class ToggleEventReminderUseCase implements MaybeUseCaseWithParameter<Eve
       event.setReminderUnit(Event.TimeUnit.DAY);
     }
 
-    return dataStore.editEvent(event)
+    return dataStore.edit(event)
         .doOnSuccess(this::reminderSchedule);
   }
 

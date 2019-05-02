@@ -6,10 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import com.clloret.days.device.eventbus.EventsUpdatedEvent;
 import com.clloret.days.device.notifications.NotificationsUtils;
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
+import com.clloret.days.domain.repository.EventRepository;
 import dagger.android.AndroidInjection;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
@@ -27,7 +27,7 @@ public class ReminderReceiver extends BroadcastReceiver {
   public static final String EXTRA_EVENT_ID = "com.clloret.days.extras.EXTRA_EVENT_ID";
 
   @Inject
-  AppDataStore appDataStore;
+  EventRepository appDataStore;
 
   @Inject
   EventBus eventBus;
@@ -56,7 +56,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
     if (intent.getExtras() != null) {
       String eventId = intent.getExtras().getString(EXTRA_EVENT_ID);
-      event = appDataStore.getEventById(eventId)
+      event = appDataStore.getById(eventId)
           .subscribeOn(Schedulers.io())
           .blockingGet();
     }

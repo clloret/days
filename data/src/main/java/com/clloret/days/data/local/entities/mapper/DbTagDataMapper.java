@@ -1,28 +1,39 @@
 package com.clloret.days.data.local.entities.mapper;
 
 import com.clloret.days.data.local.entities.DbTag;
+import com.clloret.days.data.remote.entities.mapper.DataMapper;
 import com.clloret.days.domain.entities.Tag;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-public class DbTagDataMapper {
+@Singleton
+public class DbTagDataMapper implements DataMapper<Tag, DbTag> {
 
-  private Tag toTag(DbTag dbTag) {
+  @Inject
+  public DbTagDataMapper() {
+
+  }
+
+  @Override
+  public Tag toEntity(DbTag model) {
 
     Tag tag = null;
-    if (dbTag != null) {
-      tag = new Tag(dbTag.getId());
-      tag.setName(dbTag.getName());
+    if (model != null) {
+      tag = new Tag(model.getId());
+      tag.setName(model.getName());
     }
     return tag;
   }
 
-  public List<Tag> toTag(Collection<DbTag> dbTagCollection) {
+  @Override
+  public List<Tag> toEntity(Collection<DbTag> modelCollection) {
 
     final List<Tag> tagList = new ArrayList<>(20);
-    for (DbTag dbTag : dbTagCollection) {
-      final Tag tag = toTag(dbTag);
+    for (DbTag dbTag : modelCollection) {
+      final Tag tag = toEntity(dbTag);
       if (tag != null) {
         tagList.add(tag);
       }
@@ -30,21 +41,22 @@ public class DbTagDataMapper {
     return tagList;
   }
 
-  public DbTag fromTag(Tag tag) {
+  @Override
+  public DbTag fromEntity(Tag model, boolean copyId) {
 
     DbTag dbTag = null;
-    if (tag != null) {
-      dbTag = new DbTag(tag.getId());
-      dbTag.setName(tag.getName());
+    if (model != null) {
+      dbTag = new DbTag(model.getId());
+      dbTag.setName(model.getName());
     }
     return dbTag;
   }
 
-  public List<DbTag> fromTag(Collection<Tag> tagCollection) {
+  public List<DbTag> fromEntity(Collection<Tag> modelCollection) {
 
     final List<DbTag> dbTagList = new ArrayList<>(20);
-    for (Tag tag : tagCollection) {
-      final DbTag dbTag = fromTag(tag);
+    for (Tag tag : modelCollection) {
+      final DbTag dbTag = fromEntity(tag, true);
       if (dbTag != null) {
         dbTagList.add(dbTag);
       }

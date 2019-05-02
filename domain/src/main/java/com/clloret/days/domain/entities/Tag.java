@@ -3,7 +3,7 @@ package com.clloret.days.domain.entities;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 
-public class Tag {
+public class Tag implements Identifiable {
 
   private String id;
 
@@ -25,11 +25,13 @@ public class Tag {
   }
 
   @NonNull
+  @Override
   public String getId() {
 
     return id;
   }
 
+  @Override
   public void setId(String id) {
 
     this.id = id;

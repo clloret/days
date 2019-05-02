@@ -1,18 +1,18 @@
 package com.clloret.days.domain.interactors.tags;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.types.SingleUseCaseWithParameter;
+import com.clloret.days.domain.repository.TagRepository;
 import io.reactivex.Single;
 import java.util.List;
 import javax.inject.Inject;
 
 public class GetTagsUseCase implements SingleUseCaseWithParameter<Boolean, List<Tag>> {
 
-  private final AppDataStore dataStore;
+  private final TagRepository dataStore;
 
   @Inject
-  public GetTagsUseCase(AppDataStore dataStore) {
+  public GetTagsUseCase(TagRepository dataStore) {
 
     this.dataStore = dataStore;
   }
@@ -20,6 +20,6 @@ public class GetTagsUseCase implements SingleUseCaseWithParameter<Boolean, List<
   @Override
   public Single<List<Tag>> execute(Boolean refresh) {
 
-    return dataStore.getTags(refresh);
+    return dataStore.getAll(refresh);
   }
 }

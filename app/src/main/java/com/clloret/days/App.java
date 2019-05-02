@@ -10,8 +10,10 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import com.clloret.days.dagger.AppComponent;
 import com.clloret.days.dagger.DaggerAppComponent;
+import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.device.services.TimeLapseJob;
-import com.clloret.days.domain.AppDataStore;
+import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.utils.StethoUtils;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
@@ -40,7 +42,10 @@ public class App extends DaggerApplication
   DispatchingAndroidInjector<Service> serviceDispatchingInjector;
 
   @Inject
-  AppDataStore appDataStore;
+  CacheSource<Event> eventCacheSource;
+
+  @Inject
+  CacheSource<Tag> tagCacheSource;
 
   public static App get(Context context) {
 
@@ -106,7 +111,8 @@ public class App extends DaggerApplication
 
   public void invalidateDataAndRestart() {
 
-    appDataStore.invalidateAll()
+    eventCacheSource.deleteAll()
+        .andThen(tagCacheSource.deleteAll())
         .doOnComplete(this::restart)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())

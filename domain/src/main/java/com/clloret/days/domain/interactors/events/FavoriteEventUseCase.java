@@ -1,17 +1,17 @@
 package com.clloret.days.domain.interactors.events;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
+import com.clloret.days.domain.repository.EventRepository;
 import io.reactivex.Maybe;
 import javax.inject.Inject;
 
 public class FavoriteEventUseCase implements MaybeUseCaseWithParameter<Event, Event> {
 
-  private final AppDataStore dataStore;
+  private final EventRepository dataStore;
 
   @Inject
-  public FavoriteEventUseCase(AppDataStore dataStore) {
+  public FavoriteEventUseCase(EventRepository dataStore) {
 
     this.dataStore = dataStore;
   }
@@ -21,6 +21,6 @@ public class FavoriteEventUseCase implements MaybeUseCaseWithParameter<Event, Ev
 
     event.setFavorite(!event.isFavorite());
 
-    return dataStore.editEvent(event);
+    return dataStore.edit(event);
   }
 }
