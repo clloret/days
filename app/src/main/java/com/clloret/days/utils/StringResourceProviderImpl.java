@@ -3,11 +3,15 @@ package com.clloret.days.utils;
 import android.content.res.Resources;
 import com.clloret.days.R;
 import com.clloret.days.domain.utils.StringResourceProvider;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class StringResourceProviderImpl implements StringResourceProvider {
 
   private final Resources resources;
 
+  @Inject
   public StringResourceProviderImpl(Resources resources) {
 
     this.resources = resources;

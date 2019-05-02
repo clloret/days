@@ -15,7 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class ReminderManagerImpl implements ReminderManager {
 
   private final ReminderUtils reminderUtils;
@@ -23,6 +26,7 @@ public class ReminderManagerImpl implements ReminderManager {
   private final NotificationsFactory notificationsFactory;
   private final StringResourceProvider stringResourceProvider;
 
+  @Inject
   public ReminderManagerImpl(Context context, NotificationsIntents notificationsIntents,
       StringResourceProvider stringResourceProvider) {
 

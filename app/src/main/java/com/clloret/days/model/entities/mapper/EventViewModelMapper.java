@@ -6,8 +6,16 @@ import com.clloret.days.model.entities.EventViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class EventViewModelMapper {
+
+  @Inject
+  public EventViewModelMapper() {
+
+  }
 
   public Event toEvent(EventViewModel viewModel) {
 

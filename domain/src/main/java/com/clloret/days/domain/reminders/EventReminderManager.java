@@ -4,15 +4,19 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import java.util.Collection;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 
+@Singleton
 public class EventReminderManager {
 
   private final ReminderManager reminderManager;
   private final TimeProvider timeProvider;
   private final PreferenceUtils preferenceUtils;
 
+  @Inject
   public EventReminderManager(ReminderManager reminderManager, TimeProvider timeProvider,
       PreferenceUtils preferenceUtils) {
 

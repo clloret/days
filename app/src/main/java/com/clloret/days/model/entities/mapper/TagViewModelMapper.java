@@ -5,8 +5,16 @@ import com.clloret.days.model.entities.TagViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class TagViewModelMapper {
+
+  @Inject
+  public TagViewModelMapper() {
+
+  }
 
   public Tag toTag(TagViewModel viewModel) {
 

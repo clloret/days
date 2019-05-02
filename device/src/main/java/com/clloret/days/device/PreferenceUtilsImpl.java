@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.domain.utils.StringResourceProvider;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class PreferenceUtilsImpl implements PreferenceUtils {
 
   private static final int DEFAULT_REMINDER_TIME = 0;
@@ -13,6 +16,7 @@ public class PreferenceUtilsImpl implements PreferenceUtils {
   private final StringResourceProvider stringResourceProvider;
   private final SharedPreferences preferences;
 
+  @Inject
   public PreferenceUtilsImpl(
       Context context, StringResourceProvider stringResourceProvider) {
 

@@ -15,12 +15,16 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.edit.EventEditActivity;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class NotificationsIntentsImpl implements NotificationsIntents {
 
   private final Context context;
   private final EventViewModelMapper eventViewModelMapper;
 
+  @Inject
   public NotificationsIntentsImpl(Context context, EventViewModelMapper eventViewModelMapper) {
 
     this.context = context;

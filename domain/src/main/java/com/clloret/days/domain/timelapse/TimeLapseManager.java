@@ -1,17 +1,20 @@
 package com.clloret.days.domain.timelapse;
 
-import com.clloret.days.domain.AppDataStore;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.reminders.EventReminderManager;
+import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Singleton
 public class TimeLapseManager {
 
   private static final int AIRTABLE_DELAY = 200;
@@ -19,11 +22,12 @@ public class TimeLapseManager {
       .getLogger(TimeLapseManager.class.getSimpleName());
   private final TimeProvider timeProvider;
   private final EventReminderManager eventReminderManager;
-  private final AppDataStore appDataStore;
+  private final EventRepository appDataStore;
 
+  @Inject
   public TimeLapseManager(TimeProvider timeProvider,
       EventReminderManager eventReminderManager,
-      AppDataStore appDataStore) {
+      EventRepository appDataStore) {
 
     this.timeProvider = timeProvider;
     this.eventReminderManager = eventReminderManager;
@@ -83,7 +87,7 @@ public class TimeLapseManager {
     }
 
     return appDataStore
-        .editEvent(newEvent)
+        .edit(newEvent)
         .delay(AIRTABLE_DELAY, TimeUnit.MILLISECONDS)
         .doOnSuccess(result -> eventReminderManager.scheduleReminder(result, false));
   }
@@ -92,7 +96,7 @@ public class TimeLapseManager {
 
     logger.debug("updateEventsDatesFromTimeLapse");
 
-    return appDataStore.getEvents(true)
+    return appDataStore.getAll(true)
         .toObservable()
         .concatMap(Observable::fromIterable)
         .flatMap(event -> updateEventAndSave(event).toObservable());

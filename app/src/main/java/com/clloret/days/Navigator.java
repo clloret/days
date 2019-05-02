@@ -9,8 +9,16 @@ import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.settings.SettingsActivity;
 import com.clloret.days.tags.edit.TagEditActivity;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class Navigator {
+
+  @Inject
+  public Navigator() {
+
+  }
 
   public void navigateToEventCreate(Context context, @Nullable TagViewModel selectedTag) {
 
