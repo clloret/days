@@ -43,15 +43,15 @@ public class PeriodTextFormatter {
     int pluralId;
 
     switch (timeUnit) {
-      case DAY:
-      default:
-        pluralId = R.plurals.day;
-        break;
       case MONTH:
         pluralId = R.plurals.month;
         break;
       case YEAR:
         pluralId = R.plurals.year;
+        break;
+      case DAY:
+      default:
+        pluralId = R.plurals.day;
         break;
     }
     return resources.getQuantityString(pluralId, abs(reminder));

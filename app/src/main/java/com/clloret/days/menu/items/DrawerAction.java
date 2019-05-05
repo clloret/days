@@ -16,6 +16,7 @@ public class DrawerAction extends DrawerTextIcon {
   @SuppressWarnings("unused")
   private DrawerAction() {
 
+    super();
   }
 
   public DrawerAction(String title, @DrawableRes int icon, Intent intent, int requestCode) {

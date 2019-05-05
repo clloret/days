@@ -9,9 +9,12 @@ public abstract class DrawerTextIcon extends DrawerText {
   @SuppressWarnings("unused")
   protected DrawerTextIcon() {
 
+    super();
   }
 
   public DrawerTextIcon(String listingTitle, @DrawableRes int icon) {
+
+    super();
 
     this.title = listingTitle;
     this.icon = icon;

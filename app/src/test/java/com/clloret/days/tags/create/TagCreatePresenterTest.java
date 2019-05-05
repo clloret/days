@@ -25,7 +25,7 @@ import org.mockito.MockitoAnnotations;
 public class TagCreatePresenterTest {
 
   @ClassRule
-  public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
 
   @Mock
   private CreateTagUseCase createTagUseCase;
@@ -64,7 +64,7 @@ public class TagCreatePresenterTest {
 
     addStubMethodsToMapper(tag, tagViewModel);
 
-    tagCreatePresenter.createTag(SampleBuilder.name);
+    tagCreatePresenter.createTag(SampleBuilder.NAME);
 
     verify(createTagUseCase).execute(any());
     verify(tagCreateView).onSuccessfully(eq(tagViewModel));
@@ -79,7 +79,7 @@ public class TagCreatePresenterTest {
   @Test
   public void createTag_WhenEmptyName_NotifyViewError() {
 
-    tagCreatePresenter.createTag(SampleBuilder.emptyText);
+    tagCreatePresenter.createTag(SampleBuilder.EMPTY_TEXT);
 
     verify(tagCreateView).onEmptyTagNameError();
     verifyNoMoreInteractions(createTagUseCase);

@@ -30,6 +30,8 @@ public class MenuPresenter extends MvpNullObjectBasePresenter<MenuView> {
   @Inject
   public MenuPresenter(TagViewModelMapper tagViewModelMapper, EventBus eventBus) {
 
+    super();
+
     this.tagViewModelMapper = tagViewModelMapper;
     this.eventBus = eventBus;
   }

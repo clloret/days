@@ -21,6 +21,8 @@ public class TagCreatePresenter extends MvpNullObjectBasePresenter<TagCreateView
   public TagCreatePresenter(TagViewModelMapper tagViewModelMapper,
       CreateTagUseCase createTagUseCase) {
 
+    super();
+
     this.tagViewModelMapper = tagViewModelMapper;
     this.createTagUseCase = createTagUseCase;
   }
@@ -34,13 +36,12 @@ public class TagCreatePresenter extends MvpNullObjectBasePresenter<TagCreateView
 
   public void createTag(@NonNull String name) {
 
-    final TagCreateView view = getView();
-
     if (name.isEmpty()) {
       getView().onEmptyTagNameError();
       return;
     }
 
+    TagCreateView view = getView();
     Tag newTag = new Tag(null, name);
 
     Disposable subscribe = createTagUseCase.execute(newTag)

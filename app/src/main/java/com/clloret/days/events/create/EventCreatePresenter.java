@@ -31,6 +31,8 @@ public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreate
       GetTagsUseCase getTagsUseCase,
       CreateEventUseCase createEventUseCase) {
 
+    super();
+
     this.eventViewModelMapper = eventViewModelMapper;
     this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;

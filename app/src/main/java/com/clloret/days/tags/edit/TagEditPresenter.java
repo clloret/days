@@ -24,6 +24,8 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
       DeleteTagUseCase deleteTagUseCase,
       TagViewModelMapper tagViewModelMapper) {
 
+    super();
+
     this.editTagUseCase = editTagUseCase;
     this.deleteTagUseCase = deleteTagUseCase;
     this.tagViewModelMapper = tagViewModelMapper;
@@ -38,15 +40,14 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
 
   public void saveTag(TagViewModel tagViewModel) {
 
-    final TagEditView view = getView();
-
     if (tagViewModel.getName().isEmpty()) {
 
       getView().onEmptyTagNameError();
       return;
     }
 
-    final Tag tag = tagViewModelMapper.toTag(tagViewModel);
+    TagEditView view = getView();
+    Tag tag = tagViewModelMapper.toTag(tagViewModel);
 
     Disposable subscribe = editTagUseCase.execute(tag)
         .subscribeOn(Schedulers.io())

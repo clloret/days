@@ -11,7 +11,7 @@ class MenuViewState implements RestorableViewState<MenuView> {
 
   private static final String KEY_DATA = "data";
 
-  private ArrayList<TagViewModel> tags = new ArrayList<>();
+  private List<TagViewModel> tags = new ArrayList<>();
 
   @Override
   public void apply(MenuView view, boolean retained) {
@@ -22,7 +22,7 @@ class MenuViewState implements RestorableViewState<MenuView> {
   @Override
   public void saveInstanceState(@NonNull Bundle out) {
 
-    out.putParcelableArrayList(KEY_DATA, tags);
+    out.putParcelableArrayList(KEY_DATA, new ArrayList<>(tags));
   }
 
   @Override

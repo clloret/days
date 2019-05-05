@@ -19,6 +19,7 @@ public class DrawerFilter extends DrawerTextIcon {
   @SuppressWarnings({"unused", "WeakerAccess"})
   protected DrawerFilter() {
 
+    super();
   }
 
   public DrawerFilter(String title, @DrawableRes int icon,

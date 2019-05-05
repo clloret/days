@@ -1,23 +1,22 @@
 package com.clloret.days.menu.items;
 
-import android.support.annotation.Nullable;
+import com.clloret.days.utils.Optional;
 
 public class DrawerTagSelectedMgr {
 
-  private DrawerTag selected;
+  private Optional<DrawerTag> selected;
 
   void select(DrawerTag drawerTag) {
 
-    selected = drawerTag;
+    selected = Optional.of(drawerTag);
   }
 
   void deselect() {
 
-    selected = null;
+    selected = Optional.empty();
   }
 
-  public @Nullable
-  DrawerTag getSelected() {
+  public Optional<DrawerTag> getSelected() {
 
     return selected;
   }

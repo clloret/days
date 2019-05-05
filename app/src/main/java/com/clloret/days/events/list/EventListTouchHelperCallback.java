@@ -15,6 +15,8 @@ class EventListTouchHelperCallback extends Callback {
 
   public EventListTouchHelperCallback(EventListAdapter adapter) {
 
+    super();
+
     this.adapter = adapter;
   }
 

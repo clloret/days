@@ -35,6 +35,8 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
       EditEventUseCase editEventUseCase,
       DeleteEventUseCase deleteEventUseCase) {
 
+    super();
+
     this.eventViewModelMapper = eventViewModelMapper;
     this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;

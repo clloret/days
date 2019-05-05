@@ -20,6 +20,7 @@ import com.clloret.days.events.list.EventListFragment.OnFragmentLifecycleListene
 import com.clloret.days.events.list.EventListFragment.OnProgressListener;
 import com.clloret.days.menu.MenuFragment;
 import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.utils.Optional;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity
 
     actionNewEvent.setOnClickListener(v -> {
 
-      TagViewModel selectedTag = getNavigationDrawerFragment().getSelectedTag();
-      navigator.navigateToEventCreate(MainActivity.this, selectedTag);
+      Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
+      selectedTag.ifPresent(value -> navigator.navigateToEventCreate(this, value));
     });
 
     if (savedInstanceState == null) {
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity
   private void configureNavigationDrawer() {
 
     MenuFragment navigationDrawer = getNavigationDrawerFragment();
-    navigationDrawer.setUp(drawerLayout);
+    navigationDrawer.configure(drawerLayout);
 
     drawerToggle = setupDrawerToggle();
 

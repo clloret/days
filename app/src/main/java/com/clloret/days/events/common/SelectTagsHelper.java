@@ -95,7 +95,7 @@ public class SelectTagsHelper {
 
     SelectTagsDialog dialog = SelectTagsDialog
         .newInstance(resources.getString(R.string.title_select_tags),
-            nameTags.toArray(new String[nameTags.size()]), checkedTags,
+            nameTags.toArray(new String[0]), checkedTags,
             new ArrayList<>(tags));
     dialog.show(activity.getSupportFragmentManager(), "tags");
   }

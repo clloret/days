@@ -4,14 +4,17 @@ import com.clloret.days.menu.items.holders.TextViewHolder;
 
 public abstract class DrawerText extends DrawerMenuItem<TextViewHolder> {
 
-  String title = null;
+  String title;
 
   @SuppressWarnings("unused")
   protected DrawerText() {
 
+    super();
   }
 
   public DrawerText(String title) {
+
+    super();
 
     this.title = title;
   }

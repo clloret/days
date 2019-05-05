@@ -25,7 +25,7 @@ import org.mockito.MockitoAnnotations;
 public class TagEditPresenterTest {
 
   @ClassRule
-  public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
 
   @Mock
   private EditTagUseCase editTagUseCase;

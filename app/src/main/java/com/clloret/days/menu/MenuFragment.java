@@ -18,6 +18,7 @@ import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerTag;
 import com.clloret.days.menu.items.DrawerTagSelectedMgr;
 import com.clloret.days.model.entities.TagViewModel;
+import com.clloret.days.utils.Optional;
 import com.hannesdorfmann.mosby.mvp.viewstate.ViewState;
 import dagger.android.support.AndroidSupportInjection;
 import java.util.List;
@@ -46,6 +47,9 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   private int previousCheckedPosition = -1;
 
   public MenuFragment() {
+
+    super();
+
     // Required empty public constructor
   }
 
@@ -193,7 +197,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     presenter.loadTags(false);
   }
 
-  public void setUp(DrawerLayout drawerLayout) {
+  public void configure(DrawerLayout drawerLayout) {
 
     this.drawerLayout = drawerLayout;
 
@@ -235,14 +239,15 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     }
   }
 
-  public @Nullable
-  TagViewModel getSelectedTag() {
+  public Optional<TagViewModel> getSelectedTag() {
 
-    DrawerTag drawerTag = drawerTagSelectedMgr.getSelected();
-    if (drawerTag != null) {
-      return drawerTag.getTag();
+    Optional<DrawerTag> drawerTagOptional = drawerTagSelectedMgr.getSelected();
+
+    if (drawerTagOptional.isPresent()) {
+      return Optional.of(drawerTagOptional.get().getTag());
+    } else {
+      return Optional.empty();
     }
-    return null;
   }
 
 }

@@ -1,6 +1,5 @@
 package com.clloret.days.events.create;
 
-import static com.clloret.days.events.SampleBuilder.createEventViewModel;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -25,10 +24,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+@SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventCreatePresenterTest {
 
   @ClassRule
-  public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
 
   @Mock
   private GetTagsUseCase getTagsUseCase;
@@ -86,8 +86,8 @@ public class EventCreatePresenterTest {
   @Test
   public void createEvent_WhenEmptyName_NotifyViewError() {
 
-    final EventViewModel eventViewModel = createEventViewModel();
-    eventViewModel.setName(SampleBuilder.emptyText);
+    final EventViewModel eventViewModel = SampleBuilder.createEventViewModel();
+    eventViewModel.setName(SampleBuilder.EMPTY_TEXT);
 
     eventCreatePresenter.createEvent(eventViewModel);
 

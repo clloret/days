@@ -11,31 +11,32 @@ import org.joda.time.LocalDate;
 
 public class SampleBuilder {
 
-  public static final String emptyText = "";
-  private static final String id = "1";
-  private static final String name = "Mock Event";
-  private static final String description = "Description";
-  private static final Date date = new LocalDate(2000, 1, 1).toDate();
-  private static final boolean favorite = false;
+  public static final String EMPTY_TEXT = "";
+  private static final String ID = "1";
+  private static final String NAME = "Mock Event";
+  private static final String DESCRIPTION = "Description";
+  private static final Date DATE = new LocalDate(2000, 1, 1).toDate();
+  private static final boolean FAVORITE = false;
 
   @NonNull
   public static Event createEvent() {
 
     return new EventBuilder()
-        .setId(id)
-        .setName(name)
-        .setDescription(description)
-        .setDate(date)
-        .setFavorite(favorite)
+        .setId(ID)
+        .setName(NAME)
+        .setDescription(DESCRIPTION)
+        .setDate(DATE)
+        .setFavorite(FAVORITE)
         .build();
   }
 
   @NonNull
   public static EventViewModel createEventViewModel() {
 
-    return new EventViewModel(id, name, description, date, favorite);
+    return new EventViewModel(ID, NAME, DESCRIPTION, DATE, FAVORITE);
   }
 
+  @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")
   public static List<Event> createEventList() {
 
     List<Event> eventList = new ArrayList<>(5);

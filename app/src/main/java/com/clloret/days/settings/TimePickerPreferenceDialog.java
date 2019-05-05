@@ -55,17 +55,19 @@ public class TimePickerPreferenceDialog extends PreferenceDialogFragmentCompat {
   @Override
   public void onDialogClosed(boolean positiveResult) {
 
-    if (positiveResult) {
-      int hours = timePicker.getHour();
-      int minutes = timePicker.getMinute();
-      int minutesAfterMidnight = (hours * DateTimeConstants.MINUTES_PER_HOUR) + minutes;
+    if (!positiveResult) {
+      return;
+    }
 
-      DialogPreference preference = getPreference();
-      if (preference instanceof TimePickerPreference) {
-        TimePickerPreference timePreference = ((TimePickerPreference) preference);
-        if (timePreference.callChangeListener(minutesAfterMidnight)) {
-          timePreference.setTime(minutesAfterMidnight);
-        }
+    int hours = timePicker.getHour();
+    int minutes = timePicker.getMinute();
+    int minutesAfterMidnight = (hours * DateTimeConstants.MINUTES_PER_HOUR) + minutes;
+
+    DialogPreference preference = getPreference();
+    if (preference instanceof TimePickerPreference) {
+      TimePickerPreference timePreference = ((TimePickerPreference) preference);
+      if (timePreference.callChangeListener(minutesAfterMidnight)) {
+        timePreference.setTime(minutesAfterMidnight);
       }
     }
   }

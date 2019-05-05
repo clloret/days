@@ -76,7 +76,7 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     this.name = name;
     this.description = description;
     this.date = date;
-    this.tags = tags;
+    this.tags = tags.clone();
     this.favorite = favorite;
   }
 
@@ -181,12 +181,12 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
 
   public String[] getTags() {
 
-    return tags;
+    return tags.clone();
   }
 
   public void setTags(String[] tags) {
 
-    this.tags = tags;
+    this.tags = tags.clone();
   }
 
   public String getDescription() {

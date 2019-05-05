@@ -14,7 +14,7 @@ import com.clloret.days.model.entities.TagViewModel;
 public class DrawerTag extends DrawerFilter implements TagSortable {
 
   private TagViewModel tag;
-  private DrawerTagSelectedMgr drawerTagSelectedMgr;
+  private final DrawerTagSelectedMgr drawerTagSelectedMgr;
 
   public DrawerTag(@NonNull EventFilterByTag eventFilterByTag,
       @NonNull TagViewModel tag, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
@@ -47,6 +47,7 @@ public class DrawerTag extends DrawerFilter implements TagSortable {
     return new TextViewHolder();
   }
 
+  @NonNull
   public TagViewModel getTag() {
 
     return tag;

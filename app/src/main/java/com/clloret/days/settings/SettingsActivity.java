@@ -56,15 +56,12 @@ public class SettingsActivity extends BaseActivity {
 
     int id = item.getItemId();
 
-    switch (id) {
-
-      case R.id.menu_help:
-        showHelp();
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
+    if (id == R.id.menu_help) {
+      showHelp();
+      return true;
     }
+
+    return super.onOptionsItemSelected(item);
   }
 
   private void showHelp() {

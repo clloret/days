@@ -26,10 +26,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+@SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventEditPresenterTest {
 
   @ClassRule
-  public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
 
   @Mock
   private GetTagsUseCase getTagsUseCase;
@@ -92,7 +93,7 @@ public class EventEditPresenterTest {
   public void saveEvent_WhenEmptyEventName_NotifyViewError() {
 
     final EventViewModel eventViewModel = createEventViewModel();
-    eventViewModel.setName(SampleBuilder.emptyText);
+    eventViewModel.setName(SampleBuilder.EMPTY_TEXT);
 
     eventEditPresenter.saveEvent(eventViewModel, eventViewModel);
 

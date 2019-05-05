@@ -36,10 +36,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+@SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventListPresenterTest {
 
   @ClassRule
-  public static final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
 
   @Mock
   private GetEventsUseCase getEventsUseCase;

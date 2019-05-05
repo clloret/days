@@ -54,7 +54,6 @@ public class SelectPeriodHelper implements SelectPeriodDialogListener {
 
     if (listener != null) {
       listener.onResult(period, timeUnit);
-      listener = null;
     }
   }
 

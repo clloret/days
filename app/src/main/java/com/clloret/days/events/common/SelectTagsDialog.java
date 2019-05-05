@@ -25,18 +25,20 @@ public class SelectTagsDialog extends DialogFragment {
   }
 
   public SelectTagsDialog() {
+
+    super();
     // Empty constructor required for DialogFragment
   }
 
   public static SelectTagsDialog newInstance(String title,
-      String[] nameTags, boolean[] checkedTags, ArrayList<TagViewModel> tags) {
+      String[] nameTags, boolean[] checkedTags, List<TagViewModel> tags) {
 
     Bundle args = new Bundle();
 
     args.putString(BUNDLE_TITLE, title);
     args.putStringArray(BUNDLE_NAME_TAGS, nameTags);
     args.putBooleanArray(BUNDLE_CHECKED_TAGS, checkedTags);
-    args.putParcelableArrayList(BUNDLE_TAGS, tags);
+    args.putParcelableArrayList(BUNDLE_TAGS, new ArrayList<>(tags));
 
     SelectTagsDialog dialog = new SelectTagsDialog();
     dialog.setArguments(args);
@@ -64,9 +66,8 @@ public class SelectTagsDialog extends DialogFragment {
               TagViewModel tag = tags.get(which);
               if (isChecked) {
                 selectedItems.add(tag);
-              } else if (selectedItems.contains(tag)) {
+              } else
                 selectedItems.remove(tag);
-              }
             })
         .setPositiveButton(getString(R.string.action_ok), (dialog, id) -> {
 

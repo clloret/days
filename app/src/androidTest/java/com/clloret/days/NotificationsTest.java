@@ -1,6 +1,5 @@
 package com.clloret.days;
 
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -41,6 +40,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class NotificationsTest {
@@ -91,7 +91,7 @@ public class NotificationsTest {
 
   private UiDevice getUiDevice() {
 
-    return UiDevice.getInstance(getInstrumentation());
+    return UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
   }
 
   private void showNotification(Event event) {

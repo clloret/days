@@ -6,20 +6,20 @@ import com.clloret.days.model.entities.TagViewModel;
 
 public class SampleBuilder {
 
-  public static final String emptyText = "";
-  public static final String name = "Mock Event";
-  private static final String id = "1";
+  public static final String EMPTY_TEXT = "";
+  public static final String NAME = "Mock Event";
+  private static final String ID = "1";
 
   @NonNull
   public static Tag createTag() {
 
-    return new Tag(id, name);
+    return new Tag(ID, NAME);
   }
 
   @NonNull
   public static TagViewModel createTagViewModel() {
 
-    return new TagViewModel(id, name);
+    return new TagViewModel(ID, NAME);
   }
 
 }

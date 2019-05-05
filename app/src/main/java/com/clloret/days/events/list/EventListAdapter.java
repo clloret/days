@@ -25,6 +25,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
   public EventListAdapter(Comparator<EventSortable> comparator, OnListAdapterListener listener) {
 
+    super();
+
     this.currentComparator = comparator;
     this.listener = listener;
     this.setHasStableIds(true);

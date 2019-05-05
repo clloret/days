@@ -29,6 +29,8 @@ public class SelectPeriodDialog extends DialogFragment {
   private static final int PERIOD_MAX_VALUE = 100;
 
   public SelectPeriodDialog() {
+
+    super();
     // Empty constructor required for DialogFragment
   }
 
@@ -107,15 +109,16 @@ public class SelectPeriodDialog extends DialogFragment {
     return builder.create();
   }
 
-  private int getNewPeriodFromRadioButton(RadioGroup viewTime, int newPeriod) {
+  private int getNewPeriodFromRadioButton(final RadioGroup viewTime, final int period) {
 
     final int checkedTime = viewTime.getCheckedRadioButtonId();
+    int newPeriod = period;
     switch (checkedTime) {
+      case R.id.radiobutton_selectperiod_after:
+        break;
       case R.id.radiobutton_selectperiod_before:
       default:
         newPeriod = -newPeriod;
-        break;
-      case R.id.radiobutton_selectperiod_after:
         break;
     }
     return newPeriod;
@@ -125,15 +128,15 @@ public class SelectPeriodDialog extends DialogFragment {
 
     int actualCheckedTimeUnit;
     switch (timeUnit) {
-      case DAY:
-      default:
-        actualCheckedTimeUnit = R.id.radiobutton_selectperiod_day;
-        break;
       case MONTH:
         actualCheckedTimeUnit = R.id.radiobutton_selectperiod_month;
         break;
       case YEAR:
         actualCheckedTimeUnit = R.id.radiobutton_selectperiod_year;
+        break;
+      case DAY:
+      default:
+        actualCheckedTimeUnit = R.id.radiobutton_selectperiod_day;
         break;
     }
     return actualCheckedTimeUnit;
@@ -156,15 +159,15 @@ public class SelectPeriodDialog extends DialogFragment {
 
     TimeUnit newTimeUnit;
     switch (radioButtonId) {
-      case R.id.radiobutton_selectperiod_day:
-      default:
-        newTimeUnit = TimeUnit.DAY;
-        break;
       case R.id.radiobutton_selectperiod_month:
         newTimeUnit = TimeUnit.MONTH;
         break;
       case R.id.radiobutton_selectperiod_year:
         newTimeUnit = TimeUnit.YEAR;
+        break;
+      case R.id.radiobutton_selectperiod_day:
+      default:
+        newTimeUnit = TimeUnit.DAY;
         break;
     }
     return newTimeUnit;

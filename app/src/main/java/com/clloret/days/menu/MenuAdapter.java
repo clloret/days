@@ -49,6 +49,8 @@ public class MenuAdapter extends BaseAdapter {
 
   public MenuAdapter(@NonNull Context context, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
 
+    super();
+
     this.context = context;
     this.drawerTagSelectedMgr = drawerTagSelectedMgr;
   }
@@ -159,13 +161,14 @@ public class MenuAdapter extends BaseAdapter {
 
   @NonNull
   @Override
-  public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+  public View getView(final int position, final View convertView, final @NonNull ViewGroup parent) {
 
     DrawerMenuItem item = getItem(position);
 
+    View resultView = convertView;
     if (convertView == null) {
       LayoutInflater inflater = LayoutInflater.from(context);
-      convertView = item.getView(inflater, parent);
+      resultView = item.getView(inflater, parent);
     } else {
 
       item.setView(convertView);
@@ -173,7 +176,7 @@ public class MenuAdapter extends BaseAdapter {
 
     item.populate();
 
-    return convertView;
+    return resultView;
   }
 
   @Override

@@ -96,6 +96,9 @@ public class EventListFragment
    */
   public EventListFragment() {
 
+    super();
+
+    // Mandatory empty constructor for the fragment manager
   }
 
   @NonNull

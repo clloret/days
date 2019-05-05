@@ -19,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class MainActivityTest {
@@ -27,7 +28,7 @@ public class MainActivityTest {
   public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
 
   @Before
-  public void setup() {
+  public void setUp() {
 
     TestApp app = (TestApp) InstrumentationRegistry.getInstrumentation()
         .getTargetContext().getApplicationContext();

@@ -56,6 +56,8 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
       DeleteEventUseCase deleteEventUseCase,
       CreateEventUseCase createEventUseCase) {
 
+    super();
+
     this.eventViewModelMapper = eventViewModelMapper;
     this.eventBus = eventBus;
     this.getEventsUseCase = getEventsUseCase;

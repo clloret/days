@@ -157,15 +157,12 @@ public class EventCreateActivity extends
 
     int id = item.getItemId();
 
-    switch (id) {
-
-      case R.id.menu_delete:
-        discardEvent();
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
+    if (id == R.id.menu_delete) {
+      discardEvent();
+      return true;
     }
+
+    return super.onOptionsItemSelected(item);
   }
 
   @NonNull
