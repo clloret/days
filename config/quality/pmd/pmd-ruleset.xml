@@ -1,41 +1,78 @@
 <?xml version="1.0"?>
 <ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Android Application Rules"
-  xmlns="http://pmd.sf.net/ruleset/1.0.0"
+  xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
   xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd"
-  xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+  xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
   <description>Custom ruleset for Carlos Lloret Android application</description>
 
   <exclude-pattern>.*/R.java</exclude-pattern>
   <exclude-pattern>.*/gen/.*</exclude-pattern>
 
-  <rule ref="rulesets/java/android.xml"/>
-  <rule ref="rulesets/java/clone.xml"/>
-  <rule ref="rulesets/java/finalizers.xml"/>
-  <rule ref="rulesets/java/imports.xml">
-    <!-- Espresso is designed this way !-->
-    <exclude name="TooManyStaticImports"/>
-  </rule>
-  <rule ref="rulesets/java/logging-java.xml">
-    <!-- This rule wasn't working properly and given errors in every var call info -->
-    <exclude name="GuardLogStatementJavaUtil"/>
-  </rule>
-  <rule ref="rulesets/java/braces.xml">
-    <!-- We allow single line if's without braces -->
-    <exclude name="IfStmtsMustUseBraces"/>
-  </rule>
-  <rule ref="rulesets/java/strings.xml">
-    <!-- Exclude because causes problems with SQL Strings that usually require duplication -->
+  <rule ref="category/java/errorprone.xml">
     <exclude name="AvoidDuplicateLiterals"/>
+    <exclude name="BeanMembersShouldSerialize"/>
+    <exclude name="DataflowAnomalyAnalysis"/>
+    <exclude name="NonStaticInitializer"/>
+    <exclude name="UseProperClassLoader"/>
   </rule>
-  <rule ref="rulesets/java/basic.xml"/>
-  <rule ref="rulesets/java/naming.xml">
+  <rule ref="category/java/bestpractices.xml">
+    <exclude name="UseVarargs"/>
+  </rule>
+  <rule ref="category/java/codestyle.xml">
     <exclude name="AbstractNaming"/>
+    <exclude name="AtLeastOneConstructor"/>
+    <exclude name="AvoidFinalLocalVariable"/>
+    <exclude name="AvoidPrefixingMethodParameters"/>
+    <exclude name="CommentDefaultAccessModifier"/>
+    <exclude name="ConfusingTernary"/>
+    <exclude name="DefaultPackage"/>
+    <exclude name="EmptyMethodInAbstractClassShouldBeAbstract"/>
+    <exclude name="IfElseStmtsMustUseBraces"/>
+    <exclude name="IfStmtsMustUseBraces"/>
+    <exclude name="LinguisticNaming"/>
+    <exclude name="LocalVariableCouldBeFinal"/>
     <exclude name="LongVariable"/>
+    <exclude name="MethodArgumentCouldBeFinal"/>
     <exclude name="MethodNamingConventions"/>
+    <exclude name="OnlyOneReturn"/>
     <exclude name="ShortClassName"/>
-    <exclude name="ShortMethodName"/>
     <exclude name="ShortVariable"/>
-    <exclude name="VariableNamingConventions"/>
+    <exclude name="SuspiciousConstantFieldName"/>
+    <exclude name="TooManyStaticImports"/>
+    <exclude name="UnnecessaryConstructor"/>
+    <exclude name="UnnecessaryModifier"/>
+    <exclude name="UselessParentheses"/>
+  </rule>
+  <rule ref="category/java/design.xml">
+    <exclude name="CollapsibleIfStatements"/>
+    <exclude name="ExcessiveImports"/>
+    <exclude name="ExcessiveMethodLength"/>
+    <exclude name="GodClass"/>
+    <exclude name="ImmutableField"/>
+    <exclude name="LawOfDemeter"/>
+    <exclude name="LoosePackageCoupling"/>
+    <exclude name="ModifiedCyclomaticComplexity"/>
+    <exclude name="NcssCount"/>
+    <exclude name="SingularField"/>
+    <exclude name="StdCyclomaticComplexity"/>
+    <exclude name="TooManyFields"/>
+    <exclude name="UselessOverridingMethod"/>
+    <exclude name="UseUtilityClass"/>
+  </rule>
+  <rule ref="category/java/performance.xml"/>
+  <rule ref="category/java/multithreading.xml">
+    <exclude name="DoNotUseThreads"/>
+    <exclude name="UseConcurrentHashMap"/>
+  </rule>
+  <rule ref="category/java/design.xml/TooManyMethods">
+    <properties>
+      <property name="maxmethods" value="25"/>
+    </properties>
+  </rule>
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions">
+    <properties>
+      <property name="utilityClassPattern" value="[A-Z][a-zA-Z]+"/>
+    </properties>
   </rule>
 </ruleset>
