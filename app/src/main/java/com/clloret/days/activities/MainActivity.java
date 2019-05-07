@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity
     actionNewEvent.setOnClickListener(v -> {
 
       Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
-      selectedTag.ifPresent(value -> navigator.navigateToEventCreate(this, value));
+      navigator.navigateToEventCreate(this, selectedTag);
     });
 
     if (savedInstanceState == null) {

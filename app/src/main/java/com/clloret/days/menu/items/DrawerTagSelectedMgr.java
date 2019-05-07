@@ -4,7 +4,7 @@ import com.clloret.days.utils.Optional;
 
 public class DrawerTagSelectedMgr {
 
-  private Optional<DrawerTag> selected;
+  private Optional<DrawerTag> selected = Optional.empty();
 
   void select(DrawerTag drawerTag) {
 

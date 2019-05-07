@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.NavUtils;
@@ -30,6 +29,7 @@ import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.ShowMessageEvent;
+import com.clloret.days.utils.Optional;
 import com.github.jorgecastilloprz.FABProgressCircle;
 import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import dagger.android.AndroidInjection;
@@ -96,12 +96,12 @@ public class EventCreateActivity extends
 
   private LocalDate selectedDate;
   private EventViewModel newEvent = new EventViewModel();
-  private TagViewModel selectedTag;
+  private Optional<TagViewModel> selectedTag;
 
-  public static Intent getCallingIntent(Context context, @Nullable TagViewModel tag) {
+  public static Intent getCallingIntent(Context context, Optional<TagViewModel> tag) {
 
     Intent intent = new Intent(context, EventCreateActivity.class);
-    intent.putExtra(EXTRA_TAG, tag);
+    tag.ifPresent(value -> intent.putExtra(EXTRA_TAG, value));
 
     return intent;
   }
@@ -126,7 +126,8 @@ public class EventCreateActivity extends
 
     showSoftKeyboard();
 
-    selectedTag = getIntent().getParcelableExtra(EXTRA_TAG);
+    TagViewModel tagViewModel = getIntent().getParcelableExtra(EXTRA_TAG);
+    selectedTag = Optional.ofNullable(tagViewModel);
 
     presenter.loadTags();
   }
@@ -189,9 +190,7 @@ public class EventCreateActivity extends
 
     selectTagsHelper.setMapTags(data);
 
-    if (selectedTag != null) {
-      selectTagsHelper.addTagToSelection(selectedTag);
-    }
+    selectedTag.ifPresent(value -> selectTagsHelper.addTagToSelection(value));
 
     showSelectedTags();
     showSelectedReminder();

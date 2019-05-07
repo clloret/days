@@ -28,6 +28,11 @@ public class Optional<T> {
     return new Optional<>(value);
   }
 
+  public static <T> Optional<T> ofNullable(T value) {
+
+    return value == null ? empty() : of(value);
+  }
+
   public void ifPresent(Action<T> action) {
 
     if (value != null) {
