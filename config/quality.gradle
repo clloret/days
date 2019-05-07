@@ -8,11 +8,6 @@ check.dependsOn 'checkstyle', 'findbugs', 'pmd', 'lint'
 def configDir = "${project.rootDir}/config/quality"
 def reportsDir = "${project.buildDir}/reports"
 
-//checkstyle {
-//    toolVersion = '8.10'
-//    configFile file("config/quality/checkstyle/checkstyle.xml")
-//}
-
 task checkstyle(type: Checkstyle, group: 'Verification', description: 'Runs code style checks') {
     checkstyle.toolVersion = '8.10'
     configFile file("${configDir}/checkstyle/checkstyle.xml")
@@ -45,12 +40,6 @@ task findbugs(type: FindBugs, group: 'Verification', description: 'Inspect java 
     reports {
         xml.enabled = false
         html.enabled = true
-//        xml {
-//            destination = file("${reportsDir}/findbugs/findbugs.xml")
-//        }
-//        html {
-//            destination = new File("${reportsDir}/findbugs/findbugs.html")
-//        }
     }
 
     classpath = files()
@@ -68,12 +57,6 @@ task pmd(type: Pmd, group: 'Verification', description: 'Inspect sourcecode for 
     reports {
         xml.enabled = false
         html.enabled = true
-//        xml {
-//            destination = new File("${reportsDir}/pmd/pmd.xml")
-//        }
-//        html {
-//            destination = new File("${reportsDir}/pmd/pmd.html")
-//        }
     }
 }
 
