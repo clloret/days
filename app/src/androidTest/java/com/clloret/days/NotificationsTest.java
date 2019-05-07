@@ -161,7 +161,6 @@ public class NotificationsTest {
     uiDevice.pressBack();
   }
 
-  //  @Suppress
   @Test
   public void showNotification_WhenActionDelete_DeleteEvent() throws UiObjectNotFoundException {
 
@@ -184,7 +183,6 @@ public class NotificationsTest {
     verify(deleteEventUseCase, timeout(TIMEOUT).atLeastOnce()).execute(any());
   }
 
-  //@Suppress
   @Test
   public void showNotification_WhenActionReset_ResetEventDate() throws UiObjectNotFoundException {
 

@@ -21,7 +21,6 @@ public interface EventDao extends BaseDao<DbEvent> {
   @Query("SELECT * FROM events WHERE tag_id LIKE (:tagId)")
   Single<List<DbEvent>> loadByTagsIds(String tagId);
 
-  //  @Query("SELECT * FROM events WHERE tag_id IS NULL")
   @Query("SELECT * FROM events WHERE tag_id = ''")
   Single<List<DbEvent>> loadWithoutAssignedTags();
 

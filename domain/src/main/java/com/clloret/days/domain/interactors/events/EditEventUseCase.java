@@ -39,10 +39,6 @@ public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues
 
     final boolean finalScheduleReminder = scheduleReminder;
 
-//    Completable completable = dataStore.editEvent(modifiedEvent)
-//        .flatMapCompletable(event -> Completable.fromAction(
-//            () -> reminderSchedule(event, finalScheduleReminder, originalEvent.hasReminder())));
-
     return dataStore.edit(modifiedEvent)
         .doOnSuccess(
             event -> reminderSchedule(event, finalScheduleReminder, originalEvent.hasReminder()));
