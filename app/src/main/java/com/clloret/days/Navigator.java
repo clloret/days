@@ -2,13 +2,13 @@ package com.clloret.days;
 
 import android.content.Context;
 import android.content.Intent;
+import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.events.create.EventCreateActivity;
 import com.clloret.days.events.edit.EventEditActivity;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.settings.SettingsActivity;
 import com.clloret.days.tags.edit.TagEditActivity;
-import com.clloret.days.utils.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 

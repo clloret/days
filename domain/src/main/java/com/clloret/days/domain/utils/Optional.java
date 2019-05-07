@@ -1,4 +1,4 @@
-package com.clloret.days.utils;
+package com.clloret.days.domain.utils;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
