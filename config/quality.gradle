@@ -9,7 +9,7 @@ def configDir = "${project.rootDir}/config/quality"
 def reportsDir = "${project.buildDir}/reports"
 
 task checkstyle(type: Checkstyle, group: 'Verification', description: 'Runs code style checks') {
-    checkstyle.toolVersion = '8.10'
+    checkstyle.toolVersion = '8.20'
     configFile file("${configDir}/checkstyle/checkstyle.xml")
     configProperties.checkstyleSuppressionsPath = file("${configDir}/checkstyle/suppressions.xml"
     ).absolutePath
