@@ -66,8 +66,9 @@ public class SelectTagsDialog extends DialogFragment {
               TagViewModel tag = tags.get(which);
               if (isChecked) {
                 selectedItems.add(tag);
-              } else
+              } else {
                 selectedItems.remove(tag);
+              }
             })
         .setPositiveButton(getString(R.string.action_ok), (dialog, id) -> {
 
