@@ -60,11 +60,13 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
     this.id = id;
   }
 
+  @Override
   public boolean isFavorite() {
 
     return favorite;
   }
 
+  @Override
   public String getName() {
 
     return name;
@@ -75,6 +77,7 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
     this.name = name;
   }
 
+  @Override
   public Date getDate() {
 
     return date == null ? null : (Date) date.clone();
