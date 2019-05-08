@@ -1,9 +1,12 @@
 package com.clloret.days.domain.utils;
 
+import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -13,11 +16,16 @@ public class SelectionMapTest {
 
   private SelectionMap<String, String> sut;
 
+  private void addSampleValues(Map<String, String> map) {
+
+    map.put("key1", "value1");
+    map.put("key2", "value2");
+    map.put("key3", "value3");
+  }
+
   private void addSampleValues() {
 
-    sut.put("key1", "value1");
-    sut.put("key2", "value2");
-    sut.put("key3", "value3");
+    addSampleValues(sut);
   }
 
   private void selectSampleValues() {
@@ -30,6 +38,17 @@ public class SelectionMapTest {
   public void setUp() {
 
     sut = new SelectionMap<>();
+  }
+
+  @Test
+  public void create_WhenInitWithMap_ReturnCorrectValues() {
+
+    Map<String, String> map = new HashMap<>();
+    addSampleValues(map);
+
+    sut = new SelectionMap<>(map);
+
+    assertThat(sut.values(), hasItems("value1", "value2", "value3"));
   }
 
   @Test
@@ -55,11 +74,13 @@ public class SelectionMapTest {
 
     addSampleValues();
 
-    List<String> selection = Arrays.asList("value1", "value2");
+    List<String> selection1 = Arrays.asList("value1", "value2");
+    List<String> selection2 = Arrays.asList("value1", "value3");
 
-    sut.setSelection(selection);
+    sut.setSelection(selection1);
+    sut.setSelection(selection2);
 
-    assertThat(sut.isSelected("value1"), Matchers.is(true));
+    assertThat(sut.isSelected("value3"), Matchers.is(true));
   }
 
   @Test
