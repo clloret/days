@@ -1,9 +1,10 @@
 package com.clloret.days.domain.entities;
 
+import com.clloret.days.domain.tags.order.TagSortable;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 
-public class Tag implements Identifiable {
+public class Tag implements Identifiable, TagSortable {
 
   private String id;
 
@@ -37,6 +38,7 @@ public class Tag implements Identifiable {
     this.id = id;
   }
 
+  @Override
   public String getName() {
 
     return name;
