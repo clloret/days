@@ -27,6 +27,7 @@ allprojects {
         minSdkVersion = 23
         targetSdkVersion = 27
         compileSdkVersion = 27
+        javaVersion = JavaVersion.VERSION_1_8
 
         annotatedAdapterVersion = '1.1.1'
         butterknifeVersion = '8.8.1'

@@ -16,8 +16,8 @@ dependencies {
     testImplementation "pl.pragmatists:JUnitParams:$rootProject.junitParamsVersion"
 }
 
-sourceCompatibility = "8"
-targetCompatibility = "8"
+sourceCompatibility = rootProject.ext.javaVersion
+targetCompatibility = rootProject.ext.javaVersion
 
 jacocoTestReport {
     reports {
