@@ -13,6 +13,6 @@ public class EventSortByFavorite extends EventSortStrategy {
     EventSortable e1 = getFirstEvent(event1, event2);
     EventSortable e2 = getSecondEvent(event1, event2);
 
-    return Boolean.valueOf(e1.isFavorite()).compareTo(e2.isFavorite());
+    return Boolean.compare(e1.isFavorite(), e2.isFavorite());
   }
 }
