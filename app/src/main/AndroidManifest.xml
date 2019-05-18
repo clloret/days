@@ -54,10 +54,13 @@
       android:theme="@style/AppTheme.MaterialAboutActivity"/>
 
     <receiver
-      android:name=".device.receivers.BootBroadcastReceiver"
+      android:name=".device.receivers.FirstStartBroadcastReceiver"
       android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
       </intent-filter>
     </receiver>
 

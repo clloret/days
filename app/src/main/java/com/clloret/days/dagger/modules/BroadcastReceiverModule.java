@@ -1,6 +1,6 @@
 package com.clloret.days.dagger.modules;
 
-import com.clloret.days.device.receivers.BootBroadcastReceiver;
+import com.clloret.days.device.receivers.FirstStartBroadcastReceiver;
 import com.clloret.days.device.receivers.ReminderReceiver;
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -9,7 +9,7 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class BroadcastReceiverModule {
 
   @ContributesAndroidInjector
-  abstract BootBroadcastReceiver bindBootBroadcastReceiver();
+  abstract FirstStartBroadcastReceiver bindBootBroadcastReceiver();
 
   @ContributesAndroidInjector
   abstract ReminderReceiver bindReminderReceiver();

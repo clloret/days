@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 import timber.log.Timber;
 
-public class BootBroadcastReceiver extends BroadcastReceiver {
+public class FirstStartBroadcastReceiver extends BroadcastReceiver {
 
   @Inject
   EventReminderManager eventReminderManager;
@@ -26,19 +26,24 @@ public class BootBroadcastReceiver extends BroadcastReceiver {
     String action = intent.getAction();
     if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
 
-      Timber.d("ACTION_BOOT_COMPLETED");
+      Timber.d("Received ACTION_BOOT_COMPLETED");
 
-      if (eventReminderManager == null) {
-        Timber.w("eventReminderManager is null");
+      scheduleAllReminders();
+    } else if (Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
 
-        return;
-      }
+      Timber.d("Received ACTION_MY_PACKAGE_REPLACED");
 
       scheduleAllReminders();
     }
   }
 
   private void scheduleAllReminders() {
+
+    if (eventReminderManager == null) {
+      Timber.w("eventReminderManager is null");
+
+      return;
+    }
 
     appDataStore.getAll(true)
         .doOnSuccess(events -> eventReminderManager.scheduleReminders(events, false))
