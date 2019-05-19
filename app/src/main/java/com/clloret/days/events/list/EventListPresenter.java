@@ -1,6 +1,7 @@
 package com.clloret.days.events.list;
 
 import android.support.annotation.NonNull;
+import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.device.eventbus.EventsUpdatedEvent;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.filter.EventFilterAll;
@@ -19,9 +20,7 @@ import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
 import com.clloret.days.model.events.ShowMessageEvent;
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
@@ -30,7 +29,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import timber.log.Timber;
 
-public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView> {
+public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
   private final EventBus eventBus;
   private final EventViewModelMapper eventViewModelMapper;
@@ -41,7 +40,6 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
   private final ToggleEventReminderUseCase toggleEventReminderUseCase;
   private final DeleteEventUseCase deleteEventUseCase;
   private final CreateEventUseCase createEventUseCase;
-  private final CompositeDisposable disposable = new CompositeDisposable();
   private EventFilterStrategy filterStrategy = new EventFilterAll();
 
   @Inject
@@ -81,7 +79,6 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
 
     super.detachView(retainInstance);
     eventBus.unregister(this);
-    disposable.dispose();
   }
 
   public void setFilterStrategy(EventFilterStrategy filterStrategy) {
@@ -108,7 +105,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .doOnError(error -> view.onError(error.getMessage()))
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void loadEvents(final boolean pullToRefresh) {
@@ -124,7 +121,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
             getLocalEvents(true);
           }, error -> view.onError(error.getMessage()));
 
-      disposable.add(subscribe);
+      addDisposable(subscribe);
     } else {
       getLocalEvents(false);
     }
@@ -149,7 +146,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void editEvent(@NonNull EventViewModel event) {
@@ -174,7 +171,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void undoDelete(@NonNull EventViewModel eventViewModel) {
@@ -193,7 +190,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void resetDate(EventViewModel eventViewModel) {
@@ -212,7 +209,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void toggleEventReminder(EventViewModel eventViewModel) {
@@ -232,7 +229,7 @@ public class EventListPresenter extends MvpNullObjectBasePresenter<EventListView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   @Subscribe(threadMode = ThreadMode.MAIN)

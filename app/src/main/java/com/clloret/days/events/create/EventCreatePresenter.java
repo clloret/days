@@ -2,27 +2,25 @@ package com.clloret.days.events.create;
 
 import static com.clloret.days.utils.FabProgressUtils.PROGRESS_DELAY;
 
+import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
-public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreateView> {
+public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
 
   private final EventViewModelMapper eventViewModelMapper;
   private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final CreateEventUseCase createEventUseCase;
-  private final CompositeDisposable disposable = new CompositeDisposable();
 
   @Inject
   public EventCreatePresenter(
@@ -37,13 +35,6 @@ public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreate
     this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;
     this.createEventUseCase = createEventUseCase;
-  }
-
-  @Override
-  public void detachView(boolean retainInstance) {
-
-    super.detachView(retainInstance);
-    disposable.dispose();
   }
 
   public void createEvent(EventViewModel eventViewModel) {
@@ -78,7 +69,7 @@ public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreate
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void loadTags() {
@@ -93,7 +84,7 @@ public class EventCreatePresenter extends MvpNullObjectBasePresenter<EventCreate
         .doOnError(view::showError)
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
 }

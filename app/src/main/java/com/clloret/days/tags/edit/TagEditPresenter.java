@@ -1,23 +1,21 @@
 package com.clloret.days.tags.edit;
 
+import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
 import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 
-public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
+public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
 
   private final EditTagUseCase editTagUseCase;
   private final DeleteTagUseCase deleteTagUseCase;
   private final TagViewModelMapper tagViewModelMapper;
-  private final CompositeDisposable disposable = new CompositeDisposable();
 
   @Inject
   public TagEditPresenter(EditTagUseCase editTagUseCase,
@@ -29,13 +27,6 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
     this.editTagUseCase = editTagUseCase;
     this.deleteTagUseCase = deleteTagUseCase;
     this.tagViewModelMapper = tagViewModelMapper;
-  }
-
-  @Override
-  public void detachView(boolean retainInstance) {
-
-    super.detachView(retainInstance);
-    disposable.dispose();
   }
 
   public void saveTag(TagViewModel tagViewModel) {
@@ -60,7 +51,7 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void deleteTag(TagViewModel tagViewModel) {
@@ -78,6 +69,6 @@ public class TagEditPresenter extends MvpNullObjectBasePresenter<TagEditView> {
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 }

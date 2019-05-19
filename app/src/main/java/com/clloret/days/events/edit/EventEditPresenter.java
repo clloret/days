@@ -2,6 +2,7 @@ package com.clloret.days.events.edit;
 
 import static com.clloret.days.utils.FabProgressUtils.PROGRESS_DELAY;
 
+import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.EditEventUseCase;
@@ -10,22 +11,19 @@ import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.hannesdorfmann.mosby.mvp.MvpNullObjectBasePresenter;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
-public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView> {
+public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
   private final EventViewModelMapper eventViewModelMapper;
   private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final EditEventUseCase editEventUseCase;
   private final DeleteEventUseCase deleteEventUseCase;
-  private final CompositeDisposable disposable = new CompositeDisposable();
 
   @Inject
   public EventEditPresenter(
@@ -42,13 +40,6 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
     this.getTagsUseCase = getTagsUseCase;
     this.editEventUseCase = editEventUseCase;
     this.deleteEventUseCase = deleteEventUseCase;
-  }
-
-  @Override
-  public void detachView(boolean retainInstance) {
-
-    super.detachView(retainInstance);
-    disposable.dispose();
   }
 
   public void saveEvent(EventViewModel modifiedEventViewModel,
@@ -82,7 +73,7 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void deleteEvent(EventViewModel eventViewModel) {
@@ -98,7 +89,7 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
         .onErrorComplete()
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
   public void loadTags() {
@@ -113,7 +104,7 @@ public class EventEditPresenter extends MvpNullObjectBasePresenter<EventEditView
         .doOnError(view::showError)
         .subscribe();
 
-    disposable.add(subscribe);
+    addDisposable(subscribe);
   }
 
 }
