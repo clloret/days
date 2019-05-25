@@ -8,6 +8,8 @@ import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.repository.EventRepository;
+import com.clloret.days.domain.utils.RxImmediateThreadingSchedulers;
+import com.clloret.days.domain.utils.ThreadSchedulers;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.observers.TestObserver;
 import java.util.Date;
@@ -19,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 public class ResetEventDateUseCaseTest {
 
@@ -32,6 +35,9 @@ public class ResetEventDateUseCaseTest {
 
   @Mock
   private TimeProvider timeProvider;
+
+  @Spy
+  private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
 
   @InjectMocks
   private ResetEventDateUseCase sut;
