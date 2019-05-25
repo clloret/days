@@ -4,7 +4,6 @@ import com.clloret.days.domain.repository.GenericRepository;
 import com.sybit.airtableandroid.exception.AirtableException;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +77,6 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
     // Use "result" instead of "date" because the "id" is assigned in "result".
     return remoteRepository.create(entity)
         .doOnSuccess(result -> localRepository.create(result)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
             .subscribe());
   }
 
@@ -88,8 +85,6 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
 
     return remoteRepository.edit(entity)
         .doOnSuccess(result -> localRepository.edit(entity)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
             .subscribe());
   }
 
@@ -101,8 +96,6 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
         .doOnSuccess(result -> {
           if (result) {
             localRepository.delete(entity)
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
                 .subscribe();
           }
         });
