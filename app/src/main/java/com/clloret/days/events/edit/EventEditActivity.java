@@ -147,7 +147,8 @@ public class EventEditActivity
     fixFinalIconPosition(fabProgress);
     fabProgress.attachListener(this);
 
-    presenter.loadTags();
+    originalEvent = Objects.requireNonNull(getIntent().getParcelableExtra(EXTRA_EVENT));
+    modifiedEvent = originalEvent.clone();
 
     dateText.setInputType(InputType.TYPE_NULL);
     dateText.setKeyListener(null);
@@ -158,10 +159,9 @@ public class EventEditActivity
       }
     });
 
-    originalEvent = Objects.requireNonNull(getIntent().getParcelableExtra(EXTRA_EVENT));
-    modifiedEvent = originalEvent.clone();
-
     showData();
+
+    presenter.loadTags();
   }
 
   @Override
