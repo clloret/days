@@ -16,6 +16,8 @@ import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.utils.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
+import io.reactivex.Scheduler;
+import io.reactivex.schedulers.Schedulers;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -23,6 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 @SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventCreatePresenterTest {
@@ -44,6 +47,9 @@ public class EventCreatePresenterTest {
 
   @Mock
   private EventCreateView eventCreateView;
+
+  @Spy
+  private Scheduler uiThread = Schedulers.trampoline();
 
   @InjectMocks
   private EventCreatePresenter eventCreatePresenter;
