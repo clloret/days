@@ -139,7 +139,6 @@ public class NotificationsTest {
     return event;
   }
 
-  //@Suppress
   @Test
   public void showNotification_WhenOpen_ShowEventDetails() {
 
