@@ -10,6 +10,7 @@ import com.clloret.days.dagger.modules.BroadcastReceiverModule;
 import com.clloret.days.dagger.modules.EventSortModule;
 import com.clloret.days.dagger.modules.ServiceModule;
 import com.clloret.days.dagger.modules.TestDataModule;
+import com.clloret.days.dagger.modules.TestThreadingModule;
 import com.clloret.days.dagger.modules.TestUseCasesModule;
 import com.clloret.days.dagger.modules.TestUtilsModule;
 import dagger.BindsInstance;
@@ -29,6 +30,7 @@ import javax.inject.Singleton;
         EventSortModule.class,
         ServiceModule.class,
         TestDataModule.class,
+        TestThreadingModule.class,
         TestUseCasesModule.class,
         TestUtilsModule.class
     }

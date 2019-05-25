@@ -14,6 +14,7 @@ import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.device.services.TimeLapseJob;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.utils.ThreadSchedulers;
 import com.clloret.days.utils.StethoUtils;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
@@ -21,8 +22,6 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasBroadcastReceiverInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -46,6 +45,9 @@ public class App extends DaggerApplication
 
   @Inject
   CacheSource<Tag> tagCacheSource;
+
+  @Inject
+  ThreadSchedulers threadSchedulers;
 
   public static App get(Context context) {
 
@@ -114,8 +116,8 @@ public class App extends DaggerApplication
     eventCacheSource.deleteAll()
         .andThen(tagCacheSource.deleteAll())
         .doOnComplete(this::restart)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(threadSchedulers.getExecutorScheduler())
+        .observeOn(threadSchedulers.getUiScheduler())
         .subscribe();
   }
 }
