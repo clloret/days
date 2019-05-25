@@ -82,6 +82,7 @@ dependencies {
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
+    testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
 
     androidTestImplementation("com.android.support.test:runner:$rootProject.testRunnerVersion") {
         exclude group: 'com.android.support'
