@@ -4,6 +4,7 @@ import static com.clloret.days.utils.FabProgressUtils.PROGRESS_DELAY;
 
 import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.injection.TypeNamed;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.EditEventUseCase;
 import com.clloret.days.domain.interactors.events.EditEventUseCase.RequestValues;
@@ -11,11 +12,11 @@ import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
@@ -24,6 +25,7 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
   private final GetTagsUseCase getTagsUseCase;
   private final EditEventUseCase editEventUseCase;
   private final DeleteEventUseCase deleteEventUseCase;
+  private final Scheduler uiThread;
 
   @Inject
   public EventEditPresenter(
@@ -31,7 +33,8 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
       TagViewModelMapper tagViewModelMapper,
       GetTagsUseCase getTagsUseCase,
       EditEventUseCase editEventUseCase,
-      DeleteEventUseCase deleteEventUseCase) {
+      DeleteEventUseCase deleteEventUseCase,
+      @Named(TypeNamed.UI_SCHEDULER) Scheduler uiThread) {
 
     super();
 
@@ -40,6 +43,7 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
     this.getTagsUseCase = getTagsUseCase;
     this.editEventUseCase = editEventUseCase;
     this.deleteEventUseCase = deleteEventUseCase;
+    this.uiThread = uiThread;
   }
 
   public void saveEvent(EventViewModel modifiedEventViewModel,
@@ -58,8 +62,7 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
     Disposable subscribe = editEventUseCase.execute(
         requestValues)
-        .subscribeOn(Schedulers.io())
-        .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+        .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, uiThread)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .map(eventViewModelMapper::fromEvent)
         .doOnSuccess(result -> {
@@ -82,8 +85,6 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
     final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
     Disposable subscribe = deleteEventUseCase.execute(event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .doOnSuccess(deleted -> view.deleteSuccessfully(eventViewModel, deleted))
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
@@ -97,8 +98,6 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
     final EventEditView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(false)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(tagViewModelMapper::fromTag)
         .doOnSuccess(view::setData)
         .doOnError(view::showError)

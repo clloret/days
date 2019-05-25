@@ -6,9 +6,7 @@ import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
 import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 
 public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
@@ -41,8 +39,6 @@ public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
     Tag tag = tagViewModelMapper.toTag(tagViewModel);
 
     Disposable subscribe = editTagUseCase.execute(tag)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(tagViewModelMapper::fromTag)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
@@ -60,8 +56,6 @@ public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
     final Tag tag = tagViewModelMapper.toTag(tagViewModel);
 
     Disposable subscribe = deleteTagUseCase.execute(tag)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(deleted -> view.deleteSuccessfully(tagViewModel, deleted))

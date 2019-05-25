@@ -4,16 +4,17 @@ import static com.clloret.days.utils.FabProgressUtils.PROGRESS_DELAY;
 
 import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.injection.TypeNamed;
 import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
 
@@ -21,13 +22,15 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
   private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final CreateEventUseCase createEventUseCase;
+  private final Scheduler uiThread;
 
   @Inject
   public EventCreatePresenter(
       EventViewModelMapper eventViewModelMapper,
       TagViewModelMapper tagViewModelMapper,
       GetTagsUseCase getTagsUseCase,
-      CreateEventUseCase createEventUseCase) {
+      CreateEventUseCase createEventUseCase,
+      @Named(TypeNamed.UI_SCHEDULER) Scheduler uiThread) {
 
     super();
 
@@ -35,6 +38,7 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
     this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;
     this.createEventUseCase = createEventUseCase;
+    this.uiThread = uiThread;
   }
 
   public void createEvent(EventViewModel eventViewModel) {
@@ -54,8 +58,7 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
     Event event = eventViewModelMapper.toEvent(eventViewModel);
 
     Disposable subscribe = createEventUseCase.execute(event)
-        .subscribeOn(Schedulers.io())
-        .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+        .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, uiThread)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .map(eventViewModelMapper::fromEvent)
         .doOnSuccess(result -> {
@@ -77,8 +80,6 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
     final EventCreateView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(false)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(tagViewModelMapper::fromTag)
         .doOnSuccess(view::setData)
         .doOnError(view::showError)

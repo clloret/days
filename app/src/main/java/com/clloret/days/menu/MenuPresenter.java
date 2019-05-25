@@ -9,9 +9,7 @@ import com.clloret.days.model.events.RefreshRequestEvent;
 import com.clloret.days.model.events.TagCreatedEvent;
 import com.clloret.days.model.events.TagDeletedEvent;
 import com.clloret.days.model.events.TagModifiedEvent;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,8 +51,6 @@ public class MenuPresenter extends BaseRxPresenter<MenuView> {
     final MenuView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(pullToRefresh)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(tagViewModelMapper::fromTag)
         .subscribe(view::showTags, view::showError);
 

@@ -5,9 +5,7 @@ import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.tags.CreateTagUseCase;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 
 public class TagCreatePresenter extends BaseRxPresenter<TagCreateView> {
@@ -36,8 +34,6 @@ public class TagCreatePresenter extends BaseRxPresenter<TagCreateView> {
     Tag newTag = new Tag(null, name);
 
     Disposable subscribe = createTagUseCase.execute(newTag)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))

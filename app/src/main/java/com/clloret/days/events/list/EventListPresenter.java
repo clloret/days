@@ -20,9 +20,7 @@ import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
 import com.clloret.days.model.events.ShowMessageEvent;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -92,8 +90,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
     final RequestValues requestValues = new RequestValues(filterStrategy, pullToRefresh);
 
     Disposable subscribe = getFilteredEventsUseCase.execute(requestValues)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(eventViewModelMapper::fromEvent)
         .doOnSuccess(result -> {
 
@@ -114,8 +110,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
       EventListView view = getView();
 
       Disposable subscribe = getEventsUseCase.execute(true)
-          .subscribeOn(Schedulers.io())
-          .observeOn(AndroidSchedulers.mainThread())
           .subscribe(list -> {
             Timber.d("getEvents: %d", list.size());
             getLocalEvents(true);
@@ -133,8 +127,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
     final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
     Disposable subscribe = deleteEventUseCase.execute(event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(deleted -> view.deleteSuccessfully(eventViewModel, deleted))
@@ -161,8 +153,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     Disposable subscribe = favoriteEventUseCase.execute(
         event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
@@ -180,8 +170,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
     final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
     Disposable subscribe = createEventUseCase.execute(event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
@@ -199,8 +187,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
     final Event event = eventViewModelMapper.toEvent(eventViewModel);
 
     Disposable subscribe = resetEventDateUseCase.execute(event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
@@ -219,8 +205,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     Disposable subscribe = toggleEventReminderUseCase.execute(
         event)
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
         .map(eventViewModelMapper::fromEvent)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
