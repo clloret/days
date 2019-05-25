@@ -1,29 +1,32 @@
 package com.clloret.days.domain.interactors.events;
 
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.interactors.base.BaseMaybeUseCase;
 import com.clloret.days.domain.interactors.events.EditEventUseCase.RequestValues;
-import com.clloret.days.domain.interactors.types.MaybeUseCaseWithParameter;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.repository.EventRepository;
+import com.clloret.days.domain.utils.ThreadSchedulers;
 import io.reactivex.Maybe;
 import java.util.Objects;
 import javax.inject.Inject;
 
-public class EditEventUseCase implements MaybeUseCaseWithParameter<RequestValues, Event> {
+public class EditEventUseCase extends BaseMaybeUseCase<RequestValues, Event> {
 
   private final EventRepository dataStore;
   private final EventReminderManager eventReminderManager;
 
   @Inject
-  public EditEventUseCase(EventRepository dataStore,
+  public EditEventUseCase(ThreadSchedulers threadSchedulers, EventRepository dataStore,
       EventReminderManager eventReminderManager) {
+
+    super(threadSchedulers);
 
     this.dataStore = dataStore;
     this.eventReminderManager = eventReminderManager;
   }
 
   @Override
-  public Maybe<Event> execute(RequestValues requestValues) {
+  protected Maybe<Event> buildUseCaseObservable(RequestValues requestValues) {
 
     final Event modifiedEvent = requestValues.modifiedEvent;
     final Event originalEvent = requestValues.originalEvent;
