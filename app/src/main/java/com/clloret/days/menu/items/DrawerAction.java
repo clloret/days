@@ -1,11 +1,11 @@
 package com.clloret.days.menu.items;
 
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.DrawableRes;
+import androidx.fragment.app.FragmentActivity;
 import com.clloret.days.R;
 
 public class DrawerAction extends DrawerTextIcon {

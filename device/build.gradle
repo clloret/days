@@ -10,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -30,19 +30,19 @@ dependencies {
         exclude group: "com.intellij", module: "annotations"
     }
 
-    implementation "com.android.support:appcompat-v7:$rootProject.supportVersion"
     implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 
-    androidTestImplementation("com.android.support.test:runner:$rootProject.testRunnerVersion") {
+    androidTestImplementation('androidx.test:runner:1.2.0') {
         exclude group: 'com.android.support'
     }
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.espressoVersion"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

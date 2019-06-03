@@ -1,7 +1,7 @@
 package com.clloret.days.data.local.entities.dao;
 
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Query;
+import androidx.room.Dao;
+import androidx.room.Query;
 import com.clloret.days.data.local.entities.DbTag;
 import io.reactivex.Single;
 import java.util.List;

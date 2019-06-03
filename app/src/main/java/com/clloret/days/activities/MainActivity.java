@@ -2,15 +2,14 @@ package com.clloret.days.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.Navigator;
@@ -21,6 +20,7 @@ import com.clloret.days.events.list.EventListFragment.OnFragmentLifecycleListene
 import com.clloret.days.events.list.EventListFragment.OnProgressListener;
 import com.clloret.days.menu.MenuFragment;
 import com.clloret.days.model.entities.TagViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 import timber.log.Timber;

@@ -2,11 +2,11 @@ package com.clloret.days.menu;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import androidx.annotation.NonNull;
 import com.clloret.days.R;
 import com.clloret.days.activities.AboutActivity;
 import com.clloret.days.domain.events.filter.EventFilterAll;

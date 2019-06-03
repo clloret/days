@@ -1,7 +1,7 @@
 package com.clloret.days.device.notifications;
 
 import static android.os.Build.VERSION.SDK_INT;
-import static android.support.v4.app.NotificationCompat.CATEGORY_REMINDER;
+import static androidx.core.app.NotificationCompat.CATEGORY_REMINDER;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -9,10 +9,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Action;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.Action;
+import androidx.core.app.NotificationCompat.Builder;
 import com.clloret.days.device.R;
 
 public class NotificationsFactory {

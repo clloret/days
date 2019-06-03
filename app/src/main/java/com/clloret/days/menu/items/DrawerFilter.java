@@ -1,13 +1,13 @@
 package com.clloret.days.menu.items;
 
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import com.clloret.days.R;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.events.list.EventListFragment;
@@ -16,7 +16,7 @@ public class DrawerFilter extends DrawerTextIcon {
 
   protected EventFilterStrategy eventFilterStrategy;
 
-  @SuppressWarnings({"unused", "WeakerAccess"})
+  @SuppressWarnings({"unused"})
   protected DrawerFilter() {
 
     super();

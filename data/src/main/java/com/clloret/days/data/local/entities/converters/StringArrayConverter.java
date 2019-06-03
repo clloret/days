@@ -1,7 +1,7 @@
 package com.clloret.days.data.local.entities.converters;
 
-import android.arch.persistence.room.TypeConverter;
 import android.text.TextUtils;
+import androidx.room.TypeConverter;
 
 public class StringArrayConverter {
 

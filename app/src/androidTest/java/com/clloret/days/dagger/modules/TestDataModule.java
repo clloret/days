@@ -1,7 +1,7 @@
 package com.clloret.days.dagger.modules;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
+import androidx.room.Room;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.DbEvent;

@@ -2,7 +2,7 @@ package com.clloret.days.model.entities;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.events.order.EventSortable;
 import java.util.Date;

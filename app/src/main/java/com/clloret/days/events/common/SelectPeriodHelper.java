@@ -1,7 +1,7 @@
 package com.clloret.days.events.common;
 
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import com.clloret.days.R;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.events.common.SelectPeriodDialog.SelectPeriodDialogListener;

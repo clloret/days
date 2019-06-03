@@ -1,6 +1,6 @@
 package com.clloret.days.events;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.model.entities.EventViewModel;

@@ -1,6 +1,6 @@
 package com.clloret.days.menu.items;
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 public abstract class DrawerTextIcon extends DrawerText {
 

@@ -1,15 +1,14 @@
 package com.clloret.days.tags.create;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.NavUtils;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.clloret.days.R;
@@ -17,6 +16,7 @@ import com.clloret.days.base.BaseMvpActivity;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.ShowMessageEvent;
 import com.clloret.days.model.events.TagCreatedEvent;
+import com.google.android.material.textfield.TextInputLayout;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;

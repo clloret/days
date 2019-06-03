@@ -4,7 +4,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat.Action;
+import androidx.core.app.NotificationCompat.Action;
 import com.clloret.days.device.notifications.NotificationsFactory;
 import com.clloret.days.device.notifications.NotificationsIntents;
 import com.clloret.days.device.notifications.NotificationsUtils;

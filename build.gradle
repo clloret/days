@@ -30,7 +30,7 @@ allprojects {
         javaVersion = JavaVersion.VERSION_1_8
 
         annotatedAdapterVersion = '1.1.1'
-        butterknifeVersion = '8.8.1'
+        butterknifeVersion = '10.1.0'
         daggerVersion = '2.21'
         espressoVersion = '3.0.2'
         eventBusVersion = '3.1.1'
@@ -47,7 +47,6 @@ allprojects {
         rxAndroidVersion = "2.1.0"
         rxJavaVersion = '2.2.6'
         stethoVersion = '1.5.0'
-        supportVersion = '28.0.0'
         testRunnerVersion = '1.0.2'
         timberVersion = '4.7.1'
     }

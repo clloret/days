@@ -1,6 +1,6 @@
 package com.clloret.days.data.local.entities.converters;
 
-import android.arch.persistence.room.TypeConverter;
+import androidx.room.TypeConverter;
 import java.util.Date;
 
 public class DateConverter {

@@ -8,7 +8,7 @@ import static com.clloret.days.device.receivers.ReminderReceiver.EXTRA_EVENT_ID;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.TaskStackBuilder;
+import androidx.core.app.TaskStackBuilder;
 import com.clloret.days.device.notifications.NotificationsIntents;
 import com.clloret.days.device.receivers.ReminderReceiver;
 import com.clloret.days.domain.entities.Event;

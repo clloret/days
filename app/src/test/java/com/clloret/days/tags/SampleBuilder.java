@@ -1,6 +1,6 @@
 package com.clloret.days.tags;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.model.entities.TagViewModel;
 

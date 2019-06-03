@@ -1,7 +1,7 @@
 package com.clloret.days.menu;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.clloret.days.model.entities.TagViewModel;
 import com.hannesdorfmann.mosby.mvp.viewstate.RestorableViewState;
 import java.util.ArrayList;

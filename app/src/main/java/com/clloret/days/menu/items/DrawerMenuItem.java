@@ -1,9 +1,9 @@
 package com.clloret.days.menu.items;
 
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.fragment.app.FragmentActivity;
 import com.clloret.days.menu.items.holders.BaseViewHolder;
 
 public abstract class DrawerMenuItem<T extends BaseViewHolder> {

@@ -1,13 +1,13 @@
 package com.clloret.days.base;
 
 import android.os.Bundle;
-import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
+import androidx.annotation.StringRes;
+import androidx.appcompat.widget.Toolbar;
 import com.clloret.days.utils.ActivityUtility;
+import com.google.android.material.snackbar.Snackbar;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.hannesdorfmann.mosby.mvp.MvpPresenter;
 import com.hannesdorfmann.mosby.mvp.MvpView;

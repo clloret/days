@@ -1,6 +1,6 @@
 package com.clloret.days.events.list;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.device.eventbus.EventsUpdatedEvent;
 import com.clloret.days.domain.entities.Event;

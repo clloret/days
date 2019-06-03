@@ -2,10 +2,10 @@ package com.clloret.days.dagger.modules;
 
 import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import androidx.room.Room;
 import com.clloret.days.R;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.DaysDatabase;

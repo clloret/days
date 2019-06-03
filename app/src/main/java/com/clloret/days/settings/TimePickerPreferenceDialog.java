@@ -1,11 +1,11 @@
 package com.clloret.days.settings;
 
 import android.os.Bundle;
-import android.support.v7.preference.DialogPreference;
-import android.support.v7.preference.PreferenceDialogFragmentCompat;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TimePicker;
+import androidx.preference.DialogPreference;
+import androidx.preference.PreferenceDialogFragmentCompat;
 import com.clloret.days.R;
 import org.joda.time.DateTimeConstants;
 

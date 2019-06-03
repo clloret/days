@@ -3,10 +3,10 @@ package com.clloret.days.data.repository;
 import static org.junit.Assert.assertThat;
 
 import android.app.Application;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.room.Room;
 import com.clloret.days.data.BuildConfig;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;

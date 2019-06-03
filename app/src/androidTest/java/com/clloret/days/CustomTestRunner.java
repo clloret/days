@@ -2,7 +2,7 @@ package com.clloret.days;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.test.runner.AndroidJUnitRunner;
+import androidx.test.runner.AndroidJUnitRunner;
 
 @SuppressWarnings("unused")
 public class CustomTestRunner extends AndroidJUnitRunner {

@@ -1,10 +1,10 @@
 package com.clloret.days.menu.items;
 
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import com.clloret.days.R;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
 import com.clloret.days.domain.tags.order.TagSortable;
