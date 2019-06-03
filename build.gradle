@@ -32,7 +32,7 @@ allprojects {
         annotatedAdapterVersion = '1.1.1'
         appCompatVersion = '1.0.2'
         butterknifeVersion = '10.1.0'
-        daggerVersion = '2.21'
+        daggerVersion = '2.23.1'
         espressoVersion = '3.0.2'
         eventBusVersion = '3.1.1'
         expressoVersion = '3.2.0'
