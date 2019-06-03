@@ -43,7 +43,7 @@ dependencies {
     implementation project(':data')
     implementation project(':device')
 
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
@@ -84,15 +84,13 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
 
-    androidTestImplementation('androidx.test:runner:1.2.0') {
-        exclude group: 'com.android.support'
-    }
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.expressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
+    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
     androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation 'org.mockito:mockito-android:2.27.0'
     androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }

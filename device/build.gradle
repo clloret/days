@@ -30,19 +30,17 @@ dependencies {
         exclude group: "com.intellij", module: "annotations"
     }
 
+    implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
-    implementation 'androidx.appcompat:appcompat:1.0.2'
 
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 
-    androidTestImplementation('androidx.test:runner:1.2.0') {
-        exclude group: 'com.android.support'
-    }
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
 }
