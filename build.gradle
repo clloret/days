@@ -25,8 +25,8 @@ allprojects {
     ext {
         buildToolsVersion = '28.0.3'
         minSdkVersion = 23
-        targetSdkVersion = 27
-        compileSdkVersion = 27
+        targetSdkVersion = 28
+        compileSdkVersion = 28
         javaVersion = JavaVersion.VERSION_1_8
 
         annotatedAdapterVersion = '1.1.1'
@@ -47,7 +47,7 @@ allprojects {
         rxAndroidVersion = "2.1.0"
         rxJavaVersion = '2.2.6'
         stethoVersion = '1.5.0'
-        supportVersion = '27.1.1'
+        supportVersion = '28.0.0'
         testRunnerVersion = '1.0.2'
         timberVersion = '4.7.1'
     }
