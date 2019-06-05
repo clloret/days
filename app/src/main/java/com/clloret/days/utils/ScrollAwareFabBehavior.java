@@ -1,5 +1,6 @@
 package com.clloret.days.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
@@ -34,6 +35,8 @@ public class ScrollAwareFabBehavior extends FloatingActionButton.Behavior {
 
     if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
       child.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+        // See https://issuetracker.google.com/issues/115924750
+        @SuppressLint("RestrictedApi")
         @Override
         public void onHidden(FloatingActionButton fab) {
 
