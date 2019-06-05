@@ -11,7 +11,7 @@ import androidx.room.Room;
 import androidx.room.testing.MigrationTestHelper;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
-import androidx.test.InstrumentationRegistry;
+import androidx.test.platform.app.InstrumentationRegistry;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.DbEvent;
 import com.clloret.days.data.local.entities.converters.DateConverter;
@@ -76,8 +76,9 @@ public class MigrationTest {
 
   private DaysDatabase getMigratedRoomDatabase() {
 
-    DaysDatabase database = Room.databaseBuilder(InstrumentationRegistry.getTargetContext(),
-        DaysDatabase.class, TEST_DB_NAME)
+    DaysDatabase database = Room
+        .databaseBuilder(InstrumentationRegistry.getInstrumentation().getTargetContext(),
+            DaysDatabase.class, TEST_DB_NAME)
         .addMigrations(MIGRATION_1_2)
         .build();
     migrationTestHelper.closeWhenFinished(database);

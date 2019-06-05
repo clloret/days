@@ -1,8 +1,8 @@
 package com.clloret.days.model.entities;
 
 import android.os.Parcel;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class TagViewModel implements android.os.Parcelable {
 
@@ -101,6 +101,7 @@ public class TagViewModel implements android.os.Parcelable {
     return id.equals(tag.id);
   }
 
+  @androidx.annotation.NonNull
   @Override
   public String toString() {
 

@@ -2,6 +2,7 @@ package com.clloret.days.data.remote.repository;
 
 import android.content.Context;
 import android.text.TextUtils;
+import androidx.annotation.NonNull;
 import com.clloret.days.data.remote.AirtableCrudHelper;
 import com.clloret.days.data.remote.entities.ApiEvent;
 import com.clloret.days.data.remote.entities.mapper.ApiEventDataMapper;
@@ -66,7 +67,7 @@ public class AirtableEventRepository implements EventRepository {
   }
 
   @Override
-  public Single<List<Event>> getByTagId(String tagId) {
+  public Single<List<Event>> getByTagId(@NonNull String tagId) {
 
     Single<List<ApiEvent>> listSingle;
     if (TextUtils.isEmpty(tagId)) {

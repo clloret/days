@@ -1,7 +1,6 @@
 package com.clloret.days.domain.utils;
 
 import io.reactivex.Observable;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Function;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import org.jetbrains.annotations.NotNull;
 
 public class SelectionMap<K, V> extends LinkedHashMap<K, V> {
 
@@ -89,7 +89,7 @@ public class SelectionMap<K, V> extends LinkedHashMap<K, V> {
     }
   }
 
-  @NonNull
+  @NotNull
   public List<? extends K> getKeySelection(Function<? super V, ? extends K> mapper) {
 
     return Observable.just(selection)

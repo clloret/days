@@ -1,8 +1,8 @@
 package com.clloret.days.domain.entities;
 
 import com.clloret.days.domain.events.order.EventSortable;
-import io.reactivex.annotations.NonNull;
 import java.util.Date;
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +111,7 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
 
     Event event = (Event) o;
 
-    return id != null ? id.equals(event.id) : event.id == null;
+    return Objects.equals(id, event.id);
   }
 
   @Override
@@ -162,7 +162,7 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
     return reminderUnit != null ? reminderUnit : TimeUnit.DAY;
   }
 
-  public void setReminderUnit(@NonNull TimeUnit reminderUnit) {
+  public void setReminderUnit(@NotNull TimeUnit reminderUnit) {
 
     this.reminderUnit = reminderUnit;
   }

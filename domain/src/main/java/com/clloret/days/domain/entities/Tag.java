@@ -1,8 +1,8 @@
 package com.clloret.days.domain.entities;
 
 import com.clloret.days.domain.tags.order.TagSortable;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Tag implements Identifiable, TagSortable {
 
@@ -25,7 +25,7 @@ public class Tag implements Identifiable, TagSortable {
     this.id = id;
   }
 
-  @NonNull
+  @NotNull
   @Override
   public String getId() {
 

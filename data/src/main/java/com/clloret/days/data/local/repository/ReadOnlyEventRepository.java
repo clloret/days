@@ -1,6 +1,7 @@
 package com.clloret.days.data.local.repository;
 
 import android.text.TextUtils;
+import androidx.annotation.NonNull;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.entities.DbEvent;
 import com.clloret.days.data.local.entities.dao.EventDao;
@@ -35,7 +36,7 @@ public class ReadOnlyEventRepository implements EventRepository, CacheSource<Eve
   }
 
   @Override
-  public Single<List<Event>> getByTagId(String tagId) {
+  public Single<List<Event>> getByTagId(@NonNull String tagId) {
 
     Single<List<DbEvent>> listSingle = TextUtils.isEmpty(tagId) ? dao.loadWithoutAssignedTags()
         : dao.loadByTagsIds("%" + tagId + "%");

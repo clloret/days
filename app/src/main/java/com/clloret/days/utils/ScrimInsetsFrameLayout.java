@@ -16,6 +16,7 @@
 
 package com.clloret.days.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -23,8 +24,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.clloret.days.R;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * A layout that draws something in the insets passed to {@link #fitSystemWindows(Rect)}, i.e. the
@@ -33,64 +37,65 @@ import com.clloret.days.R;
  */
 public class ScrimInsetsFrameLayout extends FrameLayout {
 
-  private Drawable insetForeground;
+  Drawable insetForeground;
 
-  private Rect insets;
-  private final Rect tempRect = new Rect();
-  private OnInsetsCallback onInsetsCallback;
+  Rect insets;
+
+  private Rect tempRect = new Rect();
 
   public ScrimInsetsFrameLayout(Context context) {
 
-    super(context);
-    init(context, null, 0);
+    this(context, null);
   }
 
   public ScrimInsetsFrameLayout(Context context, AttributeSet attrs) {
 
-    super(context, attrs);
-    init(context, attrs, 0);
+    this(context, attrs, 0);
   }
 
-  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs, int defStyle) {
+  @SuppressLint({"PrivateResource", "RestrictedApi"})
+  public ScrimInsetsFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
 
-    super(context, attrs, defStyle);
-    init(context, attrs, defStyle);
-  }
+    super(context, attrs, defStyleAttr);
 
-  private void init(Context context, AttributeSet attrs, int defStyle) {
-
-    final TypedArray a = context.obtainStyledAttributes(attrs,
-        R.styleable.ScrimInsetsFrameLayout, defStyle, 0);
-    if (a == null) {
-      return;
-    }
+    final TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.ScrimInsetsFrameLayout,
+            defStyleAttr,
+            R.style.Widget_Design_ScrimInsetsFrameLayout);
     insetForeground = a.getDrawable(R.styleable.ScrimInsetsFrameLayout_insetForeground);
     a.recycle();
+    setWillNotDraw(true); // No need to draw until the insets are adjusted
 
-    setWillNotDraw(true);
+    ViewCompat.setOnApplyWindowInsetsListener(
+        this,
+        (v, insets) -> {
+          if (null == ScrimInsetsFrameLayout.this.insets) {
+            ScrimInsetsFrameLayout.this.insets = new Rect();
+          }
+          ScrimInsetsFrameLayout.this.insets.set(
+              insets.getSystemWindowInsetLeft(),
+              insets.getSystemWindowInsetTop(),
+              insets.getSystemWindowInsetRight(),
+              insets.getSystemWindowInsetBottom());
+          onInsetsChanged(insets);
+          setWillNotDraw(!insets.hasSystemWindowInsets() || insetForeground == null);
+          ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
+          return insets.consumeSystemWindowInsets();
+        });
   }
 
   @Override
-  protected boolean fitSystemWindows(Rect insets) {
-
-    this.insets = new Rect(insets);
-    setWillNotDraw(insetForeground == null);
-    ViewCompat.postInvalidateOnAnimation(this);
-    if (onInsetsCallback != null) {
-      onInsetsCallback.onInsetsChanged(insets);
-    }
-    return true; // consume insets
-  }
-
-  @Override
-  public void draw(Canvas canvas) {
+  public void draw(@NonNull Canvas canvas) {
 
     super.draw(canvas);
 
     int width = getWidth();
     int height = getHeight();
     if (insets != null && insetForeground != null) {
-      final int sc = canvas.save();
+      int sc = canvas.save();
       canvas.translate(getScrollX(), getScrollY());
 
       // Top
@@ -135,22 +140,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
     }
   }
 
-  /**
-   * Allows the calling container to specify a callback for custom processing when insets change
-   * (i.e. when
-   * {@link #fitSystemWindows(Rect)} is called. This is useful for setting padding on UI elements
-   * based on
-   * UI chrome insets (e.g. a Google Map or a ListView). When using with ListView or GridView,
-   * remember to set
-   * clipToPadding to false.
-   */
-  public void setOnInsetsCallback(OnInsetsCallback onInsetsCallback) {
+  protected void onInsetsChanged(WindowInsetsCompat insets) {
 
-    this.onInsetsCallback = onInsetsCallback;
-  }
-
-  public interface OnInsetsCallback {
-
-    void onInsetsChanged(Rect insets);
   }
 }

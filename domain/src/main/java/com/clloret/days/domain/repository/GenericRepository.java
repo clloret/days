@@ -2,18 +2,18 @@ package com.clloret.days.domain.repository;
 
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public interface GenericRepository<T> {
 
-  Single<T> getById(@NonNull String id);
+  Single<T> getById(@NotNull String id);
 
   Single<List<T>> getAll(boolean refresh);
 
-  Maybe<T> create(@NonNull T entity);
+  Maybe<T> create(@NotNull T entity);
 
-  Maybe<T> edit(@NonNull T entity);
+  Maybe<T> edit(@NotNull T entity);
 
-  Maybe<Boolean> delete(@NonNull T entity);
+  Maybe<Boolean> delete(@NotNull T entity);
 }

@@ -132,12 +132,13 @@ public class DbEvent {
     this.description = description;
   }
 
+  @Nullable
   public Integer getReminder() {
 
     return reminder;
   }
 
-  public void setReminder(Integer reminder) {
+  public void setReminder(@Nullable Integer reminder) {
 
     this.reminder = reminder;
   }

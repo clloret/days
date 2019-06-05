@@ -1,5 +1,6 @@
 package com.clloret.days.data.repository;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.cache.CacheManager;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.domain.entities.Event;
@@ -29,7 +30,7 @@ public class AppEventRepository implements EventRepository, CacheSource<Event> {
   }
 
   @Override
-  public Single<List<Event>> getByTagId(String tagId) {
+  public Single<List<Event>> getByTagId(@NonNull String tagId) {
 
     return localRepository.getByTagId(tagId);
   }

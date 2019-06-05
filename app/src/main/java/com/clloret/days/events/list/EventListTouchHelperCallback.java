@@ -2,6 +2,7 @@ package com.clloret.days.events.list;
 
 import android.graphics.Canvas;
 import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.ItemTouchHelper.Callback;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,7 +22,7 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
+  public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder) {
 
     int swipeFlags = ItemTouchHelper.START;
 
@@ -29,7 +30,8 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder, ViewHolder target) {
+  public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder,
+      @NonNull ViewHolder target) {
 
     return false;
   }
@@ -41,7 +43,7 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public void onSwiped(ViewHolder viewHolder, int direction) {
+  public void onSwiped(@NonNull ViewHolder viewHolder, int direction) {
 
     Timber.d("onSwiped: %d", direction);
 
@@ -49,7 +51,7 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public void clearView(RecyclerView recyclerView, ViewHolder viewHolder) {
+  public void clearView(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder) {
 
     final View foregroundView = ((EventViewHolder) viewHolder).viewForeground;
     getDefaultUIUtil().clearView(foregroundView);
@@ -65,7 +67,8 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public void onChildDraw(Canvas c, RecyclerView recyclerView, ViewHolder viewHolder, float dx,
+  public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+      @NonNull ViewHolder viewHolder, float dx,
       float dy, int actionState, boolean isCurrentlyActive) {
 
     final View foregroundView = ((EventViewHolder) viewHolder).viewForeground;
@@ -74,7 +77,8 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public void onChildDrawOver(Canvas c, RecyclerView recyclerView, ViewHolder viewHolder, float dx,
+  public void onChildDrawOver(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+      ViewHolder viewHolder, float dx,
       float dy, int actionState, boolean isCurrentlyActive) {
 
     final View foregroundView = ((EventViewHolder) viewHolder).viewForeground;

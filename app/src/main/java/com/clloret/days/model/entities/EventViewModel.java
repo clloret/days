@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.events.order.EventSortable;
 import java.util.Date;
+import java.util.Objects;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import timber.log.Timber;
@@ -176,7 +177,7 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
 
     EventViewModel event = (EventViewModel) o;
 
-    return id != null ? id.equals(event.id) : event.id == null;
+    return Objects.equals(id, event.id);
   }
 
   public String[] getTags() {
