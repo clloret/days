@@ -4,7 +4,7 @@
 
 Days is a simple Android app that helps to control event dates.
 
-This project also showcases MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
+This project also showcases Clean Architecture, the MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
 
 ## Features
 
@@ -20,7 +20,8 @@ This project also showcases MVP pattern with Mosby, Repository pattern, RXJava 2
 - Free and open source: It is free and the source code of the application is available.
 
 ### For other developers:
-- MVP: Implementation of the MVP architecture pattern.
+- Clean Architecture: Try to follow the principles of Clean Architecture.
+- MVP: Implementation of the MVP architecture pattern for the presentation layer.
 - Repository pattern: Implementation of the Repository pattern for the persistence layer.
 - Room: Use of the Room library for local data storage.
 - RxJava 2: Use of the RxJava2 library for reactive programming.
