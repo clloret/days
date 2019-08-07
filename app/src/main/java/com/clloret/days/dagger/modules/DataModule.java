@@ -5,6 +5,7 @@ import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 import androidx.room.Room;
 import com.clloret.days.R;
 import com.clloret.days.data.cache.CacheSource;
@@ -56,8 +57,15 @@ public abstract class DataModule {
   @Singleton
   static DaysDatabase providesDatabase(Context context) {
 
-    return Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
+    DaysDatabase debug = Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
         .addMigrations(MIGRATION_1_2).build();
+
+    //Timber.d("providesDatabase: %s", debug);
+    Log.d("DAYS", String.format("providesDatabase: %s", debug));
+
+    return debug;
+//    return Room.databaseBuilder(context, DaysDatabase.class, DATABASE)
+//        .addMigrations(MIGRATION_1_2).build();
   }
 
   @Provides
@@ -66,7 +74,13 @@ public abstract class DataModule {
       @Named("local") EventRepository localDataStore,
       @Named("remote") EventRepository remoteDataStore) {
 
-    return new AppEventRepository(localDataStore, remoteDataStore);
+    AppEventRepository debug = new AppEventRepository(localDataStore, remoteDataStore);
+
+    //Timber.d("providesAppEventRepository: %s", debug);
+    Log.d("DAYS", String.format("providesAppEventRepository: %s", debug));
+
+    return debug;
+    //return new AppEventRepository(localDataStore, remoteDataStore);
   }
 
   @Provides

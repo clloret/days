@@ -8,10 +8,8 @@ import com.clloret.days.domain.utils.ThreadSchedulers;
 import com.clloret.days.domain.utils.TimeProvider;
 import io.reactivex.Maybe;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 import org.joda.time.LocalDate;
 
-@Singleton
 public class ResetEventDateUseCase extends BaseMaybeUseCase<Event, Event> {
 
   private final EventRepository dataStore;

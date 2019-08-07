@@ -7,9 +7,7 @@ import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.ThreadSchedulers;
 import io.reactivex.Maybe;
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
 public class CreateEventUseCase extends BaseMaybeUseCase<Event, Event> {
 
   private final EventRepository dataStore;

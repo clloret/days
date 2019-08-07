@@ -8,7 +8,6 @@ import com.clloret.days.domain.utils.ThreadSchedulers;
 import com.clloret.days.domain.utils.TimeProvider;
 import dagger.Module;
 import dagger.Provides;
-import javax.inject.Singleton;
 import org.mockito.Mockito;
 import timber.log.Timber;
 
@@ -16,7 +15,6 @@ import timber.log.Timber;
 public class TestUseCasesModule {
 
   @Provides
-  @Singleton
   ResetEventDateUseCase providesResetEventDateUseCase(ThreadSchedulers threadSchedulers,
       EventRepository dataStore, TimeProvider timeProvider,
       EventReminderManager eventReminderManager) {
@@ -28,7 +26,6 @@ public class TestUseCasesModule {
   }
 
   @Provides
-  @Singleton
   DeleteEventUseCase providesDeleteEventUseCase(ThreadSchedulers threadSchedulers,
       EventRepository dataStore, EventReminderManager eventReminderManager) {
 
