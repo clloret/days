@@ -1,5 +1,6 @@
 package com.clloret.days.data.repository;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.cache.CacheManager;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.domain.entities.Tag;
@@ -27,7 +28,7 @@ public class AppTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public Single<Tag> getById(String id) {
+  public Single<Tag> getById(@NonNull String id) {
 
     return cacheManager.getById(id);
   }
@@ -39,25 +40,25 @@ public class AppTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public Maybe<Tag> create(Tag entity) {
+  public Maybe<Tag> create(@NonNull Tag entity) {
 
     return cacheManager.create(entity);
   }
 
   @Override
-  public Maybe<Tag> edit(Tag entity) {
+  public Maybe<Tag> edit(@NonNull Tag entity) {
 
     return cacheManager.edit(entity);
   }
 
   @Override
-  public Maybe<Boolean> delete(Tag entity) {
+  public Maybe<Boolean> delete(@NonNull Tag entity) {
 
     return cacheManager.delete(entity);
   }
 
   @Override
-  public void insertAll(List<Tag> entities) {
+  public void insertAll(@NonNull List<Tag> entities) {
 
     cacheSource.insertAll(entities);
   }

@@ -1,6 +1,7 @@
 package com.clloret.days.data.remote.repository;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import com.clloret.days.data.remote.AirtableCrudHelper;
 import com.clloret.days.data.remote.entities.ApiTag;
 import com.clloret.days.data.remote.entities.mapper.ApiTagDataMapper;
@@ -59,7 +60,7 @@ public class AirtableTagRepository implements TagRepository {
   }
 
   @Override
-  public Single<Tag> getById(String id) {
+  public Single<Tag> getById(@NonNull String id) {
 
     throw new UnsupportedOperationException();
   }
@@ -71,19 +72,19 @@ public class AirtableTagRepository implements TagRepository {
   }
 
   @Override
-  public Maybe<Tag> create(Tag entity) {
+  public Maybe<Tag> create(@NonNull Tag entity) {
 
     return crudHelper.create(entity);
   }
 
   @Override
-  public Maybe<Tag> edit(Tag entity) {
+  public Maybe<Tag> edit(@NonNull Tag entity) {
 
     return crudHelper.edit(entity);
   }
 
   @Override
-  public Maybe<Boolean> delete(Tag entity) {
+  public Maybe<Boolean> delete(@NonNull Tag entity) {
 
     return crudHelper.delete(entity);
   }

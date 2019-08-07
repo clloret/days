@@ -88,7 +88,7 @@ public class AirtableEventRepository implements EventRepository {
   }
 
   @Override
-  public Single<Event> getById(String id) {
+  public Single<Event> getById(@NonNull String id) {
 
     throw new UnsupportedOperationException();
   }
@@ -100,19 +100,19 @@ public class AirtableEventRepository implements EventRepository {
   }
 
   @Override
-  public Maybe<Event> create(Event entity) {
+  public Maybe<Event> create(@NonNull Event entity) {
 
     return crudHelper.create(entity);
   }
 
   @Override
-  public Maybe<Event> edit(Event entity) {
+  public Maybe<Event> edit(@NonNull Event entity) {
 
     return crudHelper.edit(entity);
   }
 
   @Override
-  public Maybe<Boolean> delete(Event entity) {
+  public Maybe<Boolean> delete(@NonNull Event entity) {
 
     return crudHelper.delete(entity);
   }

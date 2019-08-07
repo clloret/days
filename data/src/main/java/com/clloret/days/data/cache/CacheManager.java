@@ -1,5 +1,6 @@
 package com.clloret.days.data.cache;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.domain.repository.GenericRepository;
 import com.sybit.airtableandroid.exception.AirtableException;
 import io.reactivex.Maybe;
@@ -52,7 +53,7 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
   }
 
   @Override
-  public Single<T> getById(String id) {
+  public Single<T> getById(@NonNull String id) {
 
     return localRepository.getById(id);
   }
@@ -72,7 +73,7 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
   }
 
   @Override
-  public Maybe<T> create(T entity) {
+  public Maybe<T> create(@NonNull T entity) {
 
     // Use "result" instead of "date" because the "id" is assigned in "result".
     return remoteRepository.create(entity)
@@ -81,7 +82,7 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
   }
 
   @Override
-  public Maybe<T> edit(T entity) {
+  public Maybe<T> edit(@NonNull T entity) {
 
     return remoteRepository.edit(entity)
         .doOnSuccess(result -> localRepository.edit(entity)
@@ -89,7 +90,7 @@ public class CacheManager<T, R extends GenericRepository<T>> implements GenericR
   }
 
   @Override
-  public Maybe<Boolean> delete(T entity) {
+  public Maybe<Boolean> delete(@NonNull T entity) {
 
     return remoteRepository.delete(entity)
         .onErrorReturn(this::checkAirtableNotFoundError)

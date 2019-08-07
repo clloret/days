@@ -1,5 +1,6 @@
 package com.clloret.days.data.local.repository;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.entities.DbTag;
 import com.clloret.days.data.local.entities.dao.TagDao;
@@ -23,7 +24,7 @@ public class ReadOnlyTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public void insertAll(List<Tag> entities) {
+  public void insertAll(@NonNull List<Tag> entities) {
     // Dummy, do nothing
   }
 
@@ -34,7 +35,7 @@ public class ReadOnlyTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public Single<Tag> getById(String id) {
+  public Single<Tag> getById(@NonNull String id) {
 
     return Single.fromCallable(() -> {
       DbTag tagById = dao.getTagById(id);
@@ -50,19 +51,19 @@ public class ReadOnlyTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public Maybe<Tag> create(Tag entity) {
+  public Maybe<Tag> create(@NonNull Tag entity) {
 
     return Maybe.just(entity);
   }
 
   @Override
-  public Maybe<Tag> edit(Tag entity) {
+  public Maybe<Tag> edit(@NonNull Tag entity) {
 
     return Maybe.just(entity);
   }
 
   @Override
-  public Maybe<Boolean> delete(Tag entity) {
+  public Maybe<Boolean> delete(@NonNull Tag entity) {
 
     return Maybe.just(true);
   }

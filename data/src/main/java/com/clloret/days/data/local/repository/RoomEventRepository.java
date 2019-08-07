@@ -46,7 +46,7 @@ public class RoomEventRepository implements EventRepository, CacheSource<Event> 
   }
 
   @Override
-  public Single<Event> getById(String id) {
+  public Single<Event> getById(@NonNull String id) {
 
     return Single.fromCallable(() -> {
       DbEvent eventById = dao.getEventById(id);
@@ -62,19 +62,19 @@ public class RoomEventRepository implements EventRepository, CacheSource<Event> 
   }
 
   @Override
-  public Maybe<Event> create(Event entity) {
+  public Maybe<Event> create(@NonNull Event entity) {
 
     return crudHelper.create(entity);
   }
 
   @Override
-  public Maybe<Event> edit(Event entity) {
+  public Maybe<Event> edit(@NonNull Event entity) {
 
     return crudHelper.edit(entity);
   }
 
   @Override
-  public Maybe<Boolean> delete(Event entity) {
+  public Maybe<Boolean> delete(@NonNull Event entity) {
 
     return crudHelper.delete(entity);
   }
@@ -87,7 +87,7 @@ public class RoomEventRepository implements EventRepository, CacheSource<Event> 
   }
 
   @Override
-  public void insertAll(List<Event> entities) {
+  public void insertAll(@NonNull List<Event> entities) {
 
     crudHelper.insertAll(entities);
   }

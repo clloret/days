@@ -1,5 +1,6 @@
 package com.clloret.days.data.local.repository;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.RoomCrudHelper;
 import com.clloret.days.data.local.entities.DbTag;
@@ -27,7 +28,7 @@ public class RoomTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public void insertAll(List<Tag> entities) {
+  public void insertAll(@NonNull List<Tag> entities) {
 
     crudHelper.insertAll(entities);
   }
@@ -40,7 +41,7 @@ public class RoomTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public Single<Tag> getById(String id) {
+  public Single<Tag> getById(@NonNull String id) {
 
     return Single.fromCallable(() -> {
       DbTag eventById = dao.getTagById(id);
@@ -56,19 +57,19 @@ public class RoomTagRepository implements TagRepository, CacheSource<Tag> {
   }
 
   @Override
-  public Maybe<Tag> create(Tag entity) {
+  public Maybe<Tag> create(@NonNull Tag entity) {
 
     return crudHelper.create(entity);
   }
 
   @Override
-  public Maybe<Tag> edit(Tag entity) {
+  public Maybe<Tag> edit(@NonNull Tag entity) {
 
     return crudHelper.edit(entity);
   }
 
   @Override
-  public Maybe<Boolean> delete(Tag entity) {
+  public Maybe<Boolean> delete(@NonNull Tag entity) {
 
     return crudHelper.delete(entity);
   }
