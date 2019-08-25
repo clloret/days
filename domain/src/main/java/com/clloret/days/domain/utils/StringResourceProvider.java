@@ -7,4 +7,12 @@ public interface StringResourceProvider {
   String getEventDeleteNotificationAction();
 
   String getPrefReminderTimeKey();
+
+  String getPeriodFormatBefore();
+
+  String getPeriodFormatToday();
+
+  String getPeriodFormatAfter();
+
+  String getNotificationBigText();
 }

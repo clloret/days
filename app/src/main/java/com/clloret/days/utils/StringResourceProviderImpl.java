@@ -11,6 +11,7 @@ public class StringResourceProviderImpl implements StringResourceProvider {
 
   private final Resources resources;
 
+  @SuppressWarnings("WeakerAccess")
   @Inject
   public StringResourceProviderImpl(Resources resources) {
 
@@ -33,5 +34,29 @@ public class StringResourceProviderImpl implements StringResourceProvider {
   public String getPrefReminderTimeKey() {
 
     return resources.getString(R.string.pref_reminder_time);
+  }
+
+  @Override
+  public String getPeriodFormatBefore() {
+
+    return resources.getString(R.string.notification_period_format_before);
+  }
+
+  @Override
+  public String getPeriodFormatToday() {
+
+    return resources.getString(R.string.notification_period_format_today);
+  }
+
+  @Override
+  public String getPeriodFormatAfter() {
+
+    return resources.getString(R.string.notification_period_format_after);
+  }
+
+  @Override
+  public String getNotificationBigText() {
+
+    return resources.getString(R.string.notification_notification_big_text);
   }
 }

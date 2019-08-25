@@ -92,6 +92,11 @@
   <string name="title_reminder_time">Hora del recordatorio</string>
   <string name="title_remote_datastore">Datos remotos</string>
   <string name="title_select_tags">Selecciona las etiquetas</string>
+  <string name="notification_action_event_delete">Borrar</string>
+  <string name="notification_action_event_reset">Reiniciar</string>
+  <string name="notification_period_format_after">%s después</string>
+  <string name="notification_period_format_before">Hace %s</string>
+  <string name="notification_period_format_today">Hoy</string>
 
   <plurals name="day">
     <item quantity="one">día</item>
@@ -105,6 +110,4 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
-  <string name="notification_action_event_delete">Borrar</string>
-  <string name="notification_action_event_reset">Reiniciar</string>
 </resources>
