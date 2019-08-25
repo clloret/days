@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.clloret.days.R;
+import com.clloret.days.domain.events.EventPeriodFormat;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.events.list.EventListAdapter.EventViewHolder;
 import com.clloret.days.model.entities.EventViewModel;
-import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -22,12 +22,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
   private final OnListAdapterListener listener;
   private List<EventViewModel> events;
   private Comparator<EventSortable> currentComparator;
+  private EventPeriodFormat eventPeriodFormat;
 
-  public EventListAdapter(Comparator<EventSortable> comparator, OnListAdapterListener listener) {
+  public EventListAdapter(Comparator<EventSortable> comparator, EventPeriodFormat eventPeriodFormat,
+      OnListAdapterListener listener) {
 
     super();
 
     this.currentComparator = comparator;
+    this.eventPeriodFormat = eventPeriodFormat;
     this.listener = listener;
     this.setHasStableIds(true);
   }
@@ -182,8 +185,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
     public void bindData(final EventViewModel viewModel) {
 
-      final int daysSince = viewModel.getDaysSince();
-      String formattedDaysSince = NumberFormat.getInstance().format(daysSince);
+      String formattedDaysSince = eventPeriodFormat.getDaysSinceFormatted(viewModel.getDate());
 
       name.setText(viewModel.getName());
       this.days.setText(formattedDaysSince);

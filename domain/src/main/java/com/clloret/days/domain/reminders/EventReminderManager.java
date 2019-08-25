@@ -1,7 +1,11 @@
 package com.clloret.days.domain.reminders;
 
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.events.EventPeriodFormat;
+import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.PreferenceUtils;
+import com.clloret.days.domain.utils.StringResourceProvider;
+import com.clloret.days.domain.utils.StringUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import java.util.Collection;
 import javax.inject.Inject;
@@ -15,14 +19,19 @@ public class EventReminderManager {
   private final ReminderManager reminderManager;
   private final TimeProvider timeProvider;
   private final PreferenceUtils preferenceUtils;
+  private final EventPeriodFormat eventPeriodFormat;
+  private final StringResourceProvider stringResourceProvider;
 
   @Inject
   public EventReminderManager(ReminderManager reminderManager, TimeProvider timeProvider,
-      PreferenceUtils preferenceUtils) {
+      PreferenceUtils preferenceUtils, EventPeriodFormat eventPeriodFormat,
+      StringResourceProvider stringResourceProvider) {
 
     this.reminderManager = reminderManager;
     this.timeProvider = timeProvider;
     this.preferenceUtils = preferenceUtils;
+    this.eventPeriodFormat = eventPeriodFormat;
+    this.stringResourceProvider = stringResourceProvider;
   }
 
   private void addReminderForEvent(Event event) {
@@ -31,28 +40,45 @@ public class EventReminderManager {
       return;
     }
 
-    DateTime eventDateWithTime = getEventDateWithTime(event);
-    DateTime timeReminder = calculateTimeReminder(event, eventDateWithTime);
+    final DateTime eventDateWithTime = getEventDateWithTime(event);
+    final DateTime timeReminder = calculateTimeReminder(event, eventDateWithTime);
 
     if (isReminderInThePast(timeReminder)) {
       return;
     }
 
-    reminderManager.addReminder(event, event.getId(), event.getName(), timeReminder.toDate());
+    final String contentTitle = event.getName();
+    final String contentText = eventPeriodFormat.getTimeLapseFormatted(event.getDate());
+    final String notificationBigText = stringResourceProvider.getNotificationBigText();
+    final String eventDescription = event.getDescription();
+    final Optional<String> bigText = getBigTextFromEventDescription(contentText,
+        notificationBigText, eventDescription);
+
+    reminderManager
+        .addReminder(event, event.getId(), timeReminder.toDate(), contentTitle, contentText,
+            bigText);
+  }
+
+  private Optional<String> getBigTextFromEventDescription(String contentText,
+      String notificationBigText,
+      String eventDescription) {
+
+    return StringUtils.isNullOrEmpty(eventDescription) ? Optional.empty()
+        : Optional.of(String.format(notificationBigText, contentText, eventDescription));
   }
 
   private boolean isReminderInThePast(DateTime eventDateWithTime) {
 
-    DateTime dateTime = timeProvider.getCurrentTime();
+    final DateTime dateTime = timeProvider.getCurrentTime();
 
     return eventDateWithTime.isBefore(dateTime);
   }
 
   private DateTime getEventDateWithTime(Event event) {
 
-    int reminderTime = preferenceUtils.getReminderTime();
-    int hourOfDay = reminderTime / DateTimeConstants.MINUTES_PER_HOUR;
-    int minuteOfHour = reminderTime % DateTimeConstants.MINUTES_PER_HOUR;
+    final int reminderTime = preferenceUtils.getReminderTime();
+    final int hourOfDay = reminderTime / DateTimeConstants.MINUTES_PER_HOUR;
+    final int minuteOfHour = reminderTime % DateTimeConstants.MINUTES_PER_HOUR;
 
     return new DateTime(event.getDate())
         .withHourOfDay(hourOfDay)

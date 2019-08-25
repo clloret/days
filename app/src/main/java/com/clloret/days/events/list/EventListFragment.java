@@ -20,6 +20,7 @@ import butterknife.BindView;
 import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseLceFragment;
+import com.clloret.days.domain.events.EventPeriodFormat;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
@@ -78,6 +79,9 @@ public class EventListFragment
 
   @Inject
   Map<SortType, Comparator<EventSortable>> eventSortComparators;
+
+  @Inject
+  EventPeriodFormat eventPeriodFormat;
 
   @BindView(R.id.recyclerView)
   RecyclerView recyclerView;
@@ -198,7 +202,7 @@ public class EventListFragment
     savedSortType = SortType.fromValue(sortMode);
     Comparator<EventSortable> comparator = eventSortComparators.get(savedSortType);
 
-    adapter = new EventListAdapter(comparator, this);
+    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
 
     GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
     recyclerView.setLayoutManager(layoutManager);

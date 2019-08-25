@@ -7,8 +7,6 @@ import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.events.order.EventSortable;
 import java.util.Date;
 import java.util.Objects;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 import timber.log.Timber;
 
 // If replace Parcelable, maintain field "event" implementation for Date type
@@ -149,14 +147,6 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
   public void setFavorite(boolean favorite) {
 
     this.favorite = favorite;
-  }
-
-  public int getDaysSince() {
-
-    LocalDate start = new LocalDate();
-    LocalDate end = new LocalDate(date);
-
-    return Days.daysBetween(start, end).getDays();
   }
 
   @Override
