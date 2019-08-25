@@ -5,7 +5,7 @@ import java.util.Date;
 
 public interface ReminderUtils {
 
-  void addReminder(Notification notification, String id, String message, Date date);
+  void addReminder(Notification notification, String id, Date date);
 
   void removeReminder(String id);
 

@@ -22,9 +22,9 @@ public class ReminderUtilsImpl implements ReminderUtils {
   }
 
   @Override
-  public void addReminder(Notification notification, String id, String message, Date date) {
+  public void addReminder(Notification notification, String id, Date date) {
 
-    Timber.d("addReminder - id: %s, message: %s, date: %s", id, message, date.toString());
+    Timber.d("addReminder - id: %s, date: %s", id, date.toString());
 
     Intent intent = getNotificationIntent(id);
     intent.putExtra(EXTRA_NOTIFICATION_ID, id);

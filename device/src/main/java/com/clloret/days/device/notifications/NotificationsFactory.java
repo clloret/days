@@ -8,12 +8,18 @@ import android.app.NotificationChannel;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Resources;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.text.Html;
+import android.text.Spanned;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationCompat.Action;
+import androidx.core.app.NotificationCompat.BigTextStyle;
 import androidx.core.app.NotificationCompat.Builder;
 import com.clloret.days.device.R;
+import com.clloret.days.domain.utils.Optional;
+import java.util.Date;
 
 public class NotificationsFactory {
 
@@ -32,27 +38,47 @@ public class NotificationsFactory {
     this.notificationsUtils = notificationsUtils;
   }
 
-  public Notification createEventReminderNotification(PendingIntent contentIntent, String message,
+  public Notification createEventReminderNotification(PendingIntent contentIntent,
+      Date date, String contentTitle, String contentText, Optional<String> bigText,
       Iterable<Action> actions) {
 
-    Builder builder = getBuilderFromChannel();
+    final Builder builder = getBuilderFromChannel();
 
     for (Action action : actions) {
       builder.addAction(action);
     }
 
-    builder.setContentTitle(message)
+    builder.setContentTitle(contentTitle)
+        .setTicker(contentTitle)
+        .setContentText(contentText)
         .setSmallIcon(R.drawable.ic_notification)
-        .setContentText(resources.getString(R.string.app_name))
-        .setAutoCancel(true)
         .setContentIntent(contentIntent)
-        .setTicker(message)
+        .setWhen(date.getTime())
+        .setShowWhen(true)
+        .setAutoCancel(true)
         .setDefaults(NotificationCompat.DEFAULT_ALL)
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setChannelId(CHANNEL_REMINDERS_ID)
         .setCategory(CATEGORY_REMINDER)
         .setVibrate(VIBRATION_PATTERN);
 
+    bigText.ifPresent(value -> {
+      final Spanned htmlBigText = getSpannedHtmlFromText(value);
+      builder.setStyle(new BigTextStyle()
+          .bigText(htmlBigText));
+    });
+
     return builder.build();
+  }
+
+  @SuppressWarnings("deprecation")
+  private Spanned getSpannedHtmlFromText(String text) {
+
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      return Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY);
+    } else {
+      return Html.fromHtml(text);
+    }
   }
 
   @NonNull

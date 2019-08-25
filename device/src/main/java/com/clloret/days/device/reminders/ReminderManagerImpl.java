@@ -10,6 +10,7 @@ import com.clloret.days.device.notifications.NotificationsIntents;
 import com.clloret.days.device.notifications.NotificationsUtils;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.reminders.ReminderManager;
+import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +46,8 @@ public class ReminderManagerImpl implements ReminderManager {
   }
 
   @Override
-  public void addReminder(Event event, String id, String message, Date date) {
+  public void addReminder(Event event, String id, Date date, String contentTitle,
+      String contentText, Optional<String> bigText) {
 
     PendingIntent viewEventIntent = notificationsIntents.getViewEventIntent(event);
     PendingIntent deleteEventIntent = notificationsIntents.getDeleteEventIntent(event);
@@ -62,9 +64,10 @@ public class ReminderManagerImpl implements ReminderManager {
             resetEventIntent).build());
 
     Notification notification = notificationsFactory
-        .createEventReminderNotification(viewEventIntent, message, actions);
+        .createEventReminderNotification(viewEventIntent, date, contentTitle, contentText, bigText,
+            actions);
 
-    reminderUtils.addReminder(notification, id, message, date);
+    reminderUtils.addReminder(notification, id, date);
   }
 
   @Override
