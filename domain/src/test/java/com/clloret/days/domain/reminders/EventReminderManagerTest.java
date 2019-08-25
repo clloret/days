@@ -1,7 +1,10 @@
 package com.clloret.days.domain.reminders;
 
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -12,7 +15,10 @@ import com.clloret.days.domain.common.SimpleDateConverter;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
+import com.clloret.days.domain.events.EventPeriodFormat;
+import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.PreferenceUtils;
+import com.clloret.days.domain.utils.StringResourceProvider;
 import com.clloret.days.domain.utils.TimeProvider;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,12 +26,13 @@ import java.util.List;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.converters.Param;
+import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -33,6 +40,12 @@ import org.mockito.MockitoAnnotations;
 @RunWith(JUnitParamsRunner.class)
 public class EventReminderManagerTest {
 
+  private static final String TEST_EVENT_ID = "Id";
+  private static final String TEST_EVENT_NAME = "Sample event";
+  private static final String TEST_EVENT_DESCRIPTION = "This is a sample event";
+  private static final String STUB_NOTIFICATION_BIG_TEXT = "<b>%s</b><br/>%s";
+  private static final String STUB_TIME_LAPSE_FORMATTED = "1 day ago";
+  private static final String EXPECTED_NOTIFICATION_BIG_TEXT = "<b>1 day ago</b><br/>This is a sample event";
   private LocalDate today;
   private LocalDate tomorrow;
   private DateTime now;
@@ -46,14 +59,22 @@ public class EventReminderManagerTest {
   @Mock
   private PreferenceUtils preferenceUtils;
 
+  @SuppressWarnings("unused")
+  @Mock
+  private StringResourceProvider stringResourceProvider;
+
+  @Mock
+  private EventPeriodFormat eventPeriodFormat;
+
   @InjectMocks
   private EventReminderManager sut;
 
   private Event getTestEvent(Date eventDate, Integer reminder, TimeUnit reminderUnit) {
 
     return new EventBuilder()
-        .setId("Id")
-        .setName("Sample event")
+        .setId(TEST_EVENT_ID)
+        .setName(TEST_EVENT_NAME)
+        .setDescription(TEST_EVENT_DESCRIPTION)
         .setDate(eventDate)
         .setReminderUnit(reminderUnit)
         .setReminder(reminder)
@@ -64,18 +85,24 @@ public class EventReminderManagerTest {
 
     doNothing()
         .when(reminderManager)
-        .addReminder(ArgumentMatchers.isA(Event.class), ArgumentMatchers.isA(String.class),
-            ArgumentMatchers.isA(String.class), ArgumentMatchers.isA(Date.class));
+        .addReminder(isA(Event.class), isA(String.class), isA(Date.class), isA(String.class),
+            isA(String.class), any());
 
     doNothing()
         .when(reminderManager)
-        .removeReminderForEvent(ArgumentMatchers.isA(Event.class));
+        .removeReminderForEvent(isA(Event.class));
 
     when(timeProvider.getCurrentTime())
         .thenReturn(now);
 
     when(preferenceUtils.getReminderTime())
         .thenReturn(0);
+
+    when(stringResourceProvider.getNotificationBigText())
+        .thenReturn(STUB_NOTIFICATION_BIG_TEXT);
+
+    when(eventPeriodFormat.getTimeLapseFormatted(isA(Date.class)))
+        .thenReturn(STUB_TIME_LAPSE_FORMATTED);
   }
 
   @Before
@@ -90,6 +117,7 @@ public class EventReminderManagerTest {
     MockitoAnnotations.initMocks(this);
   }
 
+  @SuppressWarnings("unchecked")
   @Test
   @Parameters({
       "01.01.2000, 1, DAY, 2.01.2000",
@@ -106,9 +134,18 @@ public class EventReminderManagerTest {
 
     sut.scheduleReminder(event, true);
 
+    ArgumentCaptor<Optional> optionalCaptor = ArgumentCaptor.forClass(Optional.class);
+
     verify(reminderManager).removeReminderForEvent(any());
     verify(reminderManager)
-        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(reminderDate));
+        .addReminder(any(), anyString(), eq(reminderDate),
+            eq(TEST_EVENT_NAME),
+            eq(STUB_TIME_LAPSE_FORMATTED),
+            optionalCaptor.capture());
+
+    Optional<String> result = optionalCaptor.getValue();
+    assertThat(result.isPresent(), Matchers.equalTo(true));
+    assertThat(result.get(), Matchers.equalTo(EXPECTED_NOTIFICATION_BIG_TEXT));
   }
 
   @Test
@@ -122,7 +159,8 @@ public class EventReminderManagerTest {
 
     verify(reminderManager, never()).removeReminderForEvent(any());
     verify(reminderManager)
-        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+        .addReminder(any(), anyString(), eq(tomorrow.toDate()), anyString(),
+            anyString(), any());
   }
 
   @Test
@@ -142,7 +180,8 @@ public class EventReminderManagerTest {
     sut.scheduleReminder(event, true);
 
     verify(reminderManager).removeReminderForEvent(any());
-    verify(reminderManager, never()).addReminder(any(), anyString(), anyString(), any());
+    verify(reminderManager, never())
+        .addReminder(any(), anyString(), any(), anyString(), anyString(), any());
   }
 
   @Test
@@ -161,7 +200,8 @@ public class EventReminderManagerTest {
     sut.scheduleReminder(event, true);
 
     verify(reminderManager).removeReminderForEvent(any());
-    verify(reminderManager, never()).addReminder(any(), anyString(), anyString(), any());
+    verify(reminderManager, never())
+        .addReminder(any(), anyString(), any(), anyString(), anyString(), any());
   }
 
   @Test
@@ -180,7 +220,8 @@ public class EventReminderManagerTest {
     int wantedNumberOfInvocations = events.size();
     verify(reminderManager, times(wantedNumberOfInvocations)).removeReminderForEvent(any());
     verify(reminderManager, times(wantedNumberOfInvocations))
-        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+        .addReminder(any(), anyString(), eq(tomorrow.toDate()), anyString(),
+            anyString(), any());
   }
 
   @Test
@@ -199,7 +240,8 @@ public class EventReminderManagerTest {
     int wantedNumberOfInvocations = events.size();
     verify(reminderManager, never()).removeReminderForEvent(any());
     verify(reminderManager, times(wantedNumberOfInvocations))
-        .addReminder(any(), anyString(), anyString(), ArgumentMatchers.eq(tomorrow.toDate()));
+        .addReminder(any(), anyString(), eq(tomorrow.toDate()), anyString(),
+            anyString(), any());
   }
 
   @Test
