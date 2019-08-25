@@ -29,6 +29,7 @@ import com.clloret.days.device.reminders.ReminderManagerImpl;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
+import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.NotificationsIntentsImpl;
@@ -104,7 +105,12 @@ public class NotificationsTest {
     ReminderManagerImpl reminderManager = new ReminderManagerImpl(context, notificationsIntents,
         stringResourceProvider);
 
-    reminderManager.addReminder(event, event.getId(), event.getName(), event.getDate());
+    String contentTitle = event.getName();
+    String contentText = "6 days ago";
+    String bigText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et tincidunt odio.";
+    reminderManager
+        .addReminder(event, event.getId(), event.getDate(), contentTitle, contentText,
+            Optional.of(bigText));
   }
 
   @SuppressWarnings("unused")
