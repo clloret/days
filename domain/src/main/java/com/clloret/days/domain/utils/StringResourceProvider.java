@@ -15,4 +15,14 @@ public interface StringResourceProvider {
   String getPeriodFormatAfter();
 
   String getNotificationBigText();
+
+  String getPrefDefaultList();
+
+  String getPrefRemoteDatastore();
+
+  String getPrefAirtableApiKey();
+
+  String getPrefAirtableBaseId();
+
+  String getPrefSortMode();
 }

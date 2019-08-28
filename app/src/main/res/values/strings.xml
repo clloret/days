@@ -79,6 +79,7 @@
   <string name="pref_default_list" translatable="false">default_list</string>
   <string name="pref_reminder_time" translatable="false">reminder_time</string>
   <string name="pref_remote_datastore" translatable="false">remote_datastore</string>
+  <string name="pref_sort_mode" translatable="false">sort_mode</string>
   <string name="summary_airtable_api_key">Your Airtable API key. Obtained from Airtable account information.</string>
   <string name="summary_airtable_base_id">Base ID of the database with Days structure.</string>
   <string name="summary_reminder_time">Select the time at which you want to receive the event reminder.</string>

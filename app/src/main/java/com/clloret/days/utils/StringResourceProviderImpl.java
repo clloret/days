@@ -59,4 +59,34 @@ public class StringResourceProviderImpl implements StringResourceProvider {
 
     return resources.getString(R.string.notification_notification_big_text);
   }
+
+  @Override
+  public String getPrefDefaultList() {
+
+    return resources.getString(R.string.pref_default_list);
+  }
+
+  @Override
+  public String getPrefRemoteDatastore() {
+
+    return resources.getString(R.string.pref_remote_datastore);
+  }
+
+  @Override
+  public String getPrefAirtableApiKey() {
+
+    return resources.getString(R.string.pref_airtable_api_key);
+  }
+
+  @Override
+  public String getPrefAirtableBaseId() {
+
+    return resources.getString(R.string.pref_airtable_base_id);
+  }
+
+  @Override
+  public String getPrefSortMode() {
+
+    return resources.getString(R.string.pref_sort_mode);
+  }
 }
