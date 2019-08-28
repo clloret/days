@@ -2,7 +2,7 @@ package com.clloret.days.events.common;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import com.clloret.days.utils.DateUtils;
+import com.clloret.days.domain.utils.DateUtils;
 import org.joda.time.LocalDate;
 
 public class SelectDateHelper {

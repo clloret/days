@@ -1,4 +1,4 @@
-package com.clloret.days.utils;
+package com.clloret.days.domain.utils;
 
 import java.util.Date;
 import org.joda.time.LocalDate;
@@ -6,6 +6,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 public class DateUtils {
+
+  private DateUtils() {
+
+  }
 
   public static String formatDate(Date date) {
 
