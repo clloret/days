@@ -20,6 +20,7 @@ public class EventPeriodFormatTest {
   private LocalDate yesterday;
   private LocalDate today;
   private LocalDate tomorrow;
+  private LocalDate thousandDaysLater;
   private DateTime now;
 
   @Mock
@@ -57,6 +58,7 @@ public class EventPeriodFormatTest {
     yesterday = new LocalDate(2000, 1, 1);
     today = new LocalDate(2000, 1, 2);
     tomorrow = new LocalDate(2000, 1, 3);
+    thousandDaysLater = today.plusDays(1000);
     now = new DateTime()
         .withDate(today)
         .withTime(0, 0, 0, 0);
@@ -93,6 +95,17 @@ public class EventPeriodFormatTest {
 
     String result = sut.getTimeLapseFormatted(today.toDate());
     String expected = "Today";
+
+    assertThat(result, is(expected));
+  }
+
+  @Test
+  public void getDaysSinceFormatted() {
+
+    addReminderManagerStubs();
+
+    String result = sut.getDaysSinceFormatted(thousandDaysLater.toDate());
+    String expected = "1,000";
 
     assertThat(result, is(expected));
   }
