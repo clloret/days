@@ -3,10 +3,8 @@ package com.clloret.days.dagger.modules;
 import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 import androidx.room.Room;
-import com.clloret.days.R;
 import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
@@ -25,6 +23,7 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.repository.TagRepository;
+import com.clloret.days.domain.utils.PreferenceUtils;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -36,18 +35,14 @@ public abstract class DataModule {
 
   private static final String DATABASE = "days";
 
-  private static RemoteDataStoreResult checkIsRemoteDataStore(Context context,
-      SharedPreferences preferences) {
+  private static RemoteDataStoreResult checkIsRemoteDataStore(PreferenceUtils preferenceUtils) {
 
-    boolean remoteDataStore = preferences
-        .getBoolean(context.getString(R.string.pref_remote_datastore), false);
-    String airtableKey = preferences
-        .getString(context.getString(R.string.pref_airtable_api_key), "");
-    String airtableBase = preferences
-        .getString(context.getString(R.string.pref_airtable_base_id), "");
+    final boolean useRemoteDataStore = preferenceUtils.getUseRemoteDataStore();
+    final String airtableKey = preferenceUtils.getAirtableApiKey();
+    final String airtableBase = preferenceUtils.getAirtableBaseId();
 
     boolean isRemoteDataStore =
-        !remoteDataStore || TextUtils.isEmpty(airtableKey) || TextUtils.isEmpty(airtableBase);
+        !useRemoteDataStore || TextUtils.isEmpty(airtableKey) || TextUtils.isEmpty(airtableBase);
 
     return new RemoteDataStoreResult(isRemoteDataStore, airtableKey, airtableBase);
   }
@@ -72,11 +67,10 @@ public abstract class DataModule {
   @Provides
   @Singleton
   @Named("local")
-  static EventRepository providesLocalEventRepository(Context context,
-      SharedPreferences preferences,
+  static EventRepository providesLocalEventRepository(PreferenceUtils preferenceUtils,
       DaysDatabase db, DbEventDataMapper eventDataMapper) {
 
-    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
+    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(preferenceUtils);
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
@@ -91,10 +85,10 @@ public abstract class DataModule {
   @Singleton
   @Named("remote")
   static EventRepository providesRemoteEventRepository(Context context,
-      SharedPreferences preferences,
-      DaysDatabase db, DbEventDataMapper dbEventDataMapper, ApiEventDataMapper apiEventDataMapper) {
+      PreferenceUtils preferenceUtils, DaysDatabase db, DbEventDataMapper dbEventDataMapper,
+      ApiEventDataMapper apiEventDataMapper) {
 
-    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
+    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(preferenceUtils);
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
@@ -117,10 +111,10 @@ public abstract class DataModule {
   @Provides
   @Singleton
   @Named("local")
-  static TagRepository providesLocalTagRepository(Context context, SharedPreferences preferences,
+  static TagRepository providesLocalTagRepository(PreferenceUtils preferenceUtils,
       DaysDatabase db, DbTagDataMapper tagDataMapper) {
 
-    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
+    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(preferenceUtils);
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 
@@ -134,10 +128,10 @@ public abstract class DataModule {
   @Provides
   @Singleton
   @Named("remote")
-  static TagRepository providesRemoteTagRepository(Context context, SharedPreferences preferences,
+  static TagRepository providesRemoteTagRepository(Context context, PreferenceUtils preferenceUtils,
       DaysDatabase db, DbTagDataMapper dbEventDataMapper, ApiTagDataMapper apiEventDataMapper) {
 
-    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(context, preferences);
+    RemoteDataStoreResult remoteDataStoreResult = checkIsRemoteDataStore(preferenceUtils);
 
     if (remoteDataStoreResult.isRemoteDataStore) {
 

@@ -1,6 +1,5 @@
 package com.clloret.days.menu;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpFragment;
 import com.clloret.days.domain.utils.Optional;
+import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerTag;
 import com.clloret.days.menu.items.DrawerTagSelectedMgr;
@@ -32,7 +32,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
   Navigator navigator;
 
   @Inject
-  SharedPreferences preferences;
+  PreferenceUtils preferenceUtils;
 
   @Inject
   MenuPresenter injectPresenter;
@@ -206,9 +206,9 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
   public void showMainView() {
 
-    String defaultList = preferences.getString(getString(R.string.pref_default_list), "0");
-    int position = Integer.parseInt(defaultList);
-    DrawerMenuItem drawerMenuItem = adapter.getItem(position);
+    final String defaultList = preferenceUtils.getDefaultList();
+    final int position = Integer.parseInt(defaultList);
+    final DrawerMenuItem drawerMenuItem = adapter.getItem(position);
 
     listView.setItemChecked(position, true);
     previousCheckedPosition = position;

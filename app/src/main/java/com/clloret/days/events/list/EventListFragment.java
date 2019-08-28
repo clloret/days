@@ -1,7 +1,6 @@
 package com.clloret.days.events.list;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import com.clloret.days.domain.events.EventPeriodFormat;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
+import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.events.RefreshRequestEvent;
 import com.google.android.material.snackbar.Snackbar;
@@ -45,7 +45,6 @@ public class EventListFragment
     implements EventListView, SwipeRefreshLayout.OnRefreshListener,
     EventListAdapter.OnListAdapterListener {
 
-  private static final String PREF_SORT_MODE = "PREF_SORT_MODE";
   private static final String BUNDLE_FILTER_STRATEGY = "FILTER_STRATEGY";
 
   private static final Map<Integer, SortType> MAP_MENU_ID_SORT_TYPE = Collections.unmodifiableMap(
@@ -72,7 +71,7 @@ public class EventListFragment
   Navigator navigator;
 
   @Inject
-  SharedPreferences preferences;
+  PreferenceUtils preferenceUtils;
 
   @Inject
   EventListPresenter injectPresenter;
@@ -136,10 +135,10 @@ public class EventListFragment
       case R.id.menu_sort_favorite:
       case R.id.menu_sort_latest_date:
       case R.id.menu_sort_oldest_date:
-        SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
+        final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
+        final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
         adapter.sortByComparator(comparator);
-        preferences.edit().putInt(PREF_SORT_MODE, sortType.getValue()).apply();
+        preferenceUtils.setSortMode(sortType);
         return true;
 
       default:
@@ -198,7 +197,7 @@ public class EventListFragment
 
     contentView.setOnRefreshListener(this);
 
-    int sortMode = preferences.getInt(PREF_SORT_MODE, SortType.NAME.getValue());
+    final int sortMode = preferenceUtils.getSortMode();
     savedSortType = SortType.fromValue(sortMode);
     Comparator<EventSortable> comparator = eventSortComparators.get(savedSortType);
 
