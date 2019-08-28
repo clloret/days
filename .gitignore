@@ -179,3 +179,5 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/gradle,android,windows,androidstudio
 
 .idea/checkstyleidea-libs/
+.idea/markdown-navigator/profiles_settings.xml
+.idea/markdown-navigator.xml
