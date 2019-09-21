@@ -47,7 +47,7 @@ public class EventPeriodFormatTest {
         .thenReturn("%s ago");
 
     when(stringResourceProvider.getPeriodFormatAfter())
-        .thenReturn("%s after");
+        .thenReturn("Within %s");
   }
 
   @Before
@@ -71,8 +71,8 @@ public class EventPeriodFormatTest {
 
     addReminderManagerStubs();
 
-    String result = sut.getTimeLapseFormatted(tomorrow.toDate());
-    String expected = "1 day after";
+    String result = sut.getTimeLapseFormatted(tomorrow.toDate(), today.toDate());
+    String expected = "Within 1 day";
 
     assertThat(result, is(expected));
   }
@@ -82,7 +82,7 @@ public class EventPeriodFormatTest {
 
     addReminderManagerStubs();
 
-    String result = sut.getTimeLapseFormatted(yesterday.toDate());
+    String result = sut.getTimeLapseFormatted(yesterday.toDate(), today.toDate());
     String expected = "1 day ago";
 
     assertThat(result, is(expected));
@@ -93,7 +93,7 @@ public class EventPeriodFormatTest {
 
     addReminderManagerStubs();
 
-    String result = sut.getTimeLapseFormatted(today.toDate());
+    String result = sut.getTimeLapseFormatted(today.toDate(), today.toDate());
     String expected = "Today";
 
     assertThat(result, is(expected));

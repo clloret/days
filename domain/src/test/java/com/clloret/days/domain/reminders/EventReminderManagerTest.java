@@ -101,7 +101,7 @@ public class EventReminderManagerTest {
     when(stringResourceProvider.getNotificationBigText())
         .thenReturn(STUB_NOTIFICATION_BIG_TEXT);
 
-    when(eventPeriodFormat.getTimeLapseFormatted(isA(Date.class)))
+    when(eventPeriodFormat.getTimeLapseFormatted(isA(Date.class), isA(Date.class)))
         .thenReturn(STUB_TIME_LAPSE_FORMATTED);
   }
 
