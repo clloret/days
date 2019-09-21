@@ -11,9 +11,13 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.format.PeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EventPeriodFormat {
 
+  private final Logger logger = LoggerFactory
+      .getLogger(EventPeriodFormat.class.getSimpleName());
   private final TimeProvider timeProvider;
   private final StringResourceProvider stringResourceProvider;
 
@@ -40,31 +44,35 @@ public class EventPeriodFormat {
     return NumberFormat.getInstance().format(daysSince);
   }
 
-  private String getDaysSinceFormattedWithWords(Date date) {
+  private String getDaysSinceFormattedWithWords(Date fromDate, Date toDate) {
 
-    final LocalDate startDate = timeProvider.getCurrentDate();
-    final LocalDate endDate = new LocalDate(date);
-
-    final Period period = new Period(startDate.isBefore(endDate) ? startDate : endDate,
-        endDate.isAfter(startDate) ? endDate : startDate, PeriodType.days());
+    final LocalDate localFromDate = new LocalDate(toDate);
+    final LocalDate localToDate = new LocalDate(fromDate);
+    final Period period = new Period(
+        localFromDate.isBefore(localToDate) ? localFromDate : localToDate,
+        localToDate.isAfter(localFromDate) ? localToDate : localFromDate,
+        PeriodType.days());
     final PeriodFormatter periodFormatter = PeriodFormat.wordBased();
 
     return periodFormatter.print(period);
   }
 
-  public String getTimeLapseFormatted(Date date) {
+  public String getTimeLapseFormatted(Date fromDate, Date toDate) {
 
-    final LocalDate localDate = new LocalDate(date);
-    final LocalDate currentDate = timeProvider.getCurrentDate();
+    final LocalDate localFromDate = new LocalDate(fromDate);
+    final LocalDate localToDate = new LocalDate(toDate);
 
-    if ((localDate).equals(currentDate)) {
+    logger.debug("localFromDate: {} - localToDate: {}", localFromDate.toString(),
+        localToDate.toString());
+
+    if (localFromDate.equals(localToDate)) {
 
       return stringResourceProvider.getPeriodFormatToday();
     } else {
 
-      String daysSinceFormattedWithWords = getDaysSinceFormattedWithWords(date);
+      String daysSinceFormattedWithWords = getDaysSinceFormattedWithWords(fromDate, toDate);
       String formatText =
-          localDate.isBefore(currentDate) ? stringResourceProvider.getPeriodFormatBefore()
+          localFromDate.isBefore(localToDate) ? stringResourceProvider.getPeriodFormatBefore()
               : stringResourceProvider.getPeriodFormatAfter();
 
       return String.format(formatText, daysSinceFormattedWithWords);

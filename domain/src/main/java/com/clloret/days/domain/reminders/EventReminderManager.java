@@ -8,14 +8,19 @@ import com.clloret.days.domain.utils.StringResourceProvider;
 import com.clloret.days.domain.utils.StringUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import java.util.Collection;
+import java.util.Date;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Singleton
 public class EventReminderManager {
 
+  private final Logger logger = LoggerFactory
+      .getLogger(EventReminderManager.class.getSimpleName());
   private final ReminderManager reminderManager;
   private final TimeProvider timeProvider;
   private final PreferenceUtils preferenceUtils;
@@ -42,13 +47,17 @@ public class EventReminderManager {
 
     final DateTime eventDateWithTime = getEventDateWithTime(event);
     final DateTime timeReminder = calculateTimeReminder(event, eventDateWithTime);
+    final Date dateReminder = timeReminder.toLocalDate().toDate();
+
+    logger.debug("dateReminder: {}", dateReminder.toString());
 
     if (isReminderInThePast(timeReminder)) {
       return;
     }
 
     final String contentTitle = event.getName();
-    final String contentText = eventPeriodFormat.getTimeLapseFormatted(event.getDate());
+    final String contentText = eventPeriodFormat
+        .getTimeLapseFormatted(event.getDate(), dateReminder);
     final String notificationBigText = stringResourceProvider.getNotificationBigText();
     final String eventDescription = event.getDescription();
     final Optional<String> bigText = getBigTextFromEventDescription(contentText,
