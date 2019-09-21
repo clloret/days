@@ -105,7 +105,7 @@
   <string name="notification_action_event_delete">Delete</string>
   <string name="notification_action_event_reset">Reset</string>
   <string name="notification_notification_big_text" translatable="false"><![CDATA[<b>%1$s</b><br/>%2$s]]></string>
-  <string name="notification_period_format_after">%s after</string>
+  <string name="notification_period_format_after">Within %s</string>
   <string name="notification_period_format_before">%s ago</string>
   <string name="notification_period_format_today">Today</string>
 
