@@ -7,10 +7,10 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 import com.clloret.days.R;
 import com.clloret.days.TestApp;
 import com.clloret.days.dagger.AppTestComponent;
@@ -25,7 +25,8 @@ import org.junit.runner.RunWith;
 public class MainActivityTest {
 
   @Rule
-  public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
+  public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(
+      MainActivity.class);
 
   @Before
   public void setUp() {

@@ -29,19 +29,19 @@ allprojects {
         compileSdkVersion = 28
         javaVersion = JavaVersion.VERSION_1_8
 
+        androidTestCore = '1.2.0'
         annotatedAdapterVersion = '1.1.1'
         appCompatVersion = '1.0.2'
         butterknifeVersion = '10.1.0'
         daggerVersion = '2.23.1'
-        espressoVersion = '3.0.2'
+        espressoVersion = '3.2.0'
         eventBusVersion = '3.1.1'
-        expressoVersion = '3.2.0'
         hamcrestVersion = '2.1'
         jacksonVersion = '2.9.8'
         jodaTimeVersion = '2.9.9'
         junitParamsVersion = '1.1.1'
         junitVersion = '4.12'
-        mockitoVersion = '2.27.0'
+        mockitoVersion = '3.0.0'
         mockWebServerVersion = '3.9.1'
         mosbyVersion = '2.0.1'
         parcelablePleaseVersion = '1.0.2'

@@ -42,5 +42,5 @@ dependencies {
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 
     androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 }

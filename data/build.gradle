@@ -4,6 +4,7 @@ apply plugin: 'jacoco-android'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+    testOptions.unitTests.includeAndroidResources = true
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
@@ -40,33 +41,45 @@ dependencies {
         exclude group: "com.intellij", module: "annotations"
     }
 
-    api 'androidx.room:room-runtime:2.0.0'
+    api 'androidx.room:room-runtime:2.1.0'
     implementation "com.fasterxml.jackson.core:jackson-core:$rootProject.jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
-    implementation 'androidx.annotation:annotation:1.0.2'
-    implementation 'androidx.room:room-rxjava2:2.0.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.room:room-rxjava2:2.1.0'
     implementation 'com.github.clloret:airtable.android:081d573aa2'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'javax.inject:javax.inject:1'
 
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+    annotationProcessor 'androidx.room:room-compiler:2.1.0'
 
     //------ Test Dependencies ------
 
+    testImplementation "androidx.test:core:$rootProject.androidTestCore"
     testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.robolectric:robolectric:3.8"
+    testImplementation "org.robolectric:robolectric:4.2.1"
     testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion"
+    testImplementation 'android.arch.lifecycle:livedata:1.1.1'
 
-    androidTestImplementation('androidx.test:runner:1.2.0') {
-        exclude group: 'com.android.support'
-    }
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation 'androidx.room:room-testing:2.0.0'
+    // Core library
+    androidTestImplementation "androidx.test:core:$rootProject.androidTestCore"
+
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.testRunnerVersion"
+
+    // Assertions
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+
+    // Espresso dependencies
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+
+    // Room testing
+    androidTestImplementation 'androidx.room:room-testing:2.1.0'
 }
 
 tasks.withType(Test) {

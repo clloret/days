@@ -7,7 +7,7 @@ import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.room.Room;
-import com.clloret.days.data.BuildConfig;
+import androidx.test.core.app.ApplicationProvider;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
 import com.clloret.days.data.local.repository.RoomTagRepository;
@@ -30,11 +30,10 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 @Category({MediumTest.class})
-@Config(constants = BuildConfig.class, sdk = VERSION_CODES.M, application = Application.class)
+@Config(sdk = VERSION_CODES.M, application = Application.class)
 @RunWith(RobolectricTestRunner.class)
 public class AppTagRepositoryTest {
 
@@ -58,7 +57,7 @@ public class AppTagRepositoryTest {
     server.start();
     String serviceEndpoint = server.url("v0").toString();
 
-    Context appContext = RuntimeEnvironment.application;
+    Context appContext = ApplicationProvider.getApplicationContext();
 
     db = Room.inMemoryDatabaseBuilder(appContext, DaysDatabase.class)
         .allowMainThreadQueries().build();

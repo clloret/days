@@ -11,10 +11,11 @@ import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 import android.content.res.Resources;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.uiautomator.By;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
@@ -33,6 +34,7 @@ import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.NotificationsIntentsImpl;
+import io.reactivex.Maybe;
 import java.util.Date;
 import javax.inject.Inject;
 import org.junit.After;
@@ -40,6 +42,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
 @SuppressWarnings("PMD.JUnitTestsShouldIncludeAssert")
 @LargeTest
@@ -51,7 +54,8 @@ public class NotificationsTest {
   private static final String EXPECTED_ACTION_RES = "android:id/action0";
 
   @Rule
-  public ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
+  public ActivityScenarioRule<MainActivity> activityRule = new ActivityScenarioRule<>(
+      MainActivity.class);
 
   @Inject
   DeleteEventUseCase deleteEventUseCase;
@@ -76,8 +80,12 @@ public class NotificationsTest {
     AppTestComponent appComponent = app.getAppComponent();
     appComponent.inject(this);
 
-    Resources res = activityRule.getActivity().getResources();
-    expectedAppName = res.getString(R.string.app_name);
+    ActivityScenario<MainActivity> scenario = activityRule.getScenario();
+    scenario.onActivity(activity -> {
+      Resources res = activity.getResources();
+      expectedAppName = res.getString(R.string.app_name);
+    });
+
     expectedActionNameDelete = stringResourceProvider.getEventDeleteNotificationAction();
     expectedActionNameReset = stringResourceProvider.getEventResetNotificationAction();
 
@@ -169,6 +177,10 @@ public class NotificationsTest {
   @Test
   public void showNotification_WhenActionDelete_DeleteEvent() throws UiObjectNotFoundException {
 
+    Mockito
+        .when(deleteEventUseCase.execute(any()))
+        .thenReturn(Maybe.just(true));
+
     uiDevice.pressHome();
 
     showNotification(
@@ -191,10 +203,16 @@ public class NotificationsTest {
   @Test
   public void showNotification_WhenActionReset_ResetEventDate() throws UiObjectNotFoundException {
 
+    final Event testEvent = createTestEvent(TestDataModule.TEST_EVENT_3_ID,
+        TestDataModule.TEST_EVENT_3_NAME);
+
+    Mockito
+        .when(resetEventDateUseCase.execute(any()))
+        .thenReturn(Maybe.just(testEvent));
+
     uiDevice.pressHome();
 
-    showNotification(
-        createTestEvent(TestDataModule.TEST_EVENT_3_ID, TestDataModule.TEST_EVENT_3_NAME));
+    showNotification(testEvent);
 
     uiDevice.openNotification();
 

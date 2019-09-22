@@ -84,13 +84,27 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.mockito:mockito-inline:$rootProject.mockitoVersion"
 
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.expressoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.expressoVersion"
+    // Core library
+    androidTestImplementation "androidx.test:core:$rootProject.androidTestCore"
+
+    // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
-    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.testRunnerVersion"
+
+    // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+
+    // Espresso dependencies
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$rootProject.espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
+
+    // UI Automator
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
+
+    // Mockito
+    androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
+
+    // Dagger
     androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }
