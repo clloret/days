@@ -32,7 +32,7 @@ allprojects {
         androidTestCore = '1.2.0'
         annotatedAdapterVersion = '1.1.1'
         appCompatVersion = '1.1.0'
-        butterknifeVersion = '10.1.0'
+        butterknifeVersion = '10.2.0'
         daggerVersion = '2.23.1'
         espressoVersion = '3.2.0'
         eventBusVersion = '3.1.1'
