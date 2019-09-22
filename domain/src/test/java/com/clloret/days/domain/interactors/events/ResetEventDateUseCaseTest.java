@@ -68,6 +68,17 @@ public class ResetEventDateUseCaseTest {
   }
 
   @Test
+  public void execute_WhenEventIsNull_ReturnError() {
+
+    TestObserver<Event> testObserver = sut
+        .execute(null)
+        .test();
+
+    testObserver
+        .assertError(IllegalArgumentException.class);
+  }
+
+  @Test
   public void execute_WhenChangeReminder_AddScheduleReminder_AndRemovePreviously() {
 
     Date date = new LocalDate()

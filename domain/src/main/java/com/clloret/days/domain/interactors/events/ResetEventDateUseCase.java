@@ -30,6 +30,10 @@ public class ResetEventDateUseCase extends BaseMaybeUseCase<Event, Event> {
   @Override
   protected Maybe<Event> buildUseCaseObservable(Event event) {
 
+    if (event == null) {
+      return Maybe.error(new IllegalArgumentException("The event cannot be null"));
+    }
+
     LocalDate date = timeProvider.getCurrentDate();
     event.setDate(date.toDate());
 
