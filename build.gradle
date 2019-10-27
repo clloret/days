@@ -44,7 +44,7 @@ allprojects {
         mockWebServerVersion = '3.9.1'
         mosbyVersion = '2.0.1'
         parcelablePleaseVersion = '1.0.2'
-        roomVersion = '1.1.1'
+        roomVersion = '2.2.1'
         rxAndroidVersion = "2.1.0"
         rxJavaVersion = '2.2.6'
         stethoVersion = '1.5.1'

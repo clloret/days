@@ -41,19 +41,19 @@ dependencies {
         exclude group: "com.intellij", module: "annotations"
     }
 
-    api 'androidx.room:room-runtime:2.1.0'
+    api "androidx.room:room-runtime:$rootProject.roomVersion"
+    implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
     implementation "com.fasterxml.jackson.core:jackson-core:$rootProject.jacksonVersion"
     implementation "com.fasterxml.jackson.core:jackson-databind:$rootProject.jacksonVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.room:room-rxjava2:2.1.0'
     implementation 'com.github.clloret:airtable.android:081d573aa2'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'javax.inject:javax.inject:1'
 
-    annotationProcessor 'androidx.room:room-compiler:2.1.0'
+    annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"
 
     //------ Test Dependencies ------
 
@@ -80,7 +80,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
 
     // Room testing
-    androidTestImplementation 'androidx.room:room-testing:2.1.0'
+    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 }
 
 tasks.withType(Test) {
