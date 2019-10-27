@@ -1,6 +1,6 @@
 package com.clloret.days.data.repository;
 
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import android.app.Application;
 import android.content.Context;
@@ -19,12 +19,13 @@ import com.clloret.days.data.utils.MockUtils;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.domain.repository.EventRepository;
+import com.google.common.truth.Correspondence;
+import com.google.common.truth.Truth;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import java.util.Date;
 import java.util.List;
 import okhttp3.mockwebserver.MockWebServer;
-import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
@@ -42,10 +43,8 @@ public class AppEventRepositoryTest {
 
   private static final String API_KEY = "api_key";
   private static final String BASE = "base";
-
-  @Rule
-  public final ImmediateSchedulersRule schedulers = new ImmediateSchedulersRule();
-
+  private static final Correspondence<Event, String> EVENT_HAS_NAME =
+      Correspondence.from((actual, expected) -> actual.getName().equals(expected), "contains");
   private final MockWebServer server = new MockWebServer();
   private final MockUtils mockUtils = new MockUtils(server);
   private final DbEventDataMapper dbEventDataMapper = new DbEventDataMapper();
@@ -53,6 +52,9 @@ public class AppEventRepositoryTest {
   private EventRepository eventRepository;
   private RoomEventRepository roomEventRepository;
   private DaysDatabase db;
+
+  @Rule
+  public final ImmediateSchedulersRule schedulers = new ImmediateSchedulersRule();
 
   @Before
   public void setUp() throws Exception {
@@ -145,8 +147,9 @@ public class AppEventRepositoryTest {
         .assertNoErrors()
         .assertValueCount(1);
 
-    assertThat(testObserver.values(), Matchers.contains(Matchers.allOf(Matchers.hasProperty("name",
-        Matchers.is(createdEvent.getName())))));
+    Truth.assertThat(testObserver.values())
+        .comparingElementsUsing(EVENT_HAS_NAME)
+        .containsExactly(createdEvent.getName());
   }
 
   @Test
@@ -160,7 +163,7 @@ public class AppEventRepositoryTest {
 
     Boolean deleted = eventRepository.delete(createdEvent).blockingGet();
 
-    assertThat(deleted, Matchers.equalTo(true));
+    assertThat(deleted).isTrue();
 
     TestObserver<Event> testObserver = roomEventRepository.getAll(false)
         .toObservable()

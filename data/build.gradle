@@ -59,7 +59,7 @@ dependencies {
 
     testImplementation "androidx.test:core:$rootProject.androidTestCore"
     testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
+    testImplementation "com.google.truth:truth:$rootProject.truthVersion"
     testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation "org.robolectric:robolectric:4.2.1"
     testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion"
@@ -74,6 +74,7 @@ dependencies {
 
     // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation "com.google.truth:truth:$rootProject.truthVersion"
 
     // Espresso dependencies
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"

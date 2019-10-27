@@ -1,9 +1,7 @@
 package com.clloret.days.data;
 
 import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -53,12 +51,12 @@ public class MigrationTest {
 
     DbEvent dbEvent = getMigratedRoomDatabase().eventDao().getEvent();
 
-    assertThat(dbEvent.getId(), equalTo(EVENT.getId()));
-    assertThat(dbEvent.getName(), equalTo(EVENT.getName()));
-    assertThat(dbEvent.getReminder(), nullValue());
-    assertThat(dbEvent.getReminderUnit(), nullValue());
-    assertThat(dbEvent.getTimeLapse(), equalTo(0));
-    assertThat(dbEvent.getTimeLapseUnit(), nullValue());
+    assertThat(dbEvent.getId()).isEqualTo(EVENT.getId());
+    assertThat(dbEvent.getName()).isEqualTo(EVENT.getName());
+    assertThat(dbEvent.getReminder()).isNull();
+    assertThat(dbEvent.getReminderUnit()).isNull();
+    assertThat(dbEvent.getTimeLapse()).isEqualTo(0);
+    assertThat(dbEvent.getTimeLapseUnit()).isNull();
   }
 
   @Test
@@ -71,13 +69,12 @@ public class MigrationTest {
     DaysDatabase daysDatabase = getMigratedRoomDatabase();
     DbEvent dbEvent = daysDatabase.eventDao().getEvent();
 
-    assertThat(dbEvent.getId(), equalTo(EVENT.getId()));
-    assertThat(dbEvent.getName(), equalTo(EVENT.getName()));
-    assertThat(dbEvent.getDate(), equalTo(EVENT.getDate()));
-    assertThat(dbEvent.getReminder(), equalTo(EVENT.getReminder()));
-    assertThat(dbEvent.getReminderUnit(), equalTo(EVENT.getReminderUnit()));
-    assertThat(dbEvent.getTimeLapse(), equalTo(EVENT.getTimeLapse()));
-    assertThat(dbEvent.getTimeLapseUnit(), equalTo(EVENT.getTimeLapseUnit()));
+    assertThat(dbEvent.getId()).isEqualTo(EVENT.getId());
+    assertThat(dbEvent.getName()).isEqualTo(EVENT.getName());
+    assertThat(dbEvent.getReminder()).isEqualTo(EVENT.getReminder());
+    assertThat(dbEvent.getReminderUnit()).isEqualTo(EVENT.getReminderUnit());
+    assertThat(dbEvent.getTimeLapse()).isEqualTo(EVENT.getTimeLapse());
+    assertThat(dbEvent.getTimeLapseUnit()).isEqualTo(EVENT.getTimeLapseUnit());
   }
 
   private DaysDatabase getMigratedRoomDatabase() {
