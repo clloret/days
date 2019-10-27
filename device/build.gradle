@@ -38,8 +38,8 @@ dependencies {
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
 
+    testImplementation "com.google.truth:truth:$rootProject.truthVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
-    testImplementation "org.hamcrest:hamcrest-library:$rootProject.hamcrestVersion"
 
     androidTestImplementation "androidx.test:runner:$rootProject.testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"
