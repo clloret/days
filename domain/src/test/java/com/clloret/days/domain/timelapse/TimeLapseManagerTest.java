@@ -1,7 +1,6 @@
 package com.clloret.days.domain.timelapse;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
@@ -114,7 +113,7 @@ public class TimeLapseManagerTest {
 
     Event result = sut.updateEventDateFromTimeLapse(event);
 
-    assertThat(result.getDate(), is(newDate));
+    assertThat(result.getDate()).isEqualTo(newDate);
   }
 
   @Test

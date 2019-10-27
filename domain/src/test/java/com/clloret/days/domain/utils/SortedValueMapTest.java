@@ -1,7 +1,6 @@
 package com.clloret.days.domain.utils;
 
-import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.verify;
@@ -44,7 +43,7 @@ public class SortedValueMapTest {
 
     Collection<Integer> result = sut.sortedValues();
 
-    assertThat(result, contains(10, 20, 25, 30, 40));
+    assertThat(result).containsExactly(10, 20, 25, 30, 40);
   }
 
   @Test
@@ -56,7 +55,7 @@ public class SortedValueMapTest {
 
     Collection<Integer> result = sut.sortedValues();
 
-    assertThat(result, contains(10, 30, 40));
+    assertThat(result).containsExactly(10, 30, 40);
   }
 
   @Test
@@ -66,7 +65,7 @@ public class SortedValueMapTest {
 
     Collection<Integer> result = sut.sortedValues();
 
-    assertThat(result, contains(10, 20, 30, 40));
+    assertThat(result).containsExactly(10, 20, 30, 40);
   }
 
   @Test

@@ -1,7 +1,6 @@
 package com.clloret.days.domain.utils;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.joda.time.LocalDate;
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class DateUtilsTest {
 
     String result = DateUtils.formatDate(localDate.toDate());
 
-    assertThat(result, equalTo("Jan 1, 2018"));
+    assertThat(result).isEqualTo("Jan 1, 2018");
   }
 
   @Test
@@ -27,6 +26,6 @@ public class DateUtilsTest {
 
     String result = DateUtils.formatDate(localDate);
 
-    assertThat(result, equalTo("Jan 1, 2018"));
+    assertThat(result).isEqualTo("Jan 1, 2018");
   }
 }

@@ -1,9 +1,6 @@
 package com.clloret.days.domain.events.order;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.EventBuilder;
@@ -26,7 +23,7 @@ public class EventSortByFavoriteTest {
 
     int result = sut.compare(event1, event2);
 
-    assertThat(result, lessThan(0));
+    assertThat(result).isLessThan(0);
   }
 
   @Test
@@ -34,7 +31,7 @@ public class EventSortByFavoriteTest {
 
     int result = sut.compare(event2, event1);
 
-    assertThat(result, greaterThan(0));
+    assertThat(result).isGreaterThan(0);
   }
 
   @Test
@@ -42,7 +39,7 @@ public class EventSortByFavoriteTest {
 
     int result = sut.compare(event1, event1);
 
-    assertThat(result, equalTo(0));
+    assertThat(result).isEqualTo(0);
   }
 
 }

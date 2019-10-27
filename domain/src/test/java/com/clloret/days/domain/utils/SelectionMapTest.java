@@ -1,14 +1,12 @@
 package com.clloret.days.domain.utils;
 
-import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,13 +46,13 @@ public class SelectionMapTest {
 
     sut = new SelectionMap<>(map);
 
-    assertThat(sut.values(), hasItems("value1", "value2", "value3"));
+    assertThat(sut.values()).containsExactly("value1", "value2", "value3");
   }
 
   @Test
   public void newEmptySelection_Always_ReturnNotNullValue() {
 
-    assertThat(sut.newEmptySelection(), Matchers.notNullValue());
+    assertThat(sut.newEmptySelection()).isNotNull();
   }
 
   @Test
@@ -66,7 +64,7 @@ public class SelectionMapTest {
 
     Set<String> selection = sut.getSelection();
 
-    assertThat(selection.isEmpty(), Matchers.not(true));
+    assertThat(selection.isEmpty()).isNotEqualTo(true);
   }
 
   @Test
@@ -80,7 +78,7 @@ public class SelectionMapTest {
     sut.setSelection(selection1);
     sut.setSelection(selection2);
 
-    assertThat(sut.isSelected("value3"), Matchers.is(true));
+    assertThat(sut.isSelected("value3")).isTrue();
   }
 
   @Test
@@ -90,13 +88,13 @@ public class SelectionMapTest {
 
     selectSampleValues();
 
-    assertThat(sut.isSelected("value1"), Matchers.is(true));
+    assertThat(sut.isSelected("value1")).isTrue();
   }
 
   @Test
   public void isSelectionEmpty_WhenSelectionIsEmpty_ReturnTrue() {
 
-    assertThat(sut.isSelectionEmpty(), Matchers.is(true));
+    assertThat(sut.isSelectionEmpty()).isTrue();
   }
 
   @Test
@@ -106,7 +104,7 @@ public class SelectionMapTest {
 
     sut.addToSelection("value1");
 
-    assertThat(sut.isSelected("value1"), Matchers.equalTo(true));
+    assertThat(sut.isSelected("value1")).isTrue();
   }
 
   @Test
@@ -120,7 +118,7 @@ public class SelectionMapTest {
 
     boolean result = sut.isSelected("value1");
 
-    assertThat(result, Matchers.is(false));
+    assertThat(result).isFalse();
   }
 
   @Test
@@ -132,7 +130,7 @@ public class SelectionMapTest {
 
     sut.clearSelection();
 
-    assertThat(sut.isSelectionEmpty(), Matchers.is(true));
+    assertThat(sut.isSelectionEmpty()).isTrue();
   }
 
   @Test
@@ -144,7 +142,7 @@ public class SelectionMapTest {
 
     List<? extends String> keySelection = sut.getKeySelection(String::toUpperCase);
 
-    assertThat(keySelection, Matchers.hasSize(2));
-    assertThat(keySelection.get(0), Matchers.equalTo("VALUE1"));
+    assertThat(keySelection).hasSize(2);
+    assertThat(keySelection.get(0)).isEqualTo("VALUE1");
   }
 }

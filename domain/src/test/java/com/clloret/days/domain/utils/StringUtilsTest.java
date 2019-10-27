@@ -1,7 +1,6 @@
 package com.clloret.days.domain.utils;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import org.junit.Test;
 
@@ -13,7 +12,7 @@ public class StringUtilsTest {
 
     boolean result = StringUtils.isNullOrEmpty(null);
 
-    assertThat(result, is(true));
+    assertThat(result).isTrue();
   }
 
   @Test
@@ -21,7 +20,7 @@ public class StringUtilsTest {
 
     boolean result = StringUtils.isNullOrEmpty("");
 
-    assertThat(result, is(true));
+    assertThat(result).isTrue();
   }
 
   @Test
@@ -29,7 +28,7 @@ public class StringUtilsTest {
 
     boolean result = StringUtils.isNullOrEmpty("Not empty");
 
-    assertThat(result, is(false));
+    assertThat(result).isFalse();
   }
 
 }

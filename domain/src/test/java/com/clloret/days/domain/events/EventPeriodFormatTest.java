@@ -1,7 +1,6 @@
 package com.clloret.days.domain.events;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 import com.clloret.days.domain.utils.StringResourceProvider;
@@ -74,7 +73,7 @@ public class EventPeriodFormatTest {
     String result = sut.getTimeLapseFormatted(tomorrow.toDate(), today.toDate());
     String expected = "Within 1 day";
 
-    assertThat(result, is(expected));
+    assertThat(result).isEqualTo(expected);
   }
 
   @Test
@@ -85,7 +84,7 @@ public class EventPeriodFormatTest {
     String result = sut.getTimeLapseFormatted(yesterday.toDate(), today.toDate());
     String expected = "1 day ago";
 
-    assertThat(result, is(expected));
+    assertThat(result).isEqualTo(expected);
   }
 
   @Test
@@ -96,7 +95,7 @@ public class EventPeriodFormatTest {
     String result = sut.getTimeLapseFormatted(today.toDate(), today.toDate());
     String expected = "Today";
 
-    assertThat(result, is(expected));
+    assertThat(result).isEqualTo(expected);
   }
 
   @Test
@@ -107,7 +106,7 @@ public class EventPeriodFormatTest {
     String result = sut.getDaysSinceFormatted(thousandDaysLater.toDate());
     String expected = "1,000";
 
-    assertThat(result, is(expected));
+    assertThat(result).isEqualTo(expected);
   }
 
 }

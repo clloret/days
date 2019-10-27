@@ -1,7 +1,6 @@
 package com.clloret.days.domain.tags.order;
 
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.tags.order.TagSortFactory.SortType;
@@ -20,7 +19,7 @@ public class TagSortFactoryTest {
 
     int result = sut.compare(tag1, tag2);
 
-    assertThat(result, lessThan(0));
+    assertThat(result).isLessThan(0);
   }
 
 }

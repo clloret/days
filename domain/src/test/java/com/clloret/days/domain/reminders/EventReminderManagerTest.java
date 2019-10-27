@@ -1,6 +1,6 @@
 package com.clloret.days.domain.reminders;
 
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -26,7 +26,6 @@ import java.util.List;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import junitparams.converters.Param;
-import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Before;
@@ -144,8 +143,8 @@ public class EventReminderManagerTest {
             optionalCaptor.capture());
 
     Optional<String> result = optionalCaptor.getValue();
-    assertThat(result.isPresent(), Matchers.equalTo(true));
-    assertThat(result.get(), Matchers.equalTo(EXPECTED_NOTIFICATION_BIG_TEXT));
+    assertThat(result.isPresent()).isTrue();
+    assertThat(result.get()).isEqualTo(EXPECTED_NOTIFICATION_BIG_TEXT);
   }
 
   @Test

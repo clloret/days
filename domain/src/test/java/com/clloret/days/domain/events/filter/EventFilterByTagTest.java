@@ -1,10 +1,9 @@
 package com.clloret.days.domain.events.filter;
 
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.EventBuilder;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public class EventFilterByTagTest {
@@ -17,7 +16,7 @@ public class EventFilterByTagTest {
 
     boolean result = sut.eventMatchFilter(event);
 
-    assertThat(result, Matchers.is(true));
+    assertThat(result).isTrue();
   }
 
   @Test
@@ -28,7 +27,7 @@ public class EventFilterByTagTest {
 
     boolean result = sut.eventMatchFilter(event);
 
-    assertThat(result, Matchers.is(true));
+    assertThat(result).isTrue();
   }
 
   @Test
@@ -39,6 +38,6 @@ public class EventFilterByTagTest {
 
     boolean result = sut.eventMatchFilter(event);
 
-    assertThat(result, Matchers.is(false));
+    assertThat(result).isFalse();
   }
 }
