@@ -41,7 +41,7 @@ allprojects {
         junitParamsVersion = '1.1.1'
         junitVersion = '4.12'
         mockitoVersion = '3.1.0'
-        mockWebServerVersion = '3.9.1'
+        mockWebServerVersion = '4.2.2'
         mosbyVersion = '2.0.1'
         parcelablePleaseVersion = '1.0.2'
         roomVersion = '2.2.1'
