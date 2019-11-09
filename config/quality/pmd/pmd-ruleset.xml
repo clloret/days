@@ -13,6 +13,7 @@
     <exclude name="AvoidDuplicateLiterals"/>
     <exclude name="BeanMembersShouldSerialize"/>
     <exclude name="DataflowAnomalyAnalysis"/>
+    <exclude name="DoNotCallSystemExit" />
     <exclude name="NonStaticInitializer"/>
     <exclude name="UseProperClassLoader"/>
   </rule>
@@ -46,6 +47,7 @@
   </rule>
   <rule ref="category/java/design.xml">
     <exclude name="CollapsibleIfStatements"/>
+    <exclude name="DataClass" />
     <exclude name="ExcessiveImports"/>
     <exclude name="ExcessiveMethodLength"/>
     <exclude name="GodClass"/>
