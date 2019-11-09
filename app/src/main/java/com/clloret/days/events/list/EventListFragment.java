@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventListFragment
     extends
     BaseLceFragment<SwipeRefreshLayout, List<EventViewModel>, EventListView, EventListPresenter>
@@ -247,7 +248,7 @@ public class EventListFragment
   }
 
   @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+  public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
     super.onCreateOptionsMenu(menu, inflater);
 
@@ -255,7 +256,7 @@ public class EventListFragment
   }
 
   @Override
-  public void onPrepareOptionsMenu(Menu menu) {
+  public void onPrepareOptionsMenu(@NonNull Menu menu) {
 
     super.onPrepareOptionsMenu(menu);
 

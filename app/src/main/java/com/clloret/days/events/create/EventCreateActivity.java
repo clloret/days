@@ -40,6 +40,7 @@ import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
 
+@SuppressWarnings("PMD.TooManyMethods")
 public class EventCreateActivity extends
     BaseMvpActivity<EventCreateView, EventCreatePresenter> implements EventCreateView,
     SelectTagsDialogListener, FABProgressListener {

@@ -72,17 +72,17 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
     ViewCompat.setOnApplyWindowInsetsListener(
         this,
         (v, insets) -> {
-          if (null == ScrimInsetsFrameLayout.this.insets) {
-            ScrimInsetsFrameLayout.this.insets = new Rect();
+          if (null == this.insets) {
+            this.insets = new Rect();
           }
-          ScrimInsetsFrameLayout.this.insets.set(
+          this.insets.set(
               insets.getSystemWindowInsetLeft(),
               insets.getSystemWindowInsetTop(),
               insets.getSystemWindowInsetRight(),
               insets.getSystemWindowInsetBottom());
           onInsetsChanged(insets);
           setWillNotDraw(!insets.hasSystemWindowInsets() || insetForeground == null);
-          ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
+          ViewCompat.postInvalidateOnAnimation(this);
           return insets.consumeSystemWindowInsets();
         });
   }

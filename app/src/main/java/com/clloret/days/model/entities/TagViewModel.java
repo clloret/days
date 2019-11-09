@@ -101,7 +101,7 @@ public class TagViewModel implements android.os.Parcelable {
     return id.equals(tag.id);
   }
 
-  @androidx.annotation.NonNull
+  @NonNull
   @Override
   public String toString() {
 
