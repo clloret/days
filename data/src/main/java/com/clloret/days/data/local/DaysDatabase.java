@@ -1,6 +1,5 @@
 package com.clloret.days.data.local;
 
-import androidx.annotation.VisibleForTesting;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
@@ -22,7 +21,6 @@ public abstract class DaysDatabase extends RoomDatabase {
 
   public abstract TagDao tagDao();
 
-  @VisibleForTesting
   public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
     @Override
     public void migrate(SupportSQLiteDatabase database) {
