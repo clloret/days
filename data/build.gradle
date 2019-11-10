@@ -58,12 +58,12 @@ dependencies {
     //------ Test Dependencies ------
 
     testImplementation "androidx.test:core:$rootProject.androidTestCore"
-    testImplementation "junit:junit:$rootProject.junitVersion"
     testImplementation "com.google.truth:truth:$rootProject.truthVersion"
-    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
-    testImplementation "org.robolectric:robolectric:4.2.1"
     testImplementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockWebServerVersion"
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    testImplementation "org.mockito:mockito-core:$rootProject.mockitoVersion"
     testImplementation 'android.arch.lifecycle:livedata:1.1.1'
+    testImplementation 'org.robolectric:robolectric:4.3.1'
 
     // Core library
     androidTestImplementation "androidx.test:core:$rootProject.androidTestCore"
