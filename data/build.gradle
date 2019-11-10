@@ -49,7 +49,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'com.github.clloret:airtable.android:081d573aa2'
+    implementation 'com.github.clloret:airtable.android:2f84539e51'
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'javax.inject:javax.inject:1'
 

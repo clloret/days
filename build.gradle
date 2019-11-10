@@ -36,7 +36,7 @@ allprojects {
         daggerVersion = '2.23.1'
         espressoVersion = '3.2.0'
         eventBusVersion = '3.1.1'
-        jacksonVersion = '2.9.8'
+        jacksonVersion = '2.10.1'
         jodaTimeVersion = '2.9.9'
         junitParamsVersion = '1.1.1'
         junitVersion = '4.12'
