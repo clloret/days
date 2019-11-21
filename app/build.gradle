@@ -51,6 +51,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.firebase:firebase-analytics:17.2.1'
 
     implementation "at.favre.lib:slf4j-timber:1.0.0"
     implementation "com.github.daniel-stoneuk:material-about-library:2.3.0"
@@ -108,3 +109,5 @@ dependencies {
     androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }
+
+apply plugin: 'com.google.gms.google-services'
