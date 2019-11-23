@@ -89,4 +89,10 @@ public class StringResourceProviderImpl implements StringResourceProvider {
 
     return resources.getString(R.string.pref_sort_mode);
   }
+
+  @Override
+  public String getPrefCollectStatistics() {
+
+    return resources.getString(R.string.pref_collect_statistics);
+  }
 }

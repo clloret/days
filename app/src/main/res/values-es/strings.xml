@@ -110,4 +110,7 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
+  <string name="summary_collect_statistics">Enviar de forma anónima estadísticas de uso e informes de error para ayudar a mejorar Days. No se recogerán datos personales.</string>
+  <string name="title_collect_statistics">Mejorar Days</string>
+  <string name="title_privacy">Privacidad</string>
 </resources>

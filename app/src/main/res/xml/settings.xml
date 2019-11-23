@@ -8,7 +8,7 @@
       android:entryValues="@array/default_list_entry_values"
       android:key="@string/pref_default_list"
       android:summary="%s"
-      android:title="@string/title_default_list"/>
+      android:title="@string/title_default_list" />
 
     <!--suppress AndroidElementNotAllowed -->
     <com.clloret.days.settings.TimePickerPreference
@@ -17,17 +17,16 @@
       android:dialogTitle="@string/title_dialog_reminder_time"
       android:key="@string/pref_reminder_time"
       android:summary="@string/summary_reminder_time"
-      android:title="@string/title_reminder_time"/>
+      android:title="@string/title_reminder_time" />
 
   </PreferenceCategory>
 
-  <PreferenceCategory
-    android:title="@string/title_datastore">
+  <PreferenceCategory android:title="@string/title_datastore">
 
     <CheckBoxPreference
       android:defaultValue="false"
       android:key="@string/pref_airtable_preference"
-      android:title="Airtable"/>
+      android:title="Airtable" />
 
     <EditTextPreference
       android:dependency="@string/pref_airtable_preference"
@@ -35,7 +34,7 @@
       android:inputType="textVisiblePassword|textNoSuggestions"
       android:key="@string/pref_airtable_api_key"
       android:summary="@string/summary_airtable_api_key"
-      android:title="@string/title_airtable_api_key"/>
+      android:title="@string/title_airtable_api_key" />
 
     <EditTextPreference
       android:dependency="@string/pref_airtable_preference"
@@ -43,14 +42,23 @@
       android:inputType="textVisiblePassword|textNoSuggestions"
       android:key="@string/pref_airtable_base_id"
       android:summary="@string/summary_airtable_base_id"
-      android:title="@string/title_airtable_base_id"/>
+      android:title="@string/title_airtable_base_id" />
 
     <SwitchPreference
       android:dependency="airtable_preference"
       android:key="@string/pref_remote_datastore"
       android:summary="@string/summary_remote_datastore"
-      android:title="@string/title_remote_datastore"
-      />
+      android:title="@string/title_remote_datastore" />
+
+  </PreferenceCategory>
+
+  <PreferenceCategory android:title="@string/title_privacy">
+
+    <CheckBoxPreference
+      android:defaultValue="true"
+      android:key="@string/pref_collect_statistics"
+      android:summary="@string/summary_collect_statistics"
+      android:title="@string/title_collect_statistics" />
 
   </PreferenceCategory>
 

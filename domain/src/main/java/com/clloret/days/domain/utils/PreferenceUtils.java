@@ -17,4 +17,6 @@ public interface PreferenceUtils {
   String getAirtableBaseId();
 
   String getDefaultList();
+
+  boolean isAnalyticsEnabled();
 }

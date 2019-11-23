@@ -25,4 +25,6 @@ public interface StringResourceProvider {
   String getPrefAirtableBaseId();
 
   String getPrefSortMode();
+
+  String getPrefCollectStatistics();
 }

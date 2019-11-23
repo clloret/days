@@ -78,4 +78,10 @@ public class PreferenceUtilsImpl implements PreferenceUtils {
     return preferences
         .getString(stringResourceProvider.getPrefDefaultList(), DEFAULT_LIST);
   }
+
+  @Override
+  public boolean isAnalyticsEnabled() {
+
+    return preferences.getBoolean(stringResourceProvider.getPrefCollectStatistics(), true);
+  }
 }
