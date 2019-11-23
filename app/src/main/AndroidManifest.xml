@@ -3,80 +3,87 @@
   xmlns:tools="http://schemas.android.com/tools"
   package="com.clloret.days">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
   <application
+    android:name=".App"
     android:allowBackup="true"
     android:fullBackupContent="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
-    android:name=".App"
     android:supportsRtl="false"
     android:theme="@style/AppTheme.NoActionBar"
     tools:ignore="GoogleAppIndexingWarning">
-    <activity
-      android:label="@string/app_name"
-      android:launchMode="singleTop"
-      android:name=".activities.MainActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
 
-        <category android:name="android.intent.category.LAUNCHER"/>
+    <meta-data
+      android:name="firebase_crashlytics_collection_enabled"
+      android:value="false" />
+    <meta-data
+      android:name="firebase_analytics_collection_enabled"
+      android:value="false" />
+
+    <activity
+      android:name=".activities.MainActivity"
+      android:label="@string/app_name"
+      android:launchMode="singleTop">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
     <activity
-      android:label="@string/title_activity_event_create"
       android:name=".events.create.EventCreateActivity"
+      android:label="@string/title_activity_event_create"
       android:parentActivityName=".activities.MainActivity"
-      android:screenOrientation="portrait"/>
+      android:screenOrientation="portrait" />
     <activity
-      android:label=""
       android:name=".events.edit.EventEditActivity"
+      android:label=""
       android:parentActivityName=".activities.MainActivity"
-      android:screenOrientation="portrait"/>
+      android:screenOrientation="portrait" />
     <activity
-      android:label="@string/title_activity_tag_create"
       android:name=".tags.create.TagCreateActivity"
+      android:label="@string/title_activity_tag_create"
       android:parentActivityName=".activities.MainActivity"
-      android:screenOrientation="portrait"/>
+      android:screenOrientation="portrait" />
     <activity
-      android:label="@string/title_activity_tag_edit"
       android:name=".tags.edit.TagEditActivity"
+      android:label="@string/title_activity_tag_edit"
       android:parentActivityName=".activities.MainActivity"
-      android:screenOrientation="portrait"/>
+      android:screenOrientation="portrait" />
     <activity
-      android:label="@string/title_activity_settings"
       android:name=".settings.SettingsActivity"
-      android:parentActivityName=".activities.MainActivity"/>
+      android:label="@string/title_activity_settings"
+      android:parentActivityName=".activities.MainActivity" />
     <activity
-      android:label="@string/title_activity_about"
       android:name=".activities.AboutActivity"
+      android:label="@string/title_activity_about"
       android:parentActivityName=".activities.MainActivity"
-      android:theme="@style/AppTheme.MaterialAboutActivity"/>
+      android:theme="@style/AppTheme.MaterialAboutActivity" />
 
     <receiver
       android:name=".device.receivers.FirstStartBroadcastReceiver"
       android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
       <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
       </intent-filter>
       <intent-filter>
-        <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+        <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
       </intent-filter>
     </receiver>
 
     <receiver
       android:name=".device.receivers.AlarmBroadcastReceiver"
-      android:process=":remote">
-    </receiver>
+      android:process=":remote" />
 
-    <receiver android:name=".device.receivers.ReminderReceiver"/>
+    <receiver android:name=".device.receivers.ReminderReceiver" />
 
     <service
       android:name=".device.services.TimeLapseService"
-      android:permission="android.permission.BIND_JOB_SERVICE"/>
+      android:permission="android.permission.BIND_JOB_SERVICE" />
 
   </application>
 

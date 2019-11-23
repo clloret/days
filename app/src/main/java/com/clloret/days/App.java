@@ -14,14 +14,18 @@ import com.clloret.days.data.cache.CacheSource;
 import com.clloret.days.device.services.TimeLapseJob;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Tag;
+import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.domain.utils.ThreadSchedulers;
 import com.clloret.days.utils.StethoUtils;
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasBroadcastReceiverInjector;
 import dagger.android.HasServiceInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -49,6 +53,9 @@ public class App extends DaggerApplication
   @Inject
   ThreadSchedulers threadSchedulers;
 
+  @Inject
+  PreferenceUtils preferenceUtils;
+
   public static App get(Context context) {
 
     return (App) context.getApplicationContext();
@@ -67,6 +74,12 @@ public class App extends DaggerApplication
     Timber.plant(new DebugTree());
     if (!isRoboUnitTest()) {
       StethoUtils.install(this);
+    }
+
+    if (!BuildConfig.DEBUG && preferenceUtils.isAnalyticsEnabled()) {
+      FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
+      analytics.setAnalyticsCollectionEnabled(true);
+      Fabric.with(this, new Crashlytics());
     }
 
     TimeLapseJob.scheduleJob(this);
