@@ -54,6 +54,12 @@
 
   <PreferenceCategory android:title="@string/title_privacy">
 
+    <Preference android:title="@string/pref_privacy_policy">
+      <intent
+        android:action="android.intent.action.VIEW"
+        android:data="https://github.com/clloret/days/wiki/Privacy" />
+    </Preference>
+
     <CheckBoxPreference
       android:defaultValue="true"
       android:key="@string/pref_collect_statistics"

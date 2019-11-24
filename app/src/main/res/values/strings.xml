@@ -84,6 +84,7 @@
   <string name="pref_airtable_preference" translatable="false">airtable_preference</string>
   <string name="pref_collect_statistics" translatable="false">collect_statistics</string>
   <string name="pref_default_list" translatable="false">default_list</string>
+  <string name="pref_privacy_policy">Privacy policy</string>
   <string name="pref_reminder_time" translatable="false">reminder_time</string>
   <string name="pref_remote_datastore" translatable="false">remote_datastore</string>
   <string name="pref_sort_mode" translatable="false">sort_mode</string>
