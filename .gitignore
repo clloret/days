@@ -180,6 +180,7 @@ gradle-app.setting
 
 # Secrets
 google-services.json
+secrets.properties
 
 .idea/checkstyleidea-libs/
 .idea/markdown-navigator/profiles_settings.xml
