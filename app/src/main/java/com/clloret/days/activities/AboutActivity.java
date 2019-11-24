@@ -19,7 +19,7 @@ import java.util.Calendar;
 
 public class AboutActivity extends MaterialAboutActivity {
 
-  public static final String AUTHOR_EMAIL = "clloretplayan@gmail.com";
+  public static final String AUTHOR_EMAIL = "clloret.app+days@gmail.com";
   public static final String AUTHOR_NAME = "Carlos Lloret Playán";
   public static final String GITHUB_URL = "https://github.com/clloret/days";
   public static final String I_GIORNI_LUDOVICO_EINAUDI = "I Giorni (The Days) - Ludovico Einaudi";
