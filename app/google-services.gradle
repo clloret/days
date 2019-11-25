@@ -1,0 +1,21 @@
+task copyGoogleServicesData() {
+    doLast {
+
+        if (!file("$rootDir/app/google-services.json").exists()) {
+            copy {
+                from "$rootDir/travis/mock-google-services.json"
+                into "$rootDir/app"
+
+                rename { String fileName ->
+                    fileName.replace("mock-google-services.json", "google-services.json")
+                }
+            }
+        }
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'processDebugGoogleServices' || task.name == 'processReleaseGoogleServices') {
+        task.dependsOn copyGoogleServicesData
+    }
+}

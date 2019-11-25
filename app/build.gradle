@@ -126,4 +126,6 @@ dependencies {
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }
 
+apply from: "$rootDir/app/google-services.gradle"
+
 apply plugin: 'com.google.gms.google-services'
