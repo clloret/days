@@ -37,7 +37,7 @@
   <string name="event_details_do_not_reset_automatically">No reiniciar automáticamente</string>
   <string name="event_details_name">Nombre del evento</string>
   <string name="event_details_no_reminder">Sin recordatorio</string>
-  <string name="event_details_no_tags">No tags</string>
+  <string name="event_details_no_tags">Sin etiquetas</string>
   <string name="event_details_notify_format_message">Notificar %1$s %2$s %3$s del evento</string>
   <string name="event_details_notify_the_day_of_the_event">Notificar el día del evento</string>
   <string name="event_details_reminder">Recordatorio</string>
