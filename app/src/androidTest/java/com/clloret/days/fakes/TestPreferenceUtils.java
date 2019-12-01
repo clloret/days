@@ -60,4 +60,10 @@ public class TestPreferenceUtils implements PreferenceUtils {
 
     return "0";
   }
+
+  @Override
+  public boolean isAnalyticsEnabled() {
+
+    return false;
+  }
 }
