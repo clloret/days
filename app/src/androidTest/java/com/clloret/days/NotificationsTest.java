@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 import android.content.res.Resources;
+import androidx.annotation.NonNull;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -25,7 +26,6 @@ import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 import com.clloret.days.activities.MainActivity;
 import com.clloret.days.dagger.AppTestComponent;
-import com.clloret.days.dagger.modules.TestDataModule;
 import com.clloret.days.device.reminders.ReminderManagerImpl;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
@@ -34,8 +34,10 @@ import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.NotificationsIntentsImpl;
+import com.clloret.days.utils.SampleData;
 import io.reactivex.Maybe;
 import java.util.Date;
+import java.util.List;
 import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Before;
@@ -66,6 +68,8 @@ public class NotificationsTest {
   @Inject
   StringResourceProvider stringResourceProvider;
 
+  private List<Event> sampleEvents;
+
   private String expectedActionNameDelete;
   private String expectedActionNameReset;
   private String expectedAppName;
@@ -88,6 +92,8 @@ public class NotificationsTest {
 
     expectedActionNameDelete = stringResourceProvider.getEventDeleteNotificationAction();
     expectedActionNameReset = stringResourceProvider.getEventResetNotificationAction();
+
+    sampleEvents = SampleData.getSampleEvents();
 
     uiDevice = getUiDevice();
   }
@@ -158,20 +164,28 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    showNotification(
-        createTestEvent(TestDataModule.TEST_EVENT_1_ID, TestDataModule.TEST_EVENT_1_NAME));
+    final Event event = getSampleEventWithTodayDate(0);
+    showNotification(event);
 
     uiDevice.openNotification();
     uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), TIMEOUT);
-    UiObject2 title = uiDevice.findObject(By.text(TestDataModule.TEST_EVENT_1_NAME));
+    UiObject2 title = uiDevice.findObject(By.text(event.getName()));
     title.click();
-    uiDevice.wait(Until.hasObject(By.text(TestDataModule.TEST_EVENT_1_NAME)), TIMEOUT);
+    uiDevice.wait(Until.hasObject(By.text(event.getName())), TIMEOUT);
 
     onView(withId(R.id.textview_eventdetail_name))
         .check(matches(isDisplayed()))
-        .check(matches(withText(TestDataModule.TEST_EVENT_1_NAME)));
+        .check(matches(withText(event.getName())));
 
     uiDevice.pressBack();
+  }
+
+  @NonNull
+  private Event getSampleEventWithTodayDate(int index) {
+
+    Event event = sampleEvents.get(index);
+    event.setDate(new Date());
+    return event;
   }
 
   @Test
@@ -183,8 +197,8 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    showNotification(
-        createTestEvent(TestDataModule.TEST_EVENT_2_ID, TestDataModule.TEST_EVENT_2_NAME));
+    final Event event = getSampleEventWithTodayDate(1);
+    showNotification(event);
 
     uiDevice.openNotification();
 
@@ -203,16 +217,15 @@ public class NotificationsTest {
   @Test
   public void showNotification_WhenActionReset_ResetEventDate() throws UiObjectNotFoundException {
 
-    final Event testEvent = createTestEvent(TestDataModule.TEST_EVENT_3_ID,
-        TestDataModule.TEST_EVENT_3_NAME);
+    final Event event = getSampleEventWithTodayDate(2);
 
     Mockito
         .when(resetEventDateUseCase.execute(any()))
-        .thenReturn(Maybe.just(testEvent));
+        .thenReturn(Maybe.just(event));
 
     uiDevice.pressHome();
 
-    showNotification(testEvent);
+    showNotification(event);
 
     uiDevice.openNotification();
 

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "fba54d4f-82d9-459c-ae67-ca3253a7ed3e",
+    "name": "Aniversario",
+    "date": "2019-08-12",
+    "tags": [
+      "99e19dee-306d-4400-9d25-f99cf728493e",
+      "5cd3ef3a-ef03-4ce0-b1c0-461cfc717bd0"
+    ],
+    "reminder": 0,
+    "timeLapse": 1,
+    "timeLapseUnit": "Year"
+  },
+  {
+    "id": "50b8a4e9-3349-419d-9e8b-5a1f3e365734",
+    "name": "Exámenes finales",
+    "date": "2019-06-01"
+  },
+  {
+    "id": "1fdf7cde-aa8a-4411-a17e-77e70a3f19d7",
+    "name": "Vacaciones",
+    "date": "2019-07-16"
+  },
+  {
+    "id": "a272dbac-6554-4595-a4c7-92eee34ae6cc",
+    "name": "Concierto de Ludovico Einaudi",
+    "date": "2019-12-21",
+    "favorite": "true"
+  },
+  {
+    "id": "28d4454a-e923-420f-ac4c-4d86aab528b0",
+    "name": "Mi cumpleaños",
+    "date": "2019-05-10"
+  },
+  {
+    "id": "e0677590-b723-41dd-891b-c3d7da5f157b",
+    "name": "Año nuevo",
+    "date": "2019-12-31"
+  },
+  {
+    "id": "d7b07b8e-0569-4ad5-8142-9130f4d8cd19",
+    "name": "Revisión del coche",
+    "date": "2018-01-17"
+  },
+  {
+    "id": "0946dfe6-20fc-4418-bcdc-60ad52763302",
+    "name": "Huevos",
+    "date": "2019-03-20"
+  }
+]

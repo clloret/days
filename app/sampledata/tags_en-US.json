@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ecb81cf3-82bd-4973-88ad-b0d420f66a27",
+    "name": "Documents"
+  },
+  {
+    "id": "00756b3c-292e-44e4-bf4e-3d3dcfee0384",
+    "name": "Car"
+  },
+  {
+    "id": "8912c98d-918c-47c7-b940-607d1e1c5d89",
+    "name": "Expiration date"
+  },
+  {
+    "id": "99e19dee-306d-4400-9d25-f99cf728493e",
+    "name": "Eventos"
+  },
+  {
+    "id": "5cd3ef3a-ef03-4ce0-b1c0-461cfc717bd0",
+    "name": "Personal"
+  },
+  {
+    "id": "fd5b786e-2a4a-4a55-93a4-bc6c8486503f",
+    "name": "Work"
+  }
+]
