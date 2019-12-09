@@ -1,6 +1,7 @@
 package com.clloret.days.domain.entities;
 
 import com.clloret.days.domain.events.order.EventSortable;
+import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
@@ -189,8 +190,11 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
   }
 
   public enum TimeUnit {
+    @SerializedName("Day")
     DAY("Day"),
+    @SerializedName("Month")
     MONTH("Month"),
+    @SerializedName("Year")
     YEAR("Year");
 
     private String text;

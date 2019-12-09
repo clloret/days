@@ -121,6 +121,9 @@ dependencies {
     // Mockito
     androidTestImplementation "org.mockito:mockito-android:$rootProject.mockitoVersion"
 
+    // Other
+    androidTestImplementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+
     // Dagger
     androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
