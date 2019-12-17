@@ -15,6 +15,7 @@ import com.sybit.airtableandroid.Table;
 import com.sybit.airtableandroid.exception.AirtableException;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import java.util.Date;
 import java.util.List;
 import timber.log.Timber;
 
@@ -85,6 +86,12 @@ public class AirtableEventRepository implements EventRepository {
 
     return table.select(VIEW_NAME, "{Favorite} = true")
         .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getBeforeDate(Date date) {
+
+    throw new UnsupportedOperationException();
   }
 
   @Override

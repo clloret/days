@@ -11,6 +11,7 @@ import com.clloret.days.domain.repository.EventRepository;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import java.util.Date;
 import java.util.List;
 
 public class ReadOnlyEventRepository implements EventRepository, CacheSource<Event> {
@@ -49,6 +50,13 @@ public class ReadOnlyEventRepository implements EventRepository, CacheSource<Eve
   public Single<List<Event>> getByFavorite() {
 
     return dao.loadFavorites()
+        .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getBeforeDate(Date date) {
+
+    return dao.loadBeforeDate(date.getTime())
         .map(dataMapper::toEntity);
   }
 

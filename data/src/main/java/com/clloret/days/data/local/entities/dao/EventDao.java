@@ -27,6 +27,9 @@ public interface EventDao extends BaseDao<DbEvent> {
   @Query("SELECT * FROM events WHERE favorite = 1")
   Single<List<DbEvent>> loadFavorites();
 
+  @Query("SELECT * FROM events WHERE date < :date")
+  Single<List<DbEvent>> loadBeforeDate(long date);
+
   @Query("DELETE FROM events")
   void deleteAll();
 }

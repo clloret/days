@@ -8,6 +8,7 @@ import com.clloret.days.domain.repository.EventRepository;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import java.util.Date;
 import java.util.List;
 
 public class AppEventRepository implements EventRepository, CacheSource<Event> {
@@ -39,6 +40,12 @@ public class AppEventRepository implements EventRepository, CacheSource<Event> {
   public Single<List<Event>> getByFavorite() {
 
     return localRepository.getByFavorite();
+  }
+
+  @Override
+  public Single<List<Event>> getBeforeDate(Date date) {
+
+    return localRepository.getBeforeDate(date);
   }
 
   @Override
