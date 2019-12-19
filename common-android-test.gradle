@@ -1,0 +1,13 @@
+dependencies {
+
+    testImplementation(project(':test-android-common')) {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+
+    androidTestImplementation(project(':test-android-common')) {
+        exclude group: 'io.reactivex.rxjava2', module: 'rxandroid'
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+    }
+
+}

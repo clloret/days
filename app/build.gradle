@@ -2,7 +2,9 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'jacoco-android'
-apply from: '../config/quality.gradle'
+apply from: "$rootDir/app/google-services.gradle"
+apply from: "$rootDir/common-android-test.gradle"
+apply from: "$rootDir/config/quality.gradle"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -136,7 +138,5 @@ dependencies {
     androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }
-
-apply from: "$rootDir/app/google-services.gradle"
 
 apply plugin: 'com.google.gms.google-services'

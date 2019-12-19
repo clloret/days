@@ -12,7 +12,7 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.repository.TagRepository;
-import com.clloret.days.utils.SampleData;
+import com.clloret.test_android_common.SampleData;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

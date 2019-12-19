@@ -13,11 +13,11 @@ import com.clloret.days.data.local.entities.mapper.DbTagDataMapper;
 import com.clloret.days.data.local.repository.RoomTagRepository;
 import com.clloret.days.data.remote.entities.mapper.ApiTagDataMapper;
 import com.clloret.days.data.remote.repository.AirtableTagRepository;
-import com.clloret.days.data.utils.ImmediateSchedulersRule;
-import com.clloret.days.data.utils.MediumTest;
-import com.clloret.days.data.utils.MockUtils;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.repository.TagRepository;
+import com.clloret.test_android_common.MediumTest;
+import com.clloret.test_android_common.MockUtils;
+import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import com.google.common.truth.Correspondence;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
@@ -50,7 +50,7 @@ public class AppTagRepositoryTest {
   private DaysDatabase db;
 
   @Rule
-  public final ImmediateSchedulersRule schedulers = new ImmediateSchedulersRule();
+  public final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Before
   public void setUp() throws Exception {

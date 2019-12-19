@@ -11,7 +11,7 @@ import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.tags.SampleBuilder;
-import com.clloret.days.utils.RxImmediateSchedulerRule;
+import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import org.junit.Before;

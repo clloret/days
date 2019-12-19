@@ -6,6 +6,10 @@ Days is a simple Android app that helps to control event dates.
 
 This project also showcases Clean Architecture, the MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
 
+<p align="center">
+<a href='https://play.google.com/store/apps/details?id=com.clloret.days&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/es/badges/static/images/badges/en_badge_web_generic.png' height='90px'/></a>
+</p>
+
 ## Features
 
 ### For the user
