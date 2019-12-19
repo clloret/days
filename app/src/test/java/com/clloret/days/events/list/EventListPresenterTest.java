@@ -21,7 +21,7 @@ import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import com.clloret.days.domain.interactors.events.ToggleEventReminderUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.utils.RxImmediateSchedulerRule;
+import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import java.util.List;

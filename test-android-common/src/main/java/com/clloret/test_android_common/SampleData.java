@@ -1,6 +1,7 @@
-package com.clloret.days.utils;
+package com.clloret.test_android_common;
 
 import android.content.Context;
+import android.os.Build;
 import androidx.test.platform.app.InstrumentationRegistry;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.DbEvent;
@@ -28,15 +29,21 @@ public final class SampleData {
     return gson.fromJson(bufferedReader, typeOfT);
   }
 
+  private static Locale getCurrentLocale(Context context) {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      return context.getResources().getConfiguration().getLocales().get(0);
+    } else {
+      //noinspection deprecation
+      return context.getResources().getConfiguration().locale;
+    }
+  }
+
   private static String getSamplesFileName(String name) {
 
     final Context context = InstrumentationRegistry.getInstrumentation()
         .getTargetContext();
-    final Locale locale = context
-        .getResources()
-        .getConfiguration()
-        .getLocales()
-        .get(0);
+    Locale locale = getCurrentLocale(context);
     final String languageTag = locale.toLanguageTag();
 
     return name + "_" + languageTag + ".json";

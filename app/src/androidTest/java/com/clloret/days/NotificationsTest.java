@@ -34,7 +34,7 @@ import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.NotificationsIntentsImpl;
-import com.clloret.days.utils.SampleData;
+import com.clloret.test_android_common.SampleData;
 import io.reactivex.Maybe;
 import java.util.Date;
 import java.util.List;

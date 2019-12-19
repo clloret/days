@@ -1,4 +1,4 @@
-package com.clloret.days.data.utils;
+package com.clloret.test_android_common;
 
 import java.io.IOException;
 import okhttp3.mockwebserver.MockResponse;

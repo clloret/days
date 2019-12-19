@@ -1,4 +1,4 @@
-package com.clloret.days.utils;
+package com.clloret.test_android_common;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Scheduler;
