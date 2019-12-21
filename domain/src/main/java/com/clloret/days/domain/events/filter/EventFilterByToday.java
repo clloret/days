@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.List;
 import org.joda.time.LocalDate;
 
-public class EventFilterByPast extends EventFilterStrategy {
+public class EventFilterByToday extends EventFilterStrategy {
 
   private final LocalDate date;
 
-  public EventFilterByPast(LocalDate date) {
+  public EventFilterByToday(LocalDate date) {
 
     this.date = date;
   }
@@ -19,7 +19,7 @@ public class EventFilterByPast extends EventFilterStrategy {
   @Override
   public Single<List<Event>> getEvents(EventRepository appDataStore) {
 
-    return appDataStore.getBeforeDate(date);
+    return appDataStore.getByDate(date);
   }
 
   @Override
@@ -33,7 +33,7 @@ public class EventFilterByPast extends EventFilterStrategy {
 
     LocalDate localDate = new LocalDate(event.getDate());
 
-    return localDate.isBefore(date);
+    return localDate.isEqual(date);
   }
 
 }

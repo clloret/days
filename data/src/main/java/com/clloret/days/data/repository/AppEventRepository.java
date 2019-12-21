@@ -9,6 +9,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import java.util.List;
+import org.joda.time.LocalDate;
 
 public class AppEventRepository implements EventRepository, CacheSource<Event> {
 
@@ -39,6 +40,24 @@ public class AppEventRepository implements EventRepository, CacheSource<Event> {
   public Single<List<Event>> getByFavorite() {
 
     return localRepository.getByFavorite();
+  }
+
+  @Override
+  public Single<List<Event>> getBeforeDate(LocalDate date) {
+
+    return localRepository.getBeforeDate(date);
+  }
+
+  @Override
+  public Single<List<Event>> getAfterDate(LocalDate date) {
+
+    return localRepository.getAfterDate(date);
+  }
+
+  @Override
+  public Single<List<Event>> getByDate(LocalDate date) {
+
+    return localRepository.getByDate(date);
   }
 
   @Override

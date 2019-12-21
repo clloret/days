@@ -16,6 +16,7 @@ import com.sybit.airtableandroid.exception.AirtableException;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import java.util.List;
+import org.joda.time.LocalDate;
 import timber.log.Timber;
 
 public class AirtableEventRepository implements EventRepository {
@@ -85,6 +86,24 @@ public class AirtableEventRepository implements EventRepository {
 
     return table.select(VIEW_NAME, "{Favorite} = true")
         .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getBeforeDate(LocalDate date) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Single<List<Event>> getAfterDate(LocalDate date) {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public Single<List<Event>> getByDate(LocalDate date) {
+
+    throw new UnsupportedOperationException();
   }
 
   @Override
