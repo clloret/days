@@ -11,16 +11,19 @@
   <string name="about_view_source_code">Ver el código fuente en GitHub</string>
   <string name="action_about">Acerca de</string>
   <string name="action_add_to_calendar">Añadir al calendario</string>
-  <string name="action_all">Todo</string>
   <string name="action_cancel">Cancelar</string>
   <string name="action_delete">Borrar</string>
   <string name="action_drawer_close">Cerrar cajón de navegación</string>
   <string name="action_drawer_open">Abrir cajón de navegación</string>
-  <string name="action_favorites">Favoritos</string>
+  <string name="action_filter_all">Todo</string>
+  <string name="action_filter_favorites">Favoritos</string>
+  <string name="action_filter_upcoming">Próximos</string>
+  <string name="action_filter_no_tag">Sin etiquetas</string>
+  <string name="action_filter_previous">Anteriores</string>
+  <string name="action_filter_today">Hoy</string>
   <string name="action_help">Ayuda</string>
   <string name="action_new_tag">Nueva etiqueta</string>
   <string name="action_no">No</string>
-  <string name="action_no_tag">Sin etiquetas</string>
   <string name="action_ok">Aceptar</string>
   <string name="action_save">Guardar</string>
   <string name="action_settings">Configuración</string>
@@ -77,8 +80,10 @@
   <string name="period_select_radiogroup_time_unit">Selecciona la unidad de tiempo</string>
   <string name="period_select_title_set_reminder">Configurar el recordatorio</string>
   <string name="period_select_title_set_restart_time">Configurar el tiempo de reinicio</string>
+  <string name="pref_privacy_policy">Política de privacidad</string>
   <string name="summary_airtable_api_key">Tú API key de Airtable. Se obtiene en la información de cuenta de Airtable.</string>
   <string name="summary_airtable_base_id">Base ID de la base de datos con la estructura de Days.</string>
+  <string name="summary_collect_statistics">Enviar de forma anónima estadísticas de uso e informes de error para ayudar a mejorar Days. No se recogerán datos personales.</string>
   <string name="summary_reminder_time">Selecciona la hora a la que quieres recibir el recordatorio de los eventos.</string>
   <string name="summary_remote_datastore">Usar el almacenamiento remoto para guardar los datos. Si no se activa, sólo se guardará una copia local de los datos.</string>
   <string name="tag_details_name">Nombre de la etiqueta</string>
@@ -87,6 +92,7 @@
   <string name="title_activity_settings">Configuración</string>
   <string name="title_activity_tag_create">Crear etiqueta</string>
   <string name="title_activity_tag_edit">Editar etiqueta</string>
+  <string name="title_collect_statistics">Mejorar Days</string>
   <string name="title_datastore">Almacenamiento de datos</string>
   <string name="title_default_list">Lista por defecto</string>
   <string name="title_dialog_airtable_api_key">Introduce tu clave API de Airtable</string>
@@ -94,6 +100,7 @@
   <string name="title_dialog_reminder_time">Selecciona la hora del recordatorio</string>
   <string name="title_general">General</string>
   <string name="title_order">Ordenar</string>
+  <string name="title_privacy">Privacidad</string>
   <string name="title_reminder_time">Hora del recordatorio</string>
   <string name="title_remote_datastore">Datos remotos</string>
   <string name="title_select_tags">Selecciona las etiquetas</string>
@@ -110,8 +117,4 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
-  <string name="summary_collect_statistics">Enviar de forma anónima estadísticas de uso e informes de error para ayudar a mejorar Days. No se recogerán datos personales.</string>
-  <string name="title_collect_statistics">Mejorar Days</string>
-  <string name="title_privacy">Privacidad</string>
-  <string name="pref_privacy_policy">Política de privacidad</string>
 </resources>

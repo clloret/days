@@ -2,8 +2,8 @@
 <resources>
 
   <string-array name="default_list_entries">
-    <item>@string/action_all</item>
-    <item>@string/action_favorites</item>
+    <item>@string/action_filter_all</item>
+    <item>@string/action_filter_favorites</item>
   </string-array>
 
   <string-array name="default_list_entry_values" translatable="false">

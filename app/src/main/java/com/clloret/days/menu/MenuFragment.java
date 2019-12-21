@@ -15,6 +15,7 @@ import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpFragment;
 import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.PreferenceUtils;
+import com.clloret.days.domain.utils.TimeProvider;
 import com.clloret.days.menu.items.DrawerMenuItem;
 import com.clloret.days.menu.items.DrawerTag;
 import com.clloret.days.menu.items.DrawerTagSelectedMgr;
@@ -33,6 +34,9 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
   @Inject
   PreferenceUtils preferenceUtils;
+
+  @Inject
+  TimeProvider timeProvider;
 
   @Inject
   MenuPresenter injectPresenter;
@@ -88,7 +92,7 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
 
     Timber.d("onViewCreated");
 
-    adapter = new MenuAdapter(getActivity(), drawerTagSelectedMgr);
+    adapter = new MenuAdapter(getActivity(), drawerTagSelectedMgr, timeProvider);
     listView.setAdapter(adapter);
 
     listView.setOnItemLongClickListener((adapterView, v, i, l) -> {

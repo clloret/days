@@ -11,11 +11,15 @@ import com.clloret.days.R;
 import com.clloret.days.activities.AboutActivity;
 import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.events.filter.EventFilterByFavorite;
+import com.clloret.days.domain.events.filter.EventFilterByFuture;
+import com.clloret.days.domain.events.filter.EventFilterByPast;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
+import com.clloret.days.domain.events.filter.EventFilterByToday;
 import com.clloret.days.domain.tags.order.TagSortFactory;
 import com.clloret.days.domain.tags.order.TagSortFactory.SortType;
 import com.clloret.days.domain.tags.order.TagSortable;
 import com.clloret.days.domain.utils.SortedValueMap;
+import com.clloret.days.domain.utils.TimeProvider;
 import com.clloret.days.menu.items.DrawerAction;
 import com.clloret.days.menu.items.DrawerFilter;
 import com.clloret.days.menu.items.DrawerMenuItem;
@@ -32,6 +36,7 @@ import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import org.joda.time.LocalDate;
 
 public class MenuAdapter extends BaseAdapter {
 
@@ -46,13 +51,16 @@ public class MenuAdapter extends BaseAdapter {
   private final CompositeDisposable disposable = new CompositeDisposable();
   private final Context context;
   private final DrawerTagSelectedMgr drawerTagSelectedMgr;
+  private final TimeProvider timeProvider;
 
-  public MenuAdapter(@NonNull Context context, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
+  public MenuAdapter(@NonNull Context context, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr,
+      @NonNull TimeProvider timeProvider) {
 
     super();
 
     this.context = context;
     this.drawerTagSelectedMgr = drawerTagSelectedMgr;
+    this.timeProvider = timeProvider;
   }
 
   public void dispose() {
@@ -88,10 +96,20 @@ public class MenuAdapter extends BaseAdapter {
 
     List<DrawerMenuItem> list = new ArrayList<>(SECTION1_INITIAL_CAPACITY);
 
-    list.add(new DrawerFilter(context.getString(R.string.action_all), R.drawable.ic_inbox_24dp,
+    list.add(
+        new DrawerFilter(context.getString(R.string.action_filter_all), R.drawable.ic_inbox_24dp,
         new EventFilterAll()));
-    list.add(new DrawerFilter(context.getString(R.string.action_favorites),
+    list.add(new DrawerFilter(context.getString(R.string.action_filter_favorites),
         R.drawable.ic_favorite_24dp, new EventFilterByFavorite()));
+
+    LocalDate currentDate = timeProvider.getCurrentDate();
+
+    list.add(new DrawerFilter(context.getString(R.string.action_filter_today),
+        R.drawable.ic_today_24dp, new EventFilterByToday(currentDate)));
+    list.add(new DrawerFilter(context.getString(R.string.action_filter_upcoming),
+        R.drawable.ic_upcoming_24dp, new EventFilterByFuture(currentDate)));
+    list.add(new DrawerFilter(context.getString(R.string.action_filter_previous),
+        R.drawable.ic_previous_24dp, new EventFilterByPast(currentDate)));
 
     list.add(new DrawerSeparator());
     list.add(new DrawerSubheader(context.getString(R.string.event_details_tags)));
@@ -104,7 +122,7 @@ public class MenuAdapter extends BaseAdapter {
     List<DrawerMenuItem> list = new ArrayList<>(SECTION2_INITIAL_CAPACITY);
 
     list
-        .add(new DrawerFilter(context.getString(R.string.action_no_tag),
+        .add(new DrawerFilter(context.getString(R.string.action_filter_no_tag),
             R.drawable.ic_label_outline_24dp, new EventFilterByTag("")));
     list.add(new DrawerAction(
         context.getString(R.string.action_new_tag),
