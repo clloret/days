@@ -21,7 +21,7 @@ public interface EventDao extends BaseDao<DbEvent> {
   @Query("SELECT * FROM events WHERE tag_id LIKE (:tagId)")
   Single<List<DbEvent>> loadByTagsIds(String tagId);
 
-  @Query("SELECT * FROM events WHERE tag_id = ''")
+  @Query("SELECT * FROM events WHERE tag_id = '' OR tag_id IS NULL")
   Single<List<DbEvent>> loadWithoutAssignedTags();
 
   @Query("SELECT * FROM events WHERE favorite = 1")
@@ -29,6 +29,12 @@ public interface EventDao extends BaseDao<DbEvent> {
 
   @Query("SELECT * FROM events WHERE date < :date")
   Single<List<DbEvent>> loadBeforeDate(long date);
+
+  @Query("SELECT * FROM events WHERE date > :date")
+  Single<List<DbEvent>> loadAfterDate(long date);
+
+  @Query("SELECT * FROM events WHERE date = :date")
+  Single<List<DbEvent>> loadByDate(long date);
 
   @Query("DELETE FROM events")
   void deleteAll();

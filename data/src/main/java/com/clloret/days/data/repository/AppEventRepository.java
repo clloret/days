@@ -8,8 +8,8 @@ import com.clloret.days.domain.repository.EventRepository;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
-import java.util.Date;
 import java.util.List;
+import org.joda.time.LocalDate;
 
 public class AppEventRepository implements EventRepository, CacheSource<Event> {
 
@@ -43,9 +43,21 @@ public class AppEventRepository implements EventRepository, CacheSource<Event> {
   }
 
   @Override
-  public Single<List<Event>> getBeforeDate(Date date) {
+  public Single<List<Event>> getBeforeDate(LocalDate date) {
 
     return localRepository.getBeforeDate(date);
+  }
+
+  @Override
+  public Single<List<Event>> getAfterDate(LocalDate date) {
+
+    return localRepository.getAfterDate(date);
+  }
+
+  @Override
+  public Single<List<Event>> getByDate(LocalDate date) {
+
+    return localRepository.getByDate(date);
   }
 
   @Override
