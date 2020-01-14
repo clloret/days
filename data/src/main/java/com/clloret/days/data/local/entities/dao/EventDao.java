@@ -36,6 +36,9 @@ public interface EventDao extends BaseDao<DbEvent> {
   @Query("SELECT * FROM events WHERE date = :date")
   Single<List<DbEvent>> loadByDate(long date);
 
+  @Query("SELECT * FROM events WHERE reminder IS NOT NULL")
+  Single<List<DbEvent>> loadWithReminder();
+
   @Query("DELETE FROM events")
   void deleteAll();
 }

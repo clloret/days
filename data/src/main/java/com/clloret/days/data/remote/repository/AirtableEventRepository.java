@@ -107,6 +107,12 @@ public class AirtableEventRepository implements EventRepository {
   }
 
   @Override
+  public Single<List<Event>> getByReminder() {
+
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
   public Single<Event> getById(@NonNull String id) {
 
     throw new UnsupportedOperationException();

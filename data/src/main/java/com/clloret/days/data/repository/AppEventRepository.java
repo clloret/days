@@ -61,6 +61,12 @@ public class AppEventRepository implements EventRepository, CacheSource<Event> {
   }
 
   @Override
+  public Single<List<Event>> getByReminder() {
+
+    return localRepository.getByReminder();
+  }
+
+  @Override
   public Single<Event> getById(@NonNull String id) {
 
     return cacheManager.getById(id);
