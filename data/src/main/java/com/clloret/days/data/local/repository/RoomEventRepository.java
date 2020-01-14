@@ -68,6 +68,13 @@ public class RoomEventRepository implements EventRepository, CacheSource<Event> 
   }
 
   @Override
+  public Single<List<Event>> getByReminder() {
+
+    return dao.loadWithReminder()
+        .map(dataMapper::toEntity);
+  }
+
+  @Override
   public Single<Event> getById(@NonNull String id) {
 
     return Single.fromCallable(() -> {

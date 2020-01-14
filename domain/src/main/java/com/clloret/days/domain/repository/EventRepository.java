@@ -18,4 +18,6 @@ public interface EventRepository extends GenericRepository<Event> {
 
   Single<List<Event>> getByDate(LocalDate date);
 
+  Single<List<Event>> getByReminder();
+
 }

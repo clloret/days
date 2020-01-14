@@ -8,7 +8,8 @@ All notable changes to this project will be documented in this file.
 - Filter today events
 - Filter upcoming events
 - Filter previous events
-- New today, upcoming and previous default list preference 
+- Filter events with reminder
+- New today, upcoming, previous and with reminder default list preference 
 
 ## [1.0.0] - 2019-12-09
 
