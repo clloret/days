@@ -117,4 +117,5 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
+  <string name="action_filter_with_reminder">Con recordatorio</string>
 </resources>

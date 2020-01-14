@@ -13,6 +13,7 @@ import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.events.filter.EventFilterByFavorite;
 import com.clloret.days.domain.events.filter.EventFilterByFuture;
 import com.clloret.days.domain.events.filter.EventFilterByPast;
+import com.clloret.days.domain.events.filter.EventFilterByReminder;
 import com.clloret.days.domain.events.filter.EventFilterByTag;
 import com.clloret.days.domain.events.filter.EventFilterByToday;
 import com.clloret.days.domain.tags.order.TagSortFactory;
@@ -98,7 +99,7 @@ public class MenuAdapter extends BaseAdapter {
 
     list.add(
         new DrawerFilter(context.getString(R.string.action_filter_all), R.drawable.ic_inbox_24dp,
-        new EventFilterAll()));
+            new EventFilterAll()));
     list.add(new DrawerFilter(context.getString(R.string.action_filter_favorites),
         R.drawable.ic_favorite_24dp, new EventFilterByFavorite()));
 
@@ -110,6 +111,8 @@ public class MenuAdapter extends BaseAdapter {
         R.drawable.ic_upcoming_24dp, new EventFilterByFuture(currentDate)));
     list.add(new DrawerFilter(context.getString(R.string.action_filter_previous),
         R.drawable.ic_previous_24dp, new EventFilterByPast(currentDate)));
+    list.add(new DrawerFilter(context.getString(R.string.action_filter_with_reminder),
+        R.drawable.ic_notifications_24dp, new EventFilterByReminder()));
 
     list.add(new DrawerSeparator());
     list.add(new DrawerSubheader(context.getString(R.string.event_details_tags)));
