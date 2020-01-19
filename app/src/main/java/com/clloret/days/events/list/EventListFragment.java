@@ -1,5 +1,6 @@
 package com.clloret.days.events.list;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +38,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
@@ -89,6 +93,7 @@ public class EventListFragment
   @BindView(R.id.emptyView)
   View emptyView;
 
+  private SearchView searchView;
   private EventListAdapter adapter;
   private SortType savedSortType;
   private OnProgressListener progressListener;
@@ -105,13 +110,6 @@ public class EventListFragment
     // Mandatory empty constructor for the fragment manager
   }
 
-  @NonNull
-  @Override
-  public LceViewState<List<EventViewModel>, EventListView> createViewState() {
-
-    return new RetainingLceViewState<>();
-  }
-
   public static EventListFragment newInstance(@NonNull EventFilterStrategy eventFilterStrategy) {
 
     Bundle bundle = new Bundle();
@@ -121,6 +119,67 @@ public class EventListFragment
     fragment.setArguments(bundle);
 
     return fragment;
+  }
+
+  @NonNull
+  @Override
+  public LceViewState<List<EventViewModel>, EventListView> createViewState() {
+
+    return new RetainingLceViewState<>();
+  }
+
+  @Override
+  public void showContent() {
+
+    super.showContent();
+
+    contentView.setRefreshing(false);
+
+    checkIfEmptyViewToBeDisplayed();
+  }
+
+  @Override
+  public void showError(Throwable e, boolean pullToRefresh) {
+
+    super.showError(e, pullToRefresh);
+
+    emptyView.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void showLoading(boolean pullToRefresh) {
+
+    super.showLoading(pullToRefresh);
+
+    emptyView.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void onNewViewStateInstance() {
+
+    showLoading(false);
+    loadData(false);
+  }
+
+  @Override
+  public List<EventViewModel> getData() {
+
+    Timber.d("getData");
+
+    return adapter == null ? null : adapter.getEvents();
+  }
+
+  @Override
+  public void setData(List<EventViewModel> data) {
+
+    adapter.setEvents(data);
+    adapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void loadData(boolean pullToRefresh) {
+
+    presenter.loadEvents(pullToRefresh);
   }
 
   private void selectMenuSortMode(Menu menu) {
@@ -188,6 +247,18 @@ public class EventListFragment
   }
 
   @Override
+  public void onStart() {
+
+    super.onStart();
+
+    Timber.d("onStart");
+
+    if (tagSelectedListener != null) {
+      tagSelectedListener.onStartFragment();
+    }
+  }
+
+  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
     super.onViewCreated(view, savedInstanceState);
@@ -216,25 +287,6 @@ public class EventListFragment
   }
 
   @Override
-  public void onStart() {
-
-    super.onStart();
-
-    Timber.d("onStart");
-
-    if (tagSelectedListener != null) {
-      tagSelectedListener.onStartFragment();
-    }
-  }
-
-  @Override
-  public void onNewViewStateInstance() {
-
-    showLoading(false);
-    loadData(false);
-  }
-
-  @Override
   protected void injectDependencies() {
 
     AndroidSupportInjection.inject(this);
@@ -253,6 +305,8 @@ public class EventListFragment
     super.onCreateOptionsMenu(menu, inflater);
 
     inflater.inflate(R.menu.menu_event_list, menu);
+
+    configureSearchView(menu);
   }
 
   @Override
@@ -278,6 +332,40 @@ public class EventListFragment
     }
   }
 
+  private void configureSearchView(@NonNull Menu menu) {
+
+    final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+    if (searchItem != null) {
+      searchView = (SearchView) searchItem.getActionView();
+    }
+
+    final FragmentActivity activity = Objects.requireNonNull(getActivity());
+    final SearchManager searchManager = (SearchManager)
+        activity.getSystemService(Context.SEARCH_SERVICE);
+
+    if (searchView != null) {
+      searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+
+      SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+
+          Timber.d("onQueryTextSubmit: %s", query);
+          return true;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+
+          Timber.d("onQueryTextChange: %s", newText);
+          return true;
+        }
+      };
+      searchView.setOnQueryTextListener(queryTextListener);
+    }
+  }
+
   @Override
   public void onRefresh() {
 
@@ -289,56 +377,9 @@ public class EventListFragment
   }
 
   @Override
-  public void setData(List<EventViewModel> data) {
-
-    adapter.setEvents(data);
-    adapter.notifyDataSetChanged();
-  }
-
-  @Override
-  public void loadData(boolean pullToRefresh) {
-
-    presenter.loadEvents(pullToRefresh);
-  }
-
-  @Override
-  public void showLoading(boolean pullToRefresh) {
-
-    super.showLoading(pullToRefresh);
-
-    emptyView.setVisibility(View.GONE);
-  }
-
-  @Override
-  public List<EventViewModel> getData() {
-
-    Timber.d("getData");
-
-    return adapter == null ? null : adapter.getEvents();
-  }
-
-  @Override
-  public void showContent() {
-
-    super.showContent();
-
-    contentView.setRefreshing(false);
-
-    checkIfEmptyViewToBeDisplayed();
-  }
-
-  @Override
   protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
 
     return e.getLocalizedMessage();
-  }
-
-  @Override
-  public void showError(Throwable e, boolean pullToRefresh) {
-
-    super.showError(e, pullToRefresh);
-
-    emptyView.setVisibility(View.GONE);
   }
 
   @Override

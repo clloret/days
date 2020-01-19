@@ -117,6 +117,7 @@
   <string name="title_reminder_time">Reminder time</string>
   <string name="title_remote_datastore">Remote datastore</string>
   <string name="title_select_tags">Select tags</string>
+  <string name="title_event_search">Search</string>
 
   <plurals name="day">
     <item quantity="one">day</item>
