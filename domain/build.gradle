@@ -20,6 +20,9 @@ dependencies {
 sourceCompatibility = rootProject.ext.javaVersion
 targetCompatibility = rootProject.ext.javaVersion
 
+compileJava.options.encoding = "UTF-8"
+compileTestJava.options.encoding = "UTF-8"
+
 jacocoTestReport {
     reports {
         xml.enabled true
