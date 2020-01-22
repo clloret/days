@@ -25,6 +25,7 @@ import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
@@ -214,4 +215,16 @@ public class EventListPresenterTest {
     verify(eventListView).reminderSuccessfully(any(EventViewModel.class));
   }
 
+  @Test
+  public void observeSearchQuery_WhenFilterMatches_ShowFilteredEvents() {
+
+    final PublishSubject<String> subject = PublishSubject.create();
+
+    eventListPresenter.observeSearchQuery(subject);
+
+    subject.onNext("Filtered aeiouaeiou");
+
+    verify(eventListView).setData(argThat(list -> list.size() == 1));
+    verify(eventListView).showContent();
+  }
 }
