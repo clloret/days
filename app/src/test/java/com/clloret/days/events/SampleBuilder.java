@@ -41,9 +41,21 @@ public class SampleBuilder {
 
     List<Event> eventList = new ArrayList<>(5);
 
-    for (int i = 0; i < 5; i++) {
-      eventList.add(new Event());
-    }
+    Event event1 = new EventBuilder()
+        .setId("Id1")
+        .setName("Sample Event 1")
+        .setFavorite(true)
+        .setDate(new Date())
+        .build();
+    eventList.add(event1);
+
+    Event event2 = new EventBuilder()
+        .setId("Id2")
+        .setName("Filtered áéíóúàèìòù")
+        .setFavorite(true)
+        .setDate(new Date())
+        .build();
+    eventList.add(event2);
 
     return eventList;
   }
