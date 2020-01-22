@@ -230,6 +230,25 @@ public class EventListFragment
     }
   }
 
+  private void configureSearchView(@NonNull Menu menu) {
+
+    final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+    if (searchItem != null) {
+      searchView = (SearchView) searchItem.getActionView();
+    }
+
+    final FragmentActivity activity = Objects.requireNonNull(getActivity());
+    final SearchManager searchManager = (SearchManager)
+        activity.getSystemService(Context.SEARCH_SERVICE);
+
+    if (searchView != null) {
+      searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+
+      presenter.observeSearchQuery(RxSearchObservable.fromView(searchView));
+    }
+  }
+
   @NonNull
   @Override
   public EventListPresenter createPresenter() {
@@ -329,40 +348,6 @@ public class EventListFragment
     } else {
 
       return super.onOptionsItemSelected(item);
-    }
-  }
-
-  private void configureSearchView(@NonNull Menu menu) {
-
-    final MenuItem searchItem = menu.findItem(R.id.action_search);
-
-    if (searchItem != null) {
-      searchView = (SearchView) searchItem.getActionView();
-    }
-
-    final FragmentActivity activity = Objects.requireNonNull(getActivity());
-    final SearchManager searchManager = (SearchManager)
-        activity.getSystemService(Context.SEARCH_SERVICE);
-
-    if (searchView != null) {
-      searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
-
-      SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-
-          Timber.d("onQueryTextSubmit: %s", query);
-          return true;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-
-          Timber.d("onQueryTextChange: %s", newText);
-          return true;
-        }
-      };
-      searchView.setOnQueryTextListener(queryTextListener);
     }
   }
 
