@@ -31,4 +31,13 @@ public class StringUtilsTest {
     assertThat(result).isFalse();
   }
 
+  @Test
+  public void normalizeText_WhenSpecialsChars_ReturnOk() {
+
+    String text = "Filtered áéíóúàèìòù";
+    String result = StringUtils.normalizeText(text);
+
+    assertThat(result).isEqualTo("filtered aeiouaeiou");
+  }
+
 }

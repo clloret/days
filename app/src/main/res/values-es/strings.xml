@@ -118,4 +118,5 @@
     <item quantity="other">años</item>
   </plurals>
   <string name="action_filter_with_reminder">Con recordatorio</string>
+  <string name="title_event_search">Buscar</string>
 </resources>
