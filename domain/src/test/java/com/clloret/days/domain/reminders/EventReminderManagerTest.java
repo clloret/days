@@ -28,6 +28,7 @@ import junitparams.Parameters;
 import junitparams.converters.Param;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.PeriodType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,7 +101,8 @@ public class EventReminderManagerTest {
     when(stringResourceProvider.getNotificationBigText())
         .thenReturn(STUB_NOTIFICATION_BIG_TEXT);
 
-    when(eventPeriodFormat.getTimeLapseFormatted(isA(Date.class), isA(Date.class)))
+    when(eventPeriodFormat.getTimeLapseFormatted(isA(Date.class), isA(Date.class),
+        isA(PeriodType.class)))
         .thenReturn(STUB_TIME_LAPSE_FORMATTED);
   }
 

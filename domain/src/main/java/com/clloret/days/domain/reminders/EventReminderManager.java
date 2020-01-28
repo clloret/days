@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.PeriodType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,7 @@ public class EventReminderManager {
 
     final String contentTitle = event.getName();
     final String contentText = eventPeriodFormat
-        .getTimeLapseFormatted(event.getDate(), dateReminder);
+        .getTimeLapseFormatted(event.getDate(), dateReminder, PeriodType.days());
     final String notificationBigText = stringResourceProvider.getNotificationBigText();
     final String eventDescription = event.getDescription();
     final Optional<String> bigText = getBigTextFromEventDescription(contentText,

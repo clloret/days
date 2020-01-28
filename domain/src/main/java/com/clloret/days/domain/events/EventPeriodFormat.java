@@ -16,8 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class EventPeriodFormat {
 
-  private final Logger logger = LoggerFactory
-      .getLogger(EventPeriodFormat.class.getSimpleName());
+  private final Logger logger = LoggerFactory.getLogger(EventPeriodFormat.class.getSimpleName());
   private final TimeProvider timeProvider;
   private final StringResourceProvider stringResourceProvider;
 
@@ -44,20 +43,20 @@ public class EventPeriodFormat {
     return NumberFormat.getInstance().format(daysSince);
   }
 
-  private String getDaysSinceFormattedWithWords(Date fromDate, Date toDate) {
+  private String getDaysSinceFormattedWithWords(Date fromDate, Date toDate, PeriodType periodType) {
 
     final LocalDate localFromDate = new LocalDate(toDate);
     final LocalDate localToDate = new LocalDate(fromDate);
     final Period period = new Period(
         localFromDate.isBefore(localToDate) ? localFromDate : localToDate,
         localToDate.isAfter(localFromDate) ? localToDate : localFromDate,
-        PeriodType.days());
+        periodType);
     final PeriodFormatter periodFormatter = PeriodFormat.wordBased();
 
     return periodFormatter.print(period);
   }
 
-  public String getTimeLapseFormatted(Date fromDate, Date toDate) {
+  public String getTimeLapseFormatted(Date fromDate, Date toDate, PeriodType periodType) {
 
     final LocalDate localFromDate = new LocalDate(fromDate);
     final LocalDate localToDate = new LocalDate(toDate);
@@ -70,7 +69,8 @@ public class EventPeriodFormat {
       return stringResourceProvider.getPeriodFormatToday();
     } else {
 
-      String daysSinceFormattedWithWords = getDaysSinceFormattedWithWords(fromDate, toDate);
+      String daysSinceFormattedWithWords = getDaysSinceFormattedWithWords(fromDate, toDate,
+          periodType);
       String formatText =
           localFromDate.isBefore(localToDate) ? stringResourceProvider.getPeriodFormatBefore()
               : stringResourceProvider.getPeriodFormatAfter();
