@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import com.clloret.days.R;
 import com.clloret.days.domain.utils.SelectionMap;
+import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import io.reactivex.Observable;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 public class SelectTagsHelper {
 
   private final Resources resources;
+  private SelectTagsDialogListener dialogListener;
   private SelectionMap<String, TagViewModel> mapTags = new SelectionMap<>();
 
   @Inject
@@ -116,6 +118,11 @@ public class SelectTagsHelper {
   public void addTagToSelection(TagViewModel tag) {
 
     mapTags.addToSelection(tag);
+  }
+
+  public void setDialogListener(@Nullable SelectTagsDialogListener dialogListener) {
+
+    this.dialogListener = dialogListener;
   }
 
   public interface SelectTagsHelperListener {

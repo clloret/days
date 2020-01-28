@@ -21,12 +21,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
-import com.clloret.days.domain.utils.DateUtils;
-import com.clloret.days.events.common.PeriodTextFormatter;
-import com.clloret.days.events.common.SelectDateHelper;
-import com.clloret.days.events.common.SelectPeriodHelper;
-import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
-import com.clloret.days.events.common.SelectTagsHelper;
+import com.clloret.days.events.common.CommonEventView;
+import com.clloret.days.events.common.EditEventHelper;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventDeletedEvent;
@@ -36,7 +32,6 @@ import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import dagger.android.AndroidInjection;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -47,7 +42,7 @@ import org.joda.time.LocalDate;
 @SuppressWarnings("PMD.TooManyMethods")
 public class EventEditActivity
     extends BaseMvpActivity<EventEditView, EventEditPresenter>
-    implements EventEditView, SelectTagsDialogListener, FABProgressListener {
+    implements EventEditView, CommonEventView, FABProgressListener {
 
   private static final String EXTRA_EVENT = "com.clloret.days.extras.EXTRA_EVENT";
 
@@ -74,6 +69,9 @@ public class EventEditActivity
 
   @BindView(R.id.textview_eventdetail_description)
   TextView descriptionText;
+
+  @BindView(R.id.textview_eventdetail_period_text)
+  TextView periodText;
 
   @BindView(R.id.edittext_eventdetail_description)
   EditText descriptionEdit;
@@ -112,17 +110,8 @@ public class EventEditActivity
   FABProgressCircle fabProgress;
 
   @Inject
-  SelectTagsHelper selectTagsHelper;
+  EditEventHelper editEventHelper;
 
-  @Inject
-  SelectPeriodHelper selectPeriodHelper;
-
-  @Inject
-  PeriodTextFormatter periodTextFormatter;
-
-  private EventViewModel originalEvent;
-  private EventViewModel modifiedEvent;
-  private LocalDate selectedDate;
   private boolean editing;
 
   public static Intent getCallingIntent(Context context, EventViewModel event) {
@@ -148,9 +137,6 @@ public class EventEditActivity
     fixFinalIconPosition(fabProgress);
     fabProgress.attachListener(this);
 
-    originalEvent = Objects.requireNonNull(getIntent().getParcelableExtra(EXTRA_EVENT));
-    modifiedEvent = originalEvent.clone();
-
     dateText.setInputType(InputType.TYPE_NULL);
     dateText.setKeyListener(null);
     dateText.setOnFocusChangeListener((v, hasFocus) -> {
@@ -159,6 +145,12 @@ public class EventEditActivity
         selectDate();
       }
     });
+
+    EventViewModel originalEvent = Objects
+        .requireNonNull(getIntent().getParcelableExtra(EXTRA_EVENT));
+    editEventHelper
+        .setOriginalEvent(originalEvent);
+    editEventHelper.setView(this);
 
     showData();
 
@@ -220,15 +212,7 @@ public class EventEditActivity
   @Override
   public void setData(List<TagViewModel> data) {
 
-    selectTagsHelper.setMapTags(data);
-
-    if (modifiedEvent.getTags().length != 0) {
-      selectTagsHelper.selectTagsFromEvent(modifiedEvent);
-    }
-
-    showSelectedTags();
-    showSelectedReminder();
-    showSelectedTimeLapseReset();
+    editEventHelper.setAvailableTags(data);
   }
 
   @Override
@@ -273,13 +257,6 @@ public class EventEditActivity
     } else {
       showSnackbarMessage(R.string.msg_error_event_could_not_be_deleted);
     }
-  }
-
-  @Override
-  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
-
-    selectTagsHelper.updateSelectedTags(selectedItems);
-    showSelectedTags();
   }
 
   @Override
@@ -347,6 +324,7 @@ public class EventEditActivity
 
   private void addEventToCalendar() {
 
+    EventViewModel modifiedEvent = editEventHelper.getModifiedEvent();
     Date eventDate = modifiedEvent.getDate();
 
     if (eventDate == null) {
@@ -364,53 +342,6 @@ public class EventEditActivity
     startActivity(calIntent);
   }
 
-  private void deleteEvent() {
-
-    presenter.deleteEvent(modifiedEvent);
-  }
-
-  private void showData() {
-
-    String name = modifiedEvent.getName();
-    this.nameText.setText(name);
-    nameEdit.setText(name);
-    nameEdit.selectAll();
-
-    String description = modifiedEvent.getDescription();
-    this.descriptionText.setText(description);
-    descriptionEdit.setText(description);
-    descriptionEdit.selectAll();
-
-    selectedDate = new LocalDate(modifiedEvent.getDate());
-
-    dateText.setText(DateUtils.formatDate(modifiedEvent.getDate()));
-  }
-
-  private void showSelectedTags() {
-
-    tagsText.setText(selectTagsHelper.showSelectedTags());
-  }
-
-  private void showSelectedReminder() {
-
-    reminderText.setText(periodTextFormatter.formatReminder(modifiedEvent));
-  }
-
-  private void showSelectedTimeLapseReset() {
-
-    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(modifiedEvent));
-  }
-
-  private void selectDate() {
-
-    SelectDateHelper.selectDate(this, selectedDate, (date, formattedDate) -> {
-
-      selectedDate = date;
-      dateText.setText(formattedDate);
-    });
-
-  }
-
   private void editMode() {
 
     editing = true;
@@ -423,39 +354,46 @@ public class EventEditActivity
     setControlsClickable(true);
   }
 
+  private void showData() {
+
+    EventViewModel modifiedEvent = editEventHelper.getModifiedEvent();
+
+    String name = modifiedEvent.getName();
+    this.nameText.setText(name);
+    nameEdit.setText(name);
+    nameEdit.selectAll();
+
+    String description = modifiedEvent.getDescription();
+    this.descriptionText.setText(description);
+    descriptionEdit.setText(description);
+    descriptionEdit.selectAll();
+
+    editEventHelper.showData();
+  }
+
+  private void selectDate() {
+
+    editEventHelper.selectDate(this);
+  }
+
   private void selectTags() {
 
-    selectTagsHelper.showSelectTagsDialog(this, this::showSnackbarMessage);
+    editEventHelper.selectTags(getSupportFragmentManager());
   }
 
   private void selectReminder() {
 
-    selectPeriodHelper.showSelectReminderDialog(this, modifiedEvent, (period, timeUnit) -> {
-      modifiedEvent.setReminder(period);
-      modifiedEvent.setReminderUnit(timeUnit);
-
-      showSelectedReminder();
-    });
+    editEventHelper.selectReminder(getSupportFragmentManager());
   }
 
   private void clearReminder() {
 
-    if (modifiedEvent.hasReminder()) {
-      modifiedEvent.setReminder(null);
-
-      showSelectedReminder();
-    }
+    editEventHelper.clearReminder();
   }
 
   private void selectTimeLapseReset() {
 
-    selectPeriodHelper.showSelectTimeLapseResetDialog(this, modifiedEvent,
-        (period, timeUnit) -> {
-          modifiedEvent.setTimeLapse(period);
-          modifiedEvent.setTimeLapseUnit(timeUnit);
-
-          showSelectedTimeLapseReset();
-        });
+    editEventHelper.selectTimeLapseReset(getSupportFragmentManager());
   }
 
   private void saveEvent() {
@@ -464,16 +402,62 @@ public class EventEditActivity
 
     String name = nameEdit.getText().toString();
     String description = descriptionEdit.getText().toString();
+    String[] selectedTags = editEventHelper.getSelectedTags();
+
+    LocalDate selectedDate = editEventHelper.getSelectedDate();
     Date date = selectedDate.toDate();
-    String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
-        .toArray(new String[0]);
 
-    modifiedEvent.setName(name);
-    modifiedEvent.setDescription(description);
-    modifiedEvent.setDate(date);
-    modifiedEvent.setTags(tags);
+    EventViewModel event = editEventHelper.getModifiedEvent();
+    event.setName(name);
+    event.setDescription(description);
+    event.setDate(date);
+    event.setTags(selectedTags);
 
-    presenter.saveEvent(modifiedEvent, originalEvent);
+    EventViewModel originalEvent = editEventHelper.getOriginalEvent();
+
+    presenter.saveEvent(event, originalEvent);
+  }
+
+  private void deleteEvent() {
+
+    EventViewModel modifiedEvent = editEventHelper.getModifiedEvent();
+    presenter.deleteEvent(modifiedEvent);
+  }
+
+  @Override
+  public void showPeriodText(String text) {
+
+    periodText.setText(text);
+  }
+
+  @Override
+  public void showDate(String text) {
+
+    dateText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTags(String text) {
+
+    tagsText.setText(text);
+  }
+
+  @Override
+  public void showSelectedReminder(String text) {
+
+    reminderText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTimeLapseReset(String text) {
+
+    timeLapseResetText.setText(text);
+  }
+
+  @Override
+  public void showError(String text) {
+
+    this.showSnackbarMessage(text);
   }
 
 }
