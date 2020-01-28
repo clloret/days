@@ -2,8 +2,9 @@ package com.clloret.days.events.common;
 
 import android.content.res.Resources;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import com.clloret.days.R;
-import com.clloret.days.base.BaseMvpActivity;
 import com.clloret.days.domain.utils.SelectionMap;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
@@ -65,7 +66,8 @@ public class SelectTagsHelper {
     }
   }
 
-  public void showSelectTagsDialog(BaseMvpActivity activity, SelectTagsHelperListener listener) {
+  public void showSelectTagsDialog(FragmentManager fragmentManager,
+      SelectTagsHelperListener listener) {
 
     if (mapTags.size() == 0) {
       listener.onError(resources.getString(R.string.msg_error_no_tags_available));
@@ -96,8 +98,8 @@ public class SelectTagsHelper {
     SelectTagsDialog dialog = SelectTagsDialog
         .newInstance(resources.getString(R.string.title_select_tags),
             nameTags.toArray(new String[0]), checkedTags,
-            new ArrayList<>(tags));
-    dialog.show(activity.getSupportFragmentManager(), "tags");
+            new ArrayList<>(tags), dialogListener);
+    dialog.show(fragmentManager, "tags");
   }
 
   public void updateSelectedTags(Collection<TagViewModel> selectedItems) {
