@@ -3,6 +3,7 @@ package com.clloret.days.events.common;
 import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.events.EventPeriodFormat;
 import com.clloret.days.domain.utils.DateUtils;
 import com.clloret.days.domain.utils.Optional;
@@ -114,6 +115,16 @@ public class EditEventHelper implements SelectTagsDialogListener {
       modifiedEvent.setReminder(null);
 
       formatAndShowReminderText();
+    }
+  }
+
+  public void clearTimeLapseReset() {
+
+    if (modifiedEvent.hasTimeLapseReset()) {
+      modifiedEvent.setTimeLapse(0);
+      modifiedEvent.setTimeLapseUnit(TimeUnit.DAY);
+
+      formatAndShowTimeLapseReset();
     }
   }
 
