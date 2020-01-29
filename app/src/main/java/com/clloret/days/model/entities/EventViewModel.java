@@ -237,6 +237,11 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     return reminder != null;
   }
 
+  public boolean hasTimeLapseReset() {
+
+    return timeLapse != 0;
+  }
+
   @Override
   public EventViewModel clone() {
 

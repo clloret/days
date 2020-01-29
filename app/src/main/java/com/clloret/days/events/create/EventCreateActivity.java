@@ -262,6 +262,12 @@ public class EventCreateActivity
     selectTimeLapseReset();
   }
 
+  @OnClick(R.id.button_eventdetail_clear_reset)
+  public void onClickClearReset() {
+
+    clearTimeLapseReset();
+  }
+
   @OnClick(R.id.fab)
   public void onClickFab() {
 
@@ -291,6 +297,11 @@ public class EventCreateActivity
   private void selectTimeLapseReset() {
 
     editEventHelper.selectTimeLapseReset(getSupportFragmentManager());
+  }
+
+  private void clearTimeLapseReset() {
+
+    editEventHelper.clearTimeLapseReset();
   }
 
   private void saveEvent() {
