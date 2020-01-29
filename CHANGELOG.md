@@ -11,7 +11,8 @@ All notable changes to this project will be documented in this file.
 - Filter events with reminder
 - New today, upcoming, previous and with reminder default list preference
 - Search events from the app toolbar
-- Show period of time of event in days, months and years when view or edit the event 
+- Show period of time of event in days, months and years when view or edit the event
+- Button to clear automatic event day reset in create and edit event screen 
 
 ## [1.0.0] - 2019-12-09
 
