@@ -40,4 +40,12 @@ public class StringUtilsTest {
     assertThat(result).isEqualTo("filtered aeiouaeiou");
   }
 
+  @Test
+  public void capitalizeFirstLetter_Always_CapitalizeFirstLetter() {
+
+    String text = "lowercase text";
+    String result = StringUtils.capitalizeFirstLetter(text);
+
+    assertThat(result).isEqualTo("Lowercase text");
+  }
 }
