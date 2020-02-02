@@ -17,10 +17,11 @@
   <string name="action_drawer_open">Abrir cajón de navegación</string>
   <string name="action_filter_all">Todo</string>
   <string name="action_filter_favorites">Favoritos</string>
-  <string name="action_filter_upcoming">Próximos</string>
   <string name="action_filter_no_tag">Sin etiquetas</string>
   <string name="action_filter_previous">Anteriores</string>
   <string name="action_filter_today">Hoy</string>
+  <string name="action_filter_upcoming">Próximos</string>
+  <string name="action_filter_with_reminder">Con recordatorio</string>
   <string name="action_help">Ayuda</string>
   <string name="action_new_tag">Nueva etiqueta</string>
   <string name="action_no">No</string>
@@ -48,6 +49,7 @@
   <string name="event_details_reset_format_message">Cada %1$s %2$s %3$s del evento</string>
   <string name="event_details_tags">Etiquetas</string>
   <string name="msg_change_to_airtable_confirmation">¿Estás seguro de usar el almacenamiento de datos de Airtable? Todos los datos locales serán borrados!</string>
+  <string name="msg_create_event_with_voice">Habla para crear un evento</string>
   <string name="msg_empty_events">¡Todavía no tienes ningún evento!</string>
   <string name="msg_error">Error!</string>
   <string name="msg_error_event_could_not_be_deleted">El evento no se ha podido borrar</string>
@@ -58,6 +60,7 @@
   <string name="msg_error_tag_could_not_be_deleted">La etiqueta no se ha podido borrar</string>
   <string name="msg_error_tag_name_required">Debes introducir un nombre de etiqueta</string>
   <string name="msg_error_text_can_not_be_empty">El texto no puede estar vacío</string>
+  <string name="msg_error_voice_recognition_not_supported">El reconocimiento de voz no está disponible</string>
   <string name="msg_event_created">Evento creado con éxito</string>
   <string name="msg_event_deleted">Evento eliminado con éxito</string>
   <string name="msg_event_discarded">Evento descartado</string>
@@ -98,6 +101,8 @@
   <string name="title_dialog_airtable_api_key">Introduce tu clave API de Airtable</string>
   <string name="title_dialog_airtable_base">Introduce tu base ID de Airtable</string>
   <string name="title_dialog_reminder_time">Selecciona la hora del recordatorio</string>
+  <string name="title_event_search">Buscar</string>
+  <string name="title_event_voice_create">Entrada de voz</string>
   <string name="title_general">General</string>
   <string name="title_order">Ordenar</string>
   <string name="title_privacy">Privacidad</string>
@@ -117,9 +122,4 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
-  <string name="action_filter_with_reminder">Con recordatorio</string>
-  <string name="title_event_search">Buscar</string>
-  <string name="title_event_voice_create">Entrada de voz</string>
-  <string name="msg_create_event_with_voice">Habla para crear un evento</string>
-  <string name="msg_error_voice_recognition_not_supported">El reconocimiento de voz no está disponible</string>
 </resources>
