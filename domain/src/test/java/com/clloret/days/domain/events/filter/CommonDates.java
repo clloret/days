@@ -10,7 +10,7 @@ class CommonDates {
       .withYear(2019);
 
   static final LocalDate TEST_DATE_BEFORE = new LocalDate()
-      .withDayOfMonth(31)
+      .withDayOfMonth(1)
       .withMonthOfYear(5)
       .withYear(2019);
 }
