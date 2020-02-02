@@ -19,6 +19,7 @@ import butterknife.OnClick;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
 import com.clloret.days.domain.utils.Optional;
+import com.clloret.days.domain.utils.StringUtils;
 import com.clloret.days.events.common.CommonEventView;
 import com.clloret.days.events.common.EditEventHelper;
 import com.clloret.days.model.entities.EventViewModel;
@@ -41,6 +42,7 @@ public class EventCreateActivity
     extends BaseMvpActivity<EventCreateView, EventCreatePresenter>
     implements EventCreateView, CommonEventView, FABProgressListener {
 
+  private static final String EXTRA_NAME = "com.clloret.days.extras.EXTRA_NAME";
   private static final String EXTRA_TAG = "com.clloret.days.extras.EXTRA_TAG";
 
   @Inject
@@ -88,9 +90,11 @@ public class EventCreateActivity
   @Inject
   EditEventHelper editEventHelper;
 
-  public static Intent getCallingIntent(Context context, Optional<TagViewModel> tag) {
+  public static Intent getCallingIntent(Context context, Optional<String> name,
+      Optional<TagViewModel> tag) {
 
     Intent intent = new Intent(context, EventCreateActivity.class);
+    name.ifPresent(value -> intent.putExtra(EXTRA_NAME, value));
     tag.ifPresent(value -> intent.putExtra(EXTRA_TAG, value));
 
     return intent;
@@ -116,14 +120,8 @@ public class EventCreateActivity
 
     showSoftKeyboard();
 
-    EventViewModel newEvent = new EventViewModel();
-    newEvent.setDate(new Date());
-    editEventHelper.setOriginalEvent(newEvent);
+    createDefaultEvent();
     editEventHelper.setView(this);
-
-    TagViewModel defaultTag = getIntent().getParcelableExtra(EXTRA_TAG);
-    editEventHelper.setSelectedTag(defaultTag);
-
     editEventHelper.showData();
 
     presenter.loadTags();
@@ -213,12 +211,6 @@ public class EventCreateActivity
   }
 
   @Override
-  public void onFABProgressAnimationEnd() {
-
-    finish();
-  }
-
-  @Override
   public void onEmptyEventNameError() {
 
     nameLayout.setError(getString(R.string.msg_error_event_name_required));
@@ -230,6 +222,12 @@ public class EventCreateActivity
   public void onEmptyEventDateError() {
 
     showToastMessage(R.string.msg_error_event_date_required);
+  }
+
+  @Override
+  public void onFABProgressAnimationEnd() {
+
+    finish();
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -272,6 +270,28 @@ public class EventCreateActivity
   public void onClickFab() {
 
     saveEvent();
+  }
+
+  private void createDefaultEvent() {
+
+    EventViewModel newEvent = new EventViewModel();
+    newEvent.setDate(new Date());
+
+    Intent intent = getIntent();
+
+    if (intent.hasExtra(EXTRA_NAME)) {
+      String eventName = StringUtils.capitalizeFirstLetter(intent.getStringExtra(EXTRA_NAME));
+      newEvent.setName(eventName);
+      nameEdit.setText(eventName);
+      nameEdit.setSelection(nameEdit.getText().length());
+    }
+
+    if (intent.hasExtra(EXTRA_TAG)) {
+      TagViewModel defaultTag = intent.getParcelableExtra(EXTRA_TAG);
+      editEventHelper.setSelectedTag(defaultTag);
+    }
+
+    editEventHelper.setOriginalEvent(newEvent);
   }
 
   private void selectDate() {

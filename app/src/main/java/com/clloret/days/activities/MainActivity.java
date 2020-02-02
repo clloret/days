@@ -1,10 +1,18 @@
 package com.clloret.days.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,13 +29,17 @@ import com.clloret.days.events.list.EventListFragment.OnProgressListener;
 import com.clloret.days.menu.MenuFragment;
 import com.clloret.days.model.entities.TagViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import dagger.android.AndroidInjection;
+import java.util.ArrayList;
+import java.util.Locale;
 import javax.inject.Inject;
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity
     implements OnProgressListener, OnFragmentLifecycleListener {
 
+  private static final int REQUEST_CODE_SPEECH_INPUT = 0x01;
   private static final String STATE_TITLE = "title";
 
   @Inject
@@ -65,7 +77,7 @@ public class MainActivity extends AppCompatActivity
     actionNewEvent.setOnClickListener(v -> {
 
       Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
-      navigator.navigateToEventCreate(this, selectedTag);
+      navigator.navigateToEventCreate(this, Optional.empty(), selectedTag);
     });
 
     if (savedInstanceState == null) {
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onConfigurationChanged(Configuration newConfig) {
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
 
     super.onConfigurationChanged(newConfig);
 
@@ -98,16 +110,6 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  public void onAttachFragment(Fragment fragment) {
-
-    if (fragment instanceof EventListFragment) {
-      EventListFragment eventListFragment = (EventListFragment) fragment;
-      eventListFragment.setOnProgressListener(this);
-      eventListFragment.setOnFragmentLifecycleListener(this);
-    }
-  }
-
-  @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
     super.onRestoreInstanceState(savedInstanceState);
@@ -117,9 +119,56 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+
+    MenuInflater menuInflater = getMenuInflater();
+    menuInflater.inflate(R.menu.menu_main, menu);
+    return true;
+  }
+
+  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
-    return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    //noinspection SwitchStatementWithTooFewBranches
+    switch (item.getItemId()) {
+
+      case R.id.menu_speech_recognition:
+        startRecognizeSpeech();
+        return true;
+
+      default:
+        return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+  }
+
+  @Override
+  protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+    super.onActivityResult(requestCode, resultCode, data);
+
+    if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
+      if (resultCode == RESULT_OK && null != data) {
+        final ArrayList<String> result = data
+            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+        final String recognizedText = result.get(0);
+
+        Timber.i(recognizedText);
+
+        Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
+        navigator.navigateToEventCreate(this, Optional.of(recognizedText), selectedTag);
+      }
+    }
+
+  }
+
+  @Override
+  public void onAttachFragment(@NonNull Fragment fragment) {
+
+    if (fragment instanceof EventListFragment) {
+      EventListFragment eventListFragment = (EventListFragment) fragment;
+      eventListFragment.setOnProgressListener(this);
+      eventListFragment.setOnFragmentLifecycleListener(this);
+    }
   }
 
   private void configureNavigationDrawer() {
@@ -153,6 +202,30 @@ public class MainActivity extends AppCompatActivity
   private void injectDependencies() {
 
     AndroidInjection.inject(this);
+  }
+
+  private void startRecognizeSpeech() {
+
+    final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+    intent
+        .putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+    intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.msg_create_event_with_voice));
+
+    try {
+      startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+    } catch (ActivityNotFoundException a) {
+      showSnackBar(R.string.msg_error_voice_recognition_not_supported);
+    }
+  }
+
+  private void showSnackBar(@StringRes int resId) {
+
+    View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+    String message = getString(resId);
+    Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+        .show();
   }
 
   @Override

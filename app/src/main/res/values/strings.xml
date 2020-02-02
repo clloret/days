@@ -50,6 +50,7 @@
   <string name="event_details_reset_format_message">Every %1$s %2$s %3$s the event</string>
   <string name="event_details_tags">Tags</string>
   <string name="msg_change_to_airtable_confirmation">Are you sure to use Airtable datastore? All local data will be deleted!</string>
+  <string name="msg_create_event_with_voice">Speak up to create an event</string>
   <string name="msg_empty_events">You don\'t have any event yet!</string>
   <string name="msg_error">Error!</string>
   <string name="msg_error_event_could_not_be_deleted">The event could not be deleted</string>
@@ -60,6 +61,7 @@
   <string name="msg_error_tag_could_not_be_deleted">The tag could not be deleted</string>
   <string name="msg_error_tag_name_required">You must enter an tag name</string>
   <string name="msg_error_text_can_not_be_empty">Text can not be empty</string>
+  <string name="msg_error_voice_recognition_not_supported">Voice recognition is not supported</string>
   <string name="msg_event_created">Event successfully created</string>
   <string name="msg_event_deleted">Event successfully deleted</string>
   <string name="msg_event_discarded">Event discarded</string>

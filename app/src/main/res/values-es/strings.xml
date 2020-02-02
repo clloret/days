@@ -120,4 +120,6 @@
   <string name="action_filter_with_reminder">Con recordatorio</string>
   <string name="title_event_search">Buscar</string>
   <string name="title_event_voice_create">Entrada de voz</string>
+  <string name="msg_create_event_with_voice">Habla para crear un evento</string>
+  <string name="msg_error_voice_recognition_not_supported">El reconocimiento de voz no está disponible</string>
 </resources>

@@ -20,10 +20,11 @@ public class Navigator {
 
   }
 
-  public void navigateToEventCreate(Context context, Optional<TagViewModel> selectedTag) {
+  public void navigateToEventCreate(Context context, Optional<String> name,
+      Optional<TagViewModel> selectedTag) {
 
     if (context != null) {
-      Intent intentToLaunch = EventCreateActivity.getCallingIntent(context, selectedTag);
+      Intent intentToLaunch = EventCreateActivity.getCallingIntent(context, name, selectedTag);
       context.startActivity(intentToLaunch);
     }
   }
