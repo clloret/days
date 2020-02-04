@@ -110,17 +110,6 @@ public class EventListFragment
     // Mandatory empty constructor for the fragment manager
   }
 
-  public static EventListFragment newInstance(@NonNull EventFilterStrategy eventFilterStrategy) {
-
-    Bundle bundle = new Bundle();
-    bundle.putSerializable(BUNDLE_FILTER_STRATEGY, eventFilterStrategy);
-
-    EventListFragment fragment = new EventListFragment();
-    fragment.setArguments(bundle);
-
-    return fragment;
-  }
-
   @NonNull
   @Override
   public LceViewState<List<EventViewModel>, EventListView> createViewState() {
@@ -182,73 +171,6 @@ public class EventListFragment
     presenter.loadEvents(pullToRefresh);
   }
 
-  private void selectMenuSortMode(Menu menu) {
-
-    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
-    menu.findItem(menuId).setChecked(true);
-  }
-
-  private boolean sortByComparator(int itemId) {
-
-    switch (itemId) {
-      case R.id.menu_sort_name:
-      case R.id.menu_sort_favorite:
-      case R.id.menu_sort_latest_date:
-      case R.id.menu_sort_oldest_date:
-        final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
-        adapter.sortByComparator(comparator);
-        preferenceUtils.setSortMode(sortType);
-        return true;
-
-      default:
-        return false;
-    }
-  }
-
-  private void checkIfEmptyViewToBeDisplayed() {
-
-    if (adapter.getItemCount() == 0) {
-      emptyView.setVisibility(View.VISIBLE);
-    } else {
-      emptyView.setVisibility(View.GONE);
-    }
-  }
-
-  private void addCreatedEventToAdapter(EventViewModel event) {
-
-    int index = adapter.addItem(event);
-    recyclerView.scrollToPosition(index);
-  }
-
-  private void readBundle(Bundle bundle) {
-
-    if (bundle != null) {
-      EventFilterStrategy filterStrategy = (EventFilterStrategy) bundle
-          .getSerializable(BUNDLE_FILTER_STRATEGY);
-      presenter.setFilterStrategy(filterStrategy);
-    }
-  }
-
-  private void configureSearchView(@NonNull Menu menu) {
-
-    final MenuItem searchItem = menu.findItem(R.id.action_search);
-
-    if (searchItem != null) {
-      searchView = (SearchView) searchItem.getActionView();
-    }
-
-    final FragmentActivity activity = Objects.requireNonNull(getActivity());
-    final SearchManager searchManager = (SearchManager)
-        activity.getSystemService(Context.SEARCH_SERVICE);
-
-    if (searchView != null) {
-      searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
-
-      presenter.observeSearchQuery(RxSearchObservable.fromView(searchView));
-    }
-  }
-
   @NonNull
   @Override
   public EventListPresenter createPresenter() {
@@ -288,11 +210,26 @@ public class EventListFragment
 
     contentView.setOnRefreshListener(this);
 
-    final int sortMode = preferenceUtils.getSortMode();
-    savedSortType = SortType.fromValue(sortMode);
-    Comparator<EventSortable> comparator = eventSortComparators.get(savedSortType);
+    createAdapter();
+
+    configureRecyclerView();
+  }
+
+  private void createAdapter() {
+
+    Comparator<EventSortable> comparator = getEventSortableComparator();
 
     adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
+  }
+
+  private Comparator<EventSortable> getEventSortableComparator() {
+
+    final int sortMode = preferenceUtils.getSortMode();
+    savedSortType = SortType.fromValue(sortMode);
+    return eventSortComparators.get(savedSortType);
+  }
+
+  private void configureRecyclerView() {
 
     GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
     recyclerView.setLayoutManager(layoutManager);
@@ -502,6 +439,84 @@ public class EventListFragment
   public void reminderSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
+  }
+
+  public static EventListFragment newInstance(@NonNull EventFilterStrategy eventFilterStrategy) {
+
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(BUNDLE_FILTER_STRATEGY, eventFilterStrategy);
+
+    EventListFragment fragment = new EventListFragment();
+    fragment.setArguments(bundle);
+
+    return fragment;
+  }
+
+  private void selectMenuSortMode(Menu menu) {
+
+    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    menu.findItem(menuId).setChecked(true);
+  }
+
+  private boolean sortByComparator(int itemId) {
+
+    switch (itemId) {
+      case R.id.menu_sort_name:
+      case R.id.menu_sort_favorite:
+      case R.id.menu_sort_latest_date:
+      case R.id.menu_sort_oldest_date:
+        final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
+        final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
+        adapter.sortByComparator(comparator);
+        preferenceUtils.setSortMode(sortType);
+        return true;
+
+      default:
+        return false;
+    }
+  }
+
+  private void checkIfEmptyViewToBeDisplayed() {
+
+    if (adapter.getItemCount() == 0) {
+      emptyView.setVisibility(View.VISIBLE);
+    } else {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
+
+  private void addCreatedEventToAdapter(EventViewModel event) {
+
+    int index = adapter.addItem(event);
+    recyclerView.scrollToPosition(index);
+  }
+
+  private void readBundle(Bundle bundle) {
+
+    if (bundle != null) {
+      EventFilterStrategy filterStrategy = (EventFilterStrategy) bundle
+          .getSerializable(BUNDLE_FILTER_STRATEGY);
+      presenter.setFilterStrategy(filterStrategy);
+    }
+  }
+
+  private void configureSearchView(@NonNull Menu menu) {
+
+    final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+    if (searchItem != null) {
+      searchView = (SearchView) searchItem.getActionView();
+    }
+
+    final FragmentActivity activity = Objects.requireNonNull(getActivity());
+    final SearchManager searchManager = (SearchManager)
+        activity.getSystemService(Context.SEARCH_SERVICE);
+
+    if (searchView != null) {
+      searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+
+      presenter.observeSearchQuery(RxSearchObservable.fromView(searchView));
+    }
   }
 
   public void setOnProgressListener(OnProgressListener listener) {

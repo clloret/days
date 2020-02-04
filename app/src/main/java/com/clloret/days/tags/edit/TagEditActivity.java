@@ -63,6 +63,11 @@ public class TagEditActivity extends
 
     configureActionBar(toolbar);
 
+    getTagAndShow();
+  }
+
+  private void getTagAndShow() {
+
     tag = getIntent().getParcelableExtra(EXTRA_TAG);
 
     editName.setText(tag.getName());

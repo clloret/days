@@ -114,14 +114,6 @@ public class EventEditActivity
 
   private boolean editing;
 
-  public static Intent getCallingIntent(Context context, EventViewModel event) {
-
-    Intent intent = new Intent(context, EventEditActivity.class);
-    intent.putExtra(EXTRA_EVENT, event);
-
-    return intent;
-  }
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
@@ -134,8 +126,7 @@ public class EventEditActivity
 
     setControlsClickable(false);
 
-    fixFinalIconPosition(fabProgress);
-    fabProgress.attachListener(this);
+    configureFabProgress();
 
     dateText.setInputType(InputType.TYPE_NULL);
     dateText.setKeyListener(null);
@@ -263,6 +254,56 @@ public class EventEditActivity
   public void onFABProgressAnimationEnd() {
 
     finish();
+  }
+
+  @Override
+  public void showPeriodText(String text) {
+
+    periodText.setText(text);
+  }
+
+  @Override
+  public void showDate(String text) {
+
+    dateText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTags(String text) {
+
+    tagsText.setText(text);
+  }
+
+  @Override
+  public void showSelectedReminder(String text) {
+
+    reminderText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTimeLapseReset(String text) {
+
+    timeLapseResetText.setText(text);
+  }
+
+  @Override
+  public void showError(String text) {
+
+    this.showSnackbarMessage(text);
+  }
+
+  public static Intent getCallingIntent(Context context, EventViewModel event) {
+
+    Intent intent = new Intent(context, EventEditActivity.class);
+    intent.putExtra(EXTRA_EVENT, event);
+
+    return intent;
+  }
+
+  private void configureFabProgress() {
+
+    fixFinalIconPosition(fabProgress);
+    fabProgress.attachListener(this);
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -433,42 +474,6 @@ public class EventEditActivity
 
     EventViewModel modifiedEvent = editEventHelper.getModifiedEvent();
     presenter.deleteEvent(modifiedEvent);
-  }
-
-  @Override
-  public void showPeriodText(String text) {
-
-    periodText.setText(text);
-  }
-
-  @Override
-  public void showDate(String text) {
-
-    dateText.setText(text);
-  }
-
-  @Override
-  public void showSelectedTags(String text) {
-
-    tagsText.setText(text);
-  }
-
-  @Override
-  public void showSelectedReminder(String text) {
-
-    reminderText.setText(text);
-  }
-
-  @Override
-  public void showSelectedTimeLapseReset(String text) {
-
-    timeLapseResetText.setText(text);
-  }
-
-  @Override
-  public void showError(String text) {
-
-    this.showSnackbarMessage(text);
   }
 
 }

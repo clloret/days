@@ -71,18 +71,28 @@ public class App extends DaggerApplication
 
     super.onCreate();
 
+    configureLog();
+
+    configureAnalytics();
+
+    TimeLapseJob.scheduleJob(this);
+  }
+
+  private void configureLog() {
+
     Timber.plant(new DebugTree());
     if (!isRoboUnitTest()) {
       StethoUtils.install(this);
     }
+  }
+
+  private void configureAnalytics() {
 
     if (!BuildConfig.DEBUG && preferenceUtils.isAnalyticsEnabled()) {
       FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
       analytics.setAnalyticsCollectionEnabled(true);
       Fabric.with(this, new Crashlytics());
     }
-
-    TimeLapseJob.scheduleJob(this);
   }
 
   @Override

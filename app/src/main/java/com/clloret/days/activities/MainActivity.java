@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity
   DrawerLayout drawerLayout;
 
   @BindView(R.id.fab_main_newevent)
-  FloatingActionButton actionNewEvent;
+  FloatingActionButton buttonNewEvent;
 
   private ActionBarDrawerToggle drawerToggle;
 
@@ -74,15 +74,20 @@ public class MainActivity extends AppCompatActivity
 
     configureNavigationDrawer();
 
-    actionNewEvent.setOnClickListener(v -> {
-
-      Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
-      navigator.navigateToEventCreate(this, Optional.empty(), selectedTag);
-    });
+    configureButtonNewEvent();
 
     if (savedInstanceState == null) {
       showMainView();
     }
+  }
+
+  private void configureButtonNewEvent() {
+
+    buttonNewEvent.setOnClickListener(v -> {
+
+      Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
+      navigator.navigateToEventCreate(this, Optional.empty(), selectedTag);
+    });
   }
 
   @Override
@@ -245,8 +250,8 @@ public class MainActivity extends AppCompatActivity
 
     Timber.d("onStartFragment");
 
-    if (!actionNewEvent.isShown()) {
-      actionNewEvent.show();
+    if (!buttonNewEvent.isShown()) {
+      buttonNewEvent.show();
     }
   }
 }

@@ -90,16 +90,6 @@ public class EventCreateActivity
   @Inject
   EditEventHelper editEventHelper;
 
-  public static Intent getCallingIntent(Context context, Optional<String> name,
-      Optional<TagViewModel> tag) {
-
-    Intent intent = new Intent(context, EventCreateActivity.class);
-    name.ifPresent(value -> intent.putExtra(EXTRA_NAME, value));
-    tag.ifPresent(value -> intent.putExtra(EXTRA_TAG, value));
-
-    return intent;
-  }
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
@@ -112,11 +102,9 @@ public class EventCreateActivity
 
     fab.setImageDrawable(getDrawable(R.drawable.ic_save_wht_24dp));
 
-    fixFinalIconPosition(fabProgress);
-    fabProgress.attachListener(this);
+    configureFabProgress();
 
-    eventSwitcher.showNext();
-    descriptionSwitcher.showNext();
+    showCreateView();
 
     showSoftKeyboard();
 
@@ -229,6 +217,64 @@ public class EventCreateActivity
   public void onFABProgressAnimationEnd() {
 
     finish();
+  }
+
+  @Override
+  public void showPeriodText(String text) {
+
+    periodText.setText(text);
+  }
+
+  @Override
+  public void showDate(String text) {
+
+    dateText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTags(String text) {
+
+    tagsText.setText(text);
+  }
+
+  @Override
+  public void showSelectedReminder(String text) {
+
+    reminderText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTimeLapseReset(String text) {
+
+    timeLapseResetText.setText(text);
+  }
+
+  @Override
+  public void showError(String text) {
+
+    this.showSnackbarMessage(text);
+  }
+
+  public static Intent getCallingIntent(Context context, Optional<String> name,
+      Optional<TagViewModel> tag) {
+
+    Intent intent = new Intent(context, EventCreateActivity.class);
+    name.ifPresent(value -> intent.putExtra(EXTRA_NAME, value));
+    tag.ifPresent(value -> intent.putExtra(EXTRA_TAG, value));
+
+    return intent;
+  }
+
+  private void showCreateView() {
+
+    eventSwitcher.showNext();
+    descriptionSwitcher.showNext();
+  }
+
+  private void configureFabProgress() {
+
+    fixFinalIconPosition(fabProgress);
+    fabProgress.attachListener(this);
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -350,42 +396,6 @@ public class EventCreateActivity
     EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_event_discarded)));
 
     NavUtils.navigateUpFromSameTask(this);
-  }
-
-  @Override
-  public void showPeriodText(String text) {
-
-    periodText.setText(text);
-  }
-
-  @Override
-  public void showDate(String text) {
-
-    dateText.setText(text);
-  }
-
-  @Override
-  public void showSelectedTags(String text) {
-
-    tagsText.setText(text);
-  }
-
-  @Override
-  public void showSelectedReminder(String text) {
-
-    reminderText.setText(text);
-  }
-
-  @Override
-  public void showSelectedTimeLapseReset(String text) {
-
-    timeLapseResetText.setText(text);
-  }
-
-  @Override
-  public void showError(String text) {
-
-    this.showSnackbarMessage(text);
   }
 
 }
