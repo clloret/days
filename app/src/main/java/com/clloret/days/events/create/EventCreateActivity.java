@@ -122,6 +122,7 @@ public class EventCreateActivity
 
     createDefaultEvent();
     editEventHelper.setView(this);
+    editEventHelper.setFragmentManager(getSupportFragmentManager());
     editEventHelper.showData();
 
     presenter.loadTags();
@@ -301,12 +302,12 @@ public class EventCreateActivity
 
   private void selectTags() {
 
-    editEventHelper.selectTags(getSupportFragmentManager());
+    editEventHelper.selectTags();
   }
 
   private void selectReminder() {
 
-    editEventHelper.selectReminder(getSupportFragmentManager());
+    editEventHelper.selectReminder();
   }
 
   private void clearReminder() {
@@ -316,7 +317,7 @@ public class EventCreateActivity
 
   private void selectTimeLapseReset() {
 
-    editEventHelper.selectTimeLapseReset(getSupportFragmentManager());
+    editEventHelper.selectTimeLapseReset();
   }
 
   private void clearTimeLapseReset() {

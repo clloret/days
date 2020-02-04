@@ -148,9 +148,9 @@ public class EventEditActivity
 
     EventViewModel originalEvent = Objects
         .requireNonNull(getIntent().getParcelableExtra(EXTRA_EVENT));
-    editEventHelper
-        .setOriginalEvent(originalEvent);
+    editEventHelper.setOriginalEvent(originalEvent);
     editEventHelper.setView(this);
+    editEventHelper.setFragmentManager(getSupportFragmentManager());
 
     showData();
 
@@ -384,12 +384,12 @@ public class EventEditActivity
 
   private void selectTags() {
 
-    editEventHelper.selectTags(getSupportFragmentManager());
+    editEventHelper.selectTags();
   }
 
   private void selectReminder() {
 
-    editEventHelper.selectReminder(getSupportFragmentManager());
+    editEventHelper.selectReminder();
   }
 
   private void clearReminder() {
@@ -399,7 +399,7 @@ public class EventEditActivity
 
   private void selectTimeLapseReset() {
 
-    editEventHelper.selectTimeLapseReset(getSupportFragmentManager());
+    editEventHelper.selectTimeLapseReset();
   }
 
   private void clearTimeLapseReset() {

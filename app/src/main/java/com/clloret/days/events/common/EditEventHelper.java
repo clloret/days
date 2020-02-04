@@ -1,6 +1,7 @@
 package com.clloret.days.events.common;
 
 import android.content.Context;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import com.clloret.days.domain.entities.Event.TimeUnit;
@@ -26,6 +27,7 @@ public class EditEventHelper implements SelectTagsDialogListener {
   private final EventPeriodFormat eventPeriodFormat;
   private final TimeProvider timeProvider;
   private CommonEventView view;
+  private FragmentManager fragmentManager;
   private EventViewModel originalEvent;
   private EventViewModel modifiedEvent;
   private LocalDate selectedDate;
@@ -93,12 +95,12 @@ public class EditEventHelper implements SelectTagsDialogListener {
     });
   }
 
-  public void selectTags(FragmentManager fragmentManager) {
+  public void selectTags() {
 
     selectTagsHelper.showSelectTagsDialog(fragmentManager, message -> view.showError(message));
   }
 
-  public void selectReminder(FragmentManager fragmentManager) {
+  public void selectReminder() {
 
     selectPeriodHelper
         .showSelectReminderDialog(fragmentManager, modifiedEvent, (period, timeUnit) -> {
@@ -128,7 +130,7 @@ public class EditEventHelper implements SelectTagsDialogListener {
     }
   }
 
-  public void selectTimeLapseReset(FragmentManager fragmentManager) {
+  public void selectTimeLapseReset() {
 
     selectPeriodHelper.showSelectTimeLapseResetDialog(fragmentManager, modifiedEvent,
         (period, timeUnit) -> {
@@ -186,6 +188,11 @@ public class EditEventHelper implements SelectTagsDialogListener {
   public void setView(CommonEventView view) {
 
     this.view = view;
+  }
+
+  public void setFragmentManager(@NonNull FragmentManager fragmentManager) {
+
+    this.fragmentManager = fragmentManager;
   }
 
   public void showData() {
