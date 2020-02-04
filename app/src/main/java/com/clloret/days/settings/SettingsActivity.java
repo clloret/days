@@ -121,46 +121,8 @@ public class SettingsActivity extends BaseActivity {
 
       setPreferencesFromResource(R.xml.settings, rootKey);
 
-      OnPreferenceChangeListener textEmptyErrorListener = (preference, newValue) -> {
+      configurePreferenceValidations();
 
-        if (TextUtils.isEmpty(newValue.toString())) {
-
-          Toast.makeText(getActivity(), R.string.msg_error_text_can_not_be_empty,
-              Toast.LENGTH_LONG).show();
-
-          return false;
-        }
-        return true;
-      };
-
-      String airtableKey = getString(R.string.pref_airtable_api_key);
-      getPreferenceScreen()
-          .findPreference(airtableKey).setOnPreferenceChangeListener(textEmptyErrorListener);
-
-      String airtableBase = getString(R.string.pref_airtable_base_id);
-      getPreferenceScreen()
-          .findPreference(airtableBase).setOnPreferenceChangeListener(textEmptyErrorListener);
-
-      String remoteDatastore = getString(R.string.pref_remote_datastore);
-      getPreferenceScreen().findPreference(remoteDatastore)
-          .setOnPreferenceChangeListener((preference, newValue) -> {
-
-            Timber.d("%s", newValue.toString());
-
-            SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(getContext());
-            if (preferences.contains(airtableKey) && preferences.contains(airtableBase)) {
-
-              return true;
-            } else {
-
-              Snackbar
-                  .make(getView(), R.string.msg_error_must_fill_airtable_data, Snackbar.LENGTH_LONG)
-                  .show();
-
-              return false;
-            }
-          });
     }
 
     @Override
@@ -176,6 +138,56 @@ public class SettingsActivity extends BaseActivity {
         dialogFragment.show(getFragmentManager(), null);
       } else {
         super.onDisplayPreferenceDialog(preference);
+      }
+    }
+
+    private void configurePreferenceValidations() {
+
+      OnPreferenceChangeListener textEmptyErrorListener = (preference, newValue) -> {
+
+        if (TextUtils.isEmpty(newValue.toString())) {
+
+          Toast.makeText(getActivity(), R.string.msg_error_text_can_not_be_empty,
+              Toast.LENGTH_LONG).show();
+
+          return false;
+        }
+        return true;
+      };
+
+      String airtableKey = getString(R.string.pref_airtable_api_key);
+      setOnPreferenceChangeListener(airtableKey, textEmptyErrorListener);
+
+      String airtableBase = getString(R.string.pref_airtable_base_id);
+      setOnPreferenceChangeListener(airtableBase, textEmptyErrorListener);
+
+      String remoteDatastore = getString(R.string.pref_remote_datastore);
+      OnPreferenceChangeListener airtableRequiredListener = (preference, newValue) -> {
+
+        Timber.d("%s", newValue.toString());
+
+        SharedPreferences preferences = PreferenceManager
+            .getDefaultSharedPreferences(getContext());
+        if (preferences.contains(airtableKey) && preferences.contains(airtableBase)) {
+
+          return true;
+        } else {
+
+          Snackbar
+              .make(getView(), R.string.msg_error_must_fill_airtable_data, Snackbar.LENGTH_LONG)
+              .show();
+
+          return false;
+        }
+      };
+      setOnPreferenceChangeListener(remoteDatastore, airtableRequiredListener);
+    }
+
+    private void setOnPreferenceChangeListener(String key, OnPreferenceChangeListener listener) {
+
+      Preference preference = getPreferenceScreen().findPreference(key);
+      if (preference != null) {
+        preference.setOnPreferenceChangeListener(listener);
       }
     }
   }
