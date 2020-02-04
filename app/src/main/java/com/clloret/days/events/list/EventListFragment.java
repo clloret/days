@@ -502,7 +502,7 @@ public class EventListFragment
 
   private void configureSearchView(@NonNull Menu menu) {
 
-    final MenuItem searchItem = menu.findItem(R.id.action_search);
+    final MenuItem searchItem = menu.findItem(R.id.menu_search_events);
 
     if (searchItem != null) {
       searchView = (SearchView) searchItem.getActionView();

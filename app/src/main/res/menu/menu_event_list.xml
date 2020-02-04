@@ -3,7 +3,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   tools:context="com.clloret.days.activities.MainActivity">
   <item
-    android:id="@+id/action_search"
+    android:id="@+id/menu_search_events"
     android:icon="@android:drawable/ic_menu_search"
     android:title="@string/title_event_search"
     app:actionViewClass="androidx.appcompat.widget.SearchView"
