@@ -35,17 +35,6 @@ public class TimePickerPreference extends DialogPreference {
     super(context, attrs, defStyleAttr, defStyleRes);
   }
 
-  public int getTime() {
-
-    return time;
-  }
-
-  public void setTime(int time) {
-
-    this.time = time;
-    persistInt(time);
-  }
-
   @Override
   protected Object onGetDefaultValue(TypedArray a, int index) {
 
@@ -62,5 +51,16 @@ public class TimePickerPreference extends DialogPreference {
   public int getDialogLayoutResource() {
 
     return R.layout.preference_time_picker;
+  }
+
+  public int getTime() {
+
+    return time;
+  }
+
+  public void setTime(int time) {
+
+    this.time = time;
+    persistInt(time);
   }
 }

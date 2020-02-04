@@ -215,33 +215,6 @@ public class EventListFragment
     configureRecyclerView();
   }
 
-  private void createAdapter() {
-
-    Comparator<EventSortable> comparator = getEventSortableComparator();
-
-    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
-  }
-
-  private Comparator<EventSortable> getEventSortableComparator() {
-
-    final int sortMode = preferenceUtils.getSortMode();
-    savedSortType = SortType.fromValue(sortMode);
-    return eventSortComparators.get(savedSortType);
-  }
-
-  private void configureRecyclerView() {
-
-    GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
-    recyclerView.setLayoutManager(layoutManager);
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setAdapter(adapter);
-
-    ItemTouchHelper.Callback callback =
-        new EventListTouchHelperCallback(adapter);
-    ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-    touchHelper.attachToRecyclerView(recyclerView);
-  }
-
   @Override
   protected void injectDependencies() {
 
@@ -450,6 +423,33 @@ public class EventListFragment
     fragment.setArguments(bundle);
 
     return fragment;
+  }
+
+  private void createAdapter() {
+
+    Comparator<EventSortable> comparator = getEventSortableComparator();
+
+    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
+  }
+
+  private Comparator<EventSortable> getEventSortableComparator() {
+
+    final int sortMode = preferenceUtils.getSortMode();
+    savedSortType = SortType.fromValue(sortMode);
+    return eventSortComparators.get(savedSortType);
+  }
+
+  private void configureRecyclerView() {
+
+    GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+    recyclerView.setLayoutManager(layoutManager);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setAdapter(adapter);
+
+    ItemTouchHelper.Callback callback =
+        new EventListTouchHelperCallback(adapter);
+    ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+    touchHelper.attachToRecyclerView(recyclerView);
   }
 
   private void selectMenuSortMode(Menu menu) {

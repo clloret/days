@@ -56,16 +56,6 @@ public class App extends DaggerApplication
   @Inject
   PreferenceUtils preferenceUtils;
 
-  public static App get(Context context) {
-
-    return (App) context.getApplicationContext();
-  }
-
-  private static boolean isRoboUnitTest() {
-
-    return ROBOLECTRIC_FINGERPRINT.equals(Build.FINGERPRINT);
-  }
-
   @Override
   public void onCreate() {
 
@@ -76,23 +66,6 @@ public class App extends DaggerApplication
     configureAnalytics();
 
     TimeLapseJob.scheduleJob(this);
-  }
-
-  private void configureLog() {
-
-    Timber.plant(new DebugTree());
-    if (!isRoboUnitTest()) {
-      StethoUtils.install(this);
-    }
-  }
-
-  private void configureAnalytics() {
-
-    if (!BuildConfig.DEBUG && preferenceUtils.isAnalyticsEnabled()) {
-      FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
-      analytics.setAnalyticsCollectionEnabled(true);
-      Fabric.with(this, new Crashlytics());
-    }
   }
 
   @Override
@@ -120,6 +93,33 @@ public class App extends DaggerApplication
   public AndroidInjector<Fragment> supportFragmentInjector() {
 
     return supportFragmentDispatchingInjector;
+  }
+
+  public static App get(Context context) {
+
+    return (App) context.getApplicationContext();
+  }
+
+  private static boolean isRoboUnitTest() {
+
+    return ROBOLECTRIC_FINGERPRINT.equals(Build.FINGERPRINT);
+  }
+
+  private void configureLog() {
+
+    Timber.plant(new DebugTree());
+    if (!isRoboUnitTest()) {
+      StethoUtils.install(this);
+    }
+  }
+
+  private void configureAnalytics() {
+
+    if (!BuildConfig.DEBUG && preferenceUtils.isAnalyticsEnabled()) {
+      FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
+      analytics.setAnalyticsCollectionEnabled(true);
+      Fabric.with(this, new Crashlytics());
+    }
   }
 
   public void restart() {

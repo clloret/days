@@ -50,6 +50,13 @@ public class EditEventHelper implements SelectTagsDialogListener {
     this.selectTagsHelper.setDialogListener(this);
   }
 
+  @Override
+  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
+
+    selectTagsHelper.updateSelectedTags(selectedItems);
+    formatAndShowSelectedTags();
+  }
+
   private void formatAndShowDate() {
 
     String formattedDate = DateUtils.formatDate(modifiedEvent.getDate());
@@ -206,13 +213,6 @@ public class EditEventHelper implements SelectTagsDialogListener {
   public void setSelectedTag(@Nullable TagViewModel selectedTag) {
 
     this.selectedTag = Optional.ofNullable(selectedTag);
-  }
-
-  @Override
-  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
-
-    selectTagsHelper.updateSelectedTags(selectedItems);
-    formatAndShowSelectedTags();
   }
 
 }

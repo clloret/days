@@ -13,17 +13,6 @@ public class TimePickerPreferenceDialog extends PreferenceDialogFragmentCompat {
 
   private TimePicker timePicker;
 
-  public static TimePickerPreferenceDialog newInstance(String key) {
-
-    final TimePickerPreferenceDialog fragment = new TimePickerPreferenceDialog();
-    final Bundle bundle = new Bundle(1);
-
-    bundle.putString(ARG_KEY, key);
-    fragment.setArguments(bundle);
-
-    return fragment;
-  }
-
   @Override
   protected void onBindDialogView(View view) {
 
@@ -70,5 +59,16 @@ public class TimePickerPreferenceDialog extends PreferenceDialogFragmentCompat {
         timePreference.setTime(minutesAfterMidnight);
       }
     }
+  }
+
+  public static TimePickerPreferenceDialog newInstance(String key) {
+
+    final TimePickerPreferenceDialog fragment = new TimePickerPreferenceDialog();
+    final Bundle bundle = new Bundle(1);
+
+    bundle.putString(ARG_KEY, key);
+    fragment.setArguments(bundle);
+
+    return fragment;
   }
 }

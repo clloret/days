@@ -109,14 +109,9 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     dest.writeValue(timeLapseUnit);
   }
 
-  public String getId() {
+  public boolean isFavorite() {
 
-    return id;
-  }
-
-  public void setId(String id) {
-
-    this.id = id;
+    return favorite;
   }
 
   public String getName() {
@@ -137,11 +132,6 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
   public void setDate(Date date) {
 
     this.date = date == null ? null : (Date) date.clone();
-  }
-
-  public boolean isFavorite() {
-
-    return favorite;
   }
 
   public void setFavorite(boolean favorite) {
@@ -168,6 +158,28 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     EventViewModel event = (EventViewModel) o;
 
     return Objects.equals(id, event.id);
+  }
+
+  @Override
+  public EventViewModel clone() {
+
+    EventViewModel obj = null;
+    try {
+      obj = (EventViewModel) super.clone();
+    } catch (CloneNotSupportedException ex) {
+      Timber.w("Cannot be cloned");
+    }
+    return obj;
+  }
+
+  public String getId() {
+
+    return id;
+  }
+
+  public void setId(String id) {
+
+    this.id = id;
   }
 
   public String[] getTags() {
@@ -240,17 +252,5 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
   public boolean hasTimeLapseReset() {
 
     return timeLapse != 0;
-  }
-
-  @Override
-  public EventViewModel clone() {
-
-    EventViewModel obj = null;
-    try {
-      obj = (EventViewModel) super.clone();
-    } catch (CloneNotSupportedException ex) {
-      Timber.w("Cannot be cloned");
-    }
-    return obj;
   }
 }

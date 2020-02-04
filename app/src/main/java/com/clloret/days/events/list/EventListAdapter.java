@@ -35,6 +35,40 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     this.setHasStableIds(true);
   }
 
+  @NonNull
+  @Override
+  public EventViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+
+    final View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
+
+    return new EventViewHolder(view);
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
+
+    holder.bindData(events.get(position));
+  }
+
+  @Override
+  public int getItemViewType(int position) {
+
+    return R.layout.fragment_event;
+  }
+
+  @Override
+  public long getItemId(int position) {
+
+    return events.get(position)
+        .hashCode(); // need to return stable (= not change even after position changed) value
+  }
+
+  @Override
+  public int getItemCount() {
+
+    return events == null ? 0 : events.size();
+  }
+
   public void onItemRemove(ViewHolder viewHolder) {
 
     final int position = viewHolder.getAdapterPosition();
@@ -101,40 +135,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     Collections.sort(events, currentComparator);
 
     this.events = events;
-  }
-
-  @NonNull
-  @Override
-  public EventViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-
-    final View view = LayoutInflater.from(parent.getContext()).inflate(viewType, parent, false);
-
-    return new EventViewHolder(view);
-  }
-
-  @Override
-  public void onBindViewHolder(@NonNull EventViewHolder holder, int position) {
-
-    holder.bindData(events.get(position));
-  }
-
-  @Override
-  public int getItemViewType(int position) {
-
-    return R.layout.fragment_event;
-  }
-
-  @Override
-  public long getItemId(int position) {
-
-    return events.get(position)
-        .hashCode(); // need to return stable (= not change even after position changed) value
-  }
-
-  @Override
-  public int getItemCount() {
-
-    return events == null ? 0 : events.size();
   }
 
   public void sortByComparator(Comparator<EventSortable> comparator) {

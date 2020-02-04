@@ -49,6 +49,12 @@ public class DrawerFilter extends DrawerTextIcon {
   }
 
   @Override
+  public boolean isSelectable() {
+
+    return true;
+  }
+
+  @Override
   public void select(FragmentActivity activity) {
 
     activity.setTitle(title);
@@ -63,12 +69,6 @@ public class DrawerFilter extends DrawerTextIcon {
   public int getType() {
 
     return 3;
-  }
-
-  @Override
-  public boolean isSelectable() {
-
-    return true;
   }
 
 }

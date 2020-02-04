@@ -13,12 +13,6 @@ import javax.inject.Singleton;
 @Module
 public class EventSortModule {
 
-  @MapKey
-  @interface SortTypeEnumKey {
-
-    SortType value();
-  }
-
   @Provides
   @Singleton
   @IntoMap
@@ -53,6 +47,12 @@ public class EventSortModule {
   Comparator<EventSortable> providesEventSortByOldestDate() {
 
     return EventSortFactory.makeEventSort(SortType.OLDEST_DATE);
+  }
+
+  @MapKey
+  @interface SortTypeEnumKey {
+
+    SortType value();
   }
 
 }

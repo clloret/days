@@ -19,13 +19,6 @@ public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<
   private Unbinder unbinder;
 
   @Override
-  public void onAttach(Activity activity) {
-
-    injectDependencies();
-    super.onAttach(activity);
-  }
-
-  @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
     super.onViewCreated(view, savedInstanceState);
@@ -37,6 +30,13 @@ public abstract class BaseMvpFragment<V extends MvpView, P extends MvpPresenter<
 
     super.onDestroyView();
     unbinder.unbind();
+  }
+
+  @Override
+  public void onAttach(Activity activity) {
+
+    injectDependencies();
+    super.onAttach(activity);
   }
 
   protected void showToastMessage(String message) {

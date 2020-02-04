@@ -51,19 +51,19 @@ class EventListTouchHelperCallback extends Callback {
   }
 
   @Override
-  public void clearView(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder) {
-
-    final View foregroundView = ((EventViewHolder) viewHolder).viewForeground;
-    getDefaultUIUtil().clearView(foregroundView);
-  }
-
-  @Override
   public void onSelectedChanged(ViewHolder viewHolder, int actionState) {
 
     if (viewHolder != null) {
       final View foregroundView = ((EventViewHolder) viewHolder).viewForeground;
       getDefaultUIUtil().onSelected(foregroundView);
     }
+  }
+
+  @Override
+  public void clearView(@NonNull RecyclerView recyclerView, @NonNull ViewHolder viewHolder) {
+
+    final View foregroundView = ((EventViewHolder) viewHolder).viewForeground;
+    getDefaultUIUtil().clearView(foregroundView);
   }
 
   @Override

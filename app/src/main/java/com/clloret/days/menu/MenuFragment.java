@@ -120,24 +120,6 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     AndroidSupportInjection.inject(this);
   }
 
-  private void onLongClickMenuItem(int position) {
-
-    DrawerMenuItem drawerMenuItem = adapter.getItem(position);
-
-    if (drawerMenuItem instanceof DrawerTag) {
-      DrawerTag drawerTag = (DrawerTag) drawerMenuItem;
-      presenter.editTag(drawerTag.getTag());
-    }
-  }
-
-  private void onClickMenuItem(int position) {
-
-    deselectPreviousMenuItem();
-    selectMenuItem(position);
-
-    drawerLayout.closeDrawers();
-  }
-
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -194,6 +176,24 @@ public class MenuFragment extends BaseMvpFragment<MenuView, MenuPresenter>
     vs.setTags(data);
 
     setData(data);
+  }
+
+  private void onLongClickMenuItem(int position) {
+
+    DrawerMenuItem drawerMenuItem = adapter.getItem(position);
+
+    if (drawerMenuItem instanceof DrawerTag) {
+      DrawerTag drawerTag = (DrawerTag) drawerMenuItem;
+      presenter.editTag(drawerTag.getTag());
+    }
+  }
+
+  private void onClickMenuItem(int position) {
+
+    deselectPreviousMenuItem();
+    selectMenuItem(position);
+
+    drawerLayout.closeDrawers();
   }
 
   public void loadData() {

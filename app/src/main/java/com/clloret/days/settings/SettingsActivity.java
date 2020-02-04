@@ -74,22 +74,6 @@ public class SettingsActivity extends BaseActivity {
       OnSharedPreferenceChangeListener {
 
     @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
-
-      DialogFragment dialogFragment = null;
-      if (preference instanceof TimePickerPreference) {
-        dialogFragment = TimePickerPreferenceDialog.newInstance(preference.getKey());
-      }
-
-      if (dialogFragment != null) {
-        dialogFragment.setTargetFragment(this, 0);
-        dialogFragment.show(getFragmentManager(), null);
-      } else {
-        super.onDisplayPreferenceDialog(preference);
-      }
-    }
-
-    @Override
     public void onResume() {
 
       super.onResume();
@@ -123,7 +107,7 @@ public class SettingsActivity extends BaseActivity {
                   (dialog, id) -> App.get(getContext()).invalidateDataAndRestart())
               .setNegativeButton(R.string.action_no,
                   (dialog, id) -> {
-                    SwitchPreference prefRemoteDatastore = (SwitchPreference) getPreferenceScreen()
+                    SwitchPreference prefRemoteDatastore = getPreferenceScreen()
                         .findPreference(remoteDatastore);
                     prefRemoteDatastore.setChecked(false);
                   });
@@ -177,6 +161,22 @@ public class SettingsActivity extends BaseActivity {
               return false;
             }
           });
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+
+      DialogFragment dialogFragment = null;
+      if (preference instanceof TimePickerPreference) {
+        dialogFragment = TimePickerPreferenceDialog.newInstance(preference.getKey());
+      }
+
+      if (dialogFragment != null) {
+        dialogFragment.setTargetFragment(this, 0);
+        dialogFragment.show(getFragmentManager(), null);
+      } else {
+        super.onDisplayPreferenceDialog(preference);
+      }
     }
   }
 }

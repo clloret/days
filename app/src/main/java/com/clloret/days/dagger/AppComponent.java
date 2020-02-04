@@ -33,10 +33,10 @@ import javax.inject.Singleton;
 )
 public interface AppComponent extends AndroidInjector<DaggerApplication> {
 
-  void inject(App app);
-
   @Override
   void inject(DaggerApplication instance);
+
+  void inject(App app);
 
   @Component.Builder
   interface Builder {

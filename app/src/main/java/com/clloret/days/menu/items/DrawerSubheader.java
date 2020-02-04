@@ -30,14 +30,14 @@ public class DrawerSubheader extends DrawerText {
   }
 
   @Override
-  public int getType() {
-
-    return 1;
-  }
-
-  @Override
   public boolean isClickable() {
 
     return false;
+  }
+
+  @Override
+  public int getType() {
+
+    return 1;
   }
 }

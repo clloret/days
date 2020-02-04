@@ -25,6 +25,12 @@ public class DrawerSeparator extends DrawerMenuItem<BaseViewHolder> {
   }
 
   @Override
+  public boolean isClickable() {
+
+    return false;
+  }
+
+  @Override
   public int getType() {
 
     return 0;
@@ -34,11 +40,5 @@ public class DrawerSeparator extends DrawerMenuItem<BaseViewHolder> {
   public BaseViewHolder createViewHolder() {
 
     return new BaseViewHolder();
-  }
-
-  @Override
-  public boolean isClickable() {
-
-    return false;
   }
 }

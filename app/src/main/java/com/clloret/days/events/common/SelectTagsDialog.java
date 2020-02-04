@@ -23,11 +23,6 @@ public class SelectTagsDialog extends DialogFragment {
 
   private Optional<SelectTagsDialogListener> listener = Optional.empty();
 
-  public interface SelectTagsDialogListener {
-
-    void onFinishTagsDialog(Collection<TagViewModel> selectedItems);
-  }
-
   public SelectTagsDialog() {
 
     super();
@@ -40,24 +35,6 @@ public class SelectTagsDialog extends DialogFragment {
 
     this.listener = Optional.ofNullable(listener);
   }
-
-  public static SelectTagsDialog newInstance(String title,
-      String[] nameTags, boolean[] checkedTags, List<TagViewModel> tags,
-      SelectTagsDialogListener listener) {
-
-    Bundle args = new Bundle();
-
-    args.putString(BUNDLE_TITLE, title);
-    args.putStringArray(BUNDLE_NAME_TAGS, nameTags);
-    args.putBooleanArray(BUNDLE_CHECKED_TAGS, checkedTags);
-    args.putParcelableArrayList(BUNDLE_TAGS, new ArrayList<>(tags));
-
-    SelectTagsDialog dialog = new SelectTagsDialog(listener);
-    dialog.setArguments(args);
-
-    return dialog;
-  }
-
 
   @NonNull
   @Override
@@ -94,6 +71,23 @@ public class SelectTagsDialog extends DialogFragment {
     return builder.create();
   }
 
+  public static SelectTagsDialog newInstance(String title,
+      String[] nameTags, boolean[] checkedTags, List<TagViewModel> tags,
+      SelectTagsDialogListener listener) {
+
+    Bundle args = new Bundle();
+
+    args.putString(BUNDLE_TITLE, title);
+    args.putStringArray(BUNDLE_NAME_TAGS, nameTags);
+    args.putBooleanArray(BUNDLE_CHECKED_TAGS, checkedTags);
+    args.putParcelableArrayList(BUNDLE_TAGS, new ArrayList<>(tags));
+
+    SelectTagsDialog dialog = new SelectTagsDialog(listener);
+    dialog.setArguments(args);
+
+    return dialog;
+  }
+
   private List<TagViewModel> getSelectedTags(boolean[] checkedTags, List<TagViewModel> tags) {
 
     final List<TagViewModel> selectedItems = new ArrayList<>();
@@ -105,5 +99,10 @@ public class SelectTagsDialog extends DialogFragment {
     }
 
     return selectedItems;
+  }
+
+  public interface SelectTagsDialogListener {
+
+    void onFinishTagsDialog(Collection<TagViewModel> selectedItems);
   }
 }

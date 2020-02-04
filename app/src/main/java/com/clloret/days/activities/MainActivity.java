@@ -81,15 +81,6 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
-  private void configureButtonNewEvent() {
-
-    buttonNewEvent.setOnClickListener(v -> {
-
-      Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
-      navigator.navigateToEventCreate(this, Optional.empty(), selectedTag);
-    });
-  }
-
   @Override
   protected void onPostCreate(Bundle savedInstanceState) {
 
@@ -176,6 +167,37 @@ public class MainActivity extends AppCompatActivity
     }
   }
 
+  @Override
+  public void showIndeterminateProgress() {
+
+    progressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void hideIndeterminateProgress() {
+
+    progressBar.setVisibility(View.INVISIBLE);
+  }
+
+  @Override
+  public void onStartFragment() {
+
+    Timber.d("onStartFragment");
+
+    if (!buttonNewEvent.isShown()) {
+      buttonNewEvent.show();
+    }
+  }
+
+  private void configureButtonNewEvent() {
+
+    buttonNewEvent.setOnClickListener(v -> {
+
+      Optional<TagViewModel> selectedTag = getNavigationDrawerFragment().getSelectedTag();
+      navigator.navigateToEventCreate(this, Optional.empty(), selectedTag);
+    });
+  }
+
   private void configureNavigationDrawer() {
 
     MenuFragment navigationDrawer = getNavigationDrawerFragment();
@@ -231,27 +253,5 @@ public class MainActivity extends AppCompatActivity
     String message = getString(resId);
     Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
         .show();
-  }
-
-  @Override
-  public void showIndeterminateProgress() {
-
-    progressBar.setVisibility(View.VISIBLE);
-  }
-
-  @Override
-  public void hideIndeterminateProgress() {
-
-    progressBar.setVisibility(View.INVISIBLE);
-  }
-
-  @Override
-  public void onStartFragment() {
-
-    Timber.d("onStartFragment");
-
-    if (!buttonNewEvent.isShown()) {
-      buttonNewEvent.show();
-    }
   }
 }

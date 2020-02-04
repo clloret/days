@@ -19,6 +19,14 @@ public class SelectPeriodHelper implements SelectPeriodDialogListener {
     this.resources = resources;
   }
 
+  @Override
+  public void onFinishPeriodDialog(Integer period, TimeUnit timeUnit) {
+
+    if (listener != null) {
+      listener.onResult(period, timeUnit);
+    }
+  }
+
   private void showPeriodDialog(FragmentManager fragmentManager, String title,
       boolean showTimeSelector, Integer period, TimeUnit timeUnit) {
 
@@ -47,14 +55,6 @@ public class SelectPeriodHelper implements SelectPeriodDialogListener {
 
     showPeriodDialog(fragmentManager, title, false, event.getTimeLapse(),
         event.getTimeLapseUnit());
-  }
-
-  @Override
-  public void onFinishPeriodDialog(Integer period, TimeUnit timeUnit) {
-
-    if (listener != null) {
-      listener.onResult(period, timeUnit);
-    }
   }
 
   public interface SelectPeriodHelperListener {

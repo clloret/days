@@ -20,16 +20,16 @@ public abstract class DrawerText extends DrawerMenuItem<TextViewHolder> {
   }
 
   @Override
-  TextViewHolder createViewHolder() {
-
-    return new TextViewHolder();
-  }
-
-  @Override
   public void populate() {
 
     if (viewHolder.name != null) {
       viewHolder.name.setText(title);
     }
+  }
+
+  @Override
+  TextViewHolder createViewHolder() {
+
+    return new TextViewHolder();
   }
 }

@@ -64,6 +64,76 @@ public class MenuAdapter extends BaseAdapter {
     this.timeProvider = timeProvider;
   }
 
+  @Override
+  public int getCount() {
+
+    final List<DrawerMenuItem> items = getConcatList();
+
+    return items.size();
+  }
+
+  @Override
+  public DrawerMenuItem getItem(int i) {
+
+    final List<DrawerMenuItem> items = getConcatList();
+
+    return items.get(i);
+  }
+
+  @Override
+  public long getItemId(int i) {
+
+    return i;
+  }
+
+  @NonNull
+  @Override
+  public View getView(final int position, final View convertView, final @NonNull ViewGroup parent) {
+
+    DrawerMenuItem item = getItem(position);
+
+    View resultView = convertView;
+    if (convertView == null) {
+      LayoutInflater inflater = LayoutInflater.from(context);
+      resultView = item.getView(inflater, parent);
+    } else {
+
+      item.setView(convertView);
+    }
+
+    item.populate();
+
+    return resultView;
+  }
+
+  @Override
+  public void notifyDataSetInvalidated() {
+
+    super.notifyDataSetInvalidated();
+  }
+
+  @Override
+  public boolean isEnabled(int position) {
+
+    DrawerMenuItem menuItem = getItem(position);
+
+    return menuItem.isClickable();
+  }
+
+  @Override
+  public int getItemViewType(int position) {
+
+    DrawerMenuItem menuItem = getItem(position);
+
+    return menuItem.getType();
+  }
+
+  @Override
+  public int getViewTypeCount() {
+
+    return TYPE_COUNT;
+  }
+
   public void dispose() {
 
     disposable.dispose();
@@ -158,82 +228,12 @@ public class MenuAdapter extends BaseAdapter {
     sections.add(createSection2());
   }
 
-  @Override
-  public int getCount() {
-
-    final List<DrawerMenuItem> items = getConcatList();
-
-    return items.size();
-  }
-
-  @Override
-  public DrawerMenuItem getItem(int i) {
-
-    final List<DrawerMenuItem> items = getConcatList();
-
-    return items.get(i);
-  }
-
-  @Override
-  public long getItemId(int i) {
-
-    return i;
-  }
-
-  @NonNull
-  @Override
-  public View getView(final int position, final View convertView, final @NonNull ViewGroup parent) {
-
-    DrawerMenuItem item = getItem(position);
-
-    View resultView = convertView;
-    if (convertView == null) {
-      LayoutInflater inflater = LayoutInflater.from(context);
-      resultView = item.getView(inflater, parent);
-    } else {
-
-      item.setView(convertView);
-    }
-
-    item.populate();
-
-    return resultView;
-  }
-
-  @Override
-  public void notifyDataSetInvalidated() {
-
-    super.notifyDataSetInvalidated();
-  }
-
   private List<DrawerMenuItem> getConcatList() {
 
     return Observable.fromIterable(sections)
         .concatMapIterable(lists -> lists)
         .toList()
         .blockingGet();
-  }
-
-  @Override
-  public boolean isEnabled(int position) {
-
-    DrawerMenuItem menuItem = getItem(position);
-
-    return menuItem.isClickable();
-  }
-
-  @Override
-  public int getItemViewType(int position) {
-
-    DrawerMenuItem menuItem = getItem(position);
-
-    return menuItem.getType();
-  }
-
-  @Override
-  public int getViewTypeCount() {
-
-    return TYPE_COUNT;
   }
 
   public void addTag(TagViewModel tag) {

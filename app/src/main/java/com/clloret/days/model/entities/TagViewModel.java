@@ -46,27 +46,6 @@ public class TagViewModel implements android.os.Parcelable {
     this.id = id;
   }
 
-  @NonNull
-  public String getId() {
-
-    return id;
-  }
-
-  public void setId(String id) {
-
-    this.id = id;
-  }
-
-  public String getName() {
-
-    return name;
-  }
-
-  public void setName(String name) {
-
-    this.name = name;
-  }
-
   @Override
   public int describeContents() {
 
@@ -106,5 +85,26 @@ public class TagViewModel implements android.os.Parcelable {
   public String toString() {
 
     return name;
+  }
+
+  @NonNull
+  public String getId() {
+
+    return id;
+  }
+
+  public void setId(String id) {
+
+    this.id = id;
+  }
+
+  public String getName() {
+
+    return name;
+  }
+
+  public void setName(String name) {
+
+    this.name = name;
   }
 }
