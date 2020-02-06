@@ -3,8 +3,9 @@ package com.clloret.days.model.entities;
 import android.os.Parcel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.clloret.days.domain.tags.order.TagSortable;
 
-public class TagViewModel implements android.os.Parcelable {
+public class TagViewModel implements android.os.Parcelable, TagSortable {
 
   public static final Creator<TagViewModel> CREATOR = new Creator<TagViewModel>() {
     @Override
@@ -87,6 +88,16 @@ public class TagViewModel implements android.os.Parcelable {
     return name;
   }
 
+  public String getName() {
+
+    return name;
+  }
+
+  public void setName(String name) {
+
+    this.name = name;
+  }
+
   @NonNull
   public String getId() {
 
@@ -96,15 +107,5 @@ public class TagViewModel implements android.os.Parcelable {
   public void setId(String id) {
 
     this.id = id;
-  }
-
-  public String getName() {
-
-    return name;
-  }
-
-  public void setName(String name) {
-
-    this.name = name;
   }
 }
