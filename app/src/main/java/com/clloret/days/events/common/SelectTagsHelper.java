@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import com.clloret.days.R;
+import com.clloret.days.domain.tags.order.TagSortFactory;
+import com.clloret.days.domain.tags.order.TagSortFactory.SortType;
 import com.clloret.days.domain.utils.SelectionMap;
 import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.model.entities.EventViewModel;
@@ -12,6 +14,7 @@ import com.clloret.days.model.entities.TagViewModel;
 import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
@@ -34,6 +37,8 @@ public class SelectTagsHelper {
   }
 
   public void setMapTags(List<TagViewModel> data) {
+
+    Collections.sort(data, TagSortFactory.makeTagSort(SortType.NAME));
 
     Map<String, TagViewModel> stringTagMap = Observable.just(data)
         .concatMap(Observable::fromIterable)

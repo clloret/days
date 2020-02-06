@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
 - Button to clear automatic event day reset in create and edit event screen
 - Create events with the voice 
 
+### Changed
+
+- Sort the tags alphabetically in the tag selector
+
 ## [1.0.0] - 2019-12-09
 
 - Initial release
