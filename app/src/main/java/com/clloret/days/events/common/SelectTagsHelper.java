@@ -15,8 +15,8 @@ import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 public class SelectTagsHelper {
@@ -40,12 +40,13 @@ public class SelectTagsHelper {
 
     Collections.sort(data, TagSortFactory.makeTagSort(SortType.NAME));
 
-    Map<String, TagViewModel> stringTagMap = Observable.just(data)
-        .concatMap(Observable::fromIterable)
-        .toMap(TagViewModel::getId)
-        .blockingGet();
+    LinkedHashMap<String, TagViewModel> orderedMap = new LinkedHashMap<>();
 
-    this.mapTags = new SelectionMap<>(stringTagMap);
+    for (TagViewModel tagViewModel : data) {
+      orderedMap.put(tagViewModel.getId(), tagViewModel);
+    }
+
+    this.mapTags = new SelectionMap<>(orderedMap);
   }
 
   public String showSelectedTags() {
