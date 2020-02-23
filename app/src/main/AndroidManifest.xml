@@ -105,6 +105,18 @@
       android:name=".device.receivers.AlarmBroadcastReceiver"
       android:process=":remote" />
     <receiver android:name=".device.receivers.ReminderReceiver" />
+    <receiver
+      android:name=".tasker.receiver.FireReceiver"
+      android:exported="true"
+      android:process=":background"
+      tools:ignore="ExportedReceiver">
+
+      <!-- this Intent filter allows the plug-in to discovered by Locale -->
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+      </intent-filter>
+    </receiver>
+
 
     <service
       android:name=".device.services.TimeLapseService"
