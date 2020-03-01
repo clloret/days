@@ -3,67 +3,91 @@ package com.clloret.days.tasker.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import butterknife.ButterKnife
 import com.clloret.days.R
+import com.clloret.days.tasker.bundle.EventCreateBundle
 import com.twofortyfouram.locale.sdk.client.ui.activity.AbstractAppCompatPluginActivity
+import kotlinx.android.synthetic.main.activity_tasker_create_event.*
+import net.dinglisch.android.tasker.TaskerPlugin
+import timber.log.Timber
 
 class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tasker_create_event)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_tasker_create_event)
 
-        ButterKnife.bind(this)
-    }
+  }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_tasker_create_event, menu)
-        return true
-    }
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.menu_tasker_create_event, menu)
+    return true
+  }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        return when (item?.itemId) {
-            R.id.menu_save -> {
-                save()
-                true
-            }
-            R.id.menu_delete -> {
-                discard()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
+    return when (item?.itemId) {
+      R.id.menu_save -> {
+        save()
+        true
+      }
+      R.id.menu_cancel -> {
         discard()
+        true
+      }
+      else -> super.onOptionsItemSelected(item)
     }
+  }
 
-    private fun discard() {
-        mIsCancelled = true
-        finish()
-    }
+  override fun onBackPressed() {
+    super.onBackPressed()
 
-    private fun save() {
-        finish()
-    }
+    discard()
+  }
 
-    override fun onPostCreateWithPreviousResult(bundle: Bundle, previousBlurb: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+  private fun discard() {
+    mIsCancelled = true
+    finish()
+  }
 
-    override fun getResultBundle(): Bundle? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+  private fun save() {
+    finish()
+  }
 
-    override fun isBundleValid(bundle: Bundle): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+  override fun onPostCreateWithPreviousResult(previousBundle: Bundle, previousBlurb: String) {
+    Timber.d("onPostCreateWithPreviousResult")
 
-    override fun getResultBlurb(bundle: Bundle): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    val bundle = EventCreateBundle(previousBundle)
+    name.setText(bundle.title)
+    description.setText(bundle.description)
+    date.setText(bundle.date)
+  }
+
+  override fun getResultBundle(): Bundle? {
+    Timber.d("getResultBundle")
+
+    val bundle = EventCreateBundle()
+    bundle.title = name.text.toString().trim()
+    bundle.description = description.text.toString().trim()
+    bundle.date = date.text.toString().trim()
+
+    val resultBundle: Bundle = bundle.build()
+    if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(this)) {
+      TaskerPlugin.Setting.setVariableReplaceKeys(
+              resultBundle, arrayOf(
+              EventCreateBundle.EXTRA_NAME,
+              EventCreateBundle.EXTRA_DESCRIPTION,
+              EventCreateBundle.EXTRA_DATE
+      ))
     }
+    return resultBundle
+  }
+
+  override fun isBundleValid(bundle: Bundle): Boolean {
+    return EventCreateBundle.isBundleValid(bundle)
+  }
+
+  override fun getResultBlurb(bundle: Bundle): String {
+    return name.text.toString().trim()
+  }
+
 }
