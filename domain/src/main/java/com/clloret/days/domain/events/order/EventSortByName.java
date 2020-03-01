@@ -13,7 +13,10 @@ public class EventSortByName extends EventSortStrategy {
     EventSortable e1 = getFirstEvent(event1, event2);
     EventSortable e2 = getSecondEvent(event1, event2);
 
-    return e1.getName().compareTo(e2.getName());
+    String name1 = e1.getName() != null ? e1.getName() : "";
+    String name2 = e2.getName() != null ? e2.getName() : "";
+
+    return name1.compareTo(name2);
   }
 
 }
