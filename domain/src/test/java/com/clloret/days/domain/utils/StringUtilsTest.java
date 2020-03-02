@@ -8,7 +8,7 @@ public class StringUtilsTest {
 
   @SuppressWarnings("ConstantConditions")
   @Test
-  public void isNullOrEmpty_whenIsNull_ReturnTrue() {
+  public void isNullOrEmpty_WhenIsNull_ReturnTrue() {
 
     boolean result = StringUtils.isNullOrEmpty(null);
 
@@ -16,7 +16,7 @@ public class StringUtilsTest {
   }
 
   @Test
-  public void isNullOrEmpty_whenIsEmpty_ReturnTrue() {
+  public void isNullOrEmpty_WhenIsEmpty_ReturnTrue() {
 
     boolean result = StringUtils.isNullOrEmpty("");
 
@@ -24,7 +24,7 @@ public class StringUtilsTest {
   }
 
   @Test
-  public void isNullOrEmpty_whenNotIsEmpty_ReturnFalse() {
+  public void isNullOrEmpty_WhenNotIsEmpty_ReturnFalse() {
 
     boolean result = StringUtils.isNullOrEmpty("Not empty");
 
@@ -58,7 +58,7 @@ public class StringUtilsTest {
   }
 
   @Test
-  public void tryParseInt_WhenNotInt_ReturnNull() {
+  public void tryParseInt_WhenNotIsInt_ReturnNull() {
 
     Integer result = StringUtils.tryParseInt("XX");
 
