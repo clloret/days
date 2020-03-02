@@ -60,4 +60,22 @@
 
   </com.google.android.material.textfield.TextInputLayout>
 
+  <com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginRight="16dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/reminder"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ems="10"
+      android:hint="@string/event_details_reminder"
+      android:inputType="text"
+      tools:text="@string/event_details_reminder" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
 </LinearLayout>

@@ -60,6 +60,7 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     name.setText(bundle.title)
     description.setText(bundle.description)
     date.setText(bundle.date)
+    reminder.setText(bundle.reminder)
   }
 
   override fun getResultBundle(): Bundle? {
@@ -69,6 +70,7 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     bundle.title = name.text.toString().trim()
     bundle.description = description.text.toString().trim()
     bundle.date = date.text.toString().trim()
+    bundle.reminder = reminder.text.toString().trim()
 
     val resultBundle: Bundle = bundle.build()
     if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(this)) {
@@ -76,7 +78,8 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
               resultBundle, arrayOf(
               EventCreateBundle.EXTRA_NAME,
               EventCreateBundle.EXTRA_DESCRIPTION,
-              EventCreateBundle.EXTRA_DATE
+              EventCreateBundle.EXTRA_DATE,
+              EventCreateBundle.EXTRA_REMINDER
       ))
     }
     return resultBundle

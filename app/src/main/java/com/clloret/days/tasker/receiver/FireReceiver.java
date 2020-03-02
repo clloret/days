@@ -2,12 +2,12 @@ package com.clloret.days.tasker.receiver;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.utils.DateUtils;
+import com.clloret.days.domain.utils.StringUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import com.clloret.days.tasker.bundle.EventCreateBundle;
 import com.twofortyfouram.locale.sdk.client.receiver.AbstractPluginSettingReceiver;
@@ -42,24 +42,22 @@ public class FireReceiver extends AbstractPluginSettingReceiver {
   }
 
   @Override
-  protected void firePluginSetting(@NonNull Context context, @NonNull Bundle bundle) {
+  protected void firePluginSetting(@NonNull final Context context, @NonNull final Bundle bundle) {
 
     Timber.d("firePluginSetting");
 
     AndroidInjection.inject(this, context);
 
-    String name = bundle.getString(EventCreateBundle.EXTRA_NAME);
-    String description = bundle.getString(EventCreateBundle.EXTRA_DESCRIPTION);
-    String strDate = bundle.getString(EventCreateBundle.EXTRA_DATE);
-    Date date = DateUtils.getDateFromString(strDate, timeProvider.getCurrentDate());
+    final EventCreateBundle createBundle = new EventCreateBundle(bundle);
 
-    Toast.makeText(context, name, Toast.LENGTH_LONG).show();
-    Toast.makeText(context, date.toString(), Toast.LENGTH_LONG).show();
+    final Date date = DateUtils
+        .getDateFromString(createBundle.getDate(), timeProvider.getCurrentDate());
 
-    Event event = new EventBuilder()
-        .setName(name)
-        .setDescription(description)
+    final Event event = new EventBuilder()
+        .setName(createBundle.getTitle())
+        .setDescription(createBundle.getDescription())
         .setDate(date)
+        .setReminder(StringUtils.tryParseInt(createBundle.getReminder()))
         .build();
 
     createEventUseCase.execute(event)
