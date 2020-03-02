@@ -48,4 +48,21 @@ public class StringUtilsTest {
 
     assertThat(result).isEqualTo("Lowercase text");
   }
+
+  @Test
+  public void tryParseInt_Always_ReturnInt() {
+
+    Integer result = StringUtils.tryParseInt("15");
+
+    assertThat(result).isEqualTo(15);
+  }
+
+  @Test
+  public void tryParseInt_WhenNotInt_ReturnNull() {
+
+    Integer result = StringUtils.tryParseInt("XX");
+
+    assertThat(result).isNull();
+  }
+
 }
