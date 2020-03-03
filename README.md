@@ -78,10 +78,10 @@ This project is still in progress. Here are the some features that I will finish
 ### For users:
 - [x] Notifications
 - [ ] Widgets
-- [ ] Tasker integration
+- [x] Tasker integration
 
 ### For developers:
-- [ ] Kotlin
+- [x] Kotlin
 - [ ] Architecture components
 
 ## License
