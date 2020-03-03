@@ -30,6 +30,12 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
       bundle.putString(EXTRA_REMINDER, reminder)
     }
 
+  var favorite: String?
+    get() = bundle.getString(EXTRA_FAVORITE)
+    set(favorite) {
+      bundle.putString(EXTRA_FAVORITE, favorite)
+    }
+
   fun build(): Bundle {
     bundle.putInt(EXTRA_VERSION_CODE, BuildConfig.VERSION_CODE)
     return bundle
@@ -45,6 +51,7 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
     const val EXTRA_DESCRIPTION = "com.clloret.days.create.STRING_DESCRIPTION"
     const val EXTRA_DATE = "com.clloret.days.create.STRING_DATE"
     const val EXTRA_REMINDER = "com.clloret.days.create.STRING_REMINDER"
+    const val EXTRA_FAVORITE = "com.clloret.days.create.STRING_FAVORITE"
     private const val EXTRA_VERSION_CODE = "com.clloret.days.create.INT_VERSION_CODE"
 
     fun isBundleValid(bundle: Bundle): Boolean {

@@ -15,7 +15,6 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_tasker_create_event)
-
   }
 
   override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -61,6 +60,7 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     description.setText(bundle.description)
     date.setText(bundle.date)
     reminder.setText(bundle.reminder)
+    favorite.setText(bundle.favorite)
   }
 
   override fun getResultBundle(): Bundle? {
@@ -71,6 +71,7 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     bundle.description = description.text.toString().trim()
     bundle.date = date.text.toString().trim()
     bundle.reminder = reminder.text.toString().trim()
+    bundle.favorite = favorite.text.toString().trim()
 
     val resultBundle: Bundle = bundle.build()
     if (TaskerPlugin.Setting.hostSupportsOnFireVariableReplacement(this)) {
@@ -79,7 +80,8 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
               EventCreateBundle.EXTRA_NAME,
               EventCreateBundle.EXTRA_DESCRIPTION,
               EventCreateBundle.EXTRA_DATE,
-              EventCreateBundle.EXTRA_REMINDER
+              EventCreateBundle.EXTRA_REMINDER,
+              EventCreateBundle.EXTRA_FAVORITE
       ))
     }
     return resultBundle

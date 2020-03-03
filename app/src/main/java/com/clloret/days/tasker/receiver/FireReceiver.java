@@ -58,6 +58,7 @@ public class FireReceiver extends AbstractPluginSettingReceiver {
         .setDescription(createBundle.getDescription())
         .setDate(date)
         .setReminder(StringUtils.tryParseInt(createBundle.getReminder()))
+        .setFavorite("1".equals(createBundle.getFavorite()))
         .build();
 
     createEventUseCase.execute(event)
