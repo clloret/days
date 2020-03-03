@@ -30,4 +30,13 @@ public class StringUtils {
     return text.substring(0, 1).toUpperCase() + text.substring(1);
   }
 
+  public static Integer tryParseInt(String text) {
+
+    try {
+      return Integer.parseInt(text);
+    } catch (NumberFormatException ex) {
+      return null;
+    }
+  }
+
 }

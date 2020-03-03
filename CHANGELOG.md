@@ -13,7 +13,8 @@ All notable changes to this project will be documented in this file.
 - Search events from the app toolbar
 - Show period of time of event in days, months and years when view or edit the event
 - Button to clear automatic event day reset in create and edit event screen
-- Create events with the voice 
+- Create events with the voice
+- Tasker integration: allow create events
 
 ### Changed
 

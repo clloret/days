@@ -63,6 +63,33 @@
       android:label="@string/title_activity_about"
       android:parentActivityName=".activities.MainActivity"
       android:theme="@style/AppTheme.MaterialAboutActivity" />
+    <activity
+      android:name=".tasker.ui.TaskerCreateEventActivity"
+      android:exported="false"
+      android:label="@string/title_activity_event_create"
+      android:theme="@style/AppTheme"
+      android:uiOptions="splitActionBarWhenNarrow"
+      android:windowSoftInputMode="adjustResize">
+
+      <!-- this Intent filter allows the plug-in to be discovered by Locale -->
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+      </intent-filter>
+    </activity>
+
+    <activity-alias
+      android:name=".tasker.ui.PluginActivity"
+      android:exported="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/title_activity_event_create"
+      android:targetActivity=".tasker.ui.TaskerCreateEventActivity"
+      tools:ignore="ExportedActivity">
+
+      <!-- this Intent filter allows the plug-in to be discovered by the host. -->
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+      </intent-filter>
+    </activity-alias>
 
     <receiver
       android:name=".device.receivers.FirstStartBroadcastReceiver"
@@ -74,17 +101,25 @@
         <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
       </intent-filter>
     </receiver>
-
     <receiver
       android:name=".device.receivers.AlarmBroadcastReceiver"
       android:process=":remote" />
-
     <receiver android:name=".device.receivers.ReminderReceiver" />
+    <receiver
+      android:name=".tasker.receiver.FireReceiver"
+      android:exported="true"
+      android:process=":background"
+      tools:ignore="ExportedReceiver">
+
+      <!-- this Intent filter allows the plug-in to discovered by Locale -->
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.FIRE_SETTING" />
+      </intent-filter>
+    </receiver>
 
     <service
       android:name=".device.services.TimeLapseService"
       android:permission="android.permission.BIND_JOB_SERVICE" />
-
   </application>
 
 </manifest>

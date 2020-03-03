@@ -122,4 +122,5 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
+  <string name="event_details_favorite">Favorito</string>
 </resources>

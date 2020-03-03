@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'jacoco-android'
@@ -78,6 +81,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.2.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "at.favre.lib:slf4j-timber:1.0.0"
     implementation "com.github.daniel-stoneuk:material-about-library:2.3.0"
@@ -94,15 +99,17 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
+    implementation "com.twofortyfouram:android-plugin-api-for-locale:1.0.4"
+    implementation "com.twofortyfouram:android-plugin-client-sdk-for-locale:4.0.2"
 
     debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     debugImplementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
 
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    annotationProcessor "com.hannesdorfmann.annotatedadapter:processor:$rootProject.annotatedAdapterVersion"
-    annotationProcessor "com.hannesdorfmann.parcelableplease:processor:$rootProject.parcelablePleaseVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    kapt "com.hannesdorfmann.annotatedadapter:processor:$rootProject.annotatedAdapterVersion"
+    kapt "com.hannesdorfmann.parcelableplease:processor:$rootProject.parcelablePleaseVersion"
+    kapt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
 //------ Test Dependencies ------
 
@@ -140,3 +147,6 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

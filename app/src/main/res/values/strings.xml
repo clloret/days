@@ -40,6 +40,7 @@
   <string name="event_details_date">Date</string>
   <string name="event_details_description">Event Description</string>
   <string name="event_details_do_not_reset_automatically">Do not reset automatically</string>
+  <string name="event_details_favorite">Favorite</string>
   <string name="event_details_name">Event Name</string>
   <string name="event_details_no_reminder">No reminder</string>
   <string name="event_details_no_tags">No tags</string>
