@@ -57,7 +57,6 @@ The following libraries are used in the project:
 - [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
 - [Mosby](https://github.com/sockeqwe/mosby)
 - [OkHttp](https://github.com/square/okhttp)
-- [ParcelablePlease](https://github.com/sockeqwe/ParcelablePlease)
 - [Robolectric](https://github.com/robolectric/robolectric)
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [RxAndroid](https://github.com/ReactiveX/RxAndroid)
