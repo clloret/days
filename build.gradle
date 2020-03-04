@@ -29,10 +29,10 @@ allprojects {
     }
 
     ext {
-        buildToolsVersion = '28.0.3'
+        buildToolsVersion = '29.0.3'
         minSdkVersion = 23
-        targetSdkVersion = 28
-        compileSdkVersion = 28
+        targetSdkVersion = 29
+        compileSdkVersion = 29
         javaVersion = JavaVersion.VERSION_1_8
 
         androidTestCore = '1.2.0'
