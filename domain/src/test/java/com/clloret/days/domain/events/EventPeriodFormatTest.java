@@ -71,7 +71,7 @@ public class EventPeriodFormatTest {
   }
 
   @Test
-  public void getTimeLapseFormatted_whenDateIsAfter_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenDateIsAfter_ReturnCorrectText() {
 
     addReminderManagerStubs();
 
@@ -82,7 +82,7 @@ public class EventPeriodFormatTest {
   }
 
   @Test
-  public void getTimeLapseFormatted_whenDateIsBefore_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenDateIsBefore_ReturnCorrectText() {
 
     addReminderManagerStubs();
 
@@ -94,7 +94,7 @@ public class EventPeriodFormatTest {
   }
 
   @Test
-  public void getTimeLapseFormatted_whenDateIsToday_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenDateIsToday_ReturnCorrectText() {
 
     addReminderManagerStubs();
 
@@ -116,7 +116,7 @@ public class EventPeriodFormatTest {
   }
 
   @Test
-  public void getTimeLapseFormatted_whenPeriodYearMonthDay_And_DateIsAfter_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenPeriodYearMonthDay_And_DateIsAfter_ReturnCorrectText() {
 
     addReminderManagerStubs();
 

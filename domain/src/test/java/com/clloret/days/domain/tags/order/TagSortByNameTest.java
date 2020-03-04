@@ -30,7 +30,7 @@ public class TagSortByNameTest {
   }
 
   @Test
-  public void compare_whenNamesAreEquals_ReturnZero() {
+  public void compare_WhenNamesAreEquals_ReturnZero() {
 
     int result = sut.compare(tag1, tag1);
 
