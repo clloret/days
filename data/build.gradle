@@ -85,7 +85,8 @@ dependencies {
 
     // InstantTaskExecutorRule
     // Version 2.0.1 is a requirement of androidx.room:room-testing:2.2.2
-    androidTestImplementation "androidx.arch.core:core-testing:2.0.1"
+    //noinspection GradleDependency
+    androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
 }
 
 tasks.withType(Test) {

@@ -4,8 +4,8 @@ jdk: oraclejdk8
 
 env:
   global:
-    - TARGET_API=28
-    - BUILD_TOOLS=28.0.3
+    - TARGET_API=29
+    - BUILD_TOOLS=29.0.3
     
 android:
   components:

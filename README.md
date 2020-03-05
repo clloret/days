@@ -57,7 +57,6 @@ The following libraries are used in the project:
 - [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
 - [Mosby](https://github.com/sockeqwe/mosby)
 - [OkHttp](https://github.com/square/okhttp)
-- [ParcelablePlease](https://github.com/sockeqwe/ParcelablePlease)
 - [Robolectric](https://github.com/robolectric/robolectric)
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [RxAndroid](https://github.com/ReactiveX/RxAndroid)
@@ -68,7 +67,7 @@ The following libraries are used in the project:
 
 - JDK 1.8
 - [Android SDK](http://developer.android.com/sdk/index.html).
-- Android Oreo [(API 27) ](http://developer.android.com/tools/revisions/platforms.html).
+- Android 10 [(API 29)](https://developer.android.com/studio/releases/platforms#10).
 - Latest Android SDK Tools and build tools.
 
 ## To-dos
