@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-03-08
+
 ### Added
 
 - Filter today events
@@ -15,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Button to clear automatic event day reset in create and edit event screen
 - Create events with the voice
 - Tasker integration: allow create events
+- Menu option to display the changelog
 
 ### Changed
 
@@ -23,3 +26,7 @@ All notable changes to this project will be documented in this file.
 ## [1.0.0] - 2019-12-09
 
 - Initial release
+
+[Unreleased]: https://github.com/clloret/days/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/clloret/days/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/clloret/days/releases/tag/v1.0.0
