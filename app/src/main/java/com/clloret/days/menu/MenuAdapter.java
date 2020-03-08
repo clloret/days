@@ -2,6 +2,7 @@ package com.clloret.days.menu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class MenuAdapter extends BaseAdapter {
   private static final int TAGS_SECTION_INDEX = 1;
   private static final int SECTION1_INITIAL_CAPACITY = 4;
   private static final int SECTION2_INITIAL_CAPACITY = 5;
+  private static final String CHANGELOG_URL = "https://github.com/clloret/days/blob/master/CHANGELOG.md";
 
   private final List<Collection<DrawerMenuItem>> sections = new ArrayList<>();
   private final SortedValueMap<String, DrawerTag, TagSortable> tags = new SortedValueMap<>(
@@ -211,6 +213,8 @@ public class MenuAdapter extends BaseAdapter {
         new Intent(context, SettingsActivity.class),
         0x00));
 
+    list.add(createOpenChangelogDrawerAction());
+
     list.add(new DrawerAction(
         context.getString(R.string.action_about),
         R.drawable.ic_info_24dp,
@@ -218,6 +222,18 @@ public class MenuAdapter extends BaseAdapter {
         0x00));
 
     return list;
+  }
+
+  private DrawerAction createOpenChangelogDrawerAction() {
+
+    final Uri uri = Uri.parse(CHANGELOG_URL);
+    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+    return new DrawerAction(
+        context.getString(R.string.action_changelog),
+        R.drawable.ic_changelog_24dp,
+        intent,
+        0x00);
   }
 
   public void populateList() {

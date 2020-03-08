@@ -12,6 +12,7 @@
   <string name="action_about">Acerca de</string>
   <string name="action_add_to_calendar">Añadir al calendario</string>
   <string name="action_cancel">Cancelar</string>
+  <string name="action_changelog">Registro de cambios</string>
   <string name="action_delete">Borrar</string>
   <string name="action_drawer_close">Cerrar cajón de navegación</string>
   <string name="action_drawer_open">Abrir cajón de navegación</string>
@@ -39,6 +40,7 @@
   <string name="event_details_date">Fecha</string>
   <string name="event_details_description">Descripción del evento</string>
   <string name="event_details_do_not_reset_automatically">No reiniciar automáticamente</string>
+  <string name="event_details_favorite">Favorito</string>
   <string name="event_details_name">Nombre del evento</string>
   <string name="event_details_no_reminder">Sin recordatorio</string>
   <string name="event_details_no_tags">Sin etiquetas</string>
@@ -122,5 +124,4 @@
     <item quantity="one">año</item>
     <item quantity="other">años</item>
   </plurals>
-  <string name="event_details_favorite">Favorito</string>
 </resources>
