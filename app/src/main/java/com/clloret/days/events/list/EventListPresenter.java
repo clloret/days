@@ -161,6 +161,7 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     final EventListView view = getView();
     view.setData(unfilteredEvents);
+    view.showContent();
   }
 
   private boolean filterEventByText(EventViewModel event, String text) {
