@@ -22,9 +22,9 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     return true
   }
 
-  override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-    return when (item?.itemId) {
+    return when (item.itemId) {
       R.id.menu_save -> {
         save()
         true
