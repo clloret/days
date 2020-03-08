@@ -19,11 +19,9 @@ import butterknife.OnClick;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseMvpActivity;
 import com.clloret.days.domain.utils.Optional;
-import com.clloret.days.events.common.PeriodTextFormatter;
-import com.clloret.days.events.common.SelectDateHelper;
-import com.clloret.days.events.common.SelectPeriodHelper;
-import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
-import com.clloret.days.events.common.SelectTagsHelper;
+import com.clloret.days.domain.utils.StringUtils;
+import com.clloret.days.events.common.CommonEventView;
+import com.clloret.days.events.common.EditEventHelper;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import com.clloret.days.model.events.EventCreatedEvent;
@@ -33,7 +31,6 @@ import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import dagger.android.AndroidInjection;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
@@ -41,10 +38,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
 
 @SuppressWarnings("PMD.TooManyMethods")
-public class EventCreateActivity extends
-    BaseMvpActivity<EventCreateView, EventCreatePresenter> implements EventCreateView,
-    SelectTagsDialogListener, FABProgressListener {
+public class EventCreateActivity
+    extends BaseMvpActivity<EventCreateView, EventCreatePresenter>
+    implements EventCreateView, CommonEventView, FABProgressListener {
 
+  private static final String EXTRA_NAME = "com.clloret.days.extras.EXTRA_NAME";
   private static final String EXTRA_TAG = "com.clloret.days.extras.EXTRA_TAG";
 
   @Inject
@@ -68,6 +66,9 @@ public class EventCreateActivity extends
   @BindView(R.id.edittext_eventdetail_description)
   EditText descriptionEdit;
 
+  @BindView(R.id.textview_eventdetail_period_text)
+  TextView periodText;
+
   @BindView(R.id.textview_eventdetail_date)
   TextView dateText;
 
@@ -87,25 +88,7 @@ public class EventCreateActivity extends
   FABProgressCircle fabProgress;
 
   @Inject
-  SelectTagsHelper selectTagsHelper;
-
-  @Inject
-  SelectPeriodHelper selectPeriodHelper;
-
-  @Inject
-  PeriodTextFormatter periodTextFormatter;
-
-  private LocalDate selectedDate;
-  private EventViewModel newEvent = new EventViewModel();
-  private Optional<TagViewModel> selectedTag;
-
-  public static Intent getCallingIntent(Context context, Optional<TagViewModel> tag) {
-
-    Intent intent = new Intent(context, EventCreateActivity.class);
-    tag.ifPresent(value -> intent.putExtra(EXTRA_TAG, value));
-
-    return intent;
-  }
+  EditEventHelper editEventHelper;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -119,16 +102,16 @@ public class EventCreateActivity extends
 
     fab.setImageDrawable(getDrawable(R.drawable.ic_save_wht_24dp));
 
-    fixFinalIconPosition(fabProgress);
-    fabProgress.attachListener(this);
+    configureFabProgress();
 
-    eventSwitcher.showNext();
-    descriptionSwitcher.showNext();
+    showCreateView();
 
     showSoftKeyboard();
 
-    TagViewModel tagViewModel = getIntent().getParcelableExtra(EXTRA_TAG);
-    selectedTag = Optional.ofNullable(tagViewModel);
+    createDefaultEvent();
+    editEventHelper.setView(this);
+    editEventHelper.setFragmentManager(getSupportFragmentManager());
+    editEventHelper.showData();
 
     presenter.loadTags();
   }
@@ -189,13 +172,7 @@ public class EventCreateActivity extends
   @Override
   public void setData(List<TagViewModel> data) {
 
-    selectTagsHelper.setMapTags(data);
-
-    selectedTag.ifPresent(value -> selectTagsHelper.addTagToSelection(value));
-
-    showSelectedTags();
-    showSelectedReminder();
-    showSelectedTimeLapseReset();
+    editEventHelper.setAvailableTags(data);
   }
 
   @Override
@@ -223,12 +200,6 @@ public class EventCreateActivity extends
   }
 
   @Override
-  public void onFABProgressAnimationEnd() {
-
-    finish();
-  }
-
-  @Override
   public void onEmptyEventNameError() {
 
     nameLayout.setError(getString(R.string.msg_error_event_name_required));
@@ -243,10 +214,67 @@ public class EventCreateActivity extends
   }
 
   @Override
-  public void onFinishTagsDialog(Collection<TagViewModel> selectedItems) {
+  public void onFABProgressAnimationEnd() {
 
-    selectTagsHelper.updateSelectedTags(selectedItems);
-    showSelectedTags();
+    finish();
+  }
+
+  @Override
+  public void showPeriodText(String text) {
+
+    periodText.setText(text);
+  }
+
+  @Override
+  public void showDate(String text) {
+
+    dateText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTags(String text) {
+
+    tagsText.setText(text);
+  }
+
+  @Override
+  public void showSelectedReminder(String text) {
+
+    reminderText.setText(text);
+  }
+
+  @Override
+  public void showSelectedTimeLapseReset(String text) {
+
+    timeLapseResetText.setText(text);
+  }
+
+  @Override
+  public void showError(String text) {
+
+    this.showSnackbarMessage(text);
+  }
+
+  public static Intent getCallingIntent(Context context, Optional<String> name,
+      Optional<TagViewModel> tag) {
+
+    Intent intent = new Intent(context, EventCreateActivity.class);
+    name.ifPresent(value -> intent.putExtra(EXTRA_NAME, value));
+    tag.ifPresent(value -> intent.putExtra(EXTRA_TAG, value));
+
+    return intent;
+  }
+
+  private void showCreateView() {
+
+    eventSwitcher.showNext();
+    descriptionSwitcher.showNext();
+  }
+
+  private void configureFabProgress() {
+
+    fixFinalIconPosition(fabProgress);
+    fabProgress.attachListener(this);
   }
 
   @OnClick(R.id.layout_eventdetail_date)
@@ -279,78 +307,68 @@ public class EventCreateActivity extends
     selectTimeLapseReset();
   }
 
+  @OnClick(R.id.button_eventdetail_clear_reset)
+  public void onClickClearReset() {
+
+    clearTimeLapseReset();
+  }
+
   @OnClick(R.id.fab)
   public void onClickFab() {
 
     saveEvent();
   }
 
-  private void showSelectedTags() {
+  private void createDefaultEvent() {
 
-    tagsText.setText(selectTagsHelper.showSelectedTags());
-  }
+    EventViewModel newEvent = new EventViewModel();
+    newEvent.setDate(new Date());
 
-  private void showSelectedReminder() {
+    Intent intent = getIntent();
 
-    reminderText.setText(periodTextFormatter.formatReminder(newEvent));
-  }
+    if (intent.hasExtra(EXTRA_NAME)) {
+      String eventName = StringUtils.capitalizeFirstLetter(intent.getStringExtra(EXTRA_NAME));
+      newEvent.setName(eventName);
+      nameEdit.setText(eventName);
+      nameEdit.setSelection(nameEdit.getText().length());
+    }
 
-  private void showSelectedTimeLapseReset() {
+    if (intent.hasExtra(EXTRA_TAG)) {
+      TagViewModel defaultTag = intent.getParcelableExtra(EXTRA_TAG);
+      editEventHelper.setSelectedTag(defaultTag);
+    }
 
-    timeLapseResetText.setText(periodTextFormatter.formatTimeLapseReset(newEvent));
+    editEventHelper.setOriginalEvent(newEvent);
   }
 
   private void selectDate() {
 
-    LocalDate today = new LocalDate();
-    LocalDate defaultDate = selectedDate == null ? today : selectedDate;
-    SelectDateHelper.selectDate(this, defaultDate, (date, formattedDate) -> {
-
-      selectedDate = date;
-      dateText.setText(formattedDate);
-    });
+    editEventHelper.selectDate(this);
   }
 
   private void selectTags() {
 
-    selectTagsHelper.showSelectTagsDialog(this, this::showSnackbarMessage);
+    editEventHelper.selectTags();
   }
 
   private void selectReminder() {
 
-    selectPeriodHelper.showSelectReminderDialog(this, newEvent, (period, timeUnit) -> {
-      newEvent.setReminder(period);
-      newEvent.setReminderUnit(timeUnit);
-
-      showSelectedReminder();
-    });
+    editEventHelper.selectReminder();
   }
 
   private void clearReminder() {
 
-    if (newEvent.hasReminder()) {
-      newEvent.setReminder(null);
-
-      showSelectedReminder();
-    }
+    editEventHelper.clearReminder();
   }
 
   private void selectTimeLapseReset() {
 
-    selectPeriodHelper.showSelectTimeLapseResetDialog(this, newEvent,
-        (period, timeUnit) -> {
-          newEvent.setTimeLapse(period);
-          newEvent.setTimeLapseUnit(timeUnit);
-
-          showSelectedTimeLapseReset();
-        });
+    editEventHelper.selectTimeLapseReset();
   }
 
-  private void discardEvent() {
+  private void clearTimeLapseReset() {
 
-    EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_event_discarded)));
-
-    NavUtils.navigateUpFromSameTask(this);
+    editEventHelper.clearTimeLapseReset();
   }
 
   private void saveEvent() {
@@ -359,16 +377,25 @@ public class EventCreateActivity extends
 
     String name = nameEdit.getText().toString();
     String description = descriptionEdit.getText().toString();
-    Date date = selectedDate != null ? selectedDate.toDate() : null;
-    String[] tags = selectTagsHelper.getMapTags().getKeySelection(TagViewModel::getId)
-        .toArray(new String[0]);
+    String[] selectedTags = editEventHelper.getSelectedTags();
 
-    newEvent.setName(name);
-    newEvent.setDescription(description);
-    newEvent.setDate(date);
-    newEvent.setTags(tags);
+    LocalDate selectedDate = editEventHelper.getSelectedDate();
+    Date date = selectedDate.toDate();
 
-    presenter.createEvent(newEvent);
+    EventViewModel event = editEventHelper.getModifiedEvent();
+    event.setName(name);
+    event.setDescription(description);
+    event.setDate(date);
+    event.setTags(selectedTags);
+
+    presenter.createEvent(event);
+  }
+
+  private void discardEvent() {
+
+    EventBus.getDefault().post(new ShowMessageEvent(getString(R.string.msg_event_discarded)));
+
+    NavUtils.navigateUpFromSameTask(this);
   }
 
 }

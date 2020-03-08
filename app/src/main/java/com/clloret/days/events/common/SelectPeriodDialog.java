@@ -34,23 +34,6 @@ public class SelectPeriodDialog extends DialogFragment {
     // Empty constructor required for DialogFragment
   }
 
-  public static SelectPeriodDialog newInstance(String title, boolean showTimeSelector,
-      Integer period, @NonNull TimeUnit timeUnit, SelectPeriodDialogListener listener) {
-
-    Bundle args = new Bundle();
-
-    args.putBoolean(BUNDLE_SHOW_TIME_SELECTOR, showTimeSelector);
-    args.putString(BUNDLE_TITLE, title);
-    args.putString(BUNDLE_TIME_UNIT, timeUnit.name());
-    args.putSerializable(BUNDLE_PERIOD, period);
-    args.putSerializable(BUNDLE_LISTENER, listener);
-
-    SelectPeriodDialog dialog = new SelectPeriodDialog();
-    dialog.setArguments(args);
-
-    return dialog;
-  }
-
   @NonNull
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -107,6 +90,23 @@ public class SelectPeriodDialog extends DialogFragment {
         });
 
     return builder.create();
+  }
+
+  public static SelectPeriodDialog newInstance(String title, boolean showTimeSelector,
+      Integer period, @NonNull TimeUnit timeUnit, SelectPeriodDialogListener listener) {
+
+    Bundle args = new Bundle();
+
+    args.putBoolean(BUNDLE_SHOW_TIME_SELECTOR, showTimeSelector);
+    args.putString(BUNDLE_TITLE, title);
+    args.putString(BUNDLE_TIME_UNIT, timeUnit.name());
+    args.putSerializable(BUNDLE_PERIOD, period);
+    args.putSerializable(BUNDLE_LISTENER, listener);
+
+    SelectPeriodDialog dialog = new SelectPeriodDialog();
+    dialog.setArguments(args);
+
+    return dialog;
   }
 
   private int getNewPeriodFromRadioButton(final RadioGroup viewTime, final int period) {

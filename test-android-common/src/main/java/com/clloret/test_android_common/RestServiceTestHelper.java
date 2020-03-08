@@ -1,4 +1,4 @@
-package com.clloret.days.data.utils;
+package com.clloret.test_android_common;
 
 import android.content.Context;
 import java.io.BufferedReader;

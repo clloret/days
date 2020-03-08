@@ -13,12 +13,12 @@ import com.clloret.days.data.local.entities.mapper.DbEventDataMapper;
 import com.clloret.days.data.local.repository.RoomEventRepository;
 import com.clloret.days.data.remote.entities.mapper.ApiEventDataMapper;
 import com.clloret.days.data.remote.repository.AirtableEventRepository;
-import com.clloret.days.data.utils.ImmediateSchedulersRule;
-import com.clloret.days.data.utils.MediumTest;
-import com.clloret.days.data.utils.MockUtils;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.domain.repository.EventRepository;
+import com.clloret.test_android_common.MediumTest;
+import com.clloret.test_android_common.MockUtils;
+import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import com.google.common.truth.Correspondence;
 import com.google.common.truth.Truth;
 import io.reactivex.Observable;
@@ -54,7 +54,7 @@ public class AppEventRepositoryTest {
   private DaysDatabase db;
 
   @Rule
-  public final ImmediateSchedulersRule schedulers = new ImmediateSchedulersRule();
+  public final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Before
   public void setUp() throws Exception {

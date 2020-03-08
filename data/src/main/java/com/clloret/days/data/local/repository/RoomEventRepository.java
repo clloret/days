@@ -14,6 +14,7 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
 import java.util.List;
+import org.joda.time.LocalDate;
 
 public class RoomEventRepository implements EventRepository, CacheSource<Event> {
 
@@ -42,6 +43,34 @@ public class RoomEventRepository implements EventRepository, CacheSource<Event> 
   public Single<List<Event>> getByFavorite() {
 
     return dao.loadFavorites()
+        .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getBeforeDate(LocalDate date) {
+
+    return dao.loadBeforeDate(date.toDate().getTime())
+        .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getAfterDate(LocalDate date) {
+
+    return dao.loadAfterDate(date.toDate().getTime())
+        .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getByDate(LocalDate date) {
+
+    return dao.loadByDate(date.toDate().getTime())
+        .map(dataMapper::toEntity);
+  }
+
+  @Override
+  public Single<List<Event>> getByReminder() {
+
+    return dao.loadWithReminder()
         .map(dataMapper::toEntity);
   }
 

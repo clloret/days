@@ -2,13 +2,20 @@
 <resources>
 
   <string-array name="default_list_entries">
-    <item>@string/action_all</item>
-    <item>@string/action_favorites</item>
+    <item>@string/action_filter_all</item>
+    <item>@string/action_filter_favorites</item>
+    <item>@string/action_filter_today</item>
+    <item>@string/action_filter_upcoming</item>
+    <item>@string/action_filter_previous</item>
+    <item>@string/action_filter_with_reminder</item>
   </string-array>
 
   <string-array name="default_list_entry_values" translatable="false">
     <item>0</item>
     <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
   </string-array>
 
 </resources>

@@ -45,14 +45,6 @@ public class TagEditActivity extends
 
   private TagViewModel tag;
 
-  public static Intent getCallingIntent(Context context, TagViewModel tag) {
-
-    Intent intent = new Intent(context, TagEditActivity.class);
-    intent.putExtra(EXTRA_TAG, tag);
-
-    return intent;
-  }
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,10 +55,7 @@ public class TagEditActivity extends
 
     configureActionBar(toolbar);
 
-    tag = getIntent().getParcelableExtra(EXTRA_TAG);
-
-    editName.setText(tag.getName());
-    editName.setSelection(editName.getText().length());
+    getTagAndShow();
   }
 
   @Override
@@ -154,6 +143,22 @@ public class TagEditActivity extends
   public void hideIndeterminateProgress() {
 
     progressBar.setVisibility(View.INVISIBLE);
+  }
+
+  public static Intent getCallingIntent(Context context, TagViewModel tag) {
+
+    Intent intent = new Intent(context, TagEditActivity.class);
+    intent.putExtra(EXTRA_TAG, tag);
+
+    return intent;
+  }
+
+  private void getTagAndShow() {
+
+    tag = getIntent().getParcelableExtra(EXTRA_TAG);
+
+    editName.setText(tag.getName());
+    editName.setSelection(editName.getText().length());
   }
 
   private void deleteTag() {

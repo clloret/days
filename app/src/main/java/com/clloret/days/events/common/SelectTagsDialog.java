@@ -3,9 +3,11 @@ package com.clloret.days.events.common;
 import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import com.clloret.days.R;
+import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.model.entities.TagViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,10 +21,7 @@ public class SelectTagsDialog extends DialogFragment {
   private static final String BUNDLE_CHECKED_TAGS = "checkedTags";
   private static final String BUNDLE_TAGS = "tags";
 
-  public interface SelectTagsDialogListener {
-
-    void onFinishTagsDialog(Collection<TagViewModel> selectedItems);
-  }
+  private Optional<SelectTagsDialogListener> listener = Optional.empty();
 
   public SelectTagsDialog() {
 
@@ -30,22 +29,12 @@ public class SelectTagsDialog extends DialogFragment {
     // Empty constructor required for DialogFragment
   }
 
-  public static SelectTagsDialog newInstance(String title,
-      String[] nameTags, boolean[] checkedTags, List<TagViewModel> tags) {
+  public SelectTagsDialog(@Nullable SelectTagsDialogListener listener) {
 
-    Bundle args = new Bundle();
+    super();
 
-    args.putString(BUNDLE_TITLE, title);
-    args.putStringArray(BUNDLE_NAME_TAGS, nameTags);
-    args.putBooleanArray(BUNDLE_CHECKED_TAGS, checkedTags);
-    args.putParcelableArrayList(BUNDLE_TAGS, new ArrayList<>(tags));
-
-    SelectTagsDialog dialog = new SelectTagsDialog();
-    dialog.setArguments(args);
-
-    return dialog;
+    this.listener = Optional.ofNullable(listener);
   }
-
 
   @NonNull
   @Override
@@ -72,8 +61,7 @@ public class SelectTagsDialog extends DialogFragment {
             })
         .setPositiveButton(getString(R.string.action_ok), (dialog, id) -> {
 
-          SelectTagsDialogListener listener = (SelectTagsDialogListener) getActivity();
-          listener.onFinishTagsDialog(selectedItems);
+          listener.ifPresent(value -> value.onFinishTagsDialog(selectedItems));
 
         })
         .setNegativeButton(getString(R.string.action_cancel), (dialog, id) -> {
@@ -81,6 +69,23 @@ public class SelectTagsDialog extends DialogFragment {
         });
 
     return builder.create();
+  }
+
+  public static SelectTagsDialog newInstance(String title,
+      String[] nameTags, boolean[] checkedTags, List<TagViewModel> tags,
+      SelectTagsDialogListener listener) {
+
+    Bundle args = new Bundle();
+
+    args.putString(BUNDLE_TITLE, title);
+    args.putStringArray(BUNDLE_NAME_TAGS, nameTags);
+    args.putBooleanArray(BUNDLE_CHECKED_TAGS, checkedTags);
+    args.putParcelableArrayList(BUNDLE_TAGS, new ArrayList<>(tags));
+
+    SelectTagsDialog dialog = new SelectTagsDialog(listener);
+    dialog.setArguments(args);
+
+    return dialog;
   }
 
   private List<TagViewModel> getSelectedTags(boolean[] checkedTags, List<TagViewModel> tags) {
@@ -94,5 +99,10 @@ public class SelectTagsDialog extends DialogFragment {
     }
 
     return selectedItems;
+  }
+
+  public interface SelectTagsDialogListener {
+
+    void onFinishTagsDialog(Collection<TagViewModel> selectedItems);
   }
 }

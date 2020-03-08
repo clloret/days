@@ -6,6 +6,10 @@ Days is a simple Android app that helps to control event dates.
 
 This project also showcases Clean Architecture, the MVP pattern with Mosby, Repository pattern, RXJava 2, Dagger 2, Room and Material Design.
 
+<p align="center">
+<a href='https://play.google.com/store/apps/details?id=com.clloret.days&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/es/badges/static/images/badges/en_badge_web_generic.png' height='90px'/></a>
+</p>
+
 ## Features
 
 ### For the user
@@ -53,7 +57,6 @@ The following libraries are used in the project:
 - [MockWebServer](https://github.com/square/okhttp/tree/master/mockwebserver)
 - [Mosby](https://github.com/sockeqwe/mosby)
 - [OkHttp](https://github.com/square/okhttp)
-- [ParcelablePlease](https://github.com/sockeqwe/ParcelablePlease)
 - [Robolectric](https://github.com/robolectric/robolectric)
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [RxAndroid](https://github.com/ReactiveX/RxAndroid)
@@ -64,7 +67,7 @@ The following libraries are used in the project:
 
 - JDK 1.8
 - [Android SDK](http://developer.android.com/sdk/index.html).
-- Android Oreo [(API 27) ](http://developer.android.com/tools/revisions/platforms.html).
+- Android 10 [(API 29)](https://developer.android.com/studio/releases/platforms#10).
 - Latest Android SDK Tools and build tools.
 
 ## To-dos
@@ -74,10 +77,10 @@ This project is still in progress. Here are the some features that I will finish
 ### For users:
 - [x] Notifications
 - [ ] Widgets
-- [ ] Tasker integration
+- [x] Tasker integration
 
 ### For developers:
-- [ ] Kotlin
+- [x] Kotlin
 - [ ] Architecture components
 
 ## License

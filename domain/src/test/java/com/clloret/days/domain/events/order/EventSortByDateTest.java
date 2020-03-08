@@ -50,7 +50,7 @@ public class EventSortByDateTest {
   }
 
   @Test
-  public void compare_whenNamesAreEquals_ReturnZero() {
+  public void compare_WhenNamesAreEquals_ReturnZero() {
 
     int result = sut.compare(event1, event1);
 

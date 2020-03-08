@@ -5,12 +5,13 @@ import static com.clloret.days.events.SampleBuilder.createEventList;
 import static com.clloret.days.events.SampleBuilder.createEventViewModel;
 import static io.reactivex.Single.just;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.clloret.days.device.TimeProviderImpl;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.events.filter.EventFilterByTag;
+import com.clloret.days.domain.events.filter.EventFilterAll;
 import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.FavoriteEventUseCase;
@@ -21,20 +22,20 @@ import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import com.clloret.days.domain.interactors.events.ToggleEventReminderUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.utils.RxImmediateSchedulerRule;
+import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
+import io.reactivex.subjects.PublishSubject;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 
 @SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventListPresenterTest {
@@ -64,9 +65,6 @@ public class EventListPresenterTest {
   private CreateEventUseCase createEventUseCase;
 
   @Mock
-  private EventViewModelMapper eventViewModelMapper;
-
-  @Mock
   private EventBus eventBus;
 
   @Mock
@@ -75,13 +73,28 @@ public class EventListPresenterTest {
   @Mock
   private EventListView eventListView;
 
+  @Spy
+  private EventViewModelMapper eventViewModelMapper = new EventViewModelMapper();
+
   @InjectMocks
   private EventListPresenter eventListPresenter;
 
-  private void addStubMethodsToMapper(Event event, EventViewModel eventViewModel) {
+  private void loadEventsAndVerify() {
 
-    when(eventViewModelMapper.fromEvent(Mockito.any(Event.class))).thenReturn(eventViewModel);
-    when(eventViewModelMapper.toEvent(Mockito.any(EventViewModel.class))).thenReturn(event);
+    List<Event> eventList = createEventList();
+
+    when(getFilteredEventsUseCase.execute(any())).thenReturn(
+        just(eventList)
+    );
+
+    EventFilterAll eventFilterAll = new EventFilterAll();
+
+    eventListPresenter.setFilterStrategy(eventFilterAll);
+    eventListPresenter.loadEvents(false);
+
+    verify(getFilteredEventsUseCase).execute(any(RequestValues.class));
+    verify(eventListView).setData(argThat(list -> list.size() == 2));
+    verify(eventListView).showContent();
   }
 
   @Before
@@ -90,26 +103,8 @@ public class EventListPresenterTest {
     MockitoAnnotations.initMocks(this);
 
     eventListPresenter.attachView(eventListView);
-  }
 
-  @Test
-  public void loadEvents_Always_CallApiAndNotifyView() {
-
-    List<Event> eventList = createEventList();
-
-    when(getFilteredEventsUseCase.execute(any())).thenReturn(
-        just(eventList)
-    );
-
-    String tagId = "recsOSmIyyMoUQiwn";
-    EventFilterByTag eventFilterByTag = new EventFilterByTag(tagId);
-
-    eventListPresenter.setFilterStrategy(eventFilterByTag);
-    eventListPresenter.loadEvents(false);
-
-    verify(getFilteredEventsUseCase).execute(any(RequestValues.class));
-    verify(eventListView).setData(ArgumentMatchers.anyList());
-    verify(eventListView).showContent();
+    loadEventsAndVerify();
   }
 
   @Test
@@ -126,8 +121,6 @@ public class EventListPresenterTest {
             observer.onSuccess(true);
           }
         });
-
-    addStubMethodsToMapper(event, eventViewModel);
 
     eventListPresenter.deleteEvent(eventViewModel);
 
@@ -149,8 +142,6 @@ public class EventListPresenterTest {
             observer.onSuccess(event);
           }
         });
-
-    addStubMethodsToMapper(event, eventViewModel);
 
     eventListPresenter.makeEventFavorite(eventViewModel);
 
@@ -176,8 +167,6 @@ public class EventListPresenterTest {
     when(timeProvider.getCurrentDate())
         .thenReturn(new LocalDate(2000, 1, 1));
 
-    addStubMethodsToMapper(event, eventViewModel);
-
     eventListPresenter.resetDate(eventViewModel);
 
     verify(resetEventDateUseCase).execute(any(Event.class));
@@ -198,8 +187,6 @@ public class EventListPresenterTest {
             observer.onSuccess(event);
           }
         });
-
-    addStubMethodsToMapper(event, eventViewModel);
 
     eventListPresenter.undoDelete(eventViewModel);
 
@@ -222,10 +209,22 @@ public class EventListPresenterTest {
           }
         });
 
-    addStubMethodsToMapper(event, eventViewModel);
-
     eventListPresenter.toggleEventReminder(eventViewModel);
 
     verify(toggleEventReminderUseCase).execute(any(Event.class));
+    verify(eventListView).reminderSuccessfully(any(EventViewModel.class));
+  }
+
+  @Test
+  public void observeSearchQuery_WhenFilterMatches_ShowFilteredEvents() {
+
+    final PublishSubject<String> subject = PublishSubject.create();
+
+    eventListPresenter.observeSearchQuery(subject);
+
+    subject.onNext("Filtered aeiouaeiou");
+
+    verify(eventListView).setData(argThat(list -> list.size() == 1));
+    verify(eventListView).showContent();
   }
 }

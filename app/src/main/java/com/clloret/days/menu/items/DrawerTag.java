@@ -13,8 +13,8 @@ import com.clloret.days.model.entities.TagViewModel;
 
 public class DrawerTag extends DrawerFilter implements TagSortable {
 
-  private TagViewModel tag;
   private final DrawerTagSelectedMgr drawerTagSelectedMgr;
+  private TagViewModel tag;
 
   public DrawerTag(@NonNull EventFilterByTag eventFilterByTag,
       @NonNull TagViewModel tag, @NonNull DrawerTagSelectedMgr drawerTagSelectedMgr) {
@@ -36,6 +36,14 @@ public class DrawerTag extends DrawerFilter implements TagSortable {
   }
 
   @Override
+  public void select(FragmentActivity activity) {
+
+    drawerTagSelectedMgr.select(this);
+
+    super.select(activity);
+  }
+
+  @Override
   public int getType() {
 
     return 3;
@@ -45,6 +53,18 @@ public class DrawerTag extends DrawerFilter implements TagSortable {
   public TextViewHolder createViewHolder() {
 
     return new TextViewHolder();
+  }
+
+  @Override
+  public void deselect() {
+
+    drawerTagSelectedMgr.deselect();
+  }
+
+  @Override
+  public String getName() {
+
+    return tag.getName();
   }
 
   @NonNull
@@ -63,25 +83,5 @@ public class DrawerTag extends DrawerFilter implements TagSortable {
   private void updateTitle() {
 
     title = tag.getName();
-  }
-
-  @Override
-  public void select(FragmentActivity activity) {
-
-    drawerTagSelectedMgr.select(this);
-
-    super.select(activity);
-  }
-
-  @Override
-  public void deselect() {
-
-    drawerTagSelectedMgr.deselect();
-  }
-
-  @Override
-  public String getName() {
-
-    return tag.getName();
   }
 }

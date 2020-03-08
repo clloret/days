@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:context="com.clloret.days.activities.MainActivity">
+  <item
+    android:id="@+id/menu_speech_recognition"
+    android:icon="@drawable/ic_mic_wht_24dp"
+    android:title="@string/title_event_voice_create"
+    app:showAsAction="always" />
+</menu>

@@ -2,21 +2,27 @@ package com.clloret.days.events.common;
 
 import android.content.res.Resources;
 import android.text.TextUtils;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import com.clloret.days.R;
-import com.clloret.days.base.BaseMvpActivity;
+import com.clloret.days.domain.tags.order.TagSortFactory;
+import com.clloret.days.domain.tags.order.TagSortFactory.SortType;
 import com.clloret.days.domain.utils.SelectionMap;
+import com.clloret.days.events.common.SelectTagsDialog.SelectTagsDialogListener;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.TagViewModel;
 import io.reactivex.Observable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 
 public class SelectTagsHelper {
 
   private final Resources resources;
+  private SelectTagsDialogListener dialogListener;
   private SelectionMap<String, TagViewModel> mapTags = new SelectionMap<>();
 
   @Inject
@@ -32,12 +38,15 @@ public class SelectTagsHelper {
 
   public void setMapTags(List<TagViewModel> data) {
 
-    Map<String, TagViewModel> stringTagMap = Observable.just(data)
-        .concatMap(Observable::fromIterable)
-        .toMap(TagViewModel::getId)
-        .blockingGet();
+    Collections.sort(data, TagSortFactory.makeTagSort(SortType.NAME));
 
-    this.mapTags = new SelectionMap<>(stringTagMap);
+    LinkedHashMap<String, TagViewModel> orderedMap = new LinkedHashMap<>();
+
+    for (TagViewModel tagViewModel : data) {
+      orderedMap.put(tagViewModel.getId(), tagViewModel);
+    }
+
+    this.mapTags = new SelectionMap<>(orderedMap);
   }
 
   public String showSelectedTags() {
@@ -65,7 +74,8 @@ public class SelectTagsHelper {
     }
   }
 
-  public void showSelectTagsDialog(BaseMvpActivity activity, SelectTagsHelperListener listener) {
+  public void showSelectTagsDialog(FragmentManager fragmentManager,
+      SelectTagsHelperListener listener) {
 
     if (mapTags.size() == 0) {
       listener.onError(resources.getString(R.string.msg_error_no_tags_available));
@@ -96,8 +106,8 @@ public class SelectTagsHelper {
     SelectTagsDialog dialog = SelectTagsDialog
         .newInstance(resources.getString(R.string.title_select_tags),
             nameTags.toArray(new String[0]), checkedTags,
-            new ArrayList<>(tags));
-    dialog.show(activity.getSupportFragmentManager(), "tags");
+            new ArrayList<>(tags), dialogListener);
+    dialog.show(fragmentManager, "tags");
   }
 
   public void updateSelectedTags(Collection<TagViewModel> selectedItems) {
@@ -114,6 +124,11 @@ public class SelectTagsHelper {
   public void addTagToSelection(TagViewModel tag) {
 
     mapTags.addToSelection(tag);
+  }
+
+  public void setDialogListener(@Nullable SelectTagsDialogListener dialogListener) {
+
+    this.dialogListener = dialogListener;
   }
 
   public interface SelectTagsHelperListener {

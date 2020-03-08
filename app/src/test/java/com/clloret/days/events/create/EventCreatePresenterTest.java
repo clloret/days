@@ -13,7 +13,7 @@ import com.clloret.days.events.SampleBuilder;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.clloret.days.utils.RxImmediateSchedulerRule;
+import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
 import io.reactivex.Scheduler;

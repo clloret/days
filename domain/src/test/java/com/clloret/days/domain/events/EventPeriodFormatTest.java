@@ -8,6 +8,7 @@ import com.clloret.days.domain.utils.TimeProvider;
 import java.util.Locale;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.PeriodType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -16,6 +17,10 @@ import org.mockito.MockitoAnnotations;
 
 public class EventPeriodFormatTest {
 
+  private final LocalDate longAgo = new LocalDate()
+      .withYear(2019)
+      .withMonthOfYear(6)
+      .withDayOfMonth(15);
   private LocalDate yesterday;
   private LocalDate today;
   private LocalDate tomorrow;
@@ -66,33 +71,34 @@ public class EventPeriodFormatTest {
   }
 
   @Test
-  public void getTimeLapseFormatted_whenDateIsAfter_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenDateIsAfter_ReturnCorrectText() {
 
     addReminderManagerStubs();
 
-    String result = sut.getTimeLapseFormatted(tomorrow.toDate(), today.toDate());
+    String result = sut.getTimeLapseFormatted(tomorrow.toDate(), today.toDate(), PeriodType.days());
     String expected = "Within 1 day";
 
     assertThat(result).isEqualTo(expected);
   }
 
   @Test
-  public void getTimeLapseFormatted_whenDateIsBefore_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenDateIsBefore_ReturnCorrectText() {
 
     addReminderManagerStubs();
 
-    String result = sut.getTimeLapseFormatted(yesterday.toDate(), today.toDate());
+    String result = sut
+        .getTimeLapseFormatted(yesterday.toDate(), today.toDate(), PeriodType.days());
     String expected = "1 day ago";
 
     assertThat(result).isEqualTo(expected);
   }
 
   @Test
-  public void getTimeLapseFormatted__whenDateIsToday_ReturnCorrectText() {
+  public void getTimeLapseFormatted_WhenDateIsToday_ReturnCorrectText() {
 
     addReminderManagerStubs();
 
-    String result = sut.getTimeLapseFormatted(today.toDate(), today.toDate());
+    String result = sut.getTimeLapseFormatted(today.toDate(), today.toDate(), PeriodType.days());
     String expected = "Today";
 
     assertThat(result).isEqualTo(expected);
@@ -105,6 +111,18 @@ public class EventPeriodFormatTest {
 
     String result = sut.getDaysSinceFormatted(thousandDaysLater.toDate());
     String expected = "1,000";
+
+    assertThat(result).isEqualTo(expected);
+  }
+
+  @Test
+  public void getTimeLapseFormatted_WhenPeriodYearMonthDay_And_DateIsAfter_ReturnCorrectText() {
+
+    addReminderManagerStubs();
+
+    String result = sut
+        .getTimeLapseFormatted(longAgo.toDate(), today.toDate(), PeriodType.yearMonthDay());
+    String expected = "Within 19 years, 5 months and 13 days";
 
     assertThat(result).isEqualTo(expected);
   }

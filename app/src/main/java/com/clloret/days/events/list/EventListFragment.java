@@ -1,5 +1,6 @@
 package com.clloret.days.events.list;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +38,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
@@ -89,6 +93,7 @@ public class EventListFragment
   @BindView(R.id.emptyView)
   View emptyView;
 
+  private SearchView searchView;
   private EventListAdapter adapter;
   private SortType savedSortType;
   private OnProgressListener progressListener;
@@ -112,63 +117,58 @@ public class EventListFragment
     return new RetainingLceViewState<>();
   }
 
-  public static EventListFragment newInstance(@NonNull EventFilterStrategy eventFilterStrategy) {
+  @Override
+  public void showContent() {
 
-    Bundle bundle = new Bundle();
-    bundle.putSerializable(BUNDLE_FILTER_STRATEGY, eventFilterStrategy);
+    super.showContent();
 
-    EventListFragment fragment = new EventListFragment();
-    fragment.setArguments(bundle);
+    contentView.setRefreshing(false);
 
-    return fragment;
+    checkIfEmptyViewToBeDisplayed();
   }
 
-  private void selectMenuSortMode(Menu menu) {
+  @Override
+  public void showError(Throwable e, boolean pullToRefresh) {
 
-    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
-    menu.findItem(menuId).setChecked(true);
+    super.showError(e, pullToRefresh);
+
+    emptyView.setVisibility(View.GONE);
   }
 
-  private boolean sortByComparator(int itemId) {
+  @Override
+  public void showLoading(boolean pullToRefresh) {
 
-    switch (itemId) {
-      case R.id.menu_sort_name:
-      case R.id.menu_sort_favorite:
-      case R.id.menu_sort_latest_date:
-      case R.id.menu_sort_oldest_date:
-        final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
-        adapter.sortByComparator(comparator);
-        preferenceUtils.setSortMode(sortType);
-        return true;
+    super.showLoading(pullToRefresh);
 
-      default:
-        return false;
-    }
+    emptyView.setVisibility(View.GONE);
   }
 
-  private void checkIfEmptyViewToBeDisplayed() {
+  @Override
+  public void onNewViewStateInstance() {
 
-    if (adapter.getItemCount() == 0) {
-      emptyView.setVisibility(View.VISIBLE);
-    } else {
-      emptyView.setVisibility(View.GONE);
-    }
+    showLoading(false);
+    loadData(false);
   }
 
-  private void addCreatedEventToAdapter(EventViewModel event) {
+  @Override
+  public List<EventViewModel> getData() {
 
-    int index = adapter.addItem(event);
-    recyclerView.scrollToPosition(index);
+    Timber.d("getData");
+
+    return adapter == null ? null : adapter.getEvents();
   }
 
-  private void readBundle(Bundle bundle) {
+  @Override
+  public void setData(List<EventViewModel> data) {
 
-    if (bundle != null) {
-      EventFilterStrategy filterStrategy = (EventFilterStrategy) bundle
-          .getSerializable(BUNDLE_FILTER_STRATEGY);
-      presenter.setFilterStrategy(filterStrategy);
-    }
+    adapter.setEvents(data);
+    adapter.notifyDataSetChanged();
+  }
+
+  @Override
+  public void loadData(boolean pullToRefresh) {
+
+    presenter.loadEvents(pullToRefresh);
   }
 
   @NonNull
@@ -188,34 +188,6 @@ public class EventListFragment
   }
 
   @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
-    super.onViewCreated(view, savedInstanceState);
-
-    Timber.d("onViewCreated");
-
-    readBundle(getArguments());
-
-    contentView.setOnRefreshListener(this);
-
-    final int sortMode = preferenceUtils.getSortMode();
-    savedSortType = SortType.fromValue(sortMode);
-    Comparator<EventSortable> comparator = eventSortComparators.get(savedSortType);
-
-    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
-
-    GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
-    recyclerView.setLayoutManager(layoutManager);
-    recyclerView.setHasFixedSize(true);
-    recyclerView.setAdapter(adapter);
-
-    ItemTouchHelper.Callback callback =
-        new EventListTouchHelperCallback(adapter);
-    ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
-    touchHelper.attachToRecyclerView(recyclerView);
-  }
-
-  @Override
   public void onStart() {
 
     super.onStart();
@@ -228,10 +200,19 @@ public class EventListFragment
   }
 
   @Override
-  public void onNewViewStateInstance() {
+  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-    showLoading(false);
-    loadData(false);
+    super.onViewCreated(view, savedInstanceState);
+
+    Timber.d("onViewCreated");
+
+    readBundle(getArguments());
+
+    contentView.setOnRefreshListener(this);
+
+    createAdapter();
+
+    configureRecyclerView();
   }
 
   @Override
@@ -253,6 +234,8 @@ public class EventListFragment
     super.onCreateOptionsMenu(menu, inflater);
 
     inflater.inflate(R.menu.menu_event_list, menu);
+
+    configureSearchView(menu);
   }
 
   @Override
@@ -289,56 +272,9 @@ public class EventListFragment
   }
 
   @Override
-  public void setData(List<EventViewModel> data) {
-
-    adapter.setEvents(data);
-    adapter.notifyDataSetChanged();
-  }
-
-  @Override
-  public void loadData(boolean pullToRefresh) {
-
-    presenter.loadEvents(pullToRefresh);
-  }
-
-  @Override
-  public void showLoading(boolean pullToRefresh) {
-
-    super.showLoading(pullToRefresh);
-
-    emptyView.setVisibility(View.GONE);
-  }
-
-  @Override
-  public List<EventViewModel> getData() {
-
-    Timber.d("getData");
-
-    return adapter == null ? null : adapter.getEvents();
-  }
-
-  @Override
-  public void showContent() {
-
-    super.showContent();
-
-    contentView.setRefreshing(false);
-
-    checkIfEmptyViewToBeDisplayed();
-  }
-
-  @Override
   protected String getErrorMessage(Throwable e, boolean pullToRefresh) {
 
     return e.getLocalizedMessage();
-  }
-
-  @Override
-  public void showError(Throwable e, boolean pullToRefresh) {
-
-    super.showError(e, pullToRefresh);
-
-    emptyView.setVisibility(View.GONE);
   }
 
   @Override
@@ -476,6 +412,111 @@ public class EventListFragment
   public void reminderSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
+  }
+
+  public static EventListFragment newInstance(@NonNull EventFilterStrategy eventFilterStrategy) {
+
+    Bundle bundle = new Bundle();
+    bundle.putSerializable(BUNDLE_FILTER_STRATEGY, eventFilterStrategy);
+
+    EventListFragment fragment = new EventListFragment();
+    fragment.setArguments(bundle);
+
+    return fragment;
+  }
+
+  private void createAdapter() {
+
+    Comparator<EventSortable> comparator = getEventSortableComparator();
+
+    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
+  }
+
+  private Comparator<EventSortable> getEventSortableComparator() {
+
+    final int sortMode = preferenceUtils.getSortMode();
+    savedSortType = SortType.fromValue(sortMode);
+    return eventSortComparators.get(savedSortType);
+  }
+
+  private void configureRecyclerView() {
+
+    GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+    recyclerView.setLayoutManager(layoutManager);
+    recyclerView.setHasFixedSize(true);
+    recyclerView.setAdapter(adapter);
+
+    ItemTouchHelper.Callback callback =
+        new EventListTouchHelperCallback(adapter);
+    ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+    touchHelper.attachToRecyclerView(recyclerView);
+  }
+
+  private void selectMenuSortMode(Menu menu) {
+
+    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    menu.findItem(menuId).setChecked(true);
+  }
+
+  private boolean sortByComparator(int itemId) {
+
+    switch (itemId) {
+      case R.id.menu_sort_name:
+      case R.id.menu_sort_favorite:
+      case R.id.menu_sort_latest_date:
+      case R.id.menu_sort_oldest_date:
+        final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
+        final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
+        adapter.sortByComparator(comparator);
+        preferenceUtils.setSortMode(sortType);
+        return true;
+
+      default:
+        return false;
+    }
+  }
+
+  private void checkIfEmptyViewToBeDisplayed() {
+
+    if (adapter.getItemCount() == 0) {
+      emptyView.setVisibility(View.VISIBLE);
+    } else {
+      emptyView.setVisibility(View.GONE);
+    }
+  }
+
+  private void addCreatedEventToAdapter(EventViewModel event) {
+
+    int index = adapter.addItem(event);
+    recyclerView.scrollToPosition(index);
+  }
+
+  private void readBundle(Bundle bundle) {
+
+    if (bundle != null) {
+      EventFilterStrategy filterStrategy = (EventFilterStrategy) bundle
+          .getSerializable(BUNDLE_FILTER_STRATEGY);
+      presenter.setFilterStrategy(filterStrategy);
+    }
+  }
+
+  private void configureSearchView(@NonNull Menu menu) {
+
+    final MenuItem searchItem = menu.findItem(R.id.menu_search_events);
+
+    if (searchItem != null) {
+      searchView = (SearchView) searchItem.getActionView();
+    }
+
+    final FragmentActivity activity = Objects.requireNonNull(getActivity());
+    final SearchManager searchManager = (SearchManager)
+        activity.getSystemService(Context.SEARCH_SERVICE);
+
+    if (searchView != null) {
+      searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+
+      presenter.observeSearchQuery(RxSearchObservable.fromView(searchView));
+    }
   }
 
   public void setOnProgressListener(OnProgressListener listener) {

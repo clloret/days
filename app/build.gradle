@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply plugin: 'com.getkeepsafe.dexcount'
 apply plugin: 'jacoco-android'
-apply from: '../config/quality.gradle'
+apply from: "$rootDir/app/google-services.gradle"
+apply from: "$rootDir/common-android-test.gradle"
+apply from: "$rootDir/config/quality.gradle"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -72,12 +77,14 @@ dependencies {
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'com.google.firebase:firebase-analytics:17.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation "androidx.core:core-ktx:1.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "at.favre.lib:slf4j-timber:1.0.0"
+    implementation 'at.favre.lib:slf4j-timber:1.0.1'
     implementation "com.github.daniel-stoneuk:material-about-library:2.3.0"
     implementation "com.github.jorgecastilloprz:fabprogresscircle:1.01@aar"
     implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
@@ -85,22 +92,23 @@ dependencies {
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
     implementation "com.hannesdorfmann.mosby:mvp:$rootProject.mosbyVersion"
     implementation "com.hannesdorfmann.mosby:viewstate:$rootProject.mosbyVersion"
-    implementation "com.hannesdorfmann.parcelableplease:annotation:$rootProject.parcelablePleaseVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    //noinspection AnnotationProcessorOnCompilePath
     implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation "org.greenrobot:eventbus:$rootProject.eventBusVersion"
+    implementation "com.twofortyfouram:android-plugin-api-for-locale:1.0.4"
+    implementation "com.twofortyfouram:android-plugin-client-sdk-for-locale:4.0.2"
 
     debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     debugImplementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
 
-    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    annotationProcessor "com.hannesdorfmann.annotatedadapter:processor:$rootProject.annotatedAdapterVersion"
-    annotationProcessor "com.hannesdorfmann.parcelableplease:processor:$rootProject.parcelablePleaseVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    kapt "com.hannesdorfmann.annotatedadapter:processor:$rootProject.annotatedAdapterVersion"
+    kapt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
 //------ Test Dependencies ------
 
@@ -133,10 +141,11 @@ dependencies {
     androidTestImplementation "com.google.code.gson:gson:$rootProject.gsonVersion"
 
     // Dagger
-    androidTestAnnotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
-    androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 }
 
-apply from: "$rootDir/app/google-services.gradle"
-
 apply plugin: 'com.google.gms.google-services'
+repositories {
+    mavenCentral()
+}

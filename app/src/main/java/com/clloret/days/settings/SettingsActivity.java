@@ -74,22 +74,6 @@ public class SettingsActivity extends BaseActivity {
       OnSharedPreferenceChangeListener {
 
     @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
-
-      DialogFragment dialogFragment = null;
-      if (preference instanceof TimePickerPreference) {
-        dialogFragment = TimePickerPreferenceDialog.newInstance(preference.getKey());
-      }
-
-      if (dialogFragment != null) {
-        dialogFragment.setTargetFragment(this, 0);
-        dialogFragment.show(getFragmentManager(), null);
-      } else {
-        super.onDisplayPreferenceDialog(preference);
-      }
-    }
-
-    @Override
     public void onResume() {
 
       super.onResume();
@@ -123,7 +107,7 @@ public class SettingsActivity extends BaseActivity {
                   (dialog, id) -> App.get(getContext()).invalidateDataAndRestart())
               .setNegativeButton(R.string.action_no,
                   (dialog, id) -> {
-                    SwitchPreference prefRemoteDatastore = (SwitchPreference) getPreferenceScreen()
+                    SwitchPreference prefRemoteDatastore = getPreferenceScreen()
                         .findPreference(remoteDatastore);
                     prefRemoteDatastore.setChecked(false);
                   });
@@ -136,6 +120,28 @@ public class SettingsActivity extends BaseActivity {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
       setPreferencesFromResource(R.xml.settings, rootKey);
+
+      configurePreferenceValidations();
+
+    }
+
+    @Override
+    public void onDisplayPreferenceDialog(Preference preference) {
+
+      DialogFragment dialogFragment = null;
+      if (preference instanceof TimePickerPreference) {
+        dialogFragment = TimePickerPreferenceDialog.newInstance(preference.getKey());
+      }
+
+      if (dialogFragment != null) {
+        dialogFragment.setTargetFragment(this, 0);
+        dialogFragment.show(getFragmentManager(), null);
+      } else {
+        super.onDisplayPreferenceDialog(preference);
+      }
+    }
+
+    private void configurePreferenceValidations() {
 
       OnPreferenceChangeListener textEmptyErrorListener = (preference, newValue) -> {
 
@@ -150,33 +156,39 @@ public class SettingsActivity extends BaseActivity {
       };
 
       String airtableKey = getString(R.string.pref_airtable_api_key);
-      getPreferenceScreen()
-          .findPreference(airtableKey).setOnPreferenceChangeListener(textEmptyErrorListener);
+      setOnPreferenceChangeListener(airtableKey, textEmptyErrorListener);
 
       String airtableBase = getString(R.string.pref_airtable_base_id);
-      getPreferenceScreen()
-          .findPreference(airtableBase).setOnPreferenceChangeListener(textEmptyErrorListener);
+      setOnPreferenceChangeListener(airtableBase, textEmptyErrorListener);
 
       String remoteDatastore = getString(R.string.pref_remote_datastore);
-      getPreferenceScreen().findPreference(remoteDatastore)
-          .setOnPreferenceChangeListener((preference, newValue) -> {
+      OnPreferenceChangeListener airtableRequiredListener = (preference, newValue) -> {
 
-            Timber.d("%s", newValue.toString());
+        Timber.d("%s", newValue.toString());
 
-            SharedPreferences preferences = PreferenceManager
-                .getDefaultSharedPreferences(getContext());
-            if (preferences.contains(airtableKey) && preferences.contains(airtableBase)) {
+        SharedPreferences preferences = PreferenceManager
+            .getDefaultSharedPreferences(getContext());
+        if (preferences.contains(airtableKey) && preferences.contains(airtableBase)) {
 
-              return true;
-            } else {
+          return true;
+        } else {
 
-              Snackbar
-                  .make(getView(), R.string.msg_error_must_fill_airtable_data, Snackbar.LENGTH_LONG)
-                  .show();
+          Snackbar
+              .make(getView(), R.string.msg_error_must_fill_airtable_data, Snackbar.LENGTH_LONG)
+              .show();
 
-              return false;
-            }
-          });
+          return false;
+        }
+      };
+      setOnPreferenceChangeListener(remoteDatastore, airtableRequiredListener);
+    }
+
+    private void setOnPreferenceChangeListener(String key, OnPreferenceChangeListener listener) {
+
+      Preference preference = getPreferenceScreen().findPreference(key);
+      if (preference != null) {
+        preference.setOnPreferenceChangeListener(listener);
+      }
     }
   }
 }

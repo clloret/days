@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco-android'
+apply from: "$rootDir/common-android-test.gradle"
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -81,6 +82,11 @@ dependencies {
 
     // Room testing
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+
+    // InstantTaskExecutorRule
+    // Version 2.0.1 is a requirement of androidx.room:room-testing:2.2.2
+    //noinspection GradleDependency
+    androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
 }
 
 tasks.withType(Test) {
