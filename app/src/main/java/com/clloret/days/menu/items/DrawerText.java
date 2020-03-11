@@ -1,10 +1,11 @@
 package com.clloret.days.menu.items;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.menu.items.holders.TextViewHolder;
 
 public abstract class DrawerText extends DrawerMenuItem<TextViewHolder> {
 
-  String title;
+  public String title;
 
   @SuppressWarnings("unused")
   protected DrawerText() {
@@ -31,5 +32,12 @@ public abstract class DrawerText extends DrawerMenuItem<TextViewHolder> {
   TextViewHolder createViewHolder() {
 
     return new TextViewHolder();
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+
+    return title;
   }
 }

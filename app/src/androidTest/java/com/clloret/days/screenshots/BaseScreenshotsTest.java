@@ -4,21 +4,21 @@ import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anything;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Resources;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Espresso;
-import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -33,6 +33,7 @@ import com.clloret.days.screenshots.screenshot.ScreenshotTakingRule;
 import java.util.Locale;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,28 +47,44 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public abstract class BaseScreenshotsTest {
 
+  static final Locale DEVICE_LOCALE = new Locale("en", "US");
   private final ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
   private final GrantPermissionRule grantPermissionRule = GrantPermissionRule
       .grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
   private final ScreenshotTakingRule screenshotTakingRule = new ScreenshotTakingRule();
-  private Resources resources;
-
-  static final Locale DEVICE_LOCALE = new Locale("en", "US");
-
   @Rule
   public RuleChain ruleChain = RuleChain.outerRule(screenshotTakingRule)
       .around(grantPermissionRule)
       .around(activityRule);
+  private Resources resources;
 
-  @Before
-  public void setUp() {
+  @SuppressWarnings("SameParameterValue")
+  private static Matcher<View> childAtPosition(
+      final Matcher<View> parentMatcher, final int position) {
 
-    TestApp app = (TestApp) InstrumentationRegistry.getInstrumentation()
-        .getTargetContext().getApplicationContext();
+    return new TypeSafeMatcher<View>() {
+      @Override
+      public void describeTo(Description description) {
 
-    resources = app.getResources();
+        description.appendText("Child at position " + position + " in parent ");
+        parentMatcher.describeTo(description);
+      }
 
-    app.getAppComponent().inject(this);
+      @Override
+      public boolean matchesSafely(View view) {
+
+        ViewParent parent = view.getParent();
+        return parent instanceof ViewGroup && parentMatcher.matches(parent)
+            && view.equals(((ViewGroup) parent).getChildAt(position));
+      }
+    };
+  }
+
+  private void openNavigationDrawer() {
+
+    onView(withId(R.id.drawer_layout))
+        .check(matches(isClosed(Gravity.LEFT)))
+        .perform(DrawerActions.open());
   }
 
   @BeforeClass
@@ -91,25 +108,15 @@ public abstract class BaseScreenshotsTest {
     demoMode.exit();
   }
 
-  private static Matcher<View> childAtPosition(
-      final Matcher<View> parentMatcher, final int position) {
+  @Before
+  public void setUp() {
 
-    return new TypeSafeMatcher<View>() {
-      @Override
-      public void describeTo(Description description) {
+    TestApp app = (TestApp) InstrumentationRegistry.getInstrumentation()
+        .getTargetContext().getApplicationContext();
 
-        description.appendText("Child at position " + position + " in parent ");
-        parentMatcher.describeTo(description);
-      }
+    resources = app.getResources();
 
-      @Override
-      public boolean matchesSafely(View view) {
-
-        ViewParent parent = view.getParent();
-        return parent instanceof ViewGroup && parentMatcher.matches(parent)
-            && view.equals(((ViewGroup) parent).getChildAt(position));
-      }
-    };
+    app.getAppComponent().inject(this);
   }
 
   @Test
@@ -126,12 +133,6 @@ public abstract class BaseScreenshotsTest {
 
   @Test
   public void makeScreenshot_MainView() {
-
-    try {
-      Thread.sleep(2000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
 
     onView(withId(R.id.fab_main_newevent))
         .check(matches(isDisplayed()));
@@ -150,53 +151,28 @@ public abstract class BaseScreenshotsTest {
   @Test
   public void makeScreenshot_ShowMenu() {
 
-    ViewInteraction appCompatImageButton = onView(
-        allOf(withContentDescription(resources.getString(R.string.action_drawer_open)),
-            childAtPosition(
-                allOf(withId(R.id.toolbar),
-                    childAtPosition(
-                        withId(R.id.appbar),
-                        0)),
-                1),
-            isDisplayed()));
-    appCompatImageButton.perform(click());
+    openNavigationDrawer();
   }
 
   @Test
   public void makeScreenshot_ShowEventOrder() {
 
-    ViewInteraction actionMenuItemView = onView(
-        allOf(withContentDescription(resources.getString(R.string.title_order)),
-            childAtPosition(
-                childAtPosition(
-                    withId(R.id.toolbar),
-                    2),
-                0),
-            isDisplayed()));
-    actionMenuItemView.perform(click());
+    onView(withId(R.id.menu_order))
+        .perform(click());
   }
 
   @Test
   public void makeScreenshot_NewTag() {
 
-    ViewInteraction appCompatImageButton = onView(
-        allOf(withContentDescription(resources.getString(R.string.action_drawer_open)),
-            childAtPosition(
-                allOf(withId(R.id.toolbar),
-                    childAtPosition(
-                        withId(R.id.appbar),
-                        0)),
-                1),
-            isDisplayed()));
-    appCompatImageButton.perform(click());
+    openNavigationDrawer();
 
-    DataInteraction linearLayout = onData(anything())
+    DataInteraction item = onData(
+        Matchers.hasToString(resources.getString(R.string.action_new_tag)))
         .inAdapterView(allOf(withId(R.id.listView),
             childAtPosition(
                 withId(R.id.navigation_drawer),
-                0)))
-        .atPosition(11);
-    linearLayout.perform(click());
+                0)));
+    item.perform(click());
 
     Espresso.closeSoftKeyboard();
   }
@@ -204,23 +180,15 @@ public abstract class BaseScreenshotsTest {
   @Test
   public void makeScreenshot_ShowSettings() {
 
-    ViewInteraction appCompatImageButton = onView(
-        allOf(withContentDescription(resources.getString(R.string.action_drawer_open)),
-            childAtPosition(
-                allOf(withId(R.id.toolbar),
-                    childAtPosition(
-                        withId(R.id.appbar),
-                        0)),
-                1),
-            isDisplayed()));
-    appCompatImageButton.perform(click());
+    openNavigationDrawer();
 
-    DataInteraction linearLayout = onData(anything())
+    DataInteraction item = onData(
+        Matchers.hasToString(resources.getString(R.string.action_settings)))
         .inAdapterView(allOf(withId(R.id.listView),
             childAtPosition(
                 withId(R.id.navigation_drawer),
-                0)))
-        .atPosition(13);
-    linearLayout.perform(click());
+                0)));
+
+    item.perform(click());
   }
 }
