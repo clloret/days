@@ -56,7 +56,7 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     Timber.d("onPostCreateWithPreviousResult")
 
     val bundle = EventCreateBundle(previousBundle)
-    name.setText(bundle.title)
+    name.setText(bundle.name)
     description.setText(bundle.description)
     date.setText(bundle.date)
     reminder.setText(bundle.reminder)
@@ -67,7 +67,7 @@ class TaskerCreateEventActivity : AbstractAppCompatPluginActivity() {
     Timber.d("getResultBundle")
 
     val bundle = EventCreateBundle()
-    bundle.title = name.text.toString().trim()
+    bundle.name = name.text.toString().trim()
     bundle.description = description.text.toString().trim()
     bundle.date = date.text.toString().trim()
     bundle.reminder = reminder.text.toString().trim()

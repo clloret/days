@@ -2,12 +2,9 @@ package com.clloret.days;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import androidx.fragment.app.Fragment;
 import com.clloret.days.dagger.AppComponent;
 import com.clloret.days.dagger.DaggerAppComponent;
 import com.clloret.days.data.cache.CacheSource;
@@ -22,27 +19,19 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasBroadcastReceiverInjector;
-import dagger.android.HasServiceInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.HasAndroidInjector;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
 
 public class App extends DaggerApplication
-    implements HasSupportFragmentInjector, HasBroadcastReceiverInjector, HasServiceInjector {
+    implements HasAndroidInjector {
 
   private static final String ROBOLECTRIC_FINGERPRINT = "robolectric";
 
   @Inject
-  DispatchingAndroidInjector<Fragment> supportFragmentDispatchingInjector;
-
-  @Inject
-  DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverDispatchingInjector;
-
-  @Inject
-  DispatchingAndroidInjector<Service> serviceDispatchingInjector;
+  DispatchingAndroidInjector<Object> dispatchingAndroidInjector;
 
   @Inject
   CacheSource<Event> eventCacheSource;
@@ -78,21 +67,9 @@ public class App extends DaggerApplication
   }
 
   @Override
-  public DispatchingAndroidInjector<BroadcastReceiver> broadcastReceiverInjector() {
+  public AndroidInjector<Object> androidInjector() {
 
-    return broadcastReceiverDispatchingInjector;
-  }
-
-  @Override
-  public DispatchingAndroidInjector<Service> serviceInjector() {
-
-    return serviceDispatchingInjector;
-  }
-
-  @Override
-  public AndroidInjector<Fragment> supportFragmentInjector() {
-
-    return supportFragmentDispatchingInjector;
+    return dispatchingAndroidInjector;
   }
 
   public static App get(Context context) {
@@ -143,4 +120,5 @@ public class App extends DaggerApplication
         .observeOn(threadSchedulers.getUiScheduler())
         .subscribe();
   }
+
 }

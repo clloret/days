@@ -172,6 +172,13 @@ public final class EventViewModel implements Parcelable, Cloneable, EventSortabl
     return obj;
   }
 
+  @NonNull
+  @Override
+  public String toString() {
+
+    return name;
+  }
+
   public String getId() {
 
     return id;
