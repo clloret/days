@@ -37,18 +37,24 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import org.joda.time.LocalDate;
 
 public class MenuAdapter extends BaseAdapter {
 
   private static final int TYPE_COUNT = 4;
-  private static final int TAGS_SECTION_INDEX = 1;
-  private static final int SECTION1_INITIAL_CAPACITY = 4;
-  private static final int SECTION2_INITIAL_CAPACITY = 5;
+  private static final int SECTION1_INDEX = 1;
+  private static final int SECTION_TAGS_INDEX = 2;
+  private static final int SECTION2_INDEX = 3;
+  private static final int SECTION1_INITIAL_CAPACITY = 8;
+  private static final int SECTION2_INITIAL_CAPACITY = 6;
   private static final String CHANGELOG_URL = "https://github.com/clloret/days/blob/master/CHANGELOG.md";
 
-  private final List<Collection<DrawerMenuItem>> sections = new ArrayList<>();
+  private final Map<Integer, Collection<DrawerMenuItem>> sections = new HashMap<>();
   private final SortedValueMap<String, DrawerTag, TagSortable> tags = new SortedValueMap<>(
       TagSortFactory.makeTagSort(SortType.NAME));
   private final CompositeDisposable disposable = new CompositeDisposable();
@@ -109,12 +115,6 @@ public class MenuAdapter extends BaseAdapter {
   }
 
   @Override
-  public void notifyDataSetInvalidated() {
-
-    super.notifyDataSetInvalidated();
-  }
-
-  @Override
   public boolean isEnabled(int position) {
 
     DrawerMenuItem menuItem = getItem(position);
@@ -136,7 +136,7 @@ public class MenuAdapter extends BaseAdapter {
     return TYPE_COUNT;
   }
 
-  public void dispose() {
+  void dispose() {
 
     disposable.dispose();
   }
@@ -157,10 +157,8 @@ public class MenuAdapter extends BaseAdapter {
     disposable.add(subscribe);
 
     Collection tagCollection = tags.sortedValues();
-    if (!sections.contains(tagCollection)) {
-      //noinspection unchecked
-      sections.add(TAGS_SECTION_INDEX, tagCollection);
-    }
+    //noinspection unchecked
+    sections.put(SECTION_TAGS_INDEX, tagCollection);
 
     notifyDataSetChanged();
   }
@@ -236,23 +234,27 @@ public class MenuAdapter extends BaseAdapter {
         0x00);
   }
 
-  public void populateList() {
+  void populateList() {
 
     sections.clear();
 
-    sections.add(createSection1());
-    sections.add(createSection2());
+    sections.put(SECTION1_INDEX, createSection1());
+    sections.put(SECTION2_INDEX, createSection2());
   }
 
   private List<DrawerMenuItem> getConcatList() {
 
-    return Observable.fromIterable(sections)
-        .concatMapIterable(lists -> lists)
+    return Observable.just(sections)
+        .concatMapIterable(Map::entrySet)
+        .sorted((entry1, entry2) -> Integer
+            .compare(entry1.getKey(), entry2.getKey()))
+        .map(Entry::getValue)
+        .flatMapIterable(drawerMenuItems -> drawerMenuItems)
         .toList()
         .blockingGet();
   }
 
-  public void addTag(TagViewModel tag) {
+  void addTag(TagViewModel tag) {
 
     DrawerTag drawerTag = new DrawerTag(new EventFilterByTag(tag.getId()), tag,
         drawerTagSelectedMgr);
@@ -261,10 +263,10 @@ public class MenuAdapter extends BaseAdapter {
     notifyDataSetChanged();
   }
 
-  public void updateTag(TagViewModel tag) {
+  void updateTag(TagViewModel tag) {
 
     if (tags.containsKey(tag.getId())) {
-      DrawerTag drawerTag = tags.get(tag.getId());
+      DrawerTag drawerTag = Objects.requireNonNull(tags.get(tag.getId()));
       drawerTag.setTag(tag);
 
       tags.refreshValues();
@@ -273,7 +275,7 @@ public class MenuAdapter extends BaseAdapter {
     }
   }
 
-  public void deleteTag(TagViewModel tag) {
+  void deleteTag(TagViewModel tag) {
 
     tags.remove(tag.getId());
     notifyDataSetChanged();
