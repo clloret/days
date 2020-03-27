@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
 - Tasker integration: allows edit existing events
+
+### Fixed
+
+- Menu tags do not refresh properly
 
 ## [1.1.0] - 2020-03-08
 
