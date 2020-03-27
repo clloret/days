@@ -56,6 +56,7 @@
   <string name="msg_error">Error!</string>
   <string name="msg_error_event_could_not_be_deleted">El evento no se ha podido borrar</string>
   <string name="msg_error_event_date_required">Debes seleccionar la fecha del evento</string>
+  <string name="msg_error_event_id_required">Debes introducir el ID de un evento</string>
   <string name="msg_error_event_name_required">Debes introducir un nombre de evento</string>
   <string name="msg_error_must_fill_airtable_data">Debe rellenar los datos de Airtable!</string>
   <string name="msg_error_no_tags_available">Todavía no ha creado ninguna etiqueta</string>
@@ -92,8 +93,11 @@
   <string name="summary_reminder_time">Selecciona la hora a la que quieres recibir el recordatorio de los eventos.</string>
   <string name="summary_remote_datastore">Usar el almacenamiento remoto para guardar los datos. Si no se activa, sólo se guardará una copia local de los datos.</string>
   <string name="tag_details_name">Nombre de la etiqueta</string>
+  <string name="tasker_edit_event_modify_this_field">Modificar este campo</string>
+  <string name="tasker_edit_select_an_event">Selecciona un evento</string>
   <string name="title_activity_about">Acerca de</string>
   <string name="title_activity_event_create">Crear evento</string>
+  <string name="title_activity_event_edit">Editar evento</string>
   <string name="title_activity_settings">Configuración</string>
   <string name="title_activity_tag_create">Crear etiqueta</string>
   <string name="title_activity_tag_edit">Editar etiqueta</string>

@@ -2,9 +2,17 @@ package com.clloret.days.tasker.bundle
 
 import android.os.Bundle
 import com.clloret.days.BuildConfig
+import com.clloret.days.domain.utils.StringUtils.isNullOrEmpty
+import timber.log.Timber
 
-class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
+class EventEditBundle @JvmOverloads constructor(bundle: Bundle? = null) {
   private val bundle: Bundle
+
+  var id: String?
+    get() = bundle.getString(EXTRA_ID)
+    set(id) {
+      bundle.putString(EXTRA_ID, id)
+    }
 
   var name: String?
     get() = bundle.getString(EXTRA_NAME)
@@ -42,17 +50,18 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
   }
 
   override fun toString(): String {
-    return "EventCreateBundle{bundle=$bundle}"
+    return "EventEditBundle{bundle=$bundle}"
   }
 
   companion object {
-    const val BUNDLE_ID = "com.clloret.days.create"
-    const val EXTRA_NAME = "com.clloret.days.create.STRING_NAME"
-    const val EXTRA_DESCRIPTION = "com.clloret.days.create.STRING_DESCRIPTION"
-    const val EXTRA_DATE = "com.clloret.days.create.STRING_DATE"
-    const val EXTRA_REMINDER = "com.clloret.days.create.STRING_REMINDER"
-    const val EXTRA_FAVORITE = "com.clloret.days.create.STRING_FAVORITE"
-    private const val EXTRA_VERSION_CODE = "com.clloret.days.create.INT_VERSION_CODE"
+    const val BUNDLE_ID = "com.clloret.days.edit"
+    const val EXTRA_ID = "com.clloret.days.edit.STRING_ID"
+    const val EXTRA_NAME = "com.clloret.days.edit.STRING_NAME"
+    const val EXTRA_DESCRIPTION = "com.clloret.days.edit.STRING_DESCRIPTION"
+    const val EXTRA_DATE = "com.clloret.days.edit.STRING_DATE"
+    const val EXTRA_REMINDER = "com.clloret.days.edit.STRING_REMINDER"
+    const val EXTRA_FAVORITE = "com.clloret.days.edit.STRING_FAVORITE"
+    private const val EXTRA_VERSION_CODE = "com.clloret.days.edit.INT_VERSION_CODE"
 
     fun isBundleValid(bundle: Bundle): Boolean {
 
@@ -61,6 +70,11 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
       }
 
       if (bundle.getInt(EXTRA_VERSION_CODE, -1) == -1) {
+        return false
+      }
+
+      if (isNullOrEmpty(bundle.getString(EXTRA_ID))) {
+        Timber.e("Invalid %s", EXTRA_ID)
         return false
       }
 

@@ -1,4 +1,4 @@
-package com.clloret.days.model.events;
+package com.clloret.days.device.eventbus;
 
 public class RefreshRequestEvent {
 
