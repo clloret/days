@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Tasker integration: allows edit existing events
+
 ## [1.1.0] - 2020-03-08
 
 ### Added
