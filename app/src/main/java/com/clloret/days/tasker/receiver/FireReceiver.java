@@ -172,9 +172,6 @@ public class FireReceiver extends AbstractPluginSettingReceiver {
       modifiedEvent.setFavorite("1".equals(editBundle.getFavorite()));
     }
 
-    Timber.d("Modified event - %s", modifiedEvent.getId());
-    Timber.d("Modified event - %s", modifiedEvent.getName());
-
     final RequestValues requestValues = new RequestValues(modifiedEvent, originalEvent);
 
     editEventUseCase.execute(requestValues)
