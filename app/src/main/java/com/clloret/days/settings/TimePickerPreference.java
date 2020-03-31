@@ -3,6 +3,7 @@ package com.clloret.days.settings;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
 import com.clloret.days.R;
 
@@ -15,20 +16,17 @@ public class TimePickerPreference extends DialogPreference {
     this(context, null);
   }
 
-  @SuppressWarnings("WeakerAccess")
   public TimePickerPreference(Context context, AttributeSet attrs) {
 
     this(context, attrs, 0);
   }
 
-  @SuppressWarnings("WeakerAccess")
   public TimePickerPreference(Context context, AttributeSet attrs,
       int defStyleAttr) {
 
     this(context, attrs, defStyleAttr, defStyleAttr);
   }
 
-  @SuppressWarnings("WeakerAccess")
   public TimePickerPreference(Context context, AttributeSet attrs,
       int defStyleAttr, int defStyleRes) {
 
@@ -42,9 +40,9 @@ public class TimePickerPreference extends DialogPreference {
   }
 
   @Override
-  protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
+  protected void onSetInitialValue(@Nullable Object defaultValue) {
 
-    setTime(restorePersistedValue ? getPersistedInt(time) : (int) defaultValue);
+    setTime(getPersistedInt(time));
   }
 
   @Override

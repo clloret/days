@@ -48,6 +48,7 @@ import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("all")
 public class TaskerPlugin {
 
   private final static String TAG = "TaskerPlugin";
@@ -74,13 +75,11 @@ public class TaskerPlugin {
   private final static String VARIABLE_NAME_END_EXPRESSION =  "[\\w0-9&&[^_]]";
 
   public final static String VARIABLE_NAME_MAIN_PART_MATCH_EXPRESSION =
-      VARIABLE_NAME_START_EXPRESSION + VARIABLE_NAME_MID_EXPRESSION + VARIABLE_NAME_END_EXPRESSION
-      ;
+      VARIABLE_NAME_START_EXPRESSION + VARIABLE_NAME_MID_EXPRESSION + VARIABLE_NAME_END_EXPRESSION;
 
   public final static String VARIABLE_NAME_MATCH_EXPRESSION =
       VARIABLE_PREFIX + "+" +
-          VARIABLE_NAME_MAIN_PART_MATCH_EXPRESSION
-      ;
+          VARIABLE_NAME_MAIN_PART_MATCH_EXPRESSION;
 
   private static Pattern VARIABLE_NAME_MATCH_PATTERN = null;
 
@@ -128,8 +127,7 @@ public class TaskerPlugin {
           EXTRA_HOST_CAPABILITY_RELEVANT_VARIABLES|
           EXTRA_HOST_CAPABILITY_SETTING_SYNCHRONOUS_EXECUTION |
           EXTRA_HOST_CAPABILITY_REQUEST_QUERY_DATA_PASS_THROUGH |
-          EXTRA_HOST_CAPABILITY_ENCODING_JSON
-      ;
+          EXTRA_HOST_CAPABILITY_ENCODING_JSON;
 
   /**
    * Possible encodings of text in bundle values
@@ -141,6 +139,7 @@ public class TaskerPlugin {
   private final static String BUNDLE_KEY_ENCODING_JSON_KEYS = BASE_KEY + ".JSON_ENCODED_KEYS";
 
   public static boolean hostSupportsKeyEncoding( Bundle extrasFromHost, Encoding encoding ) {
+
     switch ( encoding ) {
       case JSON:
         return hostSupports( extrasFromHost, EXTRA_HOST_CAPABILITY_ENCODING_JSON );
@@ -171,6 +170,7 @@ public class TaskerPlugin {
 
 
   public static boolean hostSupportsRelevantVariables( Bundle extrasFromHost ) {
+
     return hostSupports( extrasFromHost,  EXTRA_HOST_CAPABILITY_RELEVANT_VARIABLES );
   }
 
@@ -183,6 +183,7 @@ public class TaskerPlugin {
    * @param  variableNames array of relevant variable names
    */
   public static void addRelevantVariableList( Intent intentToHost, String[] variableNames ) {
+
     intentToHost.putExtra( BUNDLE_KEY_RELEVANT_VARIABLES, variableNames );
   }
 
@@ -209,8 +210,7 @@ public class TaskerPlugin {
           validFlag = true;
         else
           Log.d( TAG, "variableNameValid: name not local: " + varName );
-      }
-      else
+      } else
         Log.d( TAG, "variableNameValid: invalid name: " + varName );
     }
 
@@ -252,6 +252,7 @@ public class TaskerPlugin {
    * @see #variableNameValid(String)
    */
   public static void addVariableBundle( Bundle resultExtras, Bundle variables ) {
+
     resultExtras.putBundle( EXTRA_VARIABLES_BUNDLE, variables );
   }
 
@@ -270,6 +271,7 @@ public class TaskerPlugin {
    * @see #hostSupportsKeyEncoding(Bundle, Encoding)
    */
   public static void setKeyEncoding( Bundle resultBundleToHost, String[] keys, Encoding encoding ) {
+
     if ( Encoding.JSON.equals( encoding ) )
       addStringArrayToBundleAsString(
           keys, resultBundleToHost, BUNDLE_KEY_ENCODING_JSON_KEYS, "setValueEncoding"
@@ -279,6 +281,71 @@ public class TaskerPlugin {
   }
 
   // ----------------------------- SETTING PLUGIN ONLY --------------------------------- //
+
+  private static Object getBundleValueSafe(Bundle b, String key, Class<?> expectedClass,
+      String funcName) {
+
+    Object value = null;
+
+    if (b != null) {
+      if (b.containsKey(key)) {
+        Object obj = b.get(key);
+        if (obj == null) {
+          Log.w(TAG, funcName + ": " + key + ": null value");
+        } else if (obj.getClass() != expectedClass) {
+          Log.w(TAG,
+              funcName + ": " + key + ": expected " + expectedClass.getClass().getName() + ", got "
+                  + obj.getClass().getName());
+        } else {
+          value = obj;
+        }
+      }
+    }
+    return value;
+  }
+
+  // ----------------------------- CONDITION/EVENT PLUGIN ONLY --------------------------------- //
+
+  private static Object getExtraValueSafe(Intent i, String key, Class<?> expectedClass,
+      String funcName) {
+
+    return (i.hasExtra(key)) ?
+        getBundleValueSafe(i.getExtras(), key, expectedClass, funcName) :
+        null;
+  }
+
+  // ----------------------------- EVENT PLUGIN ONLY --------------------------------- //
+
+  private static boolean hostSupports(Bundle extrasFromHost, int capabilityFlag) {
+
+    Integer flags = (Integer) getBundleValueSafe(extrasFromHost, EXTRA_HOST_CAPABILITIES,
+        Integer.class, "hostSupports");
+    return
+        (flags != null) &&
+            ((flags & capabilityFlag) > 0)
+        ;
+  }
+  // ---------------------------------- HOST  ----------------------------------------- //
+
+  public static int getPackageVersionCode(PackageManager pm, String packageName) {
+
+    int code = -1;
+
+    if (pm != null) {
+      try {
+        PackageInfo pi = pm.getPackageInfo(packageName, 0);
+        if (pi != null) {
+          code = pi.versionCode;
+        }
+      } catch (Exception e) {
+        Log.e(TAG, "getPackageVersionCode: exception getting package info");
+      }
+    }
+
+    return code;
+  }
+
+  // ---------------------------------- HELPER FUNCTIONS -------------------------------- //
 
   public static class Setting {
 
@@ -375,6 +442,7 @@ public class TaskerPlugin {
      * @see #setVariableReplaceKeys(Bundle, String[])
      */
     public static boolean hostSupportsOnFireVariableReplacement( Bundle extrasFromHost ) {
+
       return hostSupports( extrasFromHost, EXTRA_HOST_CAPABILITY_SETTING_FIRE_VARIABLE_REPLACEMENT );
     }
 
@@ -415,6 +483,7 @@ public class TaskerPlugin {
     }
 
     public static boolean hostSupportsSynchronousExecution( Bundle extrasFromHost ) {
+
       return hostSupports( extrasFromHost, EXTRA_HOST_CAPABILITY_SETTING_SYNCHRONOUS_EXECUTION );
     }
 
@@ -433,6 +502,7 @@ public class TaskerPlugin {
      * @param  timeoutMS
      */
     public static void requestTimeoutMS( Intent intentToHost, int timeoutMS ) {
+
       if ( timeoutMS < 0 )
         Log.w( TAG, "requestTimeoutMS: ignoring negative timeout (" + timeoutMS + ")" );
       else {
@@ -458,6 +528,7 @@ public class TaskerPlugin {
      * @see #setKeyEncoding(Bundle, String[],Encoding)
      */
     public static void setVariableReplaceKeys( Bundle resultBundleToHost, String[] listOfKeyNames ) {
+
       addStringArrayToBundleAsString(
           listOfKeyNames, resultBundleToHost, BUNDLE_KEY_VARIABLE_REPLACE_STRINGS,
           "setVariableReplaceKeys"
@@ -473,6 +544,7 @@ public class TaskerPlugin {
      * @see #signalFinish(Context, Intent, int, Bundle)
      */
     public static boolean hostSupportsVariableReturn( Bundle extrasFromHost ) {
+
       return hostSupports( extrasFromHost, EXTRA_HOST_CAPABILITY_SETTING_RETURN_VARIABLES );
     }
 
@@ -531,8 +603,7 @@ public class TaskerPlugin {
             }
 
             okFlag = true;
-          }
-          catch ( URISyntaxException e ) {
+          } catch (URISyntaxException e) {
             Log.w( TAG, errorPrefix + "bad URI: " + completionIntentUri );
           }
         }
@@ -570,14 +641,13 @@ public class TaskerPlugin {
     }
   }
 
-  // ----------------------------- CONDITION/EVENT PLUGIN ONLY --------------------------------- //
-
   public static class Condition {
 
     /**
      * @see #getResultReceiver(Intent)
      */
     public final static String EXTRA_RESULT_RECEIVER = BASE_KEY + ".EXTRA_RESULT_RECEIVER";
+
     /**
      * Used by: plugin QueryReceiver
      *
@@ -587,10 +657,12 @@ public class TaskerPlugin {
      * @see #addVariableBundle(Bundle, Bundle)
      */
     public static boolean hostSupportsVariableReturn( Bundle extrasFromHost ) {
+
       return hostSupports( extrasFromHost,  EXTRA_HOST_CAPABILITY_CONDITION_RETURN_VARIABLES );
     }
 
     public static ResultReceiver getResultReceiver(Intent intentFromHost) {
+
       if (intentFromHost == null) {
         return null;
       }
@@ -598,8 +670,6 @@ public class TaskerPlugin {
 
     }
   }
-
-  // ----------------------------- EVENT PLUGIN ONLY --------------------------------- //
 
   public static class Event {
 
@@ -612,6 +682,7 @@ public class TaskerPlugin {
      * @see #addPassThroughData(Intent, Bundle)
      */
     public static boolean hostSupportsRequestQueryDataPassThrough( Bundle extrasFromHost ) {
+
       return hostSupports( extrasFromHost,  EXTRA_HOST_CAPABILITY_REQUEST_QUERY_DATA_PASS_THROUGH );
     }
 
@@ -663,6 +734,7 @@ public class TaskerPlugin {
      * @see #addPassThroughData(Intent, Bundle)
      */
     public static Bundle retrievePassThroughData( Intent queryConditionIntent ) {
+
       return (Bundle) getExtraValueSafe(
           queryConditionIntent,
           EXTRA_REQUEST_QUERY_PASS_THROUGH_DATA,
@@ -742,7 +814,6 @@ public class TaskerPlugin {
       return passThroughBundle;
     }
   }
-  // ---------------------------------- HOST  ----------------------------------------- //
 
   public static class Host {
 
@@ -754,6 +825,7 @@ public class TaskerPlugin {
      * @return capabilities one or more of the EXTRA_HOST_CAPABILITY_XXX flags
      */
     public static Intent addCapabilities( Intent toPlugin, int capabilities ) {
+
       return toPlugin.putExtra( EXTRA_HOST_CAPABILITIES, capabilities  );
     }
 
@@ -767,6 +839,7 @@ public class TaskerPlugin {
      */
     public static void addCompletionIntent(
         Intent fireIntent, Intent completionIntent, ComponentName callService, boolean foreground) {
+
       if (callService != null) {
         completionIntent.putExtra(Setting.EXTRA_CALL_SERVICE_PACKAGE, callService.getPackageName());
         completionIntent.putExtra(Setting.EXTRA_CALL_SERVICE, callService.getClassName());
@@ -803,6 +876,7 @@ public class TaskerPlugin {
      */
 
     public static Bundle getVariablesBundle( Bundle resultExtras ) {
+
       return (Bundle) getBundleValueSafe(
           resultExtras, EXTRA_VARIABLES_BUNDLE, Bundle.class, "getVariablesBundle"
       );
@@ -817,6 +891,7 @@ public class TaskerPlugin {
      * @see #REQUESTED_TIMEOUT_MS_NONE, REQUESTED_TIMEOUT_MS_MAX, REQUESTED_TIMEOUT_MS_NEVER
      */
     public static void addHintTimeoutMS( Intent toPlugin, int timeoutMS ) {
+
       getHintsBundle( toPlugin, "addHintTimeoutMS" ).putInt( BUNDLE_KEY_HINT_TIMEOUT_MS, timeoutMS );
     }
 
@@ -833,10 +908,12 @@ public class TaskerPlugin {
     }
 
     public static boolean haveRequestedTimeout( Bundle extrasFromPluginEditActivity ) {
+
       return extrasFromPluginEditActivity.containsKey( Setting.EXTRA_REQUESTED_TIMEOUT );
     }
 
     public static int getRequestedTimeoutMS( Bundle extrasFromPluginEditActivity ) {
+
       return
           (Integer) getBundleValueSafe(
               extrasFromPluginEditActivity, Setting.EXTRA_REQUESTED_TIMEOUT,	Integer.class, "getRequestedTimeout"
@@ -845,6 +922,7 @@ public class TaskerPlugin {
     }
 
     public static String[] getSettingVariableReplaceKeys( Bundle fromPluginEditActivity ) {
+
       return getStringArrayFromBundleString(
           fromPluginEditActivity, Setting.BUNDLE_KEY_VARIABLE_REPLACE_STRINGS,
           "getSettingVariableReplaceKeys"
@@ -867,75 +945,29 @@ public class TaskerPlugin {
     }
 
     public static boolean haveRelevantVariables( Bundle b ) {
+
       return b.containsKey( BUNDLE_KEY_RELEVANT_VARIABLES );
     }
 
     public static void cleanRelevantVariables( Bundle b ) {
+
       b.remove( BUNDLE_KEY_RELEVANT_VARIABLES );
     }
 
     public static void cleanHints( Bundle extras ) {
+
       extras.remove( TaskerPlugin.EXTRA_HINTS_BUNDLE );
     }
 
     public static void cleanRequestedTimeout( Bundle extras ) {
+
       extras.remove( Setting.EXTRA_REQUESTED_TIMEOUT );
     }
 
     public static void cleanSettingReplaceVariables( Bundle b ) {
+
       b.remove( Setting.BUNDLE_KEY_VARIABLE_REPLACE_STRINGS );
     }
-  }
-
-  // ---------------------------------- HELPER FUNCTIONS -------------------------------- //
-
-  private static Object getBundleValueSafe( Bundle b, String key, Class<?> expectedClass, String funcName ) {
-    Object value = null;
-
-    if ( b != null ) {
-      if ( b.containsKey( key ) ) {
-        Object obj = b.get( key );
-        if ( obj == null )
-          Log.w( TAG, funcName + ": " + key + ": null value" );
-        else if ( obj.getClass() != expectedClass )
-          Log.w( TAG, funcName + ": " + key + ": expected " + expectedClass.getClass().getName() + ", got " + obj.getClass().getName() );
-        else
-          value = obj;
-      }
-    }
-    return value;
-  }
-
-  private static Object getExtraValueSafe( Intent i, String key, Class<?> expectedClass, String funcName ) {
-    return ( i.hasExtra( key ) ) ?
-        getBundleValueSafe( i.getExtras(), key, expectedClass, funcName ) :
-        null;
-  }
-
-  private static boolean hostSupports( Bundle extrasFromHost, int capabilityFlag ) {
-    Integer flags = (Integer) getBundleValueSafe( extrasFromHost, EXTRA_HOST_CAPABILITIES, Integer.class, "hostSupports" );
-    return
-        ( flags != null ) &&
-            ( ( flags & capabilityFlag ) > 0 )
-        ;
-  }
-
-  public static int getPackageVersionCode( PackageManager pm, String packageName ) {
-
-    int code = -1;
-
-    if ( pm != null ) {
-      try {
-        PackageInfo pi = pm.getPackageInfo( packageName, 0 );
-        if ( pi != null )
-          code = pi.versionCode;
-      }
-      catch ( Exception e ) {
-        Log.e( TAG, "getPackageVersionCode: exception getting package info" );
-      }
-    }
-
-    return code;
   }
 
   private static boolean variableNameIsLocal( String varName ) {
