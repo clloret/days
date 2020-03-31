@@ -3,6 +3,7 @@ package com.clloret.days.dagger;
 import android.app.Application;
 import com.clloret.days.App;
 import com.clloret.days.NotificationsTest;
+import com.clloret.days.TestApp;
 import com.clloret.days.activities.MainActivityTest;
 import com.clloret.days.dagger.modules.ActivityModule;
 import com.clloret.days.dagger.modules.BroadcastReceiverModule;
@@ -17,7 +18,6 @@ import com.clloret.days.screenshots.BaseScreenshotsTest;
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 import dagger.android.support.AndroidSupportInjectionModule;
 import java.util.Locale;
 import javax.inject.Singleton;
@@ -37,7 +37,7 @@ import javax.inject.Singleton;
         TestUtilsModule.class
     }
 )
-public interface AppTestComponent extends AndroidInjector<DaggerApplication> {
+public interface AppTestComponent extends AndroidInjector<TestApp> {
 
   void inject(App app);
 
@@ -46,9 +46,6 @@ public interface AppTestComponent extends AndroidInjector<DaggerApplication> {
   void inject(MainActivityTest test);
 
   void inject(BaseScreenshotsTest test);
-
-  @Override
-  void inject(DaggerApplication instance);
 
   @Component.Builder
   interface Builder {

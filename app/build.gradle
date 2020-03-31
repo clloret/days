@@ -87,9 +87,8 @@ dependencies {
     implementation 'at.favre.lib:slf4j-timber:1.0.1'
     implementation "com.github.daniel-stoneuk:material-about-library:2.3.0"
     implementation "com.github.jorgecastilloprz:fabprogresscircle:1.01@aar"
-    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
-    implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
     implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
     implementation "com.hannesdorfmann.mosby:mvp:$rootProject.mosbyVersion"
     implementation "com.hannesdorfmann.mosby:viewstate:$rootProject.mosbyVersion"
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
@@ -106,9 +105,9 @@ dependencies {
     debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     debugImplementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
 
-    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
     kapt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+    kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
 //------ Test Dependencies ------
 

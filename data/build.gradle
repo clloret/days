@@ -38,9 +38,7 @@ android {
 }
 
 dependencies {
-    implementation(project(':domain')) {
-        exclude group: "com.intellij", module: "annotations"
-    }
+    implementation project(':domain')
 
     api "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
