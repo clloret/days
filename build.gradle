@@ -57,10 +57,5 @@ allprojects {
         timberVersion = '4.7.1'
         truthVersion = '1.0.1'
     }
-
-    configurations {
-        cleanedAnnotations
-        compile.exclude group: 'org.jetbrains', module: 'annotations'
-    }
 }
 

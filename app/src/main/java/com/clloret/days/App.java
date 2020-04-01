@@ -17,9 +17,9 @@ import com.clloret.days.utils.StethoUtils;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
+import dagger.android.support.DaggerApplication;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -58,18 +58,18 @@ public class App extends DaggerApplication
   }
 
   @Override
+  public AndroidInjector<Object> androidInjector() {
+
+    return dispatchingAndroidInjector;
+  }
+
+  @Override
   protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
 
     AppComponent appComponent = DaggerAppComponent.builder().application(this).build();
     appComponent.inject(this);
 
     return appComponent;
-  }
-
-  @Override
-  public AndroidInjector<Object> androidInjector() {
-
-    return dispatchingAndroidInjector;
   }
 
   public static App get(Context context) {

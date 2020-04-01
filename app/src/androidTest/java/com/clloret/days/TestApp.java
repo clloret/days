@@ -3,7 +3,7 @@ package com.clloret.days;
 import com.clloret.days.dagger.AppTestComponent;
 import com.clloret.days.dagger.DaggerAppTestComponent;
 import dagger.android.AndroidInjector;
-import dagger.android.DaggerApplication;
+import dagger.android.support.DaggerApplication;
 import java.util.Locale;
 
 public class TestApp extends App {
