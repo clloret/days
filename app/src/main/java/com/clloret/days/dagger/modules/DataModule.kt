@@ -50,9 +50,9 @@ abstract class DataModule {
 
   @Module
   companion object {
-    private val DATABASE = "days"
+    private const val DATABASE = "days"
 
-    fun checkIsRemoteDataStore(preferenceUtils: PreferenceUtils): RemoteDataStoreResult {
+    private fun checkIsRemoteDataStore(preferenceUtils: PreferenceUtils): RemoteDataStoreResult {
       val useRemoteDataStore = preferenceUtils.useRemoteDataStore
       val airtableKey = preferenceUtils.airtableApiKey
       val airtableBase = preferenceUtils.airtableBaseId

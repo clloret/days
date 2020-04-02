@@ -27,9 +27,7 @@ abstract class UtilsModule {
   companion object {
 
     @Provides
-    fun providesEventBus(): EventBus {
-      return EventBus.getDefault()
-    }
+    fun providesEventBus(): EventBus = EventBus.getDefault()
 
   }
 
