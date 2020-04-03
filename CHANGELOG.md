@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - Tasker integration: allows edit existing events
+- New menu option to select the column number in the event list
 
 ### Fixed
 
