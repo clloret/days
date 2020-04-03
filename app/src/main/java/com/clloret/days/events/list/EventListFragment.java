@@ -72,6 +72,15 @@ public class EventListFragment
         }
       });
 
+  private static final Map<Integer, Integer> MAP_COLUMN_NUMBER_MENU_ID = Collections
+      .unmodifiableMap(
+          new HashMap<Integer, Integer>() {
+            {
+              put(1, R.id.menu_view_mode_one_column);
+              put(2, R.id.menu_view_mode_two_column);
+            }
+          });
+
   @Inject
   Navigator navigator;
 
@@ -98,6 +107,7 @@ public class EventListFragment
   private SortType savedSortType;
   private OnProgressListener progressListener;
   private OnFragmentLifecycleListener tagSelectedListener;
+  private GridLayoutManager layoutManager;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -244,6 +254,7 @@ public class EventListFragment
     super.onPrepareOptionsMenu(menu);
 
     selectMenuSortMode(menu);
+    selectMenuViewMode(menu);
   }
 
   @Override
@@ -441,7 +452,8 @@ public class EventListFragment
 
   private void configureRecyclerView() {
 
-    GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+    final int spanCount = preferenceUtils.getViewColumnNumber();
+    layoutManager = new GridLayoutManager(getActivity(), spanCount);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setHasFixedSize(true);
     recyclerView.setAdapter(adapter);
@@ -454,7 +466,14 @@ public class EventListFragment
 
   private void selectMenuSortMode(Menu menu) {
 
-    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    final int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    menu.findItem(menuId).setChecked(true);
+  }
+
+  private void selectMenuViewMode(Menu menu) {
+
+    final int savedColumns = preferenceUtils.getViewColumnNumber();
+    final int menuId = MAP_COLUMN_NUMBER_MENU_ID.get(savedColumns);
     menu.findItem(menuId).setChecked(true);
   }
 
@@ -471,9 +490,23 @@ public class EventListFragment
         preferenceUtils.setSortMode(sortType);
         return true;
 
+      case R.id.menu_view_mode_one_column:
+        setViewColumnNumberAndSave(1);
+        return true;
+
+      case R.id.menu_view_mode_two_column:
+        setViewColumnNumberAndSave(2);
+        return true;
+
       default:
         return false;
     }
+  }
+
+  private void setViewColumnNumberAndSave(int columns) {
+
+    layoutManager.setSpanCount(columns);
+    preferenceUtils.setViewColumnNumber(columns);
   }
 
   private void checkIfEmptyViewToBeDisplayed() {

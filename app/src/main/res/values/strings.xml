@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+  <plurals name="day">
+    <item quantity="one">day</item>
+    <item quantity="other">days</item>
+  </plurals>
+  <plurals name="month">
+    <item quantity="one">month</item>
+    <item quantity="other">months</item>
+  </plurals>
+  <plurals name="year">
+    <item quantity="one">year</item>
+    <item quantity="other">years</item>
+  </plurals>
+
   <string name="about_author">Author</string>
   <string name="about_country">Spain</string>
   <string name="about_inspiration_song">Inspiration song</string>
@@ -34,6 +48,8 @@
   <string name="action_short_latest_date">Latest date</string>
   <string name="action_short_name">Name</string>
   <string name="action_undo">UNDO</string>
+  <string name="action_view_one_column">One column</string>
+  <string name="action_view_two_columns">Two columns</string>
   <string name="action_yes">Yes</string>
   <string name="app_name" translatable="false">Days</string>
   <string name="event_details_after">after</string>
@@ -98,6 +114,7 @@
   <string name="pref_reminder_time" translatable="false">reminder_time</string>
   <string name="pref_remote_datastore" translatable="false">remote_datastore</string>
   <string name="pref_sort_mode" translatable="false">sort_mode</string>
+  <string name="pref_view_column_number" translatable="false">view_column_number</string>
   <string name="summary_airtable_api_key">Your Airtable API key. Obtained from Airtable account information.</string>
   <string name="summary_airtable_base_id">Base ID of the database with Days structure.</string>
   <string name="summary_collect_statistics">Submit anonymous usage statistics and error reports to help improve Days. No personal data will be collected.</string>
@@ -128,17 +145,6 @@
   <string name="title_reminder_time">Reminder time</string>
   <string name="title_remote_datastore">Remote datastore</string>
   <string name="title_select_tags">Select tags</string>
+  <string name="title_view_mode">View mode</string>
 
-  <plurals name="day">
-    <item quantity="one">day</item>
-    <item quantity="other">days</item>
-  </plurals>
-  <plurals name="month">
-    <item quantity="one">month</item>
-    <item quantity="other">months</item>
-  </plurals>
-  <plurals name="year">
-    <item quantity="one">year</item>
-    <item quantity="other">years</item>
-  </plurals>
 </resources>
