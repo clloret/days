@@ -27,4 +27,6 @@ public interface StringResourceProvider {
   String getPrefSortMode();
 
   String getPrefCollectStatistics();
+
+  String getPrefViewColumnNumber();
 }
