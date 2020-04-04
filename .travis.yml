@@ -16,7 +16,7 @@ android:
     - build-tools-$BUILD_TOOLS
     - extra-android-m2repository
     - extra-google-m2repository
-    - sys-img-x86_64-android-$TARGET_API
+    - sys-img-armeabi-v7a-android-$TARGET_API
   licenses:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
@@ -25,7 +25,7 @@ before_install:
   - chmod +x gradlew
 
 before_script:
-  - echo no | android create avd --force -n test -t android-$TARGET_API --abi x86_64 -c 100M -no-accel -gpu on
+  - echo no | android create avd --force -n test -t android-$TARGET_API --abi armeabi-v7a -c 100M
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
