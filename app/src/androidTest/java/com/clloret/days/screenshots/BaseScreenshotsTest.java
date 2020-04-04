@@ -2,11 +2,14 @@ package com.clloret.days.screenshots;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.DrawerMatchers.isClosed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 
 import android.Manifest;
@@ -22,7 +25,6 @@ import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import com.clloret.days.R;
@@ -80,17 +82,10 @@ public abstract class BaseScreenshotsTest {
     };
   }
 
-  private void openNavigationDrawer() {
-
-    onView(withId(R.id.drawer_layout))
-        .check(matches(isClosed(Gravity.LEFT)))
-        .perform(DrawerActions.open());
-  }
-
   @BeforeClass
   public static void setUpOne() {
 
-    Context context = InstrumentationRegistry.getInstrumentation()
+    Context context = getInstrumentation()
         .getTargetContext().getApplicationContext();
 
     DemoMode demoMode = new DemoMode(context);
@@ -102,16 +97,23 @@ public abstract class BaseScreenshotsTest {
   @AfterClass
   public static void tearDownOne() {
 
-    Context context = InstrumentationRegistry.getInstrumentation()
+    Context context = getInstrumentation()
         .getTargetContext().getApplicationContext();
     DemoMode demoMode = new DemoMode(context);
     demoMode.exit();
   }
 
+  private void openNavigationDrawer() {
+
+    onView(withId(R.id.drawer_layout))
+        .check(matches(isClosed(Gravity.LEFT)))
+        .perform(DrawerActions.open());
+  }
+
   @Before
   public void setUp() {
 
-    TestApp app = (TestApp) InstrumentationRegistry.getInstrumentation()
+    TestApp app = (TestApp) getInstrumentation()
         .getTargetContext().getApplicationContext();
 
     resources = app.getResources();
@@ -157,7 +159,9 @@ public abstract class BaseScreenshotsTest {
   @Test
   public void makeScreenshot_ShowEventOrder() {
 
-    onView(withId(R.id.menu_order))
+    Context context = getInstrumentation().getTargetContext();
+    openActionBarOverflowOrOptionsMenu(context);
+    onView(withText(R.string.title_order))
         .perform(click());
   }
 
