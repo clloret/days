@@ -12,6 +12,7 @@ android:
     - tools # https://github.com/travis-ci/travis-ci/issues/5049
     - tools # https://github.com/travis-ci/travis-ci/issues/6040
     - android-$TARGET_API
+    - android-25
     - platform-tools
     - build-tools-$BUILD_TOOLS
     - extra-android-m2repository
