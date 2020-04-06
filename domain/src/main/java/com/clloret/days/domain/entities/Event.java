@@ -18,6 +18,7 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
   private String name;
   private String description;
   private Date date;
+  private Date progressDate;
   private String[] tags = EMPTY_ARRAY;
   private boolean favorite;
   private Integer reminder;
@@ -43,11 +44,6 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
     this.reminderUnit = reminderUnit;
     this.timeLapse = timeLapse;
     this.timeLapseUnit = timeLapseUnit;
-  }
-
-  public boolean hasReminder() {
-
-    return reminder != null;
   }
 
   @Override
@@ -127,6 +123,11 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
     return obj;
   }
 
+  public boolean hasReminder() {
+
+    return reminder != null;
+  }
+
   public String[] getTags() {
 
     return tags;
@@ -187,6 +188,16 @@ public final class Event implements Identifiable, EventSortable, Cloneable {
   public void setTimeLapseUnit(TimeUnit timeLapseUnit) {
 
     this.timeLapseUnit = timeLapseUnit;
+  }
+
+  public Date getProgressDate() {
+
+    return progressDate;
+  }
+
+  public void setProgressDate(Date progressDate) {
+
+    this.progressDate = progressDate;
   }
 
   public enum TimeUnit {
