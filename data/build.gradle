@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 apply from: "$rootDir/common-android-test.gradle"
 
@@ -47,6 +48,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.github.clloret:airtable.android:2f84539e51'
     implementation 'com.google.code.gson:gson:2.8.6'
