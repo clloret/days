@@ -10,14 +10,18 @@ import javax.inject.Inject
 
 class EventProgressCalculator @Inject constructor(private val timeProvider: TimeProvider) {
 
-  data class ProgressValue(val progress: Int, val max: Int)
+  data class ProgressValue(val progress: Int = 0, val max: Int = 0)
 
   fun calculateEventProgress(event: Event): ProgressValue {
 
+    val emptyProgress = ProgressValue()
+    val progressDate = event.progressDate ?: return emptyProgress
+    val eventDate = event.date ?: return emptyProgress
+
     val localEventDate = LocalDate(event.date)
     val futureDate = localEventDate.isAfter(timeProvider.currentDate)
-    val max = getDays(event.date, event.progressDate)
-    val progress = getDays(if (futureDate) event.progressDate else event.date, timeProvider.currentDate.toDate())
+    val max = getDays(eventDate, progressDate)
+    val progress = getDays(if (futureDate) progressDate else eventDate, timeProvider.currentDate.toDate())
 
     return ProgressValue(progress = progress, max = max)
   }
