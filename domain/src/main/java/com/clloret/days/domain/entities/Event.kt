@@ -4,82 +4,20 @@ import com.clloret.days.domain.events.order.EventSortable
 import org.slf4j.LoggerFactory
 import java.util.*
 
-class Event : Identifiable, EventSortable, Cloneable {
-  private var id: String? = null
-  private var name: String? = null
-  var description: String? = null
-  private var date: Date? = null
-  var progressDate: Date? = null
-  var tags = EMPTY_ARRAY
-  private var favorite = false
-  var reminder: Int? = null
-  private var reminderUnit: TimeUnit? = TimeUnit.DAY
-  var timeLapse = 0
-  private var timeLapseUnit: TimeUnit? = TimeUnit.DAY
+data class Event(override var id: String? = null,
+                 override var name: String? = "",
+                 var description: String? = null,
+                 override var date: Date? = null,
+                 var tags: Array<String?> = EMPTY_ARRAY,
+                 var favorite: Boolean = false,
+                 var reminder: Int? = null,
+                 var reminderUnit: TimeUnit? = TimeUnit.DAY,
+                 var timeLapse: Int = 0,
+                 var timeLapseUnit: TimeUnit? = TimeUnit.DAY,
+                 var progressDate: Date? = null) : Identifiable, EventSortable, Cloneable {
 
-  constructor()
-  constructor(id: String?, name: String?, description: String?, date: Date?, tags: Array<String?>,
-              favorite: Boolean, reminder: Int?, reminderUnit: TimeUnit?, timeLapse: Int,
-              timeLapseUnit: TimeUnit?, progressDate: Date?) {
-    this.id = id
-    this.name = name
-    this.description = description
-    this.date = date
-    this.tags = tags
-    this.favorite = favorite
-    this.reminder = reminder
-    this.reminderUnit = reminderUnit
-    this.timeLapse = timeLapse
-    this.timeLapseUnit = timeLapseUnit
-    this.progressDate = progressDate
-  }
-
-  override fun getId(): String? {
-    return id
-  }
-
-  override fun setId(id: String?) {
-    this.id = id
-  }
-
-  override fun isFavorite(): Boolean {
-    return favorite
-  }
-
-  override fun getName(): String? {
-    return name
-  }
-
-  fun setName(name: String?) {
-    this.name = name
-  }
-
-  override fun getDate(): Date? {
-    return date
-  }
-
-  fun setDate(date: Date?) {
-    this.date = if (date == null) null else date.clone() as Date
-  }
-
-  fun setFavorite(favorite: Boolean) {
-    this.favorite = favorite
-  }
-
-  override fun hashCode(): Int {
-    return if (id != null) id.hashCode() else 0
-  }
-
-  override fun equals(other: Any?): Boolean {
-    if (this === other) {
-      return true
-    }
-    if (other == null || javaClass != other.javaClass) {
-      return false
-    }
-    val event = other as Event
-    return id == event.id
-  }
+  override val isFavorite: Boolean
+    get() = favorite
 
   public override fun clone(): Event {
     var obj: Event? = null
@@ -93,22 +31,6 @@ class Event : Identifiable, EventSortable, Cloneable {
 
   fun hasReminder(): Boolean {
     return reminder != null
-  }
-
-  fun getReminderUnit(): TimeUnit {
-    return (if (reminderUnit != null) reminderUnit!! else TimeUnit.DAY)
-  }
-
-  fun setReminderUnit(reminderUnit: TimeUnit) {
-    this.reminderUnit = reminderUnit
-  }
-
-  fun getTimeLapseUnit(): TimeUnit {
-    return (if (timeLapseUnit != null) timeLapseUnit!! else TimeUnit.DAY)
-  }
-
-  fun setTimeLapseUnit(timeLapseUnit: TimeUnit?) {
-    this.timeLapseUnit = timeLapseUnit
   }
 
   enum class TimeUnit(private val text: String) {

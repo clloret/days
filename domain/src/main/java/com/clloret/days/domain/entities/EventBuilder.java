@@ -18,6 +18,7 @@ public class EventBuilder {
   private TimeUnit reminderUnit;
   private int timeLapse;
   private TimeUnit timeLapseUnit;
+  private Date progressDate;
 
   public EventBuilder setId(String id) {
 
@@ -79,9 +80,26 @@ public class EventBuilder {
     return this;
   }
 
+  public EventBuilder setProgressDate(Date progressDate) {
+
+    this.progressDate = progressDate;
+    return this;
+  }
+
   public Event build() {
 
-    return new Event(id, name, description, date, tags, favorite, reminder, reminderUnit, timeLapse,
-        timeLapseUnit);
+    return new Event(
+        id,
+        name,
+        description,
+        date,
+        tags,
+        favorite,
+        reminder,
+        reminderUnit,
+        timeLapse,
+        timeLapseUnit,
+        progressDate
+    );
   }
 }
