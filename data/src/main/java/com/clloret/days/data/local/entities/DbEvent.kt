@@ -12,16 +12,16 @@ class DbEvent {
   var id: String
 
   @ColumnInfo(name = "name")
-  var name: String? = null
+  var name: String = ""
 
   @ColumnInfo(name = "description")
-  var description: String? = null
+  var description: String? = ""
 
   @ColumnInfo(name = "date")
-  private var date: Date? = null
+  var date: Date? = null
 
   @ColumnInfo(name = "tag_id")
-  var tags = EMPTY_ARRAY
+  var tags: Array<String> = EMPTY_ARRAY
 
   @ColumnInfo(name = "favorite")
   var isFavorite = false
@@ -31,21 +31,27 @@ class DbEvent {
 
   @ColumnInfo(name = "reminder_unit")
   @TypeConverters(TimeUnitConverter::class)
-  var reminderUnit: Event.TimeUnit? = null
-    private set
+  var reminderUnit: Event.TimeUnit = Event.TimeUnit.DAY
 
   @ColumnInfo(name = "time_lapse")
   var timeLapse = 0
 
   @ColumnInfo(name = "time_lapse_unit")
   @TypeConverters(TimeUnitConverter::class)
-  var timeLapseUnit: Event.TimeUnit? = null
+  var timeLapseUnit: Event.TimeUnit = Event.TimeUnit.DAY
 
   @ColumnInfo(name = "progress_date")
   var progressDate: Date? = null
 
-  constructor(id: String, name: String?, description: String?, date: Date?, favorite: Boolean,
-              reminder: Int?, reminderUnit: Event.TimeUnit?, timeLapse: Int, timeLapseUnit: Event.TimeUnit?) {
+  constructor(id: String,
+              name: String,
+              description: String?,
+              date: Date?,
+              favorite: Boolean,
+              reminder: Int?,
+              reminderUnit: Event.TimeUnit,
+              timeLapse: Int,
+              timeLapseUnit: Event.TimeUnit) {
     this.id = id
     this.name = name
     this.description = description
@@ -62,19 +68,7 @@ class DbEvent {
     this.id = id
   }
 
-  fun getDate(): Date {
-    return date!!.clone() as Date
-  }
-
-  fun setDate(date: Date) {
-    this.date = date.clone() as Date
-  }
-
-  fun setReminderUnit(reminderUnit: Event.TimeUnit) {
-    this.reminderUnit = reminderUnit
-  }
-
   companion object {
-    private val EMPTY_ARRAY = arrayOfNulls<String>(0)
+    private val EMPTY_ARRAY = emptyArray<String>()
   }
 }

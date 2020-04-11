@@ -32,6 +32,7 @@ public class EventViewModelMapper {
           .setReminderUnit(viewModel.getReminderUnit())
           .setTimeLapse(viewModel.getTimeLapse())
           .setTimeLapseUnit(viewModel.getTimeLapseUnit())
+          .setProgressDate(viewModel.getProgressDate())
           .build();
     }
     return event;
@@ -52,6 +53,7 @@ public class EventViewModelMapper {
       viewModel.setReminderUnit(event.getReminderUnit());
       viewModel.setTimeLapse(event.getTimeLapse());
       viewModel.setTimeLapseUnit(event.getTimeLapseUnit());
+      viewModel.setProgressDate(event.getProgressDate());
     }
     return viewModel;
   }

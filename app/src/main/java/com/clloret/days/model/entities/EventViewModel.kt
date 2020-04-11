@@ -9,37 +9,29 @@ import java.util.*
 
 // If replace Parcelable, maintain field "event" implementation for Date type
 data class EventViewModel(var id: String? = null,
-                          override var name: String? = "",
+                          override var name: String = "",
                           var description: String? = null,
                           override var date: Date? = null,
-                          var tags: Array<String?> = EMPTY_ARRAY,
+                          var tags: Array<String> = EMPTY_ARRAY,
                           var favorite: Boolean = false,
                           var reminder: Int? = null,
-                          var reminderUnit: Event.TimeUnit? = Event.TimeUnit.DAY,
+                          var reminderUnit: Event.TimeUnit = Event.TimeUnit.DAY,
                           var timeLapse: Int = 0,
-                          var timeLapseUnit: Event.TimeUnit? = Event.TimeUnit.DAY,
+                          var timeLapseUnit: Event.TimeUnit = Event.TimeUnit.DAY,
                           var progressDate: Date? = null) : Parcelable, Cloneable, EventSortable {
 
   constructor(parcel: Parcel) : this(
           id = parcel.readString(),
-          name = parcel.readString(),
+          name = parcel.readString() ?: "",
           description = parcel.readString(),
           date = getDateFromLong(parcel.readLong()),
-          tags = parcel.createStringArray() as Array<String?>,
+          tags = parcel.createStringArray() as Array<String>,
           favorite = parcel.readByte().toInt() != 0,
           reminder = parcel.readValue(Int::class.java.classLoader) as Int?,
-          reminderUnit = parcel.readValue(Event.TimeUnit::class.java.classLoader) as Event.TimeUnit?,
+          reminderUnit = parcel.readValue(Event.TimeUnit::class.java.classLoader) as Event.TimeUnit,
           timeLapse = parcel.readInt(),
-          timeLapseUnit = parcel.readValue(Event.TimeUnit::class.java.classLoader) as Event.TimeUnit?,
+          timeLapseUnit = parcel.readValue(Event.TimeUnit::class.java.classLoader) as Event.TimeUnit,
           progressDate = getDateFromLong(parcel.readLong()))
-
-  constructor(id: String, name: String, description: String, date: Date, favorite: Boolean) : this() {
-    this.id = id
-    this.name = name
-    this.description = description
-    this.date = date
-    this.favorite = favorite
-  }
 
   override fun writeToParcel(dest: Parcel, flags: Int) {
     dest.writeString(id)
@@ -73,7 +65,21 @@ data class EventViewModel(var id: String? = null,
   }
 
   override fun toString(): String {
-    return name!!
+    return name
+  }
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) {
+      return true
+    }
+
+    if (other == null || other !is EventViewModel) return false
+
+    return id == other.id
+  }
+
+  override fun hashCode(): Int {
+    return if (id != null) id.hashCode() else 0
   }
 
   fun hasReminder(): Boolean {
@@ -95,7 +101,7 @@ data class EventViewModel(var id: String? = null,
         return arrayOfNulls(size)
       }
     }
-    private val EMPTY_ARRAY = arrayOfNulls<String>(0)
+    private val EMPTY_ARRAY = emptyArray<String>()
 
     private fun getDateFromLong(number: Long): Date? {
       return if (number == -1L) null else Date(number)
