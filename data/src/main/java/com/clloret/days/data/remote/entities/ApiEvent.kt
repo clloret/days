@@ -43,10 +43,37 @@ class ApiEvent {
   @SerializedName("TimeLapseUnit")
   var timeLapseUnit: String? = null
 
+  @SerializedName("ProgressDate")
+  var progressDate: Date? = null
+
   // empty constructor needed by the Airtable library
   constructor()
   constructor(id: String?) {
     this.id = id
+  }
+
+  constructor(id: String?,
+              name: String,
+              description: String?,
+              date: Date?,
+              tags: Array<String>,
+              favorite: Boolean,
+              reminder: Int?,
+              reminderTimeUnit: Event.TimeUnit,
+              timeLapse: Int,
+              timeLapseTimeUnit: Event.TimeUnit,
+              progressDate: Date?) {
+    this.id = id
+    this.name = name
+    this.description = description
+    this.date = date
+    this.tags = tags
+    this.favorite = favorite
+    this.reminder = reminder
+    this.reminderTimeUnit = reminderTimeUnit
+    this.timeLapse = timeLapse
+    this.timeLapseTimeUnit = timeLapseTimeUnit
+    this.progressDate = progressDate
   }
 
   fun getDate(): Date {

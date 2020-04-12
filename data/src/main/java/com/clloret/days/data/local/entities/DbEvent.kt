@@ -47,20 +47,24 @@ class DbEvent {
               name: String,
               description: String?,
               date: Date?,
+              tags: Array<String>,
               favorite: Boolean,
               reminder: Int?,
               reminderUnit: Event.TimeUnit,
               timeLapse: Int,
-              timeLapseUnit: Event.TimeUnit) {
+              timeLapseUnit: Event.TimeUnit,
+              progressDate: Date?) {
     this.id = id
     this.name = name
     this.description = description
     this.date = date
+    this.tags = tags
     this.favorite = favorite
     this.reminder = reminder
     this.reminderUnit = reminderUnit
     this.timeLapse = timeLapse
     this.timeLapseUnit = timeLapseUnit
+    this.progressDate = progressDate
   }
 
   @Ignore

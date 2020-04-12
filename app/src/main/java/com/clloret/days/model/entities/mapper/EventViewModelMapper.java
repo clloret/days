@@ -1,7 +1,7 @@
 package com.clloret.days.model.entities.mapper;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.model.entities.EventViewModel;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,57 +17,50 @@ public class EventViewModelMapper {
 
   }
 
-  public Event toEvent(EventViewModel viewModel) {
+  public Event toEvent(@NonNull EventViewModel entity) {
 
-    Event event = null;
-    if (viewModel != null) {
-      event = new EventBuilder()
-          .setId(viewModel.getId())
-          .setName(viewModel.getName())
-          .setDescription(viewModel.getDescription())
-          .setDate(viewModel.getDate())
-          .setFavorite(viewModel.getFavorite())
-          .setTags(viewModel.getTags())
-          .setReminder(viewModel.getReminder())
-          .setReminderUnit(viewModel.getReminderUnit())
-          .setTimeLapse(viewModel.getTimeLapse())
-          .setTimeLapseUnit(viewModel.getTimeLapseUnit())
-          .setProgressDate(viewModel.getProgressDate())
-          .build();
-    }
-    return event;
+    return new Event(
+        entity.getId(),
+        entity.getName(),
+        entity.getDescription(),
+        entity.getDate(),
+        entity.getTags(),
+        entity.getFavorite(),
+        entity.getReminder(),
+        entity.getReminderUnit(),
+        entity.getTimeLapse(),
+        entity.getTimeLapseUnit(),
+        entity.getProgressDate()
+    );
   }
 
-  public EventViewModel fromEvent(Event event) {
+  public EventViewModel fromEvent(@NonNull Event entity) {
 
-    EventViewModel viewModel = null;
-    if (event != null) {
-      viewModel = new EventViewModel();
-      viewModel.setId(event.getId());
-      viewModel.setName(event.getName());
-      viewModel.setDescription(event.getDescription());
-      viewModel.setDate(event.getDate());
-      viewModel.setFavorite(event.isFavorite());
-      viewModel.setTags(event.getTags());
-      viewModel.setReminder(event.getReminder());
-      viewModel.setReminderUnit(event.getReminderUnit());
-      viewModel.setTimeLapse(event.getTimeLapse());
-      viewModel.setTimeLapseUnit(event.getTimeLapseUnit());
-      viewModel.setProgressDate(event.getProgressDate());
-    }
-    return viewModel;
+    return new EventViewModel(
+        entity.getId(),
+        entity.getName(),
+        entity.getDescription(),
+        entity.getDate(),
+        entity.getTags(),
+        entity.getFavorite(),
+        entity.getReminder(),
+        entity.getReminderUnit(),
+        entity.getTimeLapse(),
+        entity.getTimeLapseUnit(),
+        entity.getProgressDate()
+    );
   }
 
-  public List<EventViewModel> fromEvent(Collection<Event> eventCollection) {
+  public List<EventViewModel> fromEvent(Collection<Event> entityCollection) {
 
-    final List<EventViewModel> eventList = new ArrayList<>(20);
-    for (Event event : eventCollection) {
-      final EventViewModel viewModel = fromEvent(event);
-      if (viewModel != null) {
-        eventList.add(viewModel);
+    final List<EventViewModel> mappedList = new ArrayList<>(20);
+    for (Event event : entityCollection) {
+      final EventViewModel mappedEntity = fromEvent(event);
+      if (mappedEntity != null) {
+        mappedList.add(mappedEntity);
       }
     }
-    return eventList;
+    return mappedList;
   }
 
 }
