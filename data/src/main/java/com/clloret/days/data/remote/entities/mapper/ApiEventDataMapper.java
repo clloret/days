@@ -27,7 +27,7 @@ public class ApiEventDataMapper implements DataMapper<Event, ApiEvent> {
           .setName(model.getName())
           .setDescription(model.getDescription())
           .setDate(model.getDate())
-          .setFavorite(model.isFavorite())
+          .setFavorite(model.getFavorite())
           .setTags(model.getTags())
           .setReminder(model.getReminder())
           .setReminderUnit(model.getReminderTimeUnit())
@@ -60,7 +60,7 @@ public class ApiEventDataMapper implements DataMapper<Event, ApiEvent> {
       apiEvent.setName(model.getName());
       apiEvent.setDescription(model.getDescription());
       apiEvent.setDate(model.getDate());
-      apiEvent.setFavorite(model.isFavorite());
+      apiEvent.setFavorite(model.getFavorite());
       apiEvent.setTags(model.getTags());
       apiEvent.setReminder(model.getReminder());
       apiEvent.setReminderTimeUnit(model.getReminderUnit());

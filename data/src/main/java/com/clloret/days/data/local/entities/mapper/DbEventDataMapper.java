@@ -28,12 +28,13 @@ public class DbEventDataMapper implements DataMapper<Event, DbEvent> {
           .setName(model.getName())
           .setDescription(model.getDescription())
           .setDate(model.getDate())
-          .setFavorite(model.isFavorite())
+          .setFavorite(model.getFavorite())
           .setTags(model.getTags())
           .setReminder(model.getReminder())
           .setReminderUnit(model.getReminderUnit())
           .setTimeLapse(model.getTimeLapse())
           .setTimeLapseUnit(model.getTimeLapseUnit())
+          .setProgressDate(model.getProgressDate())
           .build();
     }
     return event;
@@ -62,12 +63,13 @@ public class DbEventDataMapper implements DataMapper<Event, DbEvent> {
       dbEvent.setName(model.getName());
       dbEvent.setDescription(model.getDescription());
       dbEvent.setDate(model.getDate());
-      dbEvent.setFavorite(model.isFavorite());
+      dbEvent.setFavorite(model.getFavorite());
       dbEvent.setTags(model.getTags());
       dbEvent.setReminder(model.getReminder());
       dbEvent.setReminderUnit(model.getReminderUnit());
       dbEvent.setTimeLapse(model.getTimeLapse());
       dbEvent.setTimeLapseUnit(model.getTimeLapseUnit());
+      dbEvent.setProgressDate(model.getProgressDate());
     }
     return dbEvent;
   }

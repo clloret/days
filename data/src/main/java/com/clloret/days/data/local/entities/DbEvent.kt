@@ -11,11 +11,11 @@ class DbEvent {
   @ColumnInfo(name = "id")
   var id: String
 
-  @ColumnInfo(name = "name")
+  @ColumnInfo(name = "name", defaultValue = "")
   var name: String = ""
 
   @ColumnInfo(name = "description")
-  var description: String? = ""
+  var description: String? = null
 
   @ColumnInfo(name = "date")
   var date: Date? = null
@@ -24,19 +24,19 @@ class DbEvent {
   var tags: Array<String> = EMPTY_ARRAY
 
   @ColumnInfo(name = "favorite")
-  var isFavorite = false
+  var favorite = false
 
   @ColumnInfo(name = "reminder")
   var reminder: Int? = null
 
-  @ColumnInfo(name = "reminder_unit")
+  @ColumnInfo(name = "reminder_unit", defaultValue = "Day")
   @TypeConverters(TimeUnitConverter::class)
   var reminderUnit: Event.TimeUnit = Event.TimeUnit.DAY
 
   @ColumnInfo(name = "time_lapse")
   var timeLapse = 0
 
-  @ColumnInfo(name = "time_lapse_unit")
+  @ColumnInfo(name = "time_lapse_unit", defaultValue = "Day")
   @TypeConverters(TimeUnitConverter::class)
   var timeLapseUnit: Event.TimeUnit = Event.TimeUnit.DAY
 
@@ -56,7 +56,7 @@ class DbEvent {
     this.name = name
     this.description = description
     this.date = date
-    isFavorite = favorite
+    this.favorite = favorite
     this.reminder = reminder
     this.reminderUnit = reminderUnit
     this.timeLapse = timeLapse

@@ -28,7 +28,7 @@ class ApiEvent {
   var tags: Array<String> = EMPTY_ARRAY
 
   @SerializedName("Favorite")
-  var isFavorite = false
+  var favorite = false
 
   @SerializedName("Reminder")
   var reminder: Int? = null

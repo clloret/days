@@ -26,7 +26,7 @@ public class EventViewModelMapper {
           .setName(viewModel.getName())
           .setDescription(viewModel.getDescription())
           .setDate(viewModel.getDate())
-          .setFavorite(viewModel.isFavorite())
+          .setFavorite(viewModel.getFavorite())
           .setTags(viewModel.getTags())
           .setReminder(viewModel.getReminder())
           .setReminderUnit(viewModel.getReminderUnit())
