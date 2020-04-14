@@ -24,11 +24,13 @@ import com.clloret.days.R;
 import com.clloret.days.base.BaseLceFragment;
 import com.clloret.days.device.eventbus.RefreshRequestEvent;
 import com.clloret.days.domain.events.EventPeriodFormat;
+import com.clloret.days.domain.events.EventProgressCalculator;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.google.android.material.snackbar.Snackbar;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -92,6 +94,12 @@ public class EventListFragment
 
   @Inject
   Map<SortType, Comparator<EventSortable>> eventSortComparators;
+
+  @Inject
+  EventProgressCalculator eventProgressCalculator;
+
+  @Inject
+  EventViewModelMapper eventViewModelMapper;
 
   @Inject
   EventPeriodFormat eventPeriodFormat;
@@ -440,7 +448,8 @@ public class EventListFragment
 
     Comparator<EventSortable> comparator = getEventSortableComparator();
 
-    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
+    adapter = new EventListAdapter(comparator, eventPeriodFormat, eventProgressCalculator,
+        eventViewModelMapper, this);
   }
 
   private Comparator<EventSortable> getEventSortableComparator() {

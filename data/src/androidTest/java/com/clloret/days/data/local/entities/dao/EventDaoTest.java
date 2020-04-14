@@ -113,7 +113,7 @@ public class EventDaoTest {
     testObserver
         .assertComplete()
         .assertValueCount(1)
-        .assertValue(DbEvent::isFavorite);
+        .assertValue(DbEvent::getFavorite);
   }
 
   @Test
@@ -153,7 +153,7 @@ public class EventDaoTest {
     testObserver
         .assertComplete()
         .assertValueCount(1)
-        .assertValue(dbEvent -> dbEvent.getDate().equals(TEST_DATE));
+        .assertValue(dbEvent -> TEST_DATE.equals(dbEvent.getDate()));
   }
 
   @Test

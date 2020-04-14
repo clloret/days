@@ -1,15 +1,16 @@
 package com.clloret.days.data.remote.entities.mapper;
 
+import androidx.annotation.NonNull;
 import java.util.Collection;
 import java.util.List;
 
 public interface DataMapper<T, S> {
 
-  T toEntity(S model);
+  T toEntity(@NonNull S entity);
 
-  List<T> toEntity(Collection<S> modelCollection);
+  List<T> toEntity(@NonNull Collection<S> entityCollection);
 
-  S fromEntity(T model, boolean copyId);
+  S fromEntity(@NonNull T entity, boolean copyId);
 
-  List<S> fromEntity(Collection<T> modelCollection);
+  List<S> fromEntity(@NonNull Collection<T> entityCollection);
 }

@@ -1,9 +1,9 @@
 package com.clloret.days.data.local.entities.mapper;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.local.entities.DbEvent;
 import com.clloret.days.data.remote.entities.mapper.DataMapper;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.entities.EventBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -19,31 +19,28 @@ public class DbEventDataMapper implements DataMapper<Event, DbEvent> {
   }
 
   @Override
-  public Event toEntity(DbEvent model) {
+  public Event toEntity(@NonNull DbEvent entity) {
 
-    Event event = null;
-    if (model != null) {
-      event = new EventBuilder()
-          .setId(model.getId())
-          .setName(model.getName())
-          .setDescription(model.getDescription())
-          .setDate(model.getDate())
-          .setFavorite(model.isFavorite())
-          .setTags(model.getTags())
-          .setReminder(model.getReminder())
-          .setReminderUnit(model.getReminderUnit())
-          .setTimeLapse(model.getTimeLapse())
-          .setTimeLapseUnit(model.getTimeLapseUnit())
-          .build();
-    }
-    return event;
+    return new Event(
+        entity.getId(),
+        entity.getName(),
+        entity.getDescription(),
+        entity.getDate(),
+        entity.getTags(),
+        entity.getFavorite(),
+        entity.getReminder(),
+        entity.getReminderUnit(),
+        entity.getTimeLapse(),
+        entity.getTimeLapseUnit(),
+        entity.getProgressDate()
+    );
   }
 
   @Override
-  public List<Event> toEntity(Collection<DbEvent> modelCollection) {
+  public List<Event> toEntity(@NonNull Collection<DbEvent> entityCollection) {
 
     final List<Event> eventList = new ArrayList<>(20);
-    for (DbEvent dbEvent : modelCollection) {
+    for (DbEvent dbEvent : entityCollection) {
       final Event event = toEntity(dbEvent);
       if (event != null) {
         eventList.add(event);
@@ -52,31 +49,29 @@ public class DbEventDataMapper implements DataMapper<Event, DbEvent> {
     return eventList;
   }
 
-
   @Override
-  public DbEvent fromEntity(Event model, boolean copyId) {
+  public DbEvent fromEntity(@NonNull Event entity, boolean copyId) {
 
-    DbEvent dbEvent = null;
-    if (model != null) {
-      dbEvent = new DbEvent(model.getId());
-      dbEvent.setName(model.getName());
-      dbEvent.setDescription(model.getDescription());
-      dbEvent.setDate(model.getDate());
-      dbEvent.setFavorite(model.isFavorite());
-      dbEvent.setTags(model.getTags());
-      dbEvent.setReminder(model.getReminder());
-      dbEvent.setReminderUnit(model.getReminderUnit());
-      dbEvent.setTimeLapse(model.getTimeLapse());
-      dbEvent.setTimeLapseUnit(model.getTimeLapseUnit());
-    }
-    return dbEvent;
+    return new DbEvent(
+        entity.getId(),
+        entity.getName(),
+        entity.getDescription(),
+        entity.getDate(),
+        entity.getTags(),
+        entity.getFavorite(),
+        entity.getReminder(),
+        entity.getReminderUnit(),
+        entity.getTimeLapse(),
+        entity.getTimeLapseUnit(),
+        entity.getProgressDate()
+    );
   }
 
   @Override
-  public List<DbEvent> fromEntity(Collection<Event> modelCollection) {
+  public List<DbEvent> fromEntity(@NonNull Collection<Event> entityCollection) {
 
     final List<DbEvent> eventList = new ArrayList<>(20);
-    for (Event event : modelCollection) {
+    for (Event event : entityCollection) {
       final DbEvent dbEvent = fromEntity(event, true);
       if (dbEvent != null) {
         eventList.add(dbEvent);

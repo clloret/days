@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 
 - Tasker integration: allows edit existing events
 - New menu option to select the column number in the event list
+- Progress indicator to show the progress of the event date or the reminder date
 
 ### Fixed
 

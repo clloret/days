@@ -1,5 +1,6 @@
 package com.clloret.days.dagger.modules
 
+import com.clloret.days.domain.events.EventProgressCalculator
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase
 import com.clloret.days.domain.reminders.EventReminderManager
@@ -17,10 +18,11 @@ class TestUseCasesModule {
   fun providesResetEventDateUseCase(threadSchedulers: ThreadSchedulers,
                                     dataStore: EventRepository,
                                     timeProvider: TimeProvider,
-                                    eventReminderManager: EventReminderManager): ResetEventDateUseCase {
+                                    eventReminderManager: EventReminderManager,
+                                    eventProgressCalculator: EventProgressCalculator): ResetEventDateUseCase {
     Timber.d("providesResetEventDateUseCase")
     return Mockito.spy(
-            ResetEventDateUseCase(threadSchedulers, dataStore, timeProvider, eventReminderManager))
+            ResetEventDateUseCase(threadSchedulers, dataStore, timeProvider, eventReminderManager, eventProgressCalculator))
   }
 
   @Provides

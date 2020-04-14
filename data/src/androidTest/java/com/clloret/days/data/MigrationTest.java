@@ -1,6 +1,7 @@
 package com.clloret.days.data;
 
 import static com.clloret.days.data.local.DaysDatabase.MIGRATION_1_2;
+import static com.clloret.days.data.local.DaysDatabase.MIGRATION_2_3;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.ContentValues;
@@ -14,7 +15,6 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.DbEvent;
-import com.clloret.days.data.local.entities.converters.DateConverter;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import java.io.IOException;
 import java.util.Date;
@@ -27,8 +27,17 @@ import org.junit.runner.RunWith;
 public class MigrationTest {
 
   private static final String TEST_DB_NAME = "migration-test";
-  private static final DbEvent EVENT = new DbEvent("id", "name", "description",
-      new Date(), false, 6, TimeUnit.MONTH, 1, TimeUnit.YEAR);
+  private static final DbEvent TEST_DB_EVENT = new DbEvent(
+      "id",
+      "name",
+      "description",
+      new Date(),
+      false,
+      6,
+      TimeUnit.MONTH,
+      1,
+      TimeUnit.YEAR
+  );
 
   @SuppressWarnings("ConstantConditions")
   @Rule
@@ -42,39 +51,56 @@ public class MigrationTest {
 
     SupportSQLiteDatabase db = migrationTestHelper.createDatabase(TEST_DB_NAME, 1);
 
-    insertEvent(EVENT.getId(), EVENT.getName(), db);
+    insertEvent(TEST_DB_EVENT, db, 1);
 
     db.close();
 
     migrationTestHelper.runMigrationsAndValidate(TEST_DB_NAME, 2, true,
         MIGRATION_1_2);
+    migrationTestHelper.closeWhenFinished(db);
+
+    // I can only check the latest version of the database
+  }
+
+  @Test
+  public void migrationFrom2To3_Always_ContainsCorrectData() throws IOException {
+
+    SupportSQLiteDatabase db = migrationTestHelper.createDatabase(TEST_DB_NAME, 2);
+
+    insertEvent(TEST_DB_EVENT, db, 3);
+
+    db.close();
+
+    migrationTestHelper.runMigrationsAndValidate(TEST_DB_NAME, 3, true,
+        MIGRATION_2_3);
+    migrationTestHelper.closeWhenFinished(db);
 
     DbEvent dbEvent = getMigratedRoomDatabase().eventDao().getEvent();
 
-    assertThat(dbEvent.getId()).isEqualTo(EVENT.getId());
-    assertThat(dbEvent.getName()).isEqualTo(EVENT.getName());
-    assertThat(dbEvent.getReminder()).isNull();
-    assertThat(dbEvent.getReminderUnit()).isNull();
-    assertThat(dbEvent.getTimeLapse()).isEqualTo(0);
-    assertThat(dbEvent.getTimeLapseUnit()).isNull();
+    assertThat(dbEvent.getId()).isEqualTo(TEST_DB_EVENT.getId());
+    assertThat(dbEvent.getName()).isEqualTo(TEST_DB_EVENT.getName());
+    assertThat(dbEvent.getReminder()).isEqualTo(TEST_DB_EVENT.getReminder());
+    assertThat(dbEvent.getReminderUnit()).isEqualTo(TEST_DB_EVENT.getReminderUnit());
+    assertThat(dbEvent.getTimeLapse()).isEqualTo(TEST_DB_EVENT.getTimeLapse());
+    assertThat(dbEvent.getTimeLapseUnit()).isEqualTo(TEST_DB_EVENT.getTimeLapseUnit());
   }
 
   @Test
   public void startInVersion2_Always_ContainsCorrectData() throws IOException {
 
     SupportSQLiteDatabase db = migrationTestHelper.createDatabase(TEST_DB_NAME, 2);
-    insertEvent(EVENT, db);
+    insertEvent(TEST_DB_EVENT, db, 2);
     db.close();
 
     DaysDatabase daysDatabase = getMigratedRoomDatabase();
     DbEvent dbEvent = daysDatabase.eventDao().getEvent();
 
-    assertThat(dbEvent.getId()).isEqualTo(EVENT.getId());
-    assertThat(dbEvent.getName()).isEqualTo(EVENT.getName());
-    assertThat(dbEvent.getReminder()).isEqualTo(EVENT.getReminder());
-    assertThat(dbEvent.getReminderUnit()).isEqualTo(EVENT.getReminderUnit());
-    assertThat(dbEvent.getTimeLapse()).isEqualTo(EVENT.getTimeLapse());
-    assertThat(dbEvent.getTimeLapseUnit()).isEqualTo(EVENT.getTimeLapseUnit());
+    assertThat(dbEvent.getId()).isEqualTo(TEST_DB_EVENT.getId());
+    assertThat(dbEvent.getName()).isEqualTo(TEST_DB_EVENT.getName());
+    assertThat(dbEvent.getReminder()).isEqualTo(TEST_DB_EVENT.getReminder());
+    assertThat(dbEvent.getReminderUnit()).isEqualTo(TEST_DB_EVENT.getReminderUnit());
+    assertThat(dbEvent.getTimeLapse()).isEqualTo(TEST_DB_EVENT.getTimeLapse());
+    assertThat(dbEvent.getTimeLapseUnit()).isEqualTo(TEST_DB_EVENT.getTimeLapseUnit());
   }
 
   private DaysDatabase getMigratedRoomDatabase() {
@@ -83,33 +109,29 @@ public class MigrationTest {
         .databaseBuilder(InstrumentationRegistry.getInstrumentation().getTargetContext(),
             DaysDatabase.class, TEST_DB_NAME)
         .addMigrations(MIGRATION_1_2)
+        .addMigrations(MIGRATION_2_3)
         .build();
     migrationTestHelper.closeWhenFinished(database);
     return database;
   }
 
-  private void insertEvent(String id, String name, SupportSQLiteDatabase db) {
-
-    ContentValues values = new ContentValues();
-    values.put("id", id);
-    values.put("name", name);
-    values.put("favorite", false);
-
-    db.insert("events", SQLiteDatabase.CONFLICT_REPLACE, values);
-  }
-
-  private void insertEvent(DbEvent dbEvent, SupportSQLiteDatabase db) {
+  @SuppressWarnings("SameParameterValue")
+  private void insertEvent(DbEvent dbEvent, SupportSQLiteDatabase db, int version) {
 
     ContentValues values = new ContentValues();
     values.put("id", dbEvent.getId());
     values.put("name", dbEvent.getName());
-    values.put("date", DateConverter.toTimestamp(dbEvent.getDate()));
-    values.put("favorite", dbEvent.isFavorite());
-    values.put("reminder", dbEvent.getReminder());
-    values.put("reminder_unit", dbEvent.getReminderUnit().toString());
-    values.put("time_lapse", dbEvent.getTimeLapse());
-    values.put("time_lapse_unit", dbEvent.getTimeLapseUnit().toString());
+    values.put("favorite", dbEvent.getFavorite());
+    values.put("tag_id", "");
+
+    if (version >= 2) {
+      values.put("reminder", dbEvent.getReminder());
+      values.put("time_lapse", dbEvent.getTimeLapse());
+      values.put("reminder_unit", dbEvent.getReminderUnit().toString());
+      values.put("time_lapse_unit", dbEvent.getTimeLapseUnit().toString());
+    }
 
     db.insert("events", SQLiteDatabase.CONFLICT_REPLACE, values);
   }
+
 }

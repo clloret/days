@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
+import com.clloret.days.domain.events.EventProgressCalculator;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.RxImmediateThreadingSchedulers;
@@ -26,6 +27,9 @@ public class ToggleEventReminderUseCaseTest {
 
   @Mock
   private EventReminderManager eventReminderManager;
+
+  @Mock
+  private EventProgressCalculator eventProgressCalculator;
 
   @Spy
   private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();

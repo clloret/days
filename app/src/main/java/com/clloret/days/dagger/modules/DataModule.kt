@@ -65,7 +65,9 @@ abstract class DataModule {
     @Singleton
     fun providesDatabase(context: Context): DaysDatabase {
       return Room.databaseBuilder(context, DaysDatabase::class.java, DATABASE)
-              .addMigrations(DaysDatabase.MIGRATION_1_2).build()
+              .addMigrations(DaysDatabase.MIGRATION_1_2)
+              .addMigrations(DaysDatabase.MIGRATION_2_3)
+              .build()
     }
 
     @Provides
