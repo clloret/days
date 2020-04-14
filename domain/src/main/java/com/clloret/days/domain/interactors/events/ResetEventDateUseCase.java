@@ -1,6 +1,7 @@
 package com.clloret.days.domain.interactors.events;
 
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.events.EventProgressCalculator;
 import com.clloret.days.domain.interactors.base.BaseMaybeUseCase;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.repository.EventRepository;
@@ -15,16 +16,22 @@ public class ResetEventDateUseCase extends BaseMaybeUseCase<Event, Event> {
   private final EventRepository dataStore;
   private final TimeProvider timeProvider;
   private final EventReminderManager eventReminderManager;
+  private final EventProgressCalculator eventProgressCalculator;
 
   @Inject
-  public ResetEventDateUseCase(ThreadSchedulers threadSchedulers, EventRepository dataStore,
-      TimeProvider timeProvider, EventReminderManager eventReminderManager) {
+  public ResetEventDateUseCase(
+      ThreadSchedulers threadSchedulers,
+      EventRepository dataStore,
+      TimeProvider timeProvider,
+      EventReminderManager eventReminderManager,
+      EventProgressCalculator eventProgressCalculator) {
 
     super(threadSchedulers);
 
     this.dataStore = dataStore;
     this.timeProvider = timeProvider;
     this.eventReminderManager = eventReminderManager;
+    this.eventProgressCalculator = eventProgressCalculator;
   }
 
   @Override
@@ -36,6 +43,8 @@ public class ResetEventDateUseCase extends BaseMaybeUseCase<Event, Event> {
 
     LocalDate date = timeProvider.getCurrentDate();
     event.setDate(date.toDate());
+
+    eventProgressCalculator.setDefaultProgressDate(event);
 
     return dataStore.edit(event)
         .doOnSuccess(this::reminderSchedule);
