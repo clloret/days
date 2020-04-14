@@ -1,5 +1,6 @@
 package com.clloret.days.domain.events
 
+import com.clloret.days.domain.entities.Event
 import com.clloret.days.domain.entities.EventBuilder
 import com.clloret.days.domain.utils.TimeProvider
 import com.google.common.truth.Truth.assertThat
@@ -81,6 +82,41 @@ class EventProgressCalculatorTest {
 
     assertThat(progress.progress).isEqualTo(5)
     assertThat(progress.max).isEqualTo(15)
+  }
+
+  @Test
+  fun calculateEventProgressDate_WhenDateIsBeforeAndHasReminder_ReturnCorrectValues() {
+    val event = EventBuilder()
+            .setDate(oldestDate)
+            .setReminder(29)
+            .setReminderUnit(Event.TimeUnit.DAY)
+            .build()
+
+    val date = sut.calculateEventProgressDate(event)
+
+    assertThat(date).isEqualTo(latestDate)
+  }
+
+  @Test
+  fun calculateEventProgressDate_WhenDateIsAfter_ReturnCorrectValues() {
+    val event = EventBuilder()
+            .setDate(latestDate)
+            .build()
+
+    val date = sut.calculateEventProgressDate(event)
+
+    assertThat(date).isEqualTo(today.toDate())
+  }
+
+  @Test
+  fun calculateEventProgressDate_WhenDateIsBeforeAndNoReminder_ReturnNullDate() {
+    val event = EventBuilder()
+            .setDate(oldestDate)
+            .build()
+
+    val date = sut.calculateEventProgressDate(event)
+
+    assertThat(date).isNull()
   }
 
 }
