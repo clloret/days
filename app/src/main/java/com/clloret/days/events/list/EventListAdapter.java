@@ -231,6 +231,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       if (viewModel.getProgressDate() == null) {
         progress.setVisibility(View.GONE);
         return;
+      } else {
+        progress.setVisibility(View.VISIBLE);
       }
 
       final Event event = eventViewModelMapper.toEvent(viewModel);
