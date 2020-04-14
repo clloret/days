@@ -12,6 +12,11 @@ class EventProgressCalculator @Inject constructor(private val timeProvider: Time
 
   data class ProgressValue(val progress: Int = 0, val max: Int = 0)
 
+  fun setDefaultProgressDate(event: Event) {
+    val date = calculateEventProgressDate(event)
+    event.progressDate = date
+  }
+
   fun calculateEventProgress(event: Event): ProgressValue {
 
     val emptyProgress = ProgressValue()
@@ -24,6 +29,29 @@ class EventProgressCalculator @Inject constructor(private val timeProvider: Time
     val progress = getDays(if (futureDate) progressDate else eventDate, timeProvider.currentDate.toDate())
 
     return ProgressValue(progress = progress, max = max)
+  }
+
+  fun calculateEventProgressDate(event: Event): Date? {
+    val localFromDate = LocalDate(event.date)
+    if (localFromDate.isAfter(timeProvider.currentDate)) {
+      return timeProvider.currentDate.toDate()
+    } else if (event.hasReminder()) {
+      return calculateTimeReminder(event, event.date)
+    }
+    return null
+  }
+
+  private fun calculateTimeReminder(event: Event, date: Date?): Date? {
+
+    val reminder = checkNotNull(event.reminder) { "Event reminder can't be null" }
+    val localDate = LocalDate(date)
+    val dateReminder: LocalDate
+    dateReminder = when (event.reminderUnit) {
+      Event.TimeUnit.DAY -> localDate.plusDays(reminder)
+      Event.TimeUnit.MONTH -> localDate.plusMonths(reminder)
+      Event.TimeUnit.YEAR -> localDate.plusYears(reminder)
+    }
+    return dateReminder.toDate()
   }
 
   private fun getDays(fromDate: Date, toDate: Date): Int {
