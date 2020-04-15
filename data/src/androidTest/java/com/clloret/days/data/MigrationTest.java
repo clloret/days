@@ -121,6 +121,7 @@ public class MigrationTest {
     ContentValues values = new ContentValues();
     values.put("id", dbEvent.getId());
     values.put("name", dbEvent.getName());
+    values.put("date", dbEvent.getDate().getTime());
     values.put("favorite", dbEvent.getFavorite());
     values.put("tag_id", "");
 

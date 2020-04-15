@@ -43,6 +43,7 @@ class DbEvent {
   @ColumnInfo(name = "progress_date")
   var progressDate: Date? = null
 
+  @JvmOverloads
   constructor(id: String,
               name: String,
               description: String?,
@@ -53,7 +54,7 @@ class DbEvent {
               reminderUnit: Event.TimeUnit,
               timeLapse: Int,
               timeLapseUnit: Event.TimeUnit,
-              progressDate: Date?) {
+              progressDate: Date? = null) {
     this.id = id
     this.name = name
     this.description = description
