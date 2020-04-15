@@ -5,8 +5,8 @@ apply plugin: 'jacoco'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    //noinspection DifferentStdlibGradleVersion
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    //noinspection DifferentStdlibGradleVersion
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
