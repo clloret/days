@@ -45,7 +45,7 @@ data class Event(override var id: String? = null,
 
   companion object {
     const val REMINDER_EVENT_DAY = 0
+    val EMPTY_ARRAY = emptyArray<String>()
     private val logger = LoggerFactory.getLogger(Event::class.java.simpleName)
-    private val EMPTY_ARRAY = emptyArray<String>()
   }
 }

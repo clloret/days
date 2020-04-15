@@ -3,6 +3,7 @@ package com.clloret.days.data.local.entities
 import androidx.room.*
 import com.clloret.days.data.local.entities.converters.TimeUnitConverter
 import com.clloret.days.domain.entities.Event
+import com.clloret.days.domain.entities.Event.Companion.EMPTY_ARRAY
 import java.util.*
 
 @Entity(tableName = "events")
@@ -73,7 +74,4 @@ class DbEvent {
     this.id = id
   }
 
-  companion object {
-    private val EMPTY_ARRAY = emptyArray<String>()
-  }
 }

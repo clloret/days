@@ -7,13 +7,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class EventBuilder {
 
-  private static final String[] EMPTY_ARRAY = new String[0];
-
   private String id;
   private String name = "";
   private String description;
   private Date date = new Date();
-  private String[] tags = EMPTY_ARRAY;
+  private String[] tags = Event.Companion.getEMPTY_ARRAY();
   private boolean favorite;
   private Integer reminder;
   private TimeUnit reminderUnit = TimeUnit.DAY;

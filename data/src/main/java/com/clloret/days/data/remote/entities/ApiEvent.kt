@@ -25,7 +25,7 @@ class ApiEvent {
   var date: Date = Date()
 
   @SerializedName("Tags")
-  var tags: Array<String> = EMPTY_ARRAY
+  var tags: Array<String> = Event.EMPTY_ARRAY
 
   @SerializedName("Favorite")
   var favorite = false
@@ -102,8 +102,4 @@ class ApiEvent {
     set(timeLapseUnit) {
       this.timeLapseUnit = timeLapseUnit.toString()
     }
-
-  companion object {
-    private val EMPTY_ARRAY = emptyArray<String>()
-  }
 }

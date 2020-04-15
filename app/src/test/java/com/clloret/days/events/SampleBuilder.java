@@ -18,7 +18,6 @@ public class SampleBuilder {
   private static final String DESCRIPTION = "Description";
   private static final Date DATE = new LocalDate(2000, 1, 1).toDate();
   private static final boolean FAVORITE = false;
-  private static final String[] EMPTY_ARRAY = new String[0];
 
   @NonNull
   public static Event createEvent() {
@@ -28,7 +27,7 @@ public class SampleBuilder {
         NAME,
         DESCRIPTION,
         DATE,
-        EMPTY_ARRAY,
+        Event.Companion.getEMPTY_ARRAY(),
         FAVORITE,
         null,
         TimeUnit.DAY,
@@ -45,7 +44,7 @@ public class SampleBuilder {
         NAME,
         DESCRIPTION,
         DATE,
-        EMPTY_ARRAY,
+        Event.Companion.getEMPTY_ARRAY(),
         FAVORITE,
         null,
         TimeUnit.DAY,

@@ -12,7 +12,7 @@ data class EventViewModel(var id: String? = null,
                           override var name: String = "",
                           var description: String? = null,
                           override var date: Date = Date(),
-                          var tags: Array<String> = EMPTY_ARRAY,
+                          var tags: Array<String> = Event.EMPTY_ARRAY,
                           var favorite: Boolean = false,
                           var reminder: Int? = null,
                           var reminderUnit: Event.TimeUnit = Event.TimeUnit.DAY,
@@ -101,7 +101,6 @@ data class EventViewModel(var id: String? = null,
         return arrayOfNulls(size)
       }
     }
-    private val EMPTY_ARRAY = emptyArray<String>()
 
     private fun getDateFromLong(number: Long): Date? {
       return if (number == -1L) null else Date(number)
