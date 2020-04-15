@@ -11,7 +11,7 @@ import java.util.*
 data class EventViewModel(var id: String? = null,
                           override var name: String = "",
                           var description: String? = null,
-                          override var date: Date? = null,
+                          override var date: Date = Date(),
                           var tags: Array<String> = EMPTY_ARRAY,
                           var favorite: Boolean = false,
                           var reminder: Int? = null,
@@ -24,7 +24,7 @@ data class EventViewModel(var id: String? = null,
           id = parcel.readString(),
           name = parcel.readString() ?: "",
           description = parcel.readString(),
-          date = getDateFromLong(parcel.readLong()),
+          date = getDateFromLong(parcel.readLong()) ?: Date(),
           tags = parcel.createStringArray() as Array<String>,
           favorite = parcel.readByte().toInt() != 0,
           reminder = parcel.readValue(Int::class.java.classLoader) as Int?,
@@ -37,7 +37,7 @@ data class EventViewModel(var id: String? = null,
     dest.writeString(id)
     dest.writeString(name)
     dest.writeString(description)
-    dest.writeLong(if (date != null) date!!.time else -1)
+    dest.writeLong(date.time)
     dest.writeStringArray(tags)
     dest.writeByte((if (favorite) 1 else 0).toByte())
     dest.writeValue(reminder)

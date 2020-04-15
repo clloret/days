@@ -18,7 +18,7 @@ class DbEvent {
   var description: String? = null
 
   @ColumnInfo(name = "date")
-  var date: Date? = null
+  var date: Date = Date()
 
   @ColumnInfo(name = "tag_id")
   var tags: Array<String> = EMPTY_ARRAY
@@ -46,8 +46,8 @@ class DbEvent {
   constructor(id: String,
               name: String,
               description: String?,
-              date: Date?,
-              tags: Array<String>,
+              date: Date,
+              tags: Array<String> = EMPTY_ARRAY,
               favorite: Boolean,
               reminder: Int?,
               reminderUnit: Event.TimeUnit,

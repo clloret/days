@@ -22,7 +22,7 @@ class ApiEvent {
   var description: String? = null
 
   @SerializedName("Date")
-  private var date: Date? = null
+  var date: Date = Date()
 
   @SerializedName("Tags")
   var tags: Array<String> = EMPTY_ARRAY
@@ -55,7 +55,7 @@ class ApiEvent {
   constructor(id: String?,
               name: String,
               description: String?,
-              date: Date?,
+              date: Date,
               tags: Array<String>,
               favorite: Boolean,
               reminder: Int?,
@@ -76,13 +76,14 @@ class ApiEvent {
     this.progressDate = progressDate
   }
 
-  fun getDate(): Date {
-    return date!!.clone() as Date
-  }
-
-  fun setDate(date: Date?) {
-    this.date = date?.clone() as Date
-  }
+//  fun getDate(): Date {
+//    //return date!!.clone() as Date
+//    return date ?: Date()
+//  }
+//
+//  fun setDate(date: Date) {
+//    this.date = date.clone() as Date
+//  }
 
   fun setReminderUnit(reminderUnit: String) {
     this.reminderUnit = reminderUnit

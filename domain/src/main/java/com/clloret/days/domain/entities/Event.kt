@@ -7,7 +7,7 @@ import java.util.*
 data class Event(override var id: String? = null,
                  override var name: String = "",
                  var description: String? = null,
-                 override var date: Date? = null,
+                 override var date: Date = Date(),
                  var tags: Array<String> = EMPTY_ARRAY,
                  var favorite: Boolean = false,
                  var reminder: Int? = null,

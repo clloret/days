@@ -37,7 +37,7 @@ public abstract class DaysDatabase extends RoomDatabase {
     public void migrate(SupportSQLiteDatabase database) {
 
       database.execSQL(
-          "CREATE TABLE IF NOT EXISTS events_new (`id` TEXT NOT NULL, `name` TEXT NOT NULL DEFAULT '', `description` TEXT, `date` INTEGER, `tag_id` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `reminder` INTEGER, `reminder_unit` TEXT NOT NULL DEFAULT 'Day', `time_lapse` INTEGER NOT NULL, `time_lapse_unit` TEXT NOT NULL DEFAULT 'Day', `progress_date` INTEGER, PRIMARY KEY(`id`))");
+          "CREATE TABLE IF NOT EXISTS events_new (`id` TEXT NOT NULL, `name` TEXT NOT NULL DEFAULT '', `description` TEXT, `date` INTEGER NOT NULL, `tag_id` TEXT NOT NULL, `favorite` INTEGER NOT NULL, `reminder` INTEGER, `reminder_unit` TEXT NOT NULL DEFAULT 'Day', `time_lapse` INTEGER NOT NULL, `time_lapse_unit` TEXT NOT NULL DEFAULT 'Day', `progress_date` INTEGER, PRIMARY KEY(`id`))");
       database.execSQL(
           "INSERT INTO events_new (id, name, description, date, tag_id, favorite, reminder, reminder_unit, time_lapse, time_lapse_unit)"
               + " SELECT id, name, description, date, tag_id, favorite, reminder, reminder_unit, time_lapse, time_lapse_unit FROM events");

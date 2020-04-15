@@ -12,7 +12,7 @@ public class EventBuilder {
   private String id;
   private String name = "";
   private String description;
-  private Date date;
+  private Date date = new Date();
   private String[] tags = EMPTY_ARRAY;
   private boolean favorite;
   private Integer reminder;
