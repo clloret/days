@@ -12,6 +12,7 @@ import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.RxImmediateThreadingSchedulers;
 import com.clloret.days.domain.utils.ThreadSchedulers;
 import io.reactivex.observers.TestObserver;
+import java.util.Objects;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -77,7 +78,7 @@ public class ToggleEventReminderUseCaseTest {
     testObserver
         .assertComplete()
         .assertNoErrors()
-        .assertValue(event -> event.getReminder() == 0);
+        .assertValue(event -> Objects.requireNonNull(event.getReminder()) == 0);
   }
 
   @Test

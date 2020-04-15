@@ -6,8 +6,8 @@ import com.clloret.days.BuildConfig
 class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
   private val bundle: Bundle
 
-  var name: String?
-    get() = bundle.getString(EXTRA_NAME)
+  var name: String
+    get() = bundle.getString(EXTRA_NAME, "Unnamed")
     set(name) {
       bundle.putString(EXTRA_NAME, name)
     }

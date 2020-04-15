@@ -50,11 +50,6 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
       return;
     }
 
-    if (eventViewModel.getDate() == null) {
-      view.onEmptyEventDateError();
-      return;
-    }
-
     Event event = eventViewModelMapper.toEvent(eventViewModel);
 
     Disposable subscribe = createEventUseCase.execute(event)

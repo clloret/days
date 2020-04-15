@@ -321,16 +321,19 @@ public class EventCreateActivity
 
   private void createDefaultEvent() {
 
-    EventViewModel newEvent = new EventViewModel();
+    final EventViewModel newEvent = new EventViewModel();
     newEvent.setDate(new Date());
 
-    Intent intent = getIntent();
+    final Intent intent = getIntent();
 
     if (intent.hasExtra(EXTRA_NAME)) {
-      String eventName = StringUtils.capitalizeFirstLetter(intent.getStringExtra(EXTRA_NAME));
-      newEvent.setName(eventName);
-      nameEdit.setText(eventName);
-      nameEdit.setSelection(nameEdit.getText().length());
+      final String extraName = intent.getStringExtra(EXTRA_NAME);
+      if (extraName != null) {
+        String eventName = StringUtils.capitalizeFirstLetter(extraName);
+        newEvent.setName(eventName);
+        nameEdit.setText(eventName);
+        nameEdit.setSelection(nameEdit.getText().length());
+      }
     }
 
     if (intent.hasExtra(EXTRA_TAG)) {

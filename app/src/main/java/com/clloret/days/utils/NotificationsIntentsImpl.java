@@ -15,6 +15,7 @@ import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.edit.EventEditActivity;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -40,7 +41,9 @@ public class NotificationsIntentsImpl implements NotificationsIntents {
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
     stackBuilder.addNextIntentWithParentStack(intent);
     return stackBuilder
-        .getPendingIntent(event.getId().hashCode(), FLAG_UPDATE_CURRENT);
+        .getPendingIntent(
+            Objects.requireNonNull(event.getId(), "Entity ID can't be null").hashCode(),
+            FLAG_UPDATE_CURRENT);
   }
 
   @Override
@@ -51,7 +54,9 @@ public class NotificationsIntentsImpl implements NotificationsIntents {
     intent.putExtra(EXTRA_EVENT_ID, event.getId());
 
     return PendingIntent
-        .getBroadcast(context, event.getId().hashCode(), intent, FLAG_UPDATE_CURRENT);
+        .getBroadcast(context,
+            Objects.requireNonNull(event.getId(), "Entity ID can't be null").hashCode(),
+            intent, FLAG_UPDATE_CURRENT);
   }
 
   @Override
@@ -62,7 +67,9 @@ public class NotificationsIntentsImpl implements NotificationsIntents {
     intent.putExtra(EXTRA_EVENT_ID, event.getId());
 
     return PendingIntent
-        .getBroadcast(context, event.getId().hashCode(), intent, FLAG_UPDATE_CURRENT);
+        .getBroadcast(context,
+            Objects.requireNonNull(event.getId(), "Entity ID can't be null").hashCode(),
+            intent, FLAG_UPDATE_CURRENT);
   }
 
 }

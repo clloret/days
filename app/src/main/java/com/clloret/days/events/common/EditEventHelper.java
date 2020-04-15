@@ -158,9 +158,7 @@ public class EditEventHelper implements SelectTagsDialogListener {
     this.originalEvent = originalEvent;
     this.modifiedEvent = originalEvent.clone();
     Date eventDate = modifiedEvent.getDate();
-    if (eventDate != null) {
-      this.selectedDate = new LocalDate(eventDate);
-    }
+    this.selectedDate = new LocalDate(eventDate);
   }
 
   public EventViewModel getModifiedEvent() {

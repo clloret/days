@@ -147,7 +147,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     Disposable subscribe = Single.just(unfilteredEvents)
         .flatMapObservable(Observable::fromIterable)
-        .filter(event -> event.getName() != null)
         .filter(event -> filterEventByText(event, text))
         .toList()
         .subscribe(view::setData);

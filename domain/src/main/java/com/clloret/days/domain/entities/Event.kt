@@ -4,6 +4,7 @@ import com.clloret.days.domain.events.order.EventSortable
 import org.slf4j.LoggerFactory
 import java.util.*
 
+@Suppress("ArrayInDataClass")
 data class Event(override var id: String? = null,
                  override var name: String = "",
                  var description: String? = null,

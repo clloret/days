@@ -21,7 +21,7 @@ class EventProgressCalculator @Inject constructor(private val timeProvider: Time
 
     val emptyProgress = ProgressValue()
     val progressDate = event.progressDate ?: return emptyProgress
-    val eventDate = event.date ?: return emptyProgress
+    val eventDate = event.date
 
     val localEventDate = LocalDate(event.date)
     val futureDate = localEventDate.isAfter(timeProvider.currentDate)

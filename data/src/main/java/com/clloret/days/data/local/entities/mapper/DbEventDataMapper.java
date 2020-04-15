@@ -7,6 +7,7 @@ import com.clloret.days.domain.entities.Event;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -53,7 +54,7 @@ public class DbEventDataMapper implements DataMapper<Event, DbEvent> {
   public DbEvent fromEntity(@NonNull Event entity, boolean copyId) {
 
     return new DbEvent(
-        entity.getId(),
+        Objects.requireNonNull(entity.getId(), "Entity ID can't be null"),
         entity.getName(),
         entity.getDescription(),
         entity.getDate(),

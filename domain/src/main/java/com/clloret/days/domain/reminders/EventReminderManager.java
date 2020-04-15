@@ -97,17 +97,23 @@ public class EventReminderManager {
 
   private DateTime calculateTimeReminder(Event event, DateTime eventDateWithTime) {
 
+    Integer reminder = event.getReminder();
+
+    if (reminder == null) {
+      throw new IllegalArgumentException("Event reminder can't be null");
+    }
+
     DateTime timeReminder;
     switch (event.getReminderUnit()) {
       case DAY:
       default:
-        timeReminder = eventDateWithTime.plusDays(event.getReminder());
+        timeReminder = eventDateWithTime.plusDays(reminder);
         break;
       case MONTH:
-        timeReminder = eventDateWithTime.plusMonths(event.getReminder());
+        timeReminder = eventDateWithTime.plusMonths(reminder);
         break;
       case YEAR:
-        timeReminder = eventDateWithTime.plusYears(event.getReminder());
+        timeReminder = eventDateWithTime.plusYears(reminder);
         break;
     }
 
