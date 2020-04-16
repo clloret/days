@@ -20,8 +20,7 @@ public class TagViewModelMapper {
 
     Tag tag = null;
     if (viewModel != null) {
-      tag = new Tag(viewModel.getId());
-      tag.setName(viewModel.getName());
+      tag = new Tag(viewModel.getId(), viewModel.getName());
     }
     return tag;
   }
