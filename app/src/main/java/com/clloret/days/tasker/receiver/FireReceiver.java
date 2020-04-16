@@ -16,7 +16,7 @@ import com.clloret.days.domain.utils.DateUtils;
 import com.clloret.days.domain.utils.StringUtils;
 import com.clloret.days.domain.utils.TimeProvider;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import com.clloret.days.tasker.bundle.CommonBundle;
 import com.clloret.days.tasker.bundle.EventCreateBundle;
 import com.clloret.days.tasker.bundle.EventEditBundle;
@@ -37,9 +37,6 @@ public class FireReceiver extends AbstractPluginSettingReceiver {
 
   @Inject
   GetEventUseCase getEventUseCase;
-
-  @Inject
-  EventViewModelMapper eventViewModelMapper;
 
   @Inject
   TimeProvider timeProvider;
@@ -127,7 +124,7 @@ public class FireReceiver extends AbstractPluginSettingReceiver {
     createEventUseCase.execute(event)
         .subscribeOn(AndroidSchedulers.mainThread())
         .observeOn(AndroidSchedulers.mainThread())
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSuccess(this::sendMessage)
         .doOnError(Timber::e)
         .onErrorComplete()
@@ -177,7 +174,7 @@ public class FireReceiver extends AbstractPluginSettingReceiver {
     editEventUseCase.execute(requestValues)
         .subscribeOn(AndroidSchedulers.mainThread())
         .observeOn(AndroidSchedulers.mainThread())
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSuccess(this::sendMessage)
         .doOnError(Timber::e)
         .onErrorComplete()

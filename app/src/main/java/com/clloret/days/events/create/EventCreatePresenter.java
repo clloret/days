@@ -8,7 +8,7 @@ import com.clloret.days.domain.injection.TypeNamed;
 import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
@@ -18,7 +18,6 @@ import javax.inject.Named;
 
 public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
 
-  private final EventViewModelMapper eventViewModelMapper;
   private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final CreateEventUseCase createEventUseCase;
@@ -26,7 +25,6 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
 
   @Inject
   public EventCreatePresenter(
-      EventViewModelMapper eventViewModelMapper,
       TagViewModelMapper tagViewModelMapper,
       GetTagsUseCase getTagsUseCase,
       CreateEventUseCase createEventUseCase,
@@ -34,7 +32,6 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
 
     super();
 
-    this.eventViewModelMapper = eventViewModelMapper;
     this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;
     this.createEventUseCase = createEventUseCase;
@@ -50,12 +47,12 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
       return;
     }
 
-    Event event = eventViewModelMapper.toEvent(eventViewModel);
+    Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = createEventUseCase.execute(event)
         .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, uiThread)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSuccess(result -> {
           view.showIndeterminateProgressFinalAnimation();
           view.onSuccessfully(result);

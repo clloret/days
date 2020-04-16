@@ -14,7 +14,7 @@ import com.clloret.days.device.receivers.ReminderReceiver;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.events.edit.EventEditActivity;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,19 +23,17 @@ import javax.inject.Singleton;
 public class NotificationsIntentsImpl implements NotificationsIntents {
 
   private final Context context;
-  private final EventViewModelMapper eventViewModelMapper;
 
   @Inject
-  public NotificationsIntentsImpl(Context context, EventViewModelMapper eventViewModelMapper) {
+  public NotificationsIntentsImpl(Context context) {
 
     this.context = context;
-    this.eventViewModelMapper = eventViewModelMapper;
   }
 
   @Override
   public PendingIntent getViewEventIntent(Event event) {
 
-    EventViewModel eventViewModel = eventViewModelMapper.fromEvent(event);
+    EventViewModel eventViewModel = EventViewModelMapperKt.toEventViewModel(event);
     Intent intent = EventEditActivity.getCallingIntent(context, eventViewModel);
 
     TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

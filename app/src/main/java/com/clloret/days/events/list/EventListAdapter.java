@@ -17,7 +17,7 @@ import com.clloret.days.domain.events.EventProgressCalculator.ProgressValue;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.events.list.EventListAdapter.EventViewHolder;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,7 +27,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
   private final OnListAdapterListener listener;
   private final EventPeriodFormat eventPeriodFormat;
   private final EventProgressCalculator eventProgressCalculator;
-  private final EventViewModelMapper eventViewModelMapper;
   private Comparator<EventSortable> currentComparator;
   private List<EventViewModel> events;
 
@@ -35,7 +34,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       Comparator<EventSortable> comparator,
       EventPeriodFormat eventPeriodFormat,
       EventProgressCalculator eventProgressCalculator,
-      EventViewModelMapper eventViewModelMapper,
       OnListAdapterListener listener) {
 
     super();
@@ -43,7 +41,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     this.currentComparator = comparator;
     this.eventPeriodFormat = eventPeriodFormat;
     this.eventProgressCalculator = eventProgressCalculator;
-    this.eventViewModelMapper = eventViewModelMapper;
     this.listener = listener;
     this.setHasStableIds(true);
   }
@@ -235,7 +232,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
         progress.setVisibility(View.VISIBLE);
       }
 
-      final Event event = eventViewModelMapper.toEvent(viewModel);
+      final Event event = EventViewModelMapperKt.toEvent(viewModel);
       final ProgressValue progressValue = eventProgressCalculator.calculateEventProgress(event);
       progress.setMax(progressValue.getMax());
       progress.setProgress(progressValue.getProgress());

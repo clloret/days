@@ -14,7 +14,7 @@ import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.domain.interactors.events.GetEventsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import dagger.android.AndroidInjection;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -34,9 +34,6 @@ public class TaskerSelectEventActivity extends AppCompatActivity {
 
   @Inject
   GetEventsUseCase getEventsUseCase;
-
-  @Inject
-  EventViewModelMapper eventViewModelMapper;
 
   @Inject
   Map<SortType, Comparator<EventSortable>> eventSortComparators;
@@ -82,7 +79,7 @@ public class TaskerSelectEventActivity extends AppCompatActivity {
         .concatMap(Observable::fromIterable)
         .sorted(eventSortableComparator)
         .toList()
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModelList)
         .subscribe(this::showEvents, Timber::e);
 
     compositeDisposable.add(disposable);

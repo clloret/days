@@ -21,7 +21,6 @@ import com.clloret.days.domain.interactors.events.GetFilteredEventsUseCase.Reque
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import com.clloret.days.domain.interactors.events.ToggleEventReminderUseCase;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -35,7 +34,6 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 @SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventListPresenterTest {
@@ -72,9 +70,6 @@ public class EventListPresenterTest {
 
   @Mock
   private EventListView eventListView;
-
-  @Spy
-  private EventViewModelMapper eventViewModelMapper = new EventViewModelMapper();
 
   @InjectMocks
   private EventListPresenter eventListPresenter;
