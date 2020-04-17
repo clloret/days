@@ -48,9 +48,6 @@ class ApiEvent {
 
   // empty constructor needed by the Airtable library
   constructor()
-  constructor(id: String?) {
-    this.id = id
-  }
 
   constructor(id: String?,
               name: String,
@@ -75,15 +72,6 @@ class ApiEvent {
     this.timeLapseTimeUnit = timeLapseTimeUnit
     this.progressDate = progressDate
   }
-
-//  fun getDate(): Date {
-//    //return date!!.clone() as Date
-//    return date ?: Date()
-//  }
-//
-//  fun setDate(date: Date) {
-//    this.date = date.clone() as Date
-//  }
 
   fun setReminderUnit(reminderUnit: String) {
     this.reminderUnit = reminderUnit
