@@ -26,7 +26,7 @@ import java.util.Objects;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -37,6 +37,9 @@ import org.robolectric.annotation.Config;
 @Config(sdk = VERSION_CODES.M, application = Application.class)
 @RunWith(RobolectricTestRunner.class)
 public class AppTagRepositoryTest {
+
+  @ClassRule
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
 
   private static final String API_KEY = "api_key";
   private static final String BASE = "base";
@@ -49,9 +52,6 @@ public class AppTagRepositoryTest {
   private TagRepository tagRepository;
   private RoomTagRepository roomTagRepository;
   private DaysDatabase db;
-
-  @Rule
-  public final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Before
   public void setUp() throws Exception {
