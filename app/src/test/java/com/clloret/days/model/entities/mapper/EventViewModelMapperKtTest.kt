@@ -5,7 +5,6 @@ import com.clloret.days.model.entities.EventViewModel
 import com.google.common.truth.Truth
 import org.joda.time.LocalDate
 import org.junit.Test
-import java.util.function.Consumer
 
 class EventViewModelMapperKtTest {
 
@@ -29,7 +28,10 @@ class EventViewModelMapperKtTest {
     val eventList = arrayListOf(event, event)
     val toEventViewModelList = eventList.toEventViewModelList()
 
-    toEventViewModelList.forEach(Consumer { vm -> assertEventViewModel(vm, event) })
+    toEventViewModelList.forEach {
+      assertEventViewModel(it, event)
+    }
+
   }
 
   private fun buildEvent(): Event {
