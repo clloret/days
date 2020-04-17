@@ -15,6 +15,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
 import com.clloret.days.data.local.DaysDatabase;
 import com.clloret.days.data.local.entities.DbEvent;
+import com.clloret.days.data.local.entities.DbTag;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import java.io.IOException;
 import java.util.Date;
@@ -37,6 +38,10 @@ public class MigrationTest {
       TimeUnit.MONTH,
       1,
       TimeUnit.YEAR
+  );
+  private static final DbTag TEST_DB_TAG = new DbTag(
+      "id",
+      "name"
   );
 
   @SuppressWarnings("ConstantConditions")
@@ -68,6 +73,7 @@ public class MigrationTest {
     SupportSQLiteDatabase db = migrationTestHelper.createDatabase(TEST_DB_NAME, 2);
 
     insertEvent(TEST_DB_EVENT, db, 3);
+    insertTag(TEST_DB_TAG, db, 3);
 
     db.close();
 
@@ -83,6 +89,11 @@ public class MigrationTest {
     assertThat(dbEvent.getReminderUnit()).isEqualTo(TEST_DB_EVENT.getReminderUnit());
     assertThat(dbEvent.getTimeLapse()).isEqualTo(TEST_DB_EVENT.getTimeLapse());
     assertThat(dbEvent.getTimeLapseUnit()).isEqualTo(TEST_DB_EVENT.getTimeLapseUnit());
+
+    DbTag dbTag = getMigratedRoomDatabase().tagDao().getTagById("id");
+
+    assertThat(dbTag.getId()).isEqualTo(TEST_DB_TAG.getId());
+    assertThat(dbTag.getName()).isEqualTo(TEST_DB_TAG.getName());
   }
 
   @Test
@@ -90,6 +101,7 @@ public class MigrationTest {
 
     SupportSQLiteDatabase db = migrationTestHelper.createDatabase(TEST_DB_NAME, 2);
     insertEvent(TEST_DB_EVENT, db, 2);
+    insertTag(TEST_DB_TAG, db, 2);
     db.close();
 
     DaysDatabase daysDatabase = getMigratedRoomDatabase();
@@ -101,6 +113,11 @@ public class MigrationTest {
     assertThat(dbEvent.getReminderUnit()).isEqualTo(TEST_DB_EVENT.getReminderUnit());
     assertThat(dbEvent.getTimeLapse()).isEqualTo(TEST_DB_EVENT.getTimeLapse());
     assertThat(dbEvent.getTimeLapseUnit()).isEqualTo(TEST_DB_EVENT.getTimeLapseUnit());
+
+    DbTag dbTag = getMigratedRoomDatabase().tagDao().getTagById("id");
+
+    assertThat(dbTag.getId()).isEqualTo(TEST_DB_TAG.getId());
+    assertThat(dbTag.getName()).isEqualTo(TEST_DB_TAG.getName());
   }
 
   private DaysDatabase getMigratedRoomDatabase() {
@@ -133,6 +150,16 @@ public class MigrationTest {
     }
 
     db.insert("events", SQLiteDatabase.CONFLICT_REPLACE, values);
+  }
+
+  @SuppressWarnings("SameParameterValue")
+  private void insertTag(DbTag dbTag, SupportSQLiteDatabase db, int version) {
+
+    ContentValues values = new ContentValues();
+    values.put("id", dbTag.getId());
+    values.put("name", dbTag.getName());
+
+    db.insert("tags", SQLiteDatabase.CONFLICT_REPLACE, values);
   }
 
 }
