@@ -13,7 +13,6 @@ import com.clloret.days.domain.interactors.events.EditEventUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.events.SampleBuilder;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -41,9 +40,6 @@ public class EventEditPresenterTest {
 
   @Mock
   private DeleteEventUseCase deleteEventUseCase;
-
-  @Mock
-  private TagViewModelMapper tagViewModelMapper;
 
   @Mock
   private EventEditView eventEditView;

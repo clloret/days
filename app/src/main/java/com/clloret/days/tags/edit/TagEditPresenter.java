@@ -5,7 +5,7 @@ import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
 import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.model.entities.mapper.TagViewModelMapperKt;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 
@@ -13,18 +13,16 @@ public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
 
   private final EditTagUseCase editTagUseCase;
   private final DeleteTagUseCase deleteTagUseCase;
-  private final TagViewModelMapper tagViewModelMapper;
 
   @Inject
-  public TagEditPresenter(EditTagUseCase editTagUseCase,
-      DeleteTagUseCase deleteTagUseCase,
-      TagViewModelMapper tagViewModelMapper) {
+  public TagEditPresenter(
+      EditTagUseCase editTagUseCase,
+      DeleteTagUseCase deleteTagUseCase) {
 
     super();
 
     this.editTagUseCase = editTagUseCase;
     this.deleteTagUseCase = deleteTagUseCase;
-    this.tagViewModelMapper = tagViewModelMapper;
   }
 
   public void saveTag(TagViewModel tagViewModel) {
@@ -35,11 +33,11 @@ public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
       return;
     }
 
-    TagEditView view = getView();
-    Tag tag = tagViewModelMapper.toTag(tagViewModel);
+    final TagEditView view = getView();
+    final Tag tag = TagViewModelMapperKt.toTag(tagViewModel);
 
     Disposable subscribe = editTagUseCase.execute(tag)
-        .map(tagViewModelMapper::fromTag)
+        .map(TagViewModelMapperKt::toTagViewModel)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(view::onSuccessfully)
@@ -53,7 +51,7 @@ public class TagEditPresenter extends BaseRxPresenter<TagEditView> {
   public void deleteTag(TagViewModel tagViewModel) {
 
     final TagEditView view = getView();
-    final Tag tag = tagViewModelMapper.toTag(tagViewModel);
+    final Tag tag = TagViewModelMapperKt.toTag(tagViewModel);
 
     Disposable subscribe = deleteTagUseCase.execute(tag)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())

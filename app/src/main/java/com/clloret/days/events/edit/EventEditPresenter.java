@@ -11,7 +11,7 @@ import com.clloret.days.domain.interactors.events.EditEventUseCase.RequestValues
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
 import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.model.entities.mapper.TagViewModelMapperKt;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import java.util.concurrent.TimeUnit;
@@ -20,7 +20,6 @@ import javax.inject.Named;
 
 public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
-  private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final EditEventUseCase editEventUseCase;
   private final DeleteEventUseCase deleteEventUseCase;
@@ -28,7 +27,6 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
   @Inject
   public EventEditPresenter(
-      TagViewModelMapper tagViewModelMapper,
       GetTagsUseCase getTagsUseCase,
       EditEventUseCase editEventUseCase,
       DeleteEventUseCase deleteEventUseCase,
@@ -36,7 +34,6 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
     super();
 
-    this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;
     this.editEventUseCase = editEventUseCase;
     this.deleteEventUseCase = deleteEventUseCase;
@@ -95,7 +92,7 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
     final EventEditView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(false)
-        .map(tagViewModelMapper::fromTag)
+        .map(TagViewModelMapperKt::toTagViewModelList)
         .doOnSuccess(view::setData)
         .doOnError(view::showError)
         .subscribe();

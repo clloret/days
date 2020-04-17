@@ -4,22 +4,19 @@ import androidx.annotation.NonNull;
 import com.clloret.days.base.BaseRxPresenter;
 import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.tags.CreateTagUseCase;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.model.entities.mapper.TagViewModelMapperKt;
 import io.reactivex.disposables.Disposable;
 import javax.inject.Inject;
 
 public class TagCreatePresenter extends BaseRxPresenter<TagCreateView> {
 
   private final CreateTagUseCase createTagUseCase;
-  private final TagViewModelMapper tagViewModelMapper;
 
   @Inject
-  public TagCreatePresenter(TagViewModelMapper tagViewModelMapper,
-      CreateTagUseCase createTagUseCase) {
+  public TagCreatePresenter(CreateTagUseCase createTagUseCase) {
 
     super();
 
-    this.tagViewModelMapper = tagViewModelMapper;
     this.createTagUseCase = createTagUseCase;
   }
 
@@ -36,7 +33,7 @@ public class TagCreatePresenter extends BaseRxPresenter<TagCreateView> {
     Disposable subscribe = createTagUseCase.execute(newTag)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
-        .doOnSuccess(result -> view.onSuccessfully(tagViewModelMapper.fromTag(result)))
+        .doOnSuccess(result -> view.onSuccessfully(TagViewModelMapperKt.toTagViewModel(result)))
         .doOnError(error -> view.onError(error.getMessage()))
         .onErrorComplete()
         .subscribe();

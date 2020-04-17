@@ -9,7 +9,6 @@ import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.interactors.tags.DeleteTagUseCase;
 import com.clloret.days.domain.interactors.tags.EditTagUseCase;
 import com.clloret.days.model.entities.TagViewModel;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.days.tags.SampleBuilder;
 import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
@@ -19,7 +18,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class TagEditPresenterTest {
@@ -34,19 +32,10 @@ public class TagEditPresenterTest {
   private DeleteTagUseCase deleteTagUseCase;
 
   @Mock
-  private TagViewModelMapper tagViewModelMapper;
-
-  @Mock
   private TagEditView tagEditView;
 
   @InjectMocks
   private TagEditPresenter tagEditPresenter;
-
-  private void addStubMethodsToMapper(Tag tag, TagViewModel tagViewModel) {
-
-    when(tagViewModelMapper.fromTag(Mockito.any(Tag.class))).thenReturn(tagViewModel);
-    when(tagViewModelMapper.toTag(Mockito.any(TagViewModel.class))).thenReturn(tag);
-  }
 
   @Before
   public void setUp() {
@@ -69,8 +58,6 @@ public class TagEditPresenterTest {
         observer.onSuccess(tag);
       }
     });
-
-    addStubMethodsToMapper(tag, tagViewModel);
 
     tagEditPresenter.saveTag(tagViewModel);
 
