@@ -39,7 +39,7 @@ public class ApiTagDataMapper implements DataMapper<Tag, ApiTag> {
   @Override
   public ApiTag fromEntity(@NonNull Tag model, boolean copyId) {
 
-    return new ApiTag(copyId ? model.getId() : null);
+    return new ApiTag(copyId ? model.getId() : null, model.getName());
   }
 
   @Override

@@ -22,6 +22,7 @@ import com.google.common.truth.Correspondence;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import java.util.List;
+import java.util.Objects;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Before;
@@ -117,7 +118,8 @@ public class AppTagRepositoryTest {
         .assertComplete()
         .assertNoErrors()
         .assertValueCount(1)
-        .assertValue(tag);
+        .assertValue(result -> Objects.equals(result.getId(), tag.getId()))
+        .assertValue(result -> Objects.equals(result.getName(), tag.getName()));
   }
 
   @NonNull
