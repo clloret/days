@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity
   }
 
   @Override
-  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+  protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
 
     super.onRestoreInstanceState(savedInstanceState);
 
@@ -146,6 +146,11 @@ public class MainActivity extends AppCompatActivity
       if (resultCode == RESULT_OK && null != data) {
         final ArrayList<String> result = data
             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+        if (result == null) {
+          return;
+        }
+
         final String recognizedText = result.get(0);
 
         Timber.i(recognizedText);

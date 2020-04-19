@@ -40,7 +40,18 @@ public class TestPreferenceUtils implements PreferenceUtils {
 
   @Override
   public void setSortMode(SortType sortType) {
+    // No need to implement
+  }
 
+  @Override
+  public int getViewColumnNumber() {
+
+    return 2;
+  }
+
+  @Override
+  public void setViewColumnNumber(int columns) {
+    // No need to implement
   }
 
   @Override

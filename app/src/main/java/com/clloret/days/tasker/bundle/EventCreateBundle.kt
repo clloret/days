@@ -6,10 +6,10 @@ import com.clloret.days.BuildConfig
 class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
   private val bundle: Bundle
 
-  var title: String?
-    get() = bundle.getString(EXTRA_NAME)
-    set(title) {
-      bundle.putString(EXTRA_NAME, title)
+  var name: String
+    get() = bundle.getString(EXTRA_NAME, "Unnamed")
+    set(name) {
+      bundle.putString(EXTRA_NAME, name)
     }
 
   var date: String?
@@ -42,11 +42,11 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
   }
 
   override fun toString(): String {
-    return "TaskCreationBundle{bundle=$bundle}"
+    return "EventCreateBundle{bundle=$bundle}"
   }
 
   companion object {
-    const val EXTRA_BUNDLE = "com.clloret.days.create"
+    const val BUNDLE_ID = "com.clloret.days.create"
     const val EXTRA_NAME = "com.clloret.days.create.STRING_NAME"
     const val EXTRA_DESCRIPTION = "com.clloret.days.create.STRING_DESCRIPTION"
     const val EXTRA_DATE = "com.clloret.days.create.STRING_DATE"
@@ -55,7 +55,16 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
     private const val EXTRA_VERSION_CODE = "com.clloret.days.create.INT_VERSION_CODE"
 
     fun isBundleValid(bundle: Bundle): Boolean {
-      return -1 != bundle.getInt(EXTRA_VERSION_CODE, -1)
+
+      if (bundle.getString(CommonBundle.EXTRA_BUNDLE) != BUNDLE_ID) {
+        return false
+      }
+
+      if (bundle.getInt(EXTRA_VERSION_CODE, -1) == -1) {
+        return false
+      }
+
+      return true
     }
   }
 
@@ -63,6 +72,7 @@ class EventCreateBundle @JvmOverloads constructor(bundle: Bundle? = null) {
     if (bundle == null) {
       this.bundle = Bundle()
       this.bundle.putInt(EXTRA_VERSION_CODE, BuildConfig.VERSION_CODE)
+      this.bundle.putString(CommonBundle.EXTRA_BUNDLE, BUNDLE_ID)
     } else {
       this.bundle = bundle
     }

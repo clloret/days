@@ -3,6 +3,7 @@ package com.clloret.days.domain.interactors.events;
 import static com.clloret.days.domain.entities.Event.REMINDER_EVENT_DAY;
 
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.events.EventProgressCalculator;
 import com.clloret.days.domain.interactors.base.BaseMaybeUseCase;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.repository.EventRepository;
@@ -14,15 +15,20 @@ public class ToggleEventReminderUseCase extends BaseMaybeUseCase<Event, Event> {
 
   private final EventRepository dataStore;
   private final EventReminderManager eventReminderManager;
+  private final EventProgressCalculator eventProgressCalculator;
 
   @Inject
-  public ToggleEventReminderUseCase(ThreadSchedulers threadSchedulers, EventRepository dataStore,
-      EventReminderManager eventReminderManager) {
+  public ToggleEventReminderUseCase(
+      ThreadSchedulers threadSchedulers,
+      EventRepository dataStore,
+      EventReminderManager eventReminderManager,
+      EventProgressCalculator eventProgressCalculator) {
 
     super(threadSchedulers);
 
     this.dataStore = dataStore;
     this.eventReminderManager = eventReminderManager;
+    this.eventProgressCalculator = eventProgressCalculator;
   }
 
   @Override
@@ -34,6 +40,8 @@ public class ToggleEventReminderUseCase extends BaseMaybeUseCase<Event, Event> {
       event.setReminder(REMINDER_EVENT_DAY);
       event.setReminderUnit(Event.TimeUnit.DAY);
     }
+
+    eventProgressCalculator.setDefaultProgressDate(event);
 
     return dataStore.edit(event)
         .doOnSuccess(this::reminderSchedule);

@@ -14,6 +14,7 @@ public class PreferenceUtilsImpl implements PreferenceUtils {
 
   private static final int DEFAULT_REMINDER_TIME = 0;
   private static final int DEFAULT_SORT_MODE = SortType.NAME.getValue();
+  private static final int DEFAULT_VIEW_COLUMN_NUMBER = 2;
   private static final boolean DEFAULT_USE_REMOTE_DATASTORE = false;
   private static final String DEFAULT_LIST = "0";
   private static final String DEFAULT_AIRTABLE_API_KEY = "";
@@ -55,6 +56,20 @@ public class PreferenceUtilsImpl implements PreferenceUtils {
   public void setSortMode(SortType sortType) {
 
     preferences.edit().putInt(stringResourceProvider.getPrefSortMode(), sortType.getValue())
+        .apply();
+  }
+
+  @Override
+  public int getViewColumnNumber() {
+
+    return preferences
+        .getInt(stringResourceProvider.getPrefViewColumnNumber(), DEFAULT_VIEW_COLUMN_NUMBER);
+  }
+
+  @Override
+  public void setViewColumnNumber(int columns) {
+
+    preferences.edit().putInt(stringResourceProvider.getPrefViewColumnNumber(), columns)
         .apply();
   }
 

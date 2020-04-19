@@ -19,11 +19,11 @@ import java.util.Calendar;
 
 public class AboutActivity extends MaterialAboutActivity {
 
-  public static final String AUTHOR_EMAIL = "clloret.app+days@gmail.com";
-  public static final String AUTHOR_NAME = "Carlos Lloret Playán";
-  public static final String GITHUB_URL = "https://github.com/clloret/days";
-  public static final String I_GIORNI_LUDOVICO_EINAUDI = "I Giorni (The Days) - Ludovico Einaudi";
-  public static final String I_GIORNI_LUDOVICO_EINAUDI_YOUTUBE = "https://www.youtube.com/watch?v=Uffjii1hXzU";
+  private static final String AUTHOR_EMAIL = "clloret.app+days@gmail.com";
+  private static final String AUTHOR_NAME = "Carlos Lloret Playán";
+  private static final String GITHUB_URL = "https://github.com/clloret/days";
+  private static final String I_GIORNI_LUDOVICO_EINAUDI = "I Giorni (The Days) - Ludovico Einaudi";
+  private static final String I_GIORNI_LUDOVICO_EINAUDI_YOUTUBE = "https://www.youtube.com/watch?v=Uffjii1hXzU";
 
   @NonNull
   @Override

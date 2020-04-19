@@ -6,11 +6,13 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
+import com.clloret.days.domain.events.EventProgressCalculator;
 import com.clloret.days.domain.reminders.EventReminderManager;
 import com.clloret.days.domain.repository.EventRepository;
 import com.clloret.days.domain.utils.RxImmediateThreadingSchedulers;
 import com.clloret.days.domain.utils.ThreadSchedulers;
 import io.reactivex.observers.TestObserver;
+import java.util.Objects;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +28,9 @@ public class CreateEventUseCaseTest {
 
   @Mock
   private EventReminderManager eventReminderManager;
+
+  @Mock
+  private EventProgressCalculator eventProgressCalculator;
 
   @Spy
   private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
@@ -74,6 +79,6 @@ public class CreateEventUseCaseTest {
     testObserver
         .assertComplete()
         .assertNoErrors()
-        .assertValue(event -> event.getReminder() == 7);
+        .assertValue(event -> Objects.requireNonNull(event.getReminder()) == 7);
   }
 }

@@ -41,7 +41,7 @@
       android:screenOrientation="portrait" />
     <activity
       android:name=".events.edit.EventEditActivity"
-      android:label=""
+      android:label="@string/title_activity_event_edit"
       android:parentActivityName=".activities.MainActivity"
       android:screenOrientation="portrait" />
     <activity
@@ -63,6 +63,10 @@
       android:label="@string/title_activity_about"
       android:parentActivityName=".activities.MainActivity"
       android:theme="@style/AppTheme.MaterialAboutActivity" />
+    <activity
+      android:name=".tasker.ui.TaskerSelectEventActivity"
+      android:label="Select an event"
+      android:theme="@style/AppTheme" />
     <activity
       android:name=".tasker.ui.TaskerCreateEventActivity"
       android:exported="false"
@@ -91,6 +95,20 @@
       </intent-filter>
     </activity-alias>
 
+    <activity
+      android:name=".tasker.ui.TaskerEditEventActivity"
+      android:exported="true"
+      android:label="@string/title_activity_event_edit"
+      android:theme="@style/AppTheme"
+      android:uiOptions="splitActionBarWhenNarrow"
+      android:windowSoftInputMode="adjustResize">
+
+      <!-- this Intent filter allows the plug-in to be discovered by Locale -->
+      <intent-filter>
+        <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+      </intent-filter>
+    </activity>
+
     <receiver
       android:name=".device.receivers.FirstStartBroadcastReceiver"
       android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
@@ -105,6 +123,7 @@
       android:name=".device.receivers.AlarmBroadcastReceiver"
       android:process=":remote" />
     <receiver android:name=".device.receivers.ReminderReceiver" />
+    <receiver android:name=".device.receivers.RefreshReceiver" />
     <receiver
       android:name=".tasker.receiver.FireReceiver"
       android:exported="true"

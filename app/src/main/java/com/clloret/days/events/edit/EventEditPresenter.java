@@ -10,8 +10,8 @@ import com.clloret.days.domain.interactors.events.EditEventUseCase;
 import com.clloret.days.domain.interactors.events.EditEventUseCase.RequestValues;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
+import com.clloret.days.model.entities.mapper.TagViewModelMapperKt;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import java.util.concurrent.TimeUnit;
@@ -20,8 +20,6 @@ import javax.inject.Named;
 
 public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
-  private final EventViewModelMapper eventViewModelMapper;
-  private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final EditEventUseCase editEventUseCase;
   private final DeleteEventUseCase deleteEventUseCase;
@@ -29,8 +27,6 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
   @Inject
   public EventEditPresenter(
-      EventViewModelMapper eventViewModelMapper,
-      TagViewModelMapper tagViewModelMapper,
       GetTagsUseCase getTagsUseCase,
       EditEventUseCase editEventUseCase,
       DeleteEventUseCase deleteEventUseCase,
@@ -38,8 +34,6 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
 
     super();
 
-    this.eventViewModelMapper = eventViewModelMapper;
-    this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;
     this.editEventUseCase = editEventUseCase;
     this.deleteEventUseCase = deleteEventUseCase;
@@ -56,15 +50,15 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
       return;
     }
 
-    final Event modifiedEvent = eventViewModelMapper.toEvent(modifiedEventViewModel);
-    final Event originalEvent = eventViewModelMapper.toEvent(originalEventViewModel);
+    final Event modifiedEvent = EventViewModelMapperKt.toEvent(modifiedEventViewModel);
+    final Event originalEvent = EventViewModelMapperKt.toEvent(originalEventViewModel);
     final RequestValues requestValues = new RequestValues(modifiedEvent, originalEvent);
 
     Disposable subscribe = editEventUseCase.execute(
         requestValues)
         .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, uiThread)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSuccess(result -> {
           view.showIndeterminateProgressFinalAnimation();
           view.onSuccessfully(result);
@@ -82,7 +76,7 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
   public void deleteEvent(EventViewModel eventViewModel) {
 
     final EventEditView view = getView();
-    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    final Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = deleteEventUseCase.execute(event)
         .doOnSuccess(deleted -> view.deleteSuccessfully(eventViewModel, deleted))
@@ -98,7 +92,7 @@ public class EventEditPresenter extends BaseRxPresenter<EventEditView> {
     final EventEditView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(false)
-        .map(tagViewModelMapper::fromTag)
+        .map(TagViewModelMapperKt::toTagViewModelList)
         .doOnSuccess(view::setData)
         .doOnError(view::showError)
         .subscribe();

@@ -55,7 +55,7 @@ public class ReminderReceiver extends BroadcastReceiver {
     Event event = null;
 
     if (intent.getExtras() != null) {
-      String eventId = intent.getExtras().getString(EXTRA_EVENT_ID);
+      String eventId = intent.getExtras().getString(EXTRA_EVENT_ID, "unknown");
       event = appDataStore.getById(eventId)
           .subscribeOn(Schedulers.io())
           .blockingGet();

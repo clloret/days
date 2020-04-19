@@ -11,8 +11,6 @@ import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.events.SampleBuilder;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
 import com.clloret.test_android_common.RxImmediateSchedulerRule;
 import io.reactivex.Maybe;
 import io.reactivex.MaybeObserver;
@@ -23,7 +21,6 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
@@ -38,12 +35,6 @@ public class EventCreatePresenterTest {
 
   @Mock
   private CreateEventUseCase createEventUseCase;
-
-  @Mock
-  private EventViewModelMapper eventViewModelMapper;
-
-  @Mock
-  private TagViewModelMapper tagViewModelMapper;
 
   @Mock
   private EventCreateView eventCreateView;
@@ -75,18 +66,11 @@ public class EventCreatePresenterTest {
         observer.onSuccess(event);
       }
     });
-    addStubMethodsToMapper(event, eventViewModel);
 
     eventCreatePresenter.createEvent(eventViewModel);
 
     verify(createEventUseCase).execute(any());
     verify(eventCreateView).onSuccessfully(eq(eventViewModel));
-  }
-
-  private void addStubMethodsToMapper(Event event, EventViewModel eventViewModel) {
-
-    when(eventViewModelMapper.fromEvent(Mockito.any(Event.class))).thenReturn(eventViewModel);
-    when(eventViewModelMapper.toEvent(Mockito.any(EventViewModel.class))).thenReturn(event);
   }
 
   @Test

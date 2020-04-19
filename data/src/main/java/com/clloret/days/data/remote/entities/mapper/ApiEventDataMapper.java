@@ -1,8 +1,8 @@
 package com.clloret.days.data.remote.entities.mapper;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.remote.entities.ApiEvent;
 import com.clloret.days.domain.entities.Event;
-import com.clloret.days.domain.entities.EventBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,31 +18,28 @@ public class ApiEventDataMapper implements DataMapper<Event, ApiEvent> {
   }
 
   @Override
-  public Event toEntity(ApiEvent model) {
+  public Event toEntity(@NonNull ApiEvent entity) {
 
-    Event event = null;
-    if (model != null) {
-      event = new EventBuilder()
-          .setId(model.getId())
-          .setName(model.getName())
-          .setDescription(model.getDescription())
-          .setDate(model.getDate())
-          .setFavorite(model.isFavorite())
-          .setTags(model.getTags())
-          .setReminder(model.getReminder())
-          .setReminderUnit(model.getReminderTimeUnit())
-          .setTimeLapse(model.getTimeLapse())
-          .setTimeLapseUnit(model.getTimeLapseTimeUnit())
-          .build();
-    }
-    return event;
+    return new Event(
+        entity.getId(),
+        entity.getName(),
+        entity.getDescription(),
+        entity.getDate(),
+        entity.getTags(),
+        entity.getFavorite(),
+        entity.getReminder(),
+        entity.getReminderTimeUnit(),
+        entity.getTimeLapse(),
+        entity.getTimeLapseTimeUnit(),
+        entity.getProgressDate()
+    );
   }
 
   @Override
-  public List<Event> toEntity(Collection<ApiEvent> modelCollection) {
+  public List<Event> toEntity(@NonNull Collection<ApiEvent> entityCollection) {
 
     final List<Event> eventList = new ArrayList<>(20);
-    for (ApiEvent dbEvent : modelCollection) {
+    for (ApiEvent dbEvent : entityCollection) {
       final Event event = toEntity(dbEvent);
       if (event != null) {
         eventList.add(event);
@@ -52,29 +49,29 @@ public class ApiEventDataMapper implements DataMapper<Event, ApiEvent> {
   }
 
   @Override
-  public ApiEvent fromEntity(Event model, boolean copyId) {
+  public ApiEvent fromEntity(@NonNull Event entity, boolean copyId) {
 
-    ApiEvent apiEvent = null;
-    if (model != null) {
-      apiEvent = new ApiEvent(copyId ? model.getId() : null);
-      apiEvent.setName(model.getName());
-      apiEvent.setDescription(model.getDescription());
-      apiEvent.setDate(model.getDate());
-      apiEvent.setFavorite(model.isFavorite());
-      apiEvent.setTags(model.getTags());
-      apiEvent.setReminder(model.getReminder());
-      apiEvent.setReminderTimeUnit(model.getReminderUnit());
-      apiEvent.setTimeLapse(model.getTimeLapse());
-      apiEvent.setTimeLapseTimeUnit(model.getTimeLapseUnit());
-    }
-    return apiEvent;
+    return new ApiEvent(
+        copyId ? entity.getId() : null,
+        entity.getName(),
+        entity.getDescription(),
+        entity.getDate(),
+        entity.getTags(),
+        entity.getFavorite(),
+        entity.getReminder(),
+        entity.getReminderUnit(),
+        entity.getTimeLapse(),
+        entity.getTimeLapseUnit(),
+        entity.getProgressDate()
+    );
+
   }
 
   @Override
-  public List<ApiEvent> fromEntity(Collection<Event> modelCollection) {
+  public List<ApiEvent> fromEntity(@NonNull Collection<Event> entityCollection) {
 
     final List<ApiEvent> eventList = new ArrayList<>(20);
-    for (Event event : modelCollection) {
+    for (Event event : entityCollection) {
       final ApiEvent apiEvent = fromEntity(event, true);
       if (apiEvent != null) {
         eventList.add(apiEvent);

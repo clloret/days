@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".tasker.ui.TaskerCreateEventActivity">
+
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <Button
+      android:id="@+id/btnSelectEvent"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/tasker_edit_select_an_event" />
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/idLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="16dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/event_details_id"
+        tools:text="@string/event_details_id" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/nameLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="16dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/event_details_name"
+        android:inputType="textCapSentences"
+        tools:text="@string/event_details_name" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="16dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="@string/event_details_description"
+        android:inputType="textCapSentences"
+        tools:text="@string/event_details_description" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="16dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:enabled="false"
+        android:hint="@string/event_details_date"
+        android:inputType="text"
+        tools:text="@string/event_details_date" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="16dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/reminder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/event_details_reminder"
+        android:inputType="text"
+        tools:text="@string/event_details_reminder" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginRight="16dp">
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/event_details_favorite"
+        android:inputType="text"
+        tools:text="@string/event_details_favorite" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+  </LinearLayout>
+
+</ScrollView>

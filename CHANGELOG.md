@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.2.0] - 2020-04-19
+
+### Added
+
+- Tasker integration: allows edit existing events
+- New menu option to select the column number in the event list
+- Progress indicator to show the progress of the event date or the reminder date
+
+### Fixed
+
+- Menu tags do not refresh properly
+
 ## [1.1.0] - 2020-03-08
 
 ### Added
@@ -27,6 +39,7 @@ All notable changes to this project will be documented in this file.
 
 - Initial release
 
-[Unreleased]: https://github.com/clloret/days/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/clloret/days/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/clloret/days/compare/v1.0.0...v1.2.0
 [1.1.0]: https://github.com/clloret/days/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/clloret/days/releases/tag/v1.0.0

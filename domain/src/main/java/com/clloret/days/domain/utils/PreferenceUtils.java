@@ -12,6 +12,10 @@ public interface PreferenceUtils {
 
   void setSortMode(SortType sortType);
 
+  int getViewColumnNumber();
+
+  void setViewColumnNumber(int columns);
+
   String getAirtableApiKey();
 
   String getAirtableBaseId();

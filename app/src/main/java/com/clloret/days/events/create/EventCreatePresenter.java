@@ -8,8 +8,8 @@ import com.clloret.days.domain.injection.TypeNamed;
 import com.clloret.days.domain.interactors.events.CreateEventUseCase;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
+import com.clloret.days.model.entities.mapper.TagViewModelMapperKt;
 import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import java.util.concurrent.TimeUnit;
@@ -18,24 +18,18 @@ import javax.inject.Named;
 
 public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
 
-  private final EventViewModelMapper eventViewModelMapper;
-  private final TagViewModelMapper tagViewModelMapper;
   private final GetTagsUseCase getTagsUseCase;
   private final CreateEventUseCase createEventUseCase;
   private final Scheduler uiThread;
 
   @Inject
   public EventCreatePresenter(
-      EventViewModelMapper eventViewModelMapper,
-      TagViewModelMapper tagViewModelMapper,
       GetTagsUseCase getTagsUseCase,
       CreateEventUseCase createEventUseCase,
       @Named(TypeNamed.UI_SCHEDULER) Scheduler uiThread) {
 
     super();
 
-    this.eventViewModelMapper = eventViewModelMapper;
-    this.tagViewModelMapper = tagViewModelMapper;
     this.getTagsUseCase = getTagsUseCase;
     this.createEventUseCase = createEventUseCase;
     this.uiThread = uiThread;
@@ -50,17 +44,12 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
       return;
     }
 
-    if (eventViewModel.getDate() == null) {
-      view.onEmptyEventDateError();
-      return;
-    }
-
-    Event event = eventViewModelMapper.toEvent(eventViewModel);
+    Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = createEventUseCase.execute(event)
         .delay(PROGRESS_DELAY, TimeUnit.MILLISECONDS, uiThread)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSuccess(result -> {
           view.showIndeterminateProgressFinalAnimation();
           view.onSuccessfully(result);
@@ -80,7 +69,7 @@ public class EventCreatePresenter extends BaseRxPresenter<EventCreateView> {
     final EventCreateView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(false)
-        .map(tagViewModelMapper::fromTag)
+        .map(TagViewModelMapperKt::toTagViewModelList)
         .doOnSuccess(view::setData)
         .doOnError(view::showError)
         .subscribe();

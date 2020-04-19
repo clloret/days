@@ -2,10 +2,10 @@ package com.clloret.days.menu;
 
 import androidx.annotation.NonNull;
 import com.clloret.days.base.BaseRxPresenter;
+import com.clloret.days.device.eventbus.RefreshRequestEvent;
 import com.clloret.days.domain.interactors.tags.GetTagsUseCase;
 import com.clloret.days.model.entities.TagViewModel;
-import com.clloret.days.model.entities.mapper.TagViewModelMapper;
-import com.clloret.days.model.events.RefreshRequestEvent;
+import com.clloret.days.model.entities.mapper.TagViewModelMapperKt;
 import com.clloret.days.model.events.TagCreatedEvent;
 import com.clloret.days.model.events.TagDeletedEvent;
 import com.clloret.days.model.events.TagModifiedEvent;
@@ -18,17 +18,15 @@ import org.greenrobot.eventbus.ThreadMode;
 public class MenuPresenter extends BaseRxPresenter<MenuView> {
 
   private final EventBus eventBus;
-  private final TagViewModelMapper tagViewModelMapper;
 
   @Inject
   GetTagsUseCase getTagsUseCase;
 
   @Inject
-  public MenuPresenter(TagViewModelMapper tagViewModelMapper, EventBus eventBus) {
+  public MenuPresenter(EventBus eventBus) {
 
     super();
 
-    this.tagViewModelMapper = tagViewModelMapper;
     this.eventBus = eventBus;
   }
 
@@ -51,7 +49,7 @@ public class MenuPresenter extends BaseRxPresenter<MenuView> {
     final MenuView view = getView();
 
     Disposable subscribe = getTagsUseCase.execute(pullToRefresh)
-        .map(tagViewModelMapper::fromTag)
+        .map(TagViewModelMapperKt::toTagViewModelList)
         .subscribe(view::showTags, view::showError);
 
     addDisposable(subscribe);

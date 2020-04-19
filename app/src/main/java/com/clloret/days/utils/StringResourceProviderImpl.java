@@ -11,7 +11,6 @@ public class StringResourceProviderImpl implements StringResourceProvider {
 
   private final Resources resources;
 
-  @SuppressWarnings("WeakerAccess")
   @Inject
   public StringResourceProviderImpl(Resources resources) {
 
@@ -94,5 +93,11 @@ public class StringResourceProviderImpl implements StringResourceProvider {
   public String getPrefCollectStatistics() {
 
     return resources.getString(R.string.pref_collect_statistics);
+  }
+
+  @Override
+  public String getPrefViewColumnNumber() {
+
+    return resources.getString(R.string.pref_view_column_number);
   }
 }

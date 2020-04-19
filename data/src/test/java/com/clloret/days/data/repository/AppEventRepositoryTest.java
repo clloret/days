@@ -25,11 +25,12 @@ import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import okhttp3.mockwebserver.MockWebServer;
 import org.joda.time.DateTime;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -41,10 +42,14 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricTestRunner.class)
 public class AppEventRepositoryTest {
 
+  @ClassRule
+  public static final RxImmediateSchedulerRule SCHEDULERS = new RxImmediateSchedulerRule();
+
   private static final String API_KEY = "api_key";
   private static final String BASE = "base";
   private static final Correspondence<Event, String> EVENT_HAS_NAME =
-      Correspondence.from((actual, expected) -> actual.getName().equals(expected), "contains");
+      Correspondence.from((actual, expected) -> actual != null && actual.getName().equals(expected),
+          "contains");
   private final MockWebServer server = new MockWebServer();
   private final MockUtils mockUtils = new MockUtils(server);
   private final DbEventDataMapper dbEventDataMapper = new DbEventDataMapper();
@@ -52,9 +57,6 @@ public class AppEventRepositoryTest {
   private EventRepository eventRepository;
   private RoomEventRepository roomEventRepository;
   private DaysDatabase db;
-
-  @Rule
-  public final RxImmediateSchedulerRule schedulers = new RxImmediateSchedulerRule();
 
   @Before
   public void setUp() throws Exception {
@@ -121,7 +123,7 @@ public class AppEventRepositoryTest {
         .assertComplete()
         .assertNoErrors()
         .assertValueCount(1)
-        .assertValue(event);
+        .assertValue(result -> Objects.equals(result.getId(), event.getId()));
   }
 
   @Test

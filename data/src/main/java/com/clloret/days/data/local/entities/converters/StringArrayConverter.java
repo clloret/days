@@ -2,15 +2,14 @@ package com.clloret.days.data.local.entities.converters;
 
 import android.text.TextUtils;
 import androidx.room.TypeConverter;
+import com.clloret.days.domain.entities.Event;
 
 public class StringArrayConverter {
-
-  private static final String[] EMPTY_ARRAY = new String[0];
 
   @TypeConverter
   public static String[] toStringArray(String string) {
 
-    return TextUtils.isEmpty(string) ? EMPTY_ARRAY : string.split(",");
+    return TextUtils.isEmpty(string) ? Event.Companion.getEMPTY_ARRAY() : string.split(",");
   }
 
   @TypeConverter

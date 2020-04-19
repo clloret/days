@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+  <plurals name="day">
+    <item quantity="one">day</item>
+    <item quantity="other">days</item>
+  </plurals>
+  <plurals name="month">
+    <item quantity="one">month</item>
+    <item quantity="other">months</item>
+  </plurals>
+  <plurals name="year">
+    <item quantity="one">year</item>
+    <item quantity="other">years</item>
+  </plurals>
+
   <string name="about_author">Author</string>
   <string name="about_country">Spain</string>
   <string name="about_inspiration_song">Inspiration song</string>
@@ -34,6 +48,8 @@
   <string name="action_short_latest_date">Latest date</string>
   <string name="action_short_name">Name</string>
   <string name="action_undo">UNDO</string>
+  <string name="action_view_one_column">One column</string>
+  <string name="action_view_two_columns">Two columns</string>
   <string name="action_yes">Yes</string>
   <string name="app_name" translatable="false">Days</string>
   <string name="event_details_after">after</string>
@@ -42,6 +58,7 @@
   <string name="event_details_description">Event Description</string>
   <string name="event_details_do_not_reset_automatically">Do not reset automatically</string>
   <string name="event_details_favorite">Favorite</string>
+  <string name="event_details_id" translatable="false">ID</string>
   <string name="event_details_name">Event Name</string>
   <string name="event_details_no_reminder">No reminder</string>
   <string name="event_details_no_tags">No tags</string>
@@ -57,6 +74,7 @@
   <string name="msg_error">Error!</string>
   <string name="msg_error_event_could_not_be_deleted">The event could not be deleted</string>
   <string name="msg_error_event_date_required">You must select the event date</string>
+  <string name="msg_error_event_id_required">You must enter an event ID</string>
   <string name="msg_error_event_name_required">You must enter an event name</string>
   <string name="msg_error_must_fill_airtable_data">You must fill in the Airtable data!</string>
   <string name="msg_error_no_tags_available">You have not yet created any tags</string>
@@ -96,14 +114,18 @@
   <string name="pref_reminder_time" translatable="false">reminder_time</string>
   <string name="pref_remote_datastore" translatable="false">remote_datastore</string>
   <string name="pref_sort_mode" translatable="false">sort_mode</string>
+  <string name="pref_view_column_number" translatable="false">view_column_number</string>
   <string name="summary_airtable_api_key">Your Airtable API key. Obtained from Airtable account information.</string>
   <string name="summary_airtable_base_id">Base ID of the database with Days structure.</string>
   <string name="summary_collect_statistics">Submit anonymous usage statistics and error reports to help improve Days. No personal data will be collected.</string>
   <string name="summary_reminder_time">Select the time at which you want to receive the event reminder.</string>
   <string name="summary_remote_datastore">Use remote storage to save the data. If not enabled, only a local copy of the data will be saved.</string>
   <string name="tag_details_name">Tag name</string>
+  <string name="tasker_edit_event_modify_this_field">Modify this field</string>
+  <string name="tasker_edit_select_an_event">Select an Event</string>
   <string name="title_activity_about">About</string>
   <string name="title_activity_event_create">New event</string>
+  <string name="title_activity_event_edit">Edit event</string>
   <string name="title_activity_settings">Settings</string>
   <string name="title_activity_tag_create">New tag</string>
   <string name="title_activity_tag_edit">Edit tag</string>
@@ -123,17 +145,6 @@
   <string name="title_reminder_time">Reminder time</string>
   <string name="title_remote_datastore">Remote datastore</string>
   <string name="title_select_tags">Select tags</string>
+  <string name="title_view_mode">View mode</string>
 
-  <plurals name="day">
-    <item quantity="one">day</item>
-    <item quantity="other">days</item>
-  </plurals>
-  <plurals name="month">
-    <item quantity="one">month</item>
-    <item quantity="other">months</item>
-  </plurals>
-  <plurals name="year">
-    <item quantity="one">year</item>
-    <item quantity="other">years</item>
-  </plurals>
 </resources>

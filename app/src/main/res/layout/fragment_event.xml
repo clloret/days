@@ -4,34 +4,32 @@
   android:id="@+id/card_view"
   style="@style/EventCard"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  >
+  android:layout_height="wrap_content">
 
   <RelativeLayout
     android:id="@+id/view_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <ImageView
       android:id="@+id/delete_icon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="@dimen/spacing_medium"
       android:layout_alignParentEnd="true"
       android:layout_centerVertical="true"
+      android:layout_marginEnd="@dimen/spacing_medium"
       android:padding="12dp"
-      android:src="@drawable/ic_delete_24dp"/>
+      android:src="@drawable/ic_delete_24dp" />
 
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="@dimen/spacing_medium"
       android:layout_centerVertical="true"
+      android:layout_marginEnd="@dimen/spacing_medium"
       android:layout_toStartOf="@id/delete_icon"
       android:text="@string/action_delete"
       android:textColor="#000000"
-      android:textSize="14sp"/>
+      android:textSize="14sp" />
 
   </RelativeLayout>
 
@@ -46,77 +44,84 @@
       android:layout_height="@dimen/height_card_image"
       android:background="@color/primary"
       tools:background="@tools:sample/backgrounds/scenic"
-      tools:visibility="visible"
-      />
+      tools:visibility="visible" />
 
     <TextView
       android:id="@+id/textview_event_days"
       style="@android:style/TextAppearance.Material.Display2"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_above="@+id/textview_event_name"
       android:layout_marginStart="@dimen/margin_card_title"
       android:layout_marginEnd="@dimen/margin_card_title"
-      android:layout_above="@+id/textview_event_name"
       android:gravity="center_horizontal"
       android:textColor="@android:color/primary_text_dark"
-      tools:text="999"/>
+      tools:text="999" />
 
     <TextView
       android:id="@+id/textview_event_name"
       style="@android:style/TextAppearance.Material.Subhead"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/margin_card_subtitle"
       android:layout_alignBottom="@+id/card_image"
+      android:layout_margin="@dimen/margin_card_subtitle"
       android:ellipsize="end"
       android:maxLines="1"
       android:textColor="@android:color/secondary_text_dark"
-      tools:text="@tools:sample/full_names"/>
+      tools:text="@tools:sample/full_names" />
+
+    <ProgressBar
+      android:id="@+id/progressbar_event"
+      style="?android:attr/progressBarStyleHorizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@+id/card_image"
+      android:layout_marginBottom="@dimen/bottom_margin_event_progress"
+      android:max="100"
+      android:progress="50" />
 
     <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_below="@+id/card_image"
-      android:padding="@dimen/padding_card_actions"
-      android:gravity="end">
+      android:gravity="end"
+      android:padding="@dimen/padding_card_actions">
 
       <ImageView
         android:id="@+id/favorite_button"
         android:layout_width="@dimen/size_card_button"
         android:layout_height="@dimen/size_card_button"
         android:layout_marginEnd="@dimen/margin_card_button"
-        android:padding="@dimen/padding_card_button"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
+        android:padding="@dimen/padding_card_button"
         android:src="@drawable/ic_favorite_border_24dp"
-        android:tint="@color/drawer_icon_unselected"
-        />
+        android:tint="@color/drawer_icon_unselected" />
 
       <ImageView
         android:id="@+id/reminder_button"
         android:layout_width="@dimen/size_card_button"
         android:layout_height="@dimen/size_card_button"
         android:layout_marginEnd="@dimen/margin_card_button"
-        android:padding="@dimen/padding_card_button"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
+        android:padding="@dimen/padding_card_button"
         android:src="@drawable/ic_notifications_none_24dp"
-        android:tint="@color/drawer_icon_unselected"
-        />
+        android:tint="@color/drawer_icon_unselected" />
 
       <ImageView
         android:id="@+id/reset_button"
         android:layout_width="@dimen/size_card_button"
         android:layout_height="@dimen/size_card_button"
         android:layout_marginEnd="@dimen/margin_card_button"
-        android:padding="@dimen/padding_card_button"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
+        android:padding="@dimen/padding_card_button"
         android:src="@drawable/ic_restore_24dp"
-        android:tint="@color/drawer_icon_unselected"/>
+        android:tint="@color/drawer_icon_unselected" />
 
     </LinearLayout>
 

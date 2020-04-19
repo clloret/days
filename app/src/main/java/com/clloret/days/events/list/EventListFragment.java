@@ -22,13 +22,14 @@ import butterknife.BindView;
 import com.clloret.days.Navigator;
 import com.clloret.days.R;
 import com.clloret.days.base.BaseLceFragment;
+import com.clloret.days.device.eventbus.RefreshRequestEvent;
 import com.clloret.days.domain.events.EventPeriodFormat;
+import com.clloret.days.domain.events.EventProgressCalculator;
 import com.clloret.days.domain.events.filter.EventFilterStrategy;
 import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.events.RefreshRequestEvent;
 import com.google.android.material.snackbar.Snackbar;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -72,6 +73,15 @@ public class EventListFragment
         }
       });
 
+  private static final Map<Integer, Integer> MAP_COLUMN_NUMBER_MENU_ID = Collections
+      .unmodifiableMap(
+          new HashMap<Integer, Integer>() {
+            {
+              put(1, R.id.menu_view_mode_one_column);
+              put(2, R.id.menu_view_mode_two_column);
+            }
+          });
+
   @Inject
   Navigator navigator;
 
@@ -83,6 +93,9 @@ public class EventListFragment
 
   @Inject
   Map<SortType, Comparator<EventSortable>> eventSortComparators;
+
+  @Inject
+  EventProgressCalculator eventProgressCalculator;
 
   @Inject
   EventPeriodFormat eventPeriodFormat;
@@ -98,6 +111,7 @@ public class EventListFragment
   private SortType savedSortType;
   private OnProgressListener progressListener;
   private OnFragmentLifecycleListener tagSelectedListener;
+  private GridLayoutManager layoutManager;
 
   /**
    * Mandatory empty constructor for the fragment manager to instantiate the
@@ -244,6 +258,7 @@ public class EventListFragment
     super.onPrepareOptionsMenu(menu);
 
     selectMenuSortMode(menu);
+    selectMenuViewMode(menu);
   }
 
   @Override
@@ -429,7 +444,7 @@ public class EventListFragment
 
     Comparator<EventSortable> comparator = getEventSortableComparator();
 
-    adapter = new EventListAdapter(comparator, eventPeriodFormat, this);
+    adapter = new EventListAdapter(comparator, eventPeriodFormat, eventProgressCalculator, this);
   }
 
   private Comparator<EventSortable> getEventSortableComparator() {
@@ -441,7 +456,8 @@ public class EventListFragment
 
   private void configureRecyclerView() {
 
-    GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+    final int spanCount = preferenceUtils.getViewColumnNumber();
+    layoutManager = new GridLayoutManager(getActivity(), spanCount);
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setHasFixedSize(true);
     recyclerView.setAdapter(adapter);
@@ -454,7 +470,14 @@ public class EventListFragment
 
   private void selectMenuSortMode(Menu menu) {
 
-    int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    final int menuId = MAP_SORT_TYPE_MENU_ID.get(savedSortType);
+    menu.findItem(menuId).setChecked(true);
+  }
+
+  private void selectMenuViewMode(Menu menu) {
+
+    final int savedColumns = preferenceUtils.getViewColumnNumber();
+    final int menuId = MAP_COLUMN_NUMBER_MENU_ID.get(savedColumns);
     menu.findItem(menuId).setChecked(true);
   }
 
@@ -471,9 +494,23 @@ public class EventListFragment
         preferenceUtils.setSortMode(sortType);
         return true;
 
+      case R.id.menu_view_mode_one_column:
+        setViewColumnNumberAndSave(1);
+        return true;
+
+      case R.id.menu_view_mode_two_column:
+        setViewColumnNumberAndSave(2);
+        return true;
+
       default:
         return false;
     }
+  }
+
+  private void setViewColumnNumberAndSave(int columns) {
+
+    layoutManager.setSpanCount(columns);
+    preferenceUtils.setViewColumnNumber(columns);
   }
 
   private void checkIfEmptyViewToBeDisplayed() {

@@ -2,6 +2,7 @@ package com.clloret.days.events;
 
 import androidx.annotation.NonNull;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.entities.EventBuilder;
 import com.clloret.days.model.entities.EventViewModel;
 import java.util.ArrayList;
@@ -21,19 +22,35 @@ public class SampleBuilder {
   @NonNull
   public static Event createEvent() {
 
-    return new EventBuilder()
-        .setId(ID)
-        .setName(NAME)
-        .setDescription(DESCRIPTION)
-        .setDate(DATE)
-        .setFavorite(FAVORITE)
-        .build();
+    return new Event(
+        ID,
+        NAME,
+        DESCRIPTION,
+        DATE,
+        Event.Companion.getEMPTY_ARRAY(),
+        FAVORITE,
+        null,
+        TimeUnit.DAY,
+        0,
+        TimeUnit.DAY,
+        null);
   }
 
   @NonNull
   public static EventViewModel createEventViewModel() {
 
-    return new EventViewModel(ID, NAME, DESCRIPTION, DATE, FAVORITE);
+    return new EventViewModel(
+        ID,
+        NAME,
+        DESCRIPTION,
+        DATE,
+        Event.Companion.getEMPTY_ARRAY(),
+        FAVORITE,
+        null,
+        TimeUnit.DAY,
+        0,
+        TimeUnit.DAY,
+        null);
   }
 
   @SuppressWarnings("PMD.AvoidInstantiatingObjectsInLoops")

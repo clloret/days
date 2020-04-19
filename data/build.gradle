@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 apply from: "$rootDir/common-android-test.gradle"
 
@@ -38,9 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(project(':domain')) {
-        exclude group: "com.intellij", module: "annotations"
-    }
+    implementation project(':domain')
 
     api "androidx.room:room-runtime:$rootProject.roomVersion"
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
@@ -49,6 +48,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'com.github.clloret:airtable.android:2f84539e51'
     implementation 'com.google.code.gson:gson:2.8.6'
@@ -84,7 +84,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
 
     // InstantTaskExecutorRule
-    // Version 2.0.1 is a requirement of androidx.room:room-testing:2.2.2
+    // Version 2.0.1 is a requirement of androidx.room:room-testing:2.2.5
     //noinspection GradleDependency
     androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
 }

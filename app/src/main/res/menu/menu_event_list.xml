@@ -9,12 +9,34 @@
     app:actionViewClass="androidx.appcompat.widget.SearchView"
     app:showAsAction="always" />
   <item
-    android:icon="@drawable/ic_sort_wht_24dp"
+    android:id="@+id/menu_view_mode"
+    android:icon="@drawable/ic_view_mode_wht_24dp"
     android:orderInCategory="100"
+    android:title="@string/title_view_mode"
+    app:showAsAction="ifRoom">
+    <menu>
+      <group
+        android:id="@id/menu_view_mode"
+        android:checkableBehavior="single">
+        <item
+          android:id="@+id/menu_view_mode_one_column"
+          android:title="@string/action_view_one_column" />
+        <item
+          android:id="@+id/menu_view_mode_two_column"
+          android:title="@string/action_view_two_columns" />
+      </group>
+    </menu>
+  </item>
+  <item
+    android:id="@+id/menu_order"
+    android:icon="@drawable/ic_sort_wht_24dp"
+    android:orderInCategory="101"
     android:title="@string/title_order"
     app:showAsAction="ifRoom">
     <menu>
-      <group android:checkableBehavior="single">
+      <group
+        android:id="@id/menu_order"
+        android:checkableBehavior="single">
         <item
           android:id="@+id/menu_sort_name"
           android:title="@string/action_short_name" />

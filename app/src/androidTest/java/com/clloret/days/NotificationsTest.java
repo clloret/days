@@ -32,7 +32,6 @@ import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
 import com.clloret.days.utils.NotificationsIntentsImpl;
 import com.clloret.test_android_common.SampleData;
 import io.reactivex.Maybe;
@@ -113,8 +112,7 @@ public class NotificationsTest {
 
     Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-    NotificationsIntentsImpl notificationsIntents = new NotificationsIntentsImpl(context,
-        new EventViewModelMapper());
+    NotificationsIntentsImpl notificationsIntents = new NotificationsIntentsImpl(context);
 
     ReminderManagerImpl reminderManager = new ReminderManagerImpl(context, notificationsIntents,
         stringResourceProvider);

@@ -4,15 +4,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import com.clloret.days.R;
+import com.clloret.days.domain.entities.Event;
 import com.clloret.days.domain.events.EventPeriodFormat;
+import com.clloret.days.domain.events.EventProgressCalculator;
+import com.clloret.days.domain.events.EventProgressCalculator.ProgressValue;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.events.list.EventListAdapter.EventViewHolder;
 import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -20,17 +25,22 @@ import java.util.List;
 public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
 
   private final OnListAdapterListener listener;
-  private List<EventViewModel> events;
+  private final EventPeriodFormat eventPeriodFormat;
+  private final EventProgressCalculator eventProgressCalculator;
   private Comparator<EventSortable> currentComparator;
-  private EventPeriodFormat eventPeriodFormat;
+  private List<EventViewModel> events;
 
-  public EventListAdapter(Comparator<EventSortable> comparator, EventPeriodFormat eventPeriodFormat,
+  public EventListAdapter(
+      Comparator<EventSortable> comparator,
+      EventPeriodFormat eventPeriodFormat,
+      EventProgressCalculator eventProgressCalculator,
       OnListAdapterListener listener) {
 
     super();
 
     this.currentComparator = comparator;
     this.eventPeriodFormat = eventPeriodFormat;
+    this.eventProgressCalculator = eventProgressCalculator;
     this.listener = listener;
     this.setHasStableIds(true);
   }
@@ -166,6 +176,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
     public TextView name;
     private View itemView;
     private TextView days;
+    private ProgressBar progress;
     private ImageView favoriteButton;
     private ImageView reminderButton;
     private ImageView resetButton;
@@ -176,6 +187,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       itemView = view;
       name = view.findViewById(R.id.textview_event_name);
       days = view.findViewById(R.id.textview_event_days);
+      progress = view.findViewById(R.id.progressbar_event);
       favoriteButton = view.findViewById(R.id.favorite_button);
       reminderButton = view.findViewById(R.id.reminder_button);
       resetButton = view.findViewById(R.id.reset_button);
@@ -190,7 +202,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       name.setText(viewModel.getName());
       this.days.setText(formattedDaysSince);
 
-      favoriteButton.setImageResource(viewModel.isFavorite() ? R.drawable.ic_favorite_24dp
+      showEventProgress(viewModel);
+
+      favoriteButton.setImageResource(viewModel.getFavorite() ? R.drawable.ic_favorite_24dp
           : R.drawable.ic_favorite_border_24dp);
 
       reminderButton
@@ -207,6 +221,21 @@ public class EventListAdapter extends RecyclerView.Adapter<EventViewHolder> {
       resetButton.setOnClickListener(view -> listener.onResetItem(viewModel));
       favoriteButton.setOnClickListener(view -> listener.onFavoriteItem(viewModel));
       reminderButton.setOnClickListener(view -> listener.onToggleNotificationsItem(viewModel));
+    }
+
+    private void showEventProgress(EventViewModel viewModel) {
+
+      if (viewModel.getProgressDate() == null) {
+        progress.setVisibility(View.GONE);
+        return;
+      } else {
+        progress.setVisibility(View.VISIBLE);
+      }
+
+      final Event event = EventViewModelMapperKt.toEvent(viewModel);
+      final ProgressValue progressValue = eventProgressCalculator.calculateEventProgress(event);
+      progress.setMax(progressValue.getMax());
+      progress.setProgress(progressValue.getProgress());
     }
   }
 }

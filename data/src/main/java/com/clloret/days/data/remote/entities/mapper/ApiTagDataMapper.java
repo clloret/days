@@ -1,5 +1,6 @@
 package com.clloret.days.data.remote.entities.mapper;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.remote.entities.ApiTag;
 import com.clloret.days.domain.entities.Tag;
 import java.util.ArrayList;
@@ -17,14 +18,9 @@ public class ApiTagDataMapper implements DataMapper<Tag, ApiTag> {
   }
 
   @Override
-  public Tag toEntity(ApiTag model) {
+  public Tag toEntity(@NonNull ApiTag model) {
 
-    Tag tag = null;
-    if (model != null) {
-      tag = new Tag(model.getId());
-      tag.setName(model.getName());
-    }
-    return tag;
+    return new Tag(model.getId(), model.getName());
   }
 
   @Override
@@ -41,14 +37,9 @@ public class ApiTagDataMapper implements DataMapper<Tag, ApiTag> {
   }
 
   @Override
-  public ApiTag fromEntity(Tag model, boolean copyId) {
+  public ApiTag fromEntity(@NonNull Tag model, boolean copyId) {
 
-    ApiTag dbTag = null;
-    if (model != null) {
-      dbTag = new ApiTag(copyId ? model.getId() : null);
-      dbTag.setName(model.getName());
-    }
-    return dbTag;
+    return new ApiTag(copyId ? model.getId() : null, model.getName());
   }
 
   @Override

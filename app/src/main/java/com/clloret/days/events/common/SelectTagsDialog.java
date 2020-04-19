@@ -59,11 +59,8 @@ public class SelectTagsDialog extends DialogFragment {
                 selectedItems.remove(tag);
               }
             })
-        .setPositiveButton(getString(R.string.action_ok), (dialog, id) -> {
-
-          listener.ifPresent(value -> value.onFinishTagsDialog(selectedItems));
-
-        })
+        .setPositiveButton(getString(R.string.action_ok),
+            (dialog, id) -> listener.ifPresent(value -> value.onFinishTagsDialog(selectedItems)))
         .setNegativeButton(getString(R.string.action_cancel), (dialog, id) -> {
 
         });

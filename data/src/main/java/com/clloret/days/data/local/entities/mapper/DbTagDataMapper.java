@@ -1,5 +1,6 @@
 package com.clloret.days.data.local.entities.mapper;
 
+import androidx.annotation.NonNull;
 import com.clloret.days.data.local.entities.DbTag;
 import com.clloret.days.data.remote.entities.mapper.DataMapper;
 import com.clloret.days.domain.entities.Tag;
@@ -18,14 +19,9 @@ public class DbTagDataMapper implements DataMapper<Tag, DbTag> {
   }
 
   @Override
-  public Tag toEntity(DbTag model) {
+  public Tag toEntity(@NonNull DbTag model) {
 
-    Tag tag = null;
-    if (model != null) {
-      tag = new Tag(model.getId());
-      tag.setName(model.getName());
-    }
-    return tag;
+    return new Tag(model.getId(), model.getName());
   }
 
   @Override
@@ -42,14 +38,9 @@ public class DbTagDataMapper implements DataMapper<Tag, DbTag> {
   }
 
   @Override
-  public DbTag fromEntity(Tag model, boolean copyId) {
+  public DbTag fromEntity(@NonNull Tag model, boolean copyId) {
 
-    DbTag dbTag = null;
-    if (model != null) {
-      dbTag = new DbTag(model.getId());
-      dbTag.setName(model.getName());
-    }
-    return dbTag;
+    return new DbTag(model.getId(), model.getName());
   }
 
   public List<DbTag> fromEntity(Collection<Tag> modelCollection) {

@@ -16,7 +16,7 @@ import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
 import com.clloret.days.domain.interactors.events.ToggleEventReminderUseCase;
 import com.clloret.days.domain.utils.StringUtils;
 import com.clloret.days.model.entities.EventViewModel;
-import com.clloret.days.model.entities.mapper.EventViewModelMapper;
+import com.clloret.days.model.entities.mapper.EventViewModelMapperKt;
 import com.clloret.days.model.events.EventCreatedEvent;
 import com.clloret.days.model.events.EventDeletedEvent;
 import com.clloret.days.model.events.EventModifiedEvent;
@@ -38,7 +38,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
   private static final int SEARCH_DEBOUNCE_TIMEOUT = 300;
   private final EventBus eventBus;
-  private final EventViewModelMapper eventViewModelMapper;
   private final GetEventsUseCase getEventsUseCase;
   private final GetFilteredEventsUseCase getFilteredEventsUseCase;
   private final FavoriteEventUseCase favoriteEventUseCase;
@@ -51,7 +50,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
   @Inject
   public EventListPresenter(
-      EventViewModelMapper eventViewModelMapper,
       EventBus eventBus,
       GetEventsUseCase getEventsUseCase,
       GetFilteredEventsUseCase getFilteredEventsUseCase,
@@ -63,7 +61,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     super();
 
-    this.eventViewModelMapper = eventViewModelMapper;
     this.eventBus = eventBus;
     this.getEventsUseCase = getEventsUseCase;
     this.getFilteredEventsUseCase = getFilteredEventsUseCase;
@@ -99,7 +96,7 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
     final RequestValues requestValues = new RequestValues(filterStrategy, pullToRefresh);
 
     Disposable subscribe = getFilteredEventsUseCase.execute(requestValues)
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModelList)
         .doOnSuccess(result -> {
 
           Timber.d("getLocalEvents: %d", result.size());
@@ -147,7 +144,6 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     Disposable subscribe = Single.just(unfilteredEvents)
         .flatMapObservable(Observable::fromIterable)
-        .filter(event -> event.getName() != null)
         .filter(event -> filterEventByText(event, text))
         .toList()
         .subscribe(view::setData);
@@ -202,7 +198,7 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
   public void deleteEvent(EventViewModel eventViewModel) {
 
     final EventListView view = getView();
-    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    final Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = deleteEventUseCase.execute(event)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
@@ -227,11 +223,11 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
   public void makeEventFavorite(@NonNull EventViewModel eventViewModel) {
 
     final EventListView view = getView();
-    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    final Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = favoriteEventUseCase.execute(
         event)
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> updateUnfilteredEvents())
@@ -246,10 +242,10 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
   public void undoDelete(@NonNull EventViewModel eventViewModel) {
 
     final EventListView view = getView();
-    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    final Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = createEventUseCase.execute(event)
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> updateUnfilteredEvents())
@@ -264,10 +260,10 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
   public void resetDate(EventViewModel eventViewModel) {
 
     final EventListView view = getView();
-    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    final Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = resetEventDateUseCase.execute(event)
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> updateUnfilteredEvents())
@@ -282,10 +278,10 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
   public void toggleEventReminder(EventViewModel eventViewModel) {
 
     final EventListView view = getView();
-    final Event event = eventViewModelMapper.toEvent(eventViewModel);
+    final Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     Disposable subscribe = toggleEventReminderUseCase.execute(event)
-        .map(eventViewModelMapper::fromEvent)
+        .map(EventViewModelMapperKt::toEventViewModel)
         .doOnSubscribe(disposable -> view.showIndeterminateProgress())
         .doFinally(view::hideIndeterminateProgress)
         .doOnSuccess(result -> updateUnfilteredEvents())
@@ -302,7 +298,7 @@ public class EventListPresenter extends BaseRxPresenter<EventListView> {
 
     EventListView view = getView();
     EventViewModel eventViewModel = createdEvent.event;
-    Event event = eventViewModelMapper.toEvent(eventViewModel);
+    Event event = EventViewModelMapperKt.toEvent(eventViewModel);
 
     if (filterStrategy.eventMatchFilter(event)) {
       view.showCreatedEvent(eventViewModel);

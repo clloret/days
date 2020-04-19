@@ -374,10 +374,6 @@ public class EventEditActivity
     EventViewModel modifiedEvent = editEventHelper.getModifiedEvent();
     Date eventDate = modifiedEvent.getDate();
 
-    if (eventDate == null) {
-      return;
-    }
-
     Intent calIntent = new Intent(Intent.ACTION_INSERT);
     calIntent.setType("vnd.android.cursor.item/event");
     calIntent.putExtra(Events.TITLE, modifiedEvent.getName());
