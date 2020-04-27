@@ -45,6 +45,9 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            resValue("string", "PORT_NUMBER", "8081")
+        }
     }
     packagingOptions {
         exclude 'META-INF/LICENSE'
@@ -104,6 +107,7 @@ dependencies {
 
     debugImplementation "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     debugImplementation "com.facebook.stetho:stetho:$rootProject.stethoVersion"
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
     kapt "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
     kapt "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
