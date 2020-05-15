@@ -1,5 +1,4 @@
-<androidx.drawerlayout.widget.DrawerLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/drawer_layout"
@@ -12,49 +11,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/appbar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:theme="@style/AppTheme.AppBarOverlay">
-
-      <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-      <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-10dp"
-        android:layout_marginBottom="-10dp"
-        android:indeterminate="true"
-        android:visibility="invisible"/>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <FrameLayout
       android:id="@+id/content"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"
-      tools:layout="@layout/fragment_event_list"/>
+      tools:layout="@layout/fragment_event_list" />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+      android:id="@+id/bottomBar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      app:fabAlignmentMode="center"
+      app:fabCradleVerticalOffset="15dp"
+      app:hideOnScroll="true"
+      app:layout_scrollFlags="scroll|enterAlways" />
+
+    <ProgressBar
+      android:id="@+id/progressBar"
+      style="?android:attr/progressBarStyleHorizontal"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="-10dp"
+      android:layout_marginBottom="-10dp"
+      android:indeterminate="true"
+      android:visibility="invisible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/fab_main_newevent"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/margin_all_fab"
-      android:layout_gravity="bottom|end"
       android:src="@drawable/ic_add_wht_24dp"
-      app:layout_anchorGravity="bottom|end"
-      app:layout_behavior="com.clloret.days.utils.ScrollAwareFabBehavior"/>
+      app:layout_anchor="@id/bottomBar"
+      app:layout_behavior="com.clloret.days.utils.ScrollAwareFabBehavior" />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-  <include layout="@layout/navigation_drawer"/>
+  <include layout="@layout/navigation_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

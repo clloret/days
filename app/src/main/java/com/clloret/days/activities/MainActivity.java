@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
@@ -28,6 +27,7 @@ import com.clloret.days.events.list.EventListFragment.OnFragmentLifecycleListene
 import com.clloret.days.events.list.EventListFragment.OnProgressListener;
 import com.clloret.days.menu.MenuFragment;
 import com.clloret.days.model.entities.TagViewModel;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import dagger.android.AndroidInjection;
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity
   @Inject
   Navigator navigator;
 
-  @BindView(R.id.toolbar)
-  Toolbar toolbar;
+  @BindView(R.id.bottomBar)
+  BottomAppBar bottomBar;
 
   @BindView(R.id.progressBar)
   ProgressBar progressBar;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
 
     ButterKnife.bind(this);
 
-    setSupportActionBar(toolbar);
+    setSupportActionBar(bottomBar);
 
     configureNavigationDrawer();
 
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity
 
   private ActionBarDrawerToggle setupDrawerToggle() {
 
-    return new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.action_drawer_open,
+    return new ActionBarDrawerToggle(this, drawerLayout, bottomBar, R.string.action_drawer_open,
         R.string.action_drawer_close);
   }
 
