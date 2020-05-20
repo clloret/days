@@ -146,5 +146,8 @@
   <string name="title_remote_datastore">Remote datastore</string>
   <string name="title_select_tags">Select tags</string>
   <string name="title_view_mode">View mode</string>
+  <string name="appwidget_text">EXAMPLE</string>
+  <string name="configure">Configure</string>
+  <string name="add_widget">Add widget</string>
 
 </resources>
