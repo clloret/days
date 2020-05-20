@@ -6,25 +6,39 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import com.clloret.days.R
+import com.clloret.days.domain.interactors.events.GetEventUseCase
+import com.clloret.days.model.entities.EventViewModel
+import com.clloret.days.tasker.ui.TaskerEditEventActivity
+import com.clloret.days.tasker.ui.TaskerSelectEventActivity
+import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_tasker_edit_event.btnSelectEvent
+import kotlinx.android.synthetic.main.days_widget_configure.*
+import javax.inject.Inject
 
 /**
  * The configuration screen for the [DaysWidget] AppWidget.
  */
-class DaysWidgetConfigureActivity : Activity() {
+class DaysWidgetConfigureActivity : AppCompatActivity() {
+
+  @Inject
+  lateinit var getEventUseCase: GetEventUseCase
+
+  private var eventId: String? = null
   private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
-  private lateinit var appWidgetText: EditText
+
   private var onClickListener = View.OnClickListener {
     val context = this
 
     // When the button is clicked, store the string locally
-    val widgetText = appWidgetText.text.toString()
+    //val widgetText = appWidgetText.text.toString()
+    val widgetText = eventId!!
     saveTitlePref(context, appWidgetId, widgetText)
 
     // It is the responsibility of the configuration activity to update the app widget
     val appWidgetManager = AppWidgetManager.getInstance(context)
-    updateAppWidget(context, appWidgetManager, appWidgetId)
+    updateAppWidget(context, appWidgetManager, appWidgetId, getEventUseCase)
 
     // Make sure we pass back the original appWidgetId
     val resultValue = Intent()
@@ -36,13 +50,20 @@ class DaysWidgetConfigureActivity : Activity() {
   public override fun onCreate(icicle: Bundle?) {
     super.onCreate(icicle)
 
+    AndroidInjection.inject(this)
+
     // Set the result to CANCELED.  This will cause the widget host to cancel
     // out of the widget placement if the user presses the back button.
     setResult(RESULT_CANCELED)
 
     setContentView(R.layout.days_widget_configure)
-    appWidgetText = findViewById<View>(R.id.appwidget_text) as EditText
-    findViewById<View>(R.id.add_button).setOnClickListener(onClickListener)
+
+    btnSelectEvent.setOnClickListener {
+      val intent = Intent(this, TaskerSelectEventActivity::class.java)
+      startActivityForResult(intent, TaskerEditEventActivity.REQUEST_CODE_SELECT_EVENT)
+    }
+
+    add_button.setOnClickListener(onClickListener)
 
     // Find the widget id from the intent.
     val intent = intent
@@ -58,7 +79,18 @@ class DaysWidgetConfigureActivity : Activity() {
       return
     }
 
-    appWidgetText.setText(loadTitlePref(this, appWidgetId))
+    appwidget_text.setText(loadTitlePref(this, appWidgetId))
+  }
+
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    super.onActivityResult(requestCode, resultCode, data)
+
+    if (requestCode == TaskerEditEventActivity.REQUEST_CODE_SELECT_EVENT) {
+      if (resultCode == Activity.RESULT_OK) {
+        val selectedEvent: EventViewModel? = data?.getParcelableExtra(TaskerSelectEventActivity.EXTRA_EVENT)
+        eventId = selectedEvent?.id
+      }
+    }
   }
 
 }

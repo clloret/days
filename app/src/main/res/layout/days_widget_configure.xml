@@ -5,6 +5,12 @@
   android:orientation="vertical"
   android:padding="16dp">
 
+  <Button
+    android:id="@+id/btnSelectEvent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/tasker_edit_select_an_event" />
+
   <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
