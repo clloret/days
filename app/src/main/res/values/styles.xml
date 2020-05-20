@@ -9,6 +9,7 @@
     <item name="android:textColorSecondary">@color/secondary_text</item>
     <item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>
     <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
   </style>
 
   <style name="AppTheme.NoActionBar">
@@ -41,5 +42,7 @@
     <item name="positiveButtonText">@android:string/ok</item>
     <item name="negativeButtonText">@android:string/cancel</item>
   </style>
+
+  <style name="Widget.App.TextInputLayout" parent="Widget.Design.TextInputLayout" />
 
 </resources>
