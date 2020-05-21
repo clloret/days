@@ -79,7 +79,7 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
       return
     }
 
-    appwidget_text.setText(loadTitlePref(this, appWidgetId))
+    textViewEventDays.setText(loadTitlePref(this, appWidgetId))
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
