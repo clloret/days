@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.clloret.days.R
-import com.clloret.days.domain.interactors.events.GetEventUseCase
 import com.clloret.days.model.entities.EventViewModel
 import com.clloret.days.tasker.ui.TaskerEditEventActivity
 import com.clloret.days.tasker.ui.TaskerSelectEventActivity
@@ -23,7 +22,7 @@ import javax.inject.Inject
 class DaysWidgetConfigureActivity : AppCompatActivity() {
 
   @Inject
-  lateinit var getEventUseCase: GetEventUseCase
+  lateinit var updateAppWidget: UpdateAppWidget
 
   private var eventId: String? = null
   private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
@@ -38,7 +37,8 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
 
     // It is the responsibility of the configuration activity to update the app widget
     val appWidgetManager = AppWidgetManager.getInstance(context)
-    updateAppWidget(context, appWidgetManager, appWidgetId, getEventUseCase)
+//    updateAppWidget(context, appWidgetManager, appWidgetId, getEventUseCase)
+    updateAppWidget.update(context, appWidgetManager, appWidgetId)
 
     // Make sure we pass back the original appWidgetId
     val resultValue = Intent()
