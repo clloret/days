@@ -25,6 +25,7 @@
   <string name="about_view_source_code">Ver el código fuente en GitHub</string>
   <string name="action_about">Acerca de</string>
   <string name="action_add_to_calendar">Añadir al calendario</string>
+  <string name="action_add_widget">Añadir el widget</string>
   <string name="action_cancel">Cancelar</string>
   <string name="action_changelog">Registro de cambios</string>
   <string name="action_delete">Borrar</string>
@@ -80,6 +81,7 @@
   <string name="msg_error_tag_name_required">Debes introducir un nombre de etiqueta</string>
   <string name="msg_error_text_can_not_be_empty">El texto no puede estar vacío</string>
   <string name="msg_error_voice_recognition_not_supported">El reconocimiento de voz no está disponible</string>
+  <string name="msg_error_you_must_select_an_event">Debes seleccionar un evento</string>
   <string name="msg_event_created">Evento creado con éxito</string>
   <string name="msg_event_deleted">Evento eliminado con éxito</string>
   <string name="msg_event_discarded">Evento descartado</string>
@@ -132,5 +134,6 @@
   <string name="title_remote_datastore">Datos remotos</string>
   <string name="title_select_tags">Selecciona las etiquetas</string>
   <string name="title_view_mode">Modo de vista</string>
+  <string name="title_warning">Advertencia</string>
 
 </resources>

@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.clloret.days.R
 import com.clloret.days.model.entities.EventViewModel
@@ -21,30 +21,11 @@ import javax.inject.Inject
  */
 class DaysWidgetConfigureActivity : AppCompatActivity() {
 
-  @Inject
-  lateinit var updateAppWidget: UpdateAppWidget
-
   private var eventId: String? = null
   private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
 
-  private var onClickListener = View.OnClickListener {
-    val context = this
-
-    // When the button is clicked, store the string locally
-    //val widgetText = appWidgetText.text.toString()
-    val widgetText = eventId!!
-    saveTitlePref(context, appWidgetId, widgetText)
-
-    // It is the responsibility of the configuration activity to update the app widget
-    val appWidgetManager = AppWidgetManager.getInstance(context)
-    updateAppWidget.update(context, appWidgetManager, appWidgetId)
-
-    // Make sure we pass back the original appWidgetId
-    val resultValue = Intent()
-    resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
-    setResult(RESULT_OK, resultValue)
-    finish()
-  }
+  @Inject
+  lateinit var updateAppWidget: UpdateAppWidget
 
   public override fun onCreate(icicle: Bundle?) {
     super.onCreate(icicle)
@@ -62,7 +43,26 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
       startActivityForResult(intent, TaskerEditEventActivity.REQUEST_CODE_SELECT_EVENT)
     }
 
-    add_button.setOnClickListener(onClickListener)
+    btnAddWidget.setOnClickListener {
+      val context = this
+
+      if (eventId == null) {
+        showAlertDialog(context)
+      }
+      val something = eventId ?: return@setOnClickListener
+
+      saveEventIdPref(context, appWidgetId, something)
+
+      // It is the responsibility of the configuration activity to update the app widget
+      val appWidgetManager = AppWidgetManager.getInstance(context)
+      updateAppWidget.update(context, appWidgetManager, appWidgetId)
+
+      // Make sure we pass back the original appWidgetId
+      val resultValue = Intent()
+      resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+      setResult(RESULT_OK, resultValue)
+      finish()
+    }
 
     // Find the widget id from the intent.
     val intent = intent
@@ -78,7 +78,10 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
       return
     }
 
-    textViewEventDays.setText(loadTitlePref(this, appWidgetId))
+    val savedEventId = loadEventIdPref(this, appWidgetId)
+    val eventName = savedEventId?.let { "Event ID: $it" } ?: "Event Name"
+    textViewEventName.text = eventName
+
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -88,6 +91,7 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
       if (resultCode == Activity.RESULT_OK) {
         val selectedEvent: EventViewModel? = data?.getParcelableExtra(TaskerSelectEventActivity.EXTRA_EVENT)
         eventId = selectedEvent?.id
+        textViewEventName.text = selectedEvent?.name
       }
     }
   }
@@ -98,7 +102,7 @@ private const val PREFS_NAME = "com.clloret.days.widget.DaysWidget"
 private const val PREF_PREFIX_KEY = "appwidget_"
 
 // Write the prefix to the SharedPreferences object for this widget
-internal fun saveTitlePref(context: Context, appWidgetId: Int, text: String) {
+internal fun saveEventIdPref(context: Context, appWidgetId: Int, text: String) {
   val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
   prefs.putString(PREF_PREFIX_KEY + appWidgetId, text)
   prefs.apply()
@@ -106,14 +110,21 @@ internal fun saveTitlePref(context: Context, appWidgetId: Int, text: String) {
 
 // Read the prefix from the SharedPreferences object for this widget.
 // If there is no preference saved, get the default from a resource
-internal fun loadTitlePref(context: Context, appWidgetId: Int): String {
+internal fun loadEventIdPref(context: Context, appWidgetId: Int): String? {
   val prefs = context.getSharedPreferences(PREFS_NAME, 0)
-  val titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null)
-  return titleValue ?: context.getString(R.string.appwidget_text)
+  return prefs.getString(PREF_PREFIX_KEY + appWidgetId, null)
 }
 
-internal fun deleteTitlePref(context: Context, appWidgetId: Int) {
+internal fun deleteEventIdPref(context: Context, appWidgetId: Int) {
   val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
   prefs.remove(PREF_PREFIX_KEY + appWidgetId)
   prefs.apply()
+}
+
+internal fun showAlertDialog(context: Context) {
+  AlertDialog.Builder(context).setTitle(R.string.title_warning)
+          .setMessage(R.string.msg_error_you_must_select_an_event)
+          .setIcon(android.R.drawable.ic_dialog_alert)
+          .setPositiveButton(R.string.action_ok, null)
+          .show()
 }

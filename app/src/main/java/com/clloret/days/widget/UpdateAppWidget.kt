@@ -19,22 +19,35 @@ class UpdateAppWidget @Inject constructor(
   @SuppressLint("CheckResult")
   fun update(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
 
-    val eventId = loadTitlePref(context, appWidgetId)
+    loadEventIdPref(context, appWidgetId)?.apply {
+      getEventUseCase.execute(this)
+              .subscribeOn(AndroidSchedulers.mainThread())
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe({ event: Event ->
 
-    getEventUseCase.execute(eventId)
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ event: Event ->
+                val daysSinceFormatted = eventPeriodFormat.getDaysSinceFormatted(event.date)
 
-              val views = RemoteViews(context.packageName, R.layout.days_widget)
+                showWidgetValues(daysSinceFormatted, event.name, context, appWidgetManager, appWidgetId)
+              })
+              { Timber.e(it) }
+    } ?: run {
+      showWidgetValues(UNKNOWN_EVENT_DAYS, UNKNOWN_EVENT_NAME, context, appWidgetManager, appWidgetId)
+    }
 
-              val daysSinceFormatted = eventPeriodFormat.getDaysSinceFormatted(event.date)
-              views.setTextViewText(R.id.textViewEventDays, daysSinceFormatted)
+  }
 
-              views.setTextViewText(R.id.textViewEventName, event.name)
+  private fun showWidgetValues(days: String?, eventName: String, context: Context,
+                               appWidgetManager: AppWidgetManager, appWidgetId: Int) {
 
-              appWidgetManager.updateAppWidget(appWidgetId, views)
-            })
-            { Timber.e(it) }
+    RemoteViews(context.packageName, R.layout.days_widget).apply {
+      setTextViewText(R.id.textViewEventDays, days)
+      setTextViewText(R.id.textViewEventName, eventName)
+      appWidgetManager.updateAppWidget(appWidgetId, this)
+    }
+  }
+
+  companion object {
+    private const val UNKNOWN_EVENT_DAYS = "0"
+    private const val UNKNOWN_EVENT_NAME = "Error"
   }
 }
