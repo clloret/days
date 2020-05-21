@@ -37,7 +37,6 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
 
     // It is the responsibility of the configuration activity to update the app widget
     val appWidgetManager = AppWidgetManager.getInstance(context)
-//    updateAppWidget(context, appWidgetManager, appWidgetId, getEventUseCase)
     updateAppWidget.update(context, appWidgetManager, appWidgetId)
 
     // Make sure we pass back the original appWidgetId
