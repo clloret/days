@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+- Widget
+
 ## [1.2.0] - 2020-04-19
 
 ### Added
