@@ -3,15 +3,15 @@
   android:shape="rectangle">
 
   <stroke
-    android:width="2dp"
+    android:width="@dimen/border_stroke_widget"
     android:color="@color/white" />
 
   <solid android:color="@color/primary" />
 
   <corners
-    android:bottomLeftRadius="8dp"
-    android:bottomRightRadius="8dp"
-    android:topLeftRadius="8dp"
-    android:topRightRadius="8dp" />
+    android:bottomLeftRadius="@dimen/corner_radius_widget"
+    android:bottomRightRadius="@dimen/corner_radius_widget"
+    android:topLeftRadius="@dimen/corner_radius_widget"
+    android:topRightRadius="@dimen/corner_radius_widget" />
 
 </shape>
