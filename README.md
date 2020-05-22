@@ -76,7 +76,7 @@ This project is still in progress. Here are the some features that I will finish
 
 ### For users:
 - [x] Notifications
-- [ ] Widgets
+- [x] Widgets
 - [x] Tasker integration
 
 ### For developers:
