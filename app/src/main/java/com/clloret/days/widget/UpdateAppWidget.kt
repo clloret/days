@@ -25,7 +25,7 @@ class UpdateAppWidget @Inject constructor(
   @SuppressLint("CheckResult")
   fun update(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
 
-    loadEventIdPref(context, appWidgetId)?.apply {
+    DaysWidgetPrefs.loadEventIdPref(context, appWidgetId)?.apply {
       getEventUseCase.execute(this)
               .subscribeOn(AndroidSchedulers.mainThread())
               .observeOn(AndroidSchedulers.mainThread())

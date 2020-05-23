@@ -26,7 +26,7 @@ class DaysWidget : AppWidgetProvider() {
 
   override fun onDeleted(context: Context, appWidgetIds: IntArray) {
     for (appWidgetId in appWidgetIds) {
-      deleteEventIdPref(context, appWidgetId)
+      DaysWidgetPrefs.deleteEventIdPref(context, appWidgetId)
     }
   }
 

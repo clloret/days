@@ -51,7 +51,7 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
       }
       val something = eventId ?: return@setOnClickListener
 
-      saveEventIdPref(context, appWidgetId, something)
+      DaysWidgetPrefs.saveEventIdPref(context, appWidgetId, something)
 
       // It is the responsibility of the configuration activity to update the app widget
       val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -78,7 +78,7 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
       return
     }
 
-    val savedEventId = loadEventIdPref(this, appWidgetId)
+    val savedEventId = DaysWidgetPrefs.loadEventIdPref(this, appWidgetId)
     val eventName = savedEventId?.let { "Event ID: $it" } ?: "Event Name"
     textViewEventName.text = eventName
 
@@ -96,29 +96,6 @@ class DaysWidgetConfigureActivity : AppCompatActivity() {
     }
   }
 
-}
-
-private const val PREFS_NAME = "com.clloret.days.widget.DaysWidget"
-private const val PREF_PREFIX_KEY = "appwidget_"
-
-// Write the prefix to the SharedPreferences object for this widget
-internal fun saveEventIdPref(context: Context, appWidgetId: Int, text: String) {
-  val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
-  prefs.putString(PREF_PREFIX_KEY + appWidgetId, text)
-  prefs.apply()
-}
-
-// Read the prefix from the SharedPreferences object for this widget.
-// If there is no preference saved, get the default from a resource
-internal fun loadEventIdPref(context: Context, appWidgetId: Int): String? {
-  val prefs = context.getSharedPreferences(PREFS_NAME, 0)
-  return prefs.getString(PREF_PREFIX_KEY + appWidgetId, null)
-}
-
-internal fun deleteEventIdPref(context: Context, appWidgetId: Int) {
-  val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
-  prefs.remove(PREF_PREFIX_KEY + appWidgetId)
-  prefs.apply()
 }
 
 internal fun showAlertDialog(context: Context) {
