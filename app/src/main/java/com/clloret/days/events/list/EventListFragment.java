@@ -30,6 +30,7 @@ import com.clloret.days.domain.events.order.EventSortFactory.SortType;
 import com.clloret.days.domain.events.order.EventSortable;
 import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.model.entities.EventViewModel;
+import com.clloret.days.widget.UpdateAppWidget;
 import com.google.android.material.snackbar.Snackbar;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.LceViewState;
 import com.hannesdorfmann.mosby.mvp.viewstate.lce.data.RetainingLceViewState;
@@ -407,6 +408,7 @@ public class EventListFragment
   public void updateSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
+    updateWidget();
 
     showSnackbarMessage(recyclerView, R.string.msg_event_updated);
   }
@@ -421,6 +423,7 @@ public class EventListFragment
   public void dateResetSuccessfully(EventViewModel event) {
 
     adapter.updateItem(event);
+    updateWidget();
   }
 
   @Override
@@ -438,6 +441,11 @@ public class EventListFragment
     fragment.setArguments(bundle);
 
     return fragment;
+  }
+
+  private void updateWidget() {
+
+    UpdateAppWidget.Companion.sendUpdateWidget(requireContext());
   }
 
   private void createAdapter() {

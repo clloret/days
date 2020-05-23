@@ -3,6 +3,7 @@ package com.clloret.days.widget
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -63,5 +64,19 @@ class UpdateAppWidget @Inject constructor(
   companion object {
     private const val UNKNOWN_EVENT_DAYS = "0"
     private const val UNKNOWN_EVENT_NAME = "Error"
+
+    fun sendUpdateWidget(context: Context) {
+
+      val intentUpdate = Intent(context, DaysWidget::class.java)
+      intentUpdate.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+
+      val thisWidget = ComponentName(context, DaysWidget::class.java)
+      val widgetManager = AppWidgetManager.getInstance(context)
+      val appWidgetIds = widgetManager.getAppWidgetIds(thisWidget)
+      intentUpdate.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
+
+      context.sendBroadcast(intentUpdate)
+    }
+
   }
 }
