@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+  android:configure="com.clloret.days.widget.DaysWidgetConfigureActivity"
+  android:initialKeyguardLayout="@layout/days_widget"
+  android:initialLayout="@layout/days_widget"
+  android:minWidth="@dimen/min_width_widget"
+  android:minHeight="@dimen/min_height_widget"
+  android:previewImage="@drawable/appwidget_preview"
+  android:resizeMode="horizontal"
+  android:updatePeriodMillis="1800000"
+  android:widgetCategory="home_screen" />

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  android:padding="@dimen/spacing_large">
+
+  <Button
+    android:id="@+id/btnSelectEvent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:text="@string/tasker_edit_select_an_event" />
+
+  <TextView
+    android:id="@+id/textViewEventName"
+    style="@style/TextAppearance.AppCompat.Title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:text="@string/event_details_name"
+    tools:text="Event Name" />
+
+  <Button
+    android:id="@+id/btnAddWidget"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spacing_medium"
+    android:text="@string/action_add_widget" />
+
+</LinearLayout>

@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/layoutWidget"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/background_widget"
+  android:orientation="vertical"
+  android:padding="@dimen/margin_widget">
+
+  <TextView
+    android:id="@+id/textViewEventDays"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginStart="@dimen/spacing_medium"
+    android:layout_marginTop="@dimen/spacing_medium"
+    android:layout_marginEnd="@dimen/spacing_medium"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:textColor="@android:color/primary_text_dark"
+    android:textSize="@dimen/text_size_widget_days"
+    android:textStyle="bold"
+    tools:text="9.999" />
+
+  <TextView
+    android:id="@+id/textViewEventName"
+    style="@android:style/TextAppearance.Material.Subhead"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spacing_large"
+    android:layout_marginEnd="@dimen/spacing_large"
+    android:layout_marginBottom="@dimen/spacing_medium"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:textColor="@android:color/secondary_text_dark"
+    tools:text="Event Name" />
+
+</LinearLayout>

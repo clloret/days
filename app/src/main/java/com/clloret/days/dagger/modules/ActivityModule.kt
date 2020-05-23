@@ -9,6 +9,7 @@ import com.clloret.days.menu.MenuFragment
 import com.clloret.days.tags.create.TagCreateActivity
 import com.clloret.days.tags.edit.TagEditActivity
 import com.clloret.days.tasker.ui.TaskerSelectEventActivity
+import com.clloret.days.widget.DaysWidgetConfigureActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -46,5 +47,9 @@ abstract class ActivityModule {
   @ContributesAndroidInjector
   @ActivityScope
   abstract fun bindTaskerSelectEventActivity(): TaskerSelectEventActivity
+
+  @ContributesAndroidInjector
+  @ActivityScope
+  abstract fun bindDaysWidgetConfigureActivity(): DaysWidgetConfigureActivity
 
 }
