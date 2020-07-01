@@ -24,11 +24,13 @@ public class DemoMode {
     context.sendBroadcast(intent);
   }
 
-  public void enter() {
+  public DemoMode enter() {
 
     Intent intent = getDemoModeIntent();
     intent.putExtra("command", "enter");
     send(intent);
+
+    return this;
   }
 
   public void exit() {
@@ -38,21 +40,35 @@ public class DemoMode {
     send(intent);
   }
 
-  public void setClock() {
+  public DemoMode setClock() {
 
     Intent intent = getDemoModeIntent();
     intent.putExtra("command", "clock");
     intent.putExtra("hhmm", "1200");
     send(intent);
+
+    return this;
   }
 
-  public void setNetwork() {
+  public DemoMode setNetwork() {
 
     Intent intent = getDemoModeIntent();
     intent.putExtra("command", "network");
     intent.putExtra("mobile", "show");
     intent.putExtra("level", "4");
     send(intent);
+
+    return this;
+  }
+
+  public DemoMode hideNotifications() {
+
+    Intent intent = getDemoModeIntent();
+    intent.putExtra("command", "notifications");
+    intent.putExtra("visible", "false");
+    send(intent);
+
+    return this;
   }
 
 }

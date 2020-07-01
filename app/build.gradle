@@ -138,6 +138,7 @@ dependencies {
 
     // Other
     androidTestImplementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    androidTestImplementation 'tools.fastlane:screengrab:2.0.0'
 
     // Dagger
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
