@@ -23,16 +23,15 @@ import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.rule.ActivityTestRule;
 import androidx.test.rule.GrantPermissionRule;
 import com.clloret.days.R;
 import com.clloret.days.TestApp;
 import com.clloret.days.activities.MainActivity;
-import com.clloret.days.screenshots.demo.DemoMode;
-import com.clloret.days.screenshots.screenshot.ScreenshotTakingRule;
 import java.util.Locale;
+import java.util.Objects;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
@@ -42,22 +41,24 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.RuleChain;
 import org.junit.runner.RunWith;
+import tools.fastlane.screengrab.Screengrab;
+import tools.fastlane.screengrab.cleanstatusbar.CleanStatusBar;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public abstract class BaseScreenshotsTest {
 
   static final Locale DEVICE_LOCALE = new Locale("en", "US");
-  private final ActivityTestRule activityRule = new ActivityTestRule<>(MainActivity.class);
-  private final GrantPermissionRule grantPermissionRule = GrantPermissionRule
-      .grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-  private final ScreenshotTakingRule screenshotTakingRule = new ScreenshotTakingRule();
+
   @Rule
-  public RuleChain ruleChain = RuleChain.outerRule(screenshotTakingRule)
-      .around(grantPermissionRule)
-      .around(activityRule);
+  public final ActivityScenarioRule<MainActivity> activityRule =
+      new ActivityScenarioRule<>(MainActivity.class);
+
+  @Rule
+  public final GrantPermissionRule grantPermissionRule = GrantPermissionRule
+      .grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
   private Resources resources;
 
   @SuppressWarnings("SameParameterValue")
@@ -82,25 +83,30 @@ public abstract class BaseScreenshotsTest {
     };
   }
 
+  private static String getFunctionName(Object object) {
+
+    return Objects.requireNonNull(object.getClass().getEnclosingMethod()).getName();
+  }
+
+  private static void configureDemoMode() {
+
+    new CleanStatusBar()
+        .setClock("1200")
+        .setNumberOfSims(1)
+        .setShowNotifications(false)
+        .enable();
+  }
+
   @BeforeClass
-  public static void setUpOne() {
+  public static void beforeAll() {
 
-    Context context = getInstrumentation()
-        .getTargetContext().getApplicationContext();
-
-    DemoMode demoMode = new DemoMode(context);
-    demoMode.enter();
-    demoMode.setClock();
-    demoMode.setNetwork();
+    configureDemoMode();
   }
 
   @AfterClass
-  public static void tearDownOne() {
+  public static void afterAll() {
 
-    Context context = getInstrumentation()
-        .getTargetContext().getApplicationContext();
-    DemoMode demoMode = new DemoMode(context);
-    demoMode.exit();
+    CleanStatusBar.disable();
   }
 
   private void openNavigationDrawer() {
@@ -119,6 +125,8 @@ public abstract class BaseScreenshotsTest {
     resources = app.getResources();
 
     app.getAppComponent().inject(this);
+
+    configureDemoMode();
   }
 
   @Test
@@ -131,13 +139,21 @@ public abstract class BaseScreenshotsTest {
         .check(matches(isDisplayed()));
 
     Espresso.closeSoftKeyboard();
+
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 
   @Test
-  public void makeScreenshot_MainView() {
+  public void makeScreenshot_MainView() throws InterruptedException {
+
+    Thread.sleep(2000L);
 
     onView(withId(R.id.fab_main_newevent))
         .check(matches(isDisplayed()));
+
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 
   @Test
@@ -148,12 +164,18 @@ public abstract class BaseScreenshotsTest {
 
     onView(withId(R.id.textview_eventdetail_name))
         .check(matches(isDisplayed()));
+
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 
   @Test
   public void makeScreenshot_ShowMenu() {
 
     openNavigationDrawer();
+
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 
   @Test
@@ -163,6 +185,10 @@ public abstract class BaseScreenshotsTest {
     openActionBarOverflowOrOptionsMenu(context);
     onView(withText(R.string.title_order))
         .perform(click());
+
+    final String functionName = Objects.requireNonNull(new Object() {
+    }.getClass().getEnclosingMethod()).getName();
+    Screengrab.screenshot(functionName);
   }
 
   @Test
@@ -179,6 +205,9 @@ public abstract class BaseScreenshotsTest {
     item.perform(click());
 
     Espresso.closeSoftKeyboard();
+
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 
   @Test
@@ -194,5 +223,8 @@ public abstract class BaseScreenshotsTest {
                 0)));
 
     item.perform(click());
+
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 }
