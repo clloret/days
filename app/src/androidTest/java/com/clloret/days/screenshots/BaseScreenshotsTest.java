@@ -30,18 +30,20 @@ import androidx.test.rule.GrantPermissionRule;
 import com.clloret.days.R;
 import com.clloret.days.TestApp;
 import com.clloret.days.activities.MainActivity;
-import com.clloret.days.screenshots.demo.DemoMode;
 import java.util.Locale;
 import java.util.Objects;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import tools.fastlane.screengrab.Screengrab;
+import tools.fastlane.screengrab.cleanstatusbar.CleanStatusBar;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -86,13 +88,25 @@ public abstract class BaseScreenshotsTest {
     return Objects.requireNonNull(object.getClass().getEnclosingMethod()).getName();
   }
 
-  private static void configureDemoMode(Context context) {
+  private static void configureDemoMode() {
 
-    new DemoMode(context)
-        .enter()
-        .setClock()
-        .setNetwork()
-        .hideNotifications();
+    new CleanStatusBar()
+        .setClock("1200")
+        .setNumberOfSims(1)
+        .setShowNotifications(false)
+        .enable();
+  }
+
+  @BeforeClass
+  public static void beforeAll() {
+
+    configureDemoMode();
+  }
+
+  @AfterClass
+  public static void afterAll() {
+
+    CleanStatusBar.disable();
   }
 
   private void openNavigationDrawer() {
@@ -112,7 +126,7 @@ public abstract class BaseScreenshotsTest {
 
     app.getAppComponent().inject(this);
 
-    configureDemoMode(app);
+    configureDemoMode();
   }
 
   @Test
