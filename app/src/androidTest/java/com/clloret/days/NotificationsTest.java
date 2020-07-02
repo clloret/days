@@ -9,9 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 
-import android.content.Context;
 import android.content.res.Resources;
-import androidx.annotation.NonNull;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -26,17 +24,13 @@ import androidx.test.uiautomator.UiSelector;
 import androidx.test.uiautomator.Until;
 import com.clloret.days.activities.MainActivity;
 import com.clloret.days.dagger.AppTestComponent;
-import com.clloret.days.device.reminders.ReminderManagerImpl;
 import com.clloret.days.domain.entities.Event;
+import com.clloret.days.domain.events.EventPeriodFormat;
 import com.clloret.days.domain.interactors.events.DeleteEventUseCase;
 import com.clloret.days.domain.interactors.events.ResetEventDateUseCase;
-import com.clloret.days.domain.utils.Optional;
 import com.clloret.days.domain.utils.StringResourceProvider;
-import com.clloret.days.utils.NotificationsIntentsImpl;
-import com.clloret.test_android_common.SampleData;
 import io.reactivex.Maybe;
 import java.util.Date;
-import java.util.List;
 import javax.inject.Inject;
 import org.junit.After;
 import org.junit.Before;
@@ -50,7 +44,6 @@ import org.mockito.Mockito;
 @RunWith(AndroidJUnit4.class)
 public class NotificationsTest {
 
-  private static final long TIMEOUT = 5_000L;
   private static final String CLEAR_ALL_NOTIFICATION_RES = "com.android.systemui:id/dismiss_text";
   private static final String EXPECTED_ACTION_RES = "android:id/action0";
 
@@ -67,12 +60,14 @@ public class NotificationsTest {
   @Inject
   StringResourceProvider stringResourceProvider;
 
-  private List<Event> sampleEvents;
+  @Inject
+  EventPeriodFormat eventPeriodFormat;
 
   private String expectedActionNameDelete;
   private String expectedActionNameReset;
   private String expectedAppName;
   private UiDevice uiDevice;
+  private NotificationsCommon notificationsCommon;
 
   @Before
   public void setUp() {
@@ -92,7 +87,7 @@ public class NotificationsTest {
     expectedActionNameDelete = stringResourceProvider.getEventDeleteNotificationAction();
     expectedActionNameReset = stringResourceProvider.getEventResetNotificationAction();
 
-    sampleEvents = SampleData.getSampleEvents();
+    notificationsCommon = new NotificationsCommon(stringResourceProvider, eventPeriodFormat);
 
     uiDevice = getUiDevice();
   }
@@ -108,29 +103,12 @@ public class NotificationsTest {
     return UiDevice.getInstance(InstrumentationRegistry.getInstrumentation());
   }
 
-  private void showNotification(Event event) {
-
-    Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-    NotificationsIntentsImpl notificationsIntents = new NotificationsIntentsImpl(context);
-
-    ReminderManagerImpl reminderManager = new ReminderManagerImpl(context, notificationsIntents,
-        stringResourceProvider);
-
-    String contentTitle = event.getName();
-    String contentText = "6 days ago";
-    String bigText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent et tincidunt odio.";
-    reminderManager
-        .addReminder(event, event.getId(), event.getDate(), contentTitle, contentText,
-            Optional.of(bigText));
-  }
-
   @SuppressWarnings("unused")
   private void clearAllNotifications() {
 
     UiDevice uiDevice = getUiDevice();
     uiDevice.openNotification();
-    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), TIMEOUT);
+    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), NotificationsCommon.TIMEOUT);
     UiObject2 clearAll = uiDevice.findObject(By.res(CLEAR_ALL_NOTIFICATION_RES));
     clearAll.click();
   }
@@ -162,28 +140,20 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    final Event event = getSampleEventWithTodayDate(0);
-    showNotification(event);
+    final Event event = notificationsCommon.getSampleEventWithTodayDate(0);
+    notificationsCommon.showNotification(event);
 
     uiDevice.openNotification();
-    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), TIMEOUT);
+    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), NotificationsCommon.TIMEOUT);
     UiObject2 title = uiDevice.findObject(By.text(event.getName()));
     title.click();
-    uiDevice.wait(Until.hasObject(By.text(event.getName())), TIMEOUT);
+    uiDevice.wait(Until.hasObject(By.text(event.getName())), NotificationsCommon.TIMEOUT);
 
     onView(withId(R.id.textview_eventdetail_name))
         .check(matches(isDisplayed()))
         .check(matches(withText(event.getName())));
 
     uiDevice.pressBack();
-  }
-
-  @NonNull
-  private Event getSampleEventWithTodayDate(int index) {
-
-    Event event = sampleEvents.get(index);
-    event.setDate(new Date());
-    return event;
   }
 
   @Test
@@ -195,12 +165,12 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    final Event event = getSampleEventWithTodayDate(1);
-    showNotification(event);
+    final Event event = notificationsCommon.getSampleEventWithTodayDate(1);
+    notificationsCommon.showNotification(event);
 
     uiDevice.openNotification();
 
-    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), TIMEOUT);
+    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), NotificationsCommon.TIMEOUT);
     UiObject notificationOpenItem = uiDevice.findObject(new UiSelector()
         .resourceId(EXPECTED_ACTION_RES)
         .description(expectedActionNameDelete)
@@ -209,13 +179,13 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    verify(deleteEventUseCase, timeout(TIMEOUT).atLeastOnce()).execute(any());
+    verify(deleteEventUseCase, timeout(NotificationsCommon.TIMEOUT).atLeastOnce()).execute(any());
   }
 
   @Test
   public void showNotification_WhenActionReset_ResetEventDate() throws UiObjectNotFoundException {
 
-    final Event event = getSampleEventWithTodayDate(2);
+    final Event event = notificationsCommon.getSampleEventWithTodayDate(2);
 
     Mockito
         .when(resetEventDateUseCase.execute(any()))
@@ -223,11 +193,11 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    showNotification(event);
+    notificationsCommon.showNotification(event);
 
     uiDevice.openNotification();
 
-    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), TIMEOUT);
+    uiDevice.wait(Until.hasObject(By.textStartsWith(expectedAppName)), NotificationsCommon.TIMEOUT);
     UiObject notificationOpenItem = uiDevice.findObject(new UiSelector()
         .resourceId(EXPECTED_ACTION_RES)
         .description(expectedActionNameReset)
@@ -236,7 +206,8 @@ public class NotificationsTest {
 
     uiDevice.pressHome();
 
-    verify(resetEventDateUseCase, timeout(TIMEOUT).atLeastOnce()).execute(any());
+    verify(resetEventDateUseCase, timeout(NotificationsCommon.TIMEOUT).atLeastOnce())
+        .execute(any());
   }
 
 }

@@ -2,7 +2,7 @@
   {
     "id": "fba54d4f-82d9-459c-ae67-ca3253a7ed3e",
     "name": "Aniversario",
-    "description": "El día del aniversario de mi boda",
+    "description": "Mi aniversario de boda. ¡No te olvides de los regalos!",
     "date": "2019-08-12",
     "tags": [
       "99e19dee-306d-4400-9d25-f99cf728493e",
@@ -18,6 +18,7 @@
     "reminderUnit": "DAY",
     "timeLapseUnit": "DAY",
     "name": "Exámenes finales",
+    "description": "Los exámenes finales de la universidad",
     "date": "2019-06-01"
   },
   {
@@ -26,6 +27,7 @@
     "reminderUnit": "DAY",
     "timeLapseUnit": "DAY",
     "name": "Vacaciones",
+    "description": "¡El día que por fin me vaya de vacaciones!",
     "date": "2019-07-16"
   },
   {
