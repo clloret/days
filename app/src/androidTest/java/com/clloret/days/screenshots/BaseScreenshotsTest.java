@@ -186,9 +186,8 @@ public abstract class BaseScreenshotsTest {
     onView(withText(R.string.title_order))
         .perform(click());
 
-    final String functionName = Objects.requireNonNull(new Object() {
-    }.getClass().getEnclosingMethod()).getName();
-    Screengrab.screenshot(functionName);
+    Screengrab.screenshot(getFunctionName(new Object() {
+    }));
   }
 
   @Test
