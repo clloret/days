@@ -1,13 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+- Mark an event as favorite on the screens for create and edit an event
+
 ## [1.3.0] - 2020-05-23
 
 ### Added
 
 - Widget
-
-## [Unreleased]
 
 ## [1.2.0] - 2020-04-19
 
