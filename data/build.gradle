@@ -89,6 +89,6 @@ dependencies {
     androidTestImplementation 'androidx.arch.core:core-testing:2.0.1'
 }
 
-//tasks.withType(Test) {
-//    jacoco.includeNoLocationClasses = true
-//}
+junitJacoco {
+    includeNoLocationClasses = true
+}
