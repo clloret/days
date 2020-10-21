@@ -59,7 +59,7 @@ class EventProgressCalculatorTest {
 
   @Before
   fun init() {
-    MockitoAnnotations.initMocks(this)
+    MockitoAnnotations.openMocks(this)
 
     Mockito.`when`(timeProvider.currentDate).thenReturn(today)
   }

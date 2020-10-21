@@ -59,7 +59,6 @@ public class EventReminderManagerTest {
   @Mock
   private PreferenceUtils preferenceUtils;
 
-  @SuppressWarnings("unused")
   @Mock
   private StringResourceProvider stringResourceProvider;
 
@@ -115,7 +114,7 @@ public class EventReminderManagerTest {
         .withDate(today)
         .withTime(0, 0, 0, 0);
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @SuppressWarnings("unchecked")

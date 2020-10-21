@@ -24,7 +24,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
-@SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventCreatePresenterTest {
 
   @ClassRule
@@ -40,7 +39,7 @@ public class EventCreatePresenterTest {
   private EventCreateView eventCreateView;
 
   @Spy
-  private Scheduler uiThread = Schedulers.trampoline();
+  private final Scheduler uiThread = Schedulers.trampoline();
 
   @InjectMocks
   private EventCreatePresenter eventCreatePresenter;
@@ -48,7 +47,7 @@ public class EventCreatePresenterTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
     eventCreatePresenter.attachView(eventCreateView);
   }

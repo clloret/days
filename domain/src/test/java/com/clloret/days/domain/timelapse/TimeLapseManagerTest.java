@@ -94,7 +94,7 @@ public class TimeLapseManagerTest {
         .withDate(today)
         .withTime(0, 0, 0, 0);
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
