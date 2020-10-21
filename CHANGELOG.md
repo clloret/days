@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file.
 
 - Updated many dependencies
 
+### Fixed
+
+- The sort menu was not selected correctly
+
 ## [1.3.0] - 2020-05-23
 
 ### Added
