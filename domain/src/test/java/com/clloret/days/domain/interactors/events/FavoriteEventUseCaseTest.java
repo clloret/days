@@ -20,7 +20,7 @@ public class FavoriteEventUseCaseTest {
   private EventRepository dataStore;
 
   @Spy
-  private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
+  private final ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
 
   @InjectMocks
   private FavoriteEventUseCase sut;
@@ -40,7 +40,7 @@ public class FavoriteEventUseCaseTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test

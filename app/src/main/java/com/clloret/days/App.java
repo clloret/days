@@ -14,13 +14,12 @@ import com.clloret.days.domain.entities.Tag;
 import com.clloret.days.domain.utils.PreferenceUtils;
 import com.clloret.days.domain.utils.ThreadSchedulers;
 import com.clloret.days.utils.StethoUtils;
-import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
 import dagger.android.support.DaggerApplication;
-import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 import timber.log.Timber;
 import timber.log.Timber.DebugTree;
@@ -93,9 +92,12 @@ public class App extends DaggerApplication
   private void configureAnalytics() {
 
     if (!BuildConfig.DEBUG && preferenceUtils.isAnalyticsEnabled()) {
-      FirebaseAnalytics analytics = FirebaseAnalytics.getInstance(this);
-      analytics.setAnalyticsCollectionEnabled(true);
-      Fabric.with(this, new Crashlytics());
+      FirebaseAnalytics
+          .getInstance(this)
+          .setAnalyticsCollectionEnabled(true);
+      FirebaseCrashlytics
+          .getInstance()
+          .setCrashlyticsCollectionEnabled(true);
     }
   }
 

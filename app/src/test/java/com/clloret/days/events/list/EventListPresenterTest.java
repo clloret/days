@@ -35,7 +35,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-@SuppressWarnings({"PMD.UnusedPrivateField", "unused"})
 public class EventListPresenterTest {
 
   @ClassRule
@@ -95,7 +94,7 @@ public class EventListPresenterTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
     eventListPresenter.attachView(eventListView);
 

@@ -40,7 +40,7 @@ public class TagEditPresenterTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
     tagEditPresenter.attachView(tagEditView);
   }

@@ -37,7 +37,7 @@ public class TagCreatePresenterTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
 
     tagCreatePresenter.attachView(tagCreateView);
   }

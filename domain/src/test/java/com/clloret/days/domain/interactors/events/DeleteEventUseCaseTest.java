@@ -28,7 +28,7 @@ public class DeleteEventUseCaseTest {
   private EventReminderManager eventReminderManager;
 
   @Spy
-  private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
+  private final ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
 
   @InjectMocks
   private DeleteEventUseCase sut;
@@ -49,7 +49,7 @@ public class DeleteEventUseCaseTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
