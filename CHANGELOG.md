@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
 - Mark an event as favorite on the screens for create and edit an event
+
+### Changed
+
+- Updated many dependencies
 
 ## [1.3.0] - 2020-05-23
 
