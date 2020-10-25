@@ -14,10 +14,9 @@ import org.mockito.MockitoAnnotations;
 
 public class SortedValueMapTest {
 
-  private SortedValueMap<String, Integer, Integer> sut;
-
   @Mock
   Comparator<Integer> comparator;
+  private SortedValueMap<String, Integer, Integer> sut;
 
   private void addSampleValues() {
 
@@ -69,19 +68,19 @@ public class SortedValueMapTest {
   }
 
   @Test
-  public void refreshValues_WhenSortedValuesInitialized_CallComparatorCompare() {
+  public void refreshValues_WhenSortedValuesInitialized_CallComparatorCompare() throws Exception {
 
-    MockitoAnnotations.initMocks(this);
+    try (AutoCloseable ignored = MockitoAnnotations.openMocks(this)) {
+      sut = new SortedValueMap<>(comparator);
 
-    sut = new SortedValueMap<>(comparator);
+      addSampleValues();
 
-    addSampleValues();
+      sut.sortedValues();
 
-    sut.sortedValues();
+      sut.refreshValues();
 
-    sut.refreshValues();
-
-    //noinspection ResultOfMethodCallIgnored
-    verify(comparator, atLeast(1)).compare(anyInt(), anyInt());
+      //noinspection ResultOfMethodCallIgnored
+      verify(comparator, atLeast(1)).compare(anyInt(), anyInt());
+    }
   }
 }

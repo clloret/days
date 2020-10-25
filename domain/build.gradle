@@ -11,7 +11,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
     implementation "joda-time:joda-time:$rootProject.jodaTimeVersion"
     implementation 'javax.inject:javax.inject:1'
-    implementation 'org.jetbrains:annotations:16.0.1'
+    implementation 'org.jetbrains:annotations:20.1.0'
     implementation 'org.slf4j:slf4j-api:1.7.30'
 
     testImplementation "com.google.truth:truth:$rootProject.truthVersion"

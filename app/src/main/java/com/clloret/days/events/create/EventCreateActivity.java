@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 import androidx.annotation.NonNull;
@@ -80,6 +81,9 @@ public class EventCreateActivity
 
   @BindView(R.id.textview_eventdetail_reset)
   TextView timeLapseResetText;
+
+  @BindView(R.id.favorite_button)
+  ImageView favoriteButton;
 
   @BindView(R.id.fab)
   FloatingActionButton fab;
@@ -311,6 +315,12 @@ public class EventCreateActivity
   public void onClickClearReset() {
 
     clearTimeLapseReset();
+  }
+
+  @OnClick(R.id.favorite_button)
+  public void onClickFavorite() {
+
+    editEventHelper.setFavorite(favoriteButton);
   }
 
   @OnClick(R.id.fab)

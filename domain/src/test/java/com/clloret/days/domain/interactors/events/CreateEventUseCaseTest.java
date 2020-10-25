@@ -33,7 +33,7 @@ public class CreateEventUseCaseTest {
   private EventProgressCalculator eventProgressCalculator;
 
   @Spy
-  private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
+  private final ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
 
   @InjectMocks
   private CreateEventUseCase sut;
@@ -54,7 +54,7 @@ public class CreateEventUseCaseTest {
   @Before
   public void setUp() {
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test

@@ -1,13 +1,27 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+## [1.4.0] - 2020-10-25
+
+### Added
+
+- Mark an event as favorite on the screens for create and edit an event
+
+### Changed
+
+- Updated many dependencies
+
+### Fixed
+
+- The sort menu was not selected correctly
+
 ## [1.3.0] - 2020-05-23
 
 ### Added
 
 - Widget
-
-## [Unreleased]
 
 ## [1.2.0] - 2020-04-19
 
@@ -45,8 +59,9 @@ All notable changes to this project will be documented in this file.
 
 - Initial release
 
-[Unreleased]: https://github.com/clloret/days/compare/v1.3.0...HEAD
-[1.3.0]: https://github.com/clloret/days/compare/v1.0.0...v1.3.0
-[1.2.0]: https://github.com/clloret/days/compare/v1.0.0...v1.2.0
+[Unreleased]: https://github.com/clloret/days/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/clloret/days/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/clloret/days/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/clloret/days/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/clloret/days/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/clloret/days/releases/tag/v1.0.0

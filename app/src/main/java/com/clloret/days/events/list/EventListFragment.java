@@ -40,7 +40,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
 import timber.log.Timber;
@@ -496,10 +495,7 @@ public class EventListFragment
       case R.id.menu_sort_favorite:
       case R.id.menu_sort_latest_date:
       case R.id.menu_sort_oldest_date:
-        final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
-        final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
-        adapter.sortByComparator(comparator);
-        preferenceUtils.setSortMode(sortType);
+        setSortModeAndSave(itemId);
         return true;
 
       case R.id.menu_view_mode_one_column:
@@ -513,6 +509,15 @@ public class EventListFragment
       default:
         return false;
     }
+  }
+
+  private void setSortModeAndSave(int itemId) {
+
+    final SortType sortType = MAP_MENU_ID_SORT_TYPE.get(itemId);
+    final Comparator<EventSortable> comparator = eventSortComparators.get(sortType);
+    adapter.sortByComparator(comparator);
+    preferenceUtils.setSortMode(sortType);
+    savedSortType = sortType;
   }
 
   private void setViewColumnNumberAndSave(int columns) {
@@ -553,7 +558,7 @@ public class EventListFragment
       searchView = (SearchView) searchItem.getActionView();
     }
 
-    final FragmentActivity activity = Objects.requireNonNull(getActivity());
+    final FragmentActivity activity = requireActivity();
     final SearchManager searchManager = (SearchManager)
         activity.getSystemService(Context.SEARCH_SERVICE);
 

@@ -41,7 +41,7 @@ public class ResetEventDateUseCaseTest {
   private TimeProvider timeProvider;
 
   @Spy
-  private ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
+  private final ThreadSchedulers threadSchedulers = new RxImmediateThreadingSchedulers();
 
   @InjectMocks
   private ResetEventDateUseCase sut;
@@ -68,7 +68,7 @@ public class ResetEventDateUseCaseTest {
         .withMonthOfYear(1)
         .withYear(2000);
 
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test

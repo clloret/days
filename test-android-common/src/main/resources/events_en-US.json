@@ -2,6 +2,7 @@
   {
     "id": "fba54d4f-82d9-459c-ae67-ca3253a7ed3e",
     "name": "Anniversary",
+    "description": "It's my wedding anniversary. Don't forget the gifts!",
     "date": "2019-08-12",
     "tags": [
       "99e19dee-306d-4400-9d25-f99cf728493e",
@@ -18,6 +19,7 @@
     "reminderUnit": "DAY",
     "timeLapseUnit": "DAY",
     "name": "Final exams",
+    "description": "The final exams of the university",
     "date": "2019-06-01"
   },
   {
@@ -26,6 +28,7 @@
     "reminderUnit": "DAY",
     "timeLapseUnit": "DAY",
     "name": "Holidays",
+    "description": "The day I finally go on vacation!",
     "date": "2019-07-16"
   },
   {

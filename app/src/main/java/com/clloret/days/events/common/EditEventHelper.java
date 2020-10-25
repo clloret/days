@@ -1,9 +1,11 @@
 package com.clloret.days.events.common;
 
 import android.content.Context;
+import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
+import com.clloret.days.R;
 import com.clloret.days.domain.entities.Event.TimeUnit;
 import com.clloret.days.domain.events.EventPeriodFormat;
 import com.clloret.days.domain.utils.DateUtils;
@@ -213,4 +215,15 @@ public class EditEventHelper implements SelectTagsDialogListener {
     this.selectedTag = Optional.ofNullable(selectedTag);
   }
 
+  public void setFavorite(@NonNull ImageView favoriteButton) {
+
+    modifiedEvent.setFavorite(!modifiedEvent.getFavorite());
+    showFavoriteButtonState(favoriteButton);
+  }
+
+  public void showFavoriteButtonState(@NonNull ImageView favoriteButton) {
+
+    favoriteButton.setImageResource(modifiedEvent.getFavorite() ? R.drawable.ic_favorite_24dp
+        : R.drawable.ic_favorite_border_24dp);
+  }
 }
